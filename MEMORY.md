@@ -29,6 +29,14 @@ _Última atualização: 2026-04-01_
 
 `memory/sessions/YYYY-MM-DD.md` — notas diárias (raw capture)
 
+## 📂 Feedback
+
+| Arquivo | O que contém |
+|---------|-------------|
+| `memory/feedback/tone.json` | Ajustes de tom e estilo rejeitados/aprovados |
+| `memory/feedback/content.json` | Sugestões de conteúdo aprovadas/rejeitadas |
+| `memory/feedback/tasks.json` | Preferências de execução de tarefas |
+
 ## 🔄 Ciclo de Memória
 
 ```
