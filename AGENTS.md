@@ -11,8 +11,9 @@ _Atualizado em 2026-04-01_
 4. `memory/YYYY-MM-DD.md` (hoje) — contexto do dia
 
 **NÃO carregar no boot — usar `memory_search()` sob demanda:**
-- `MEMORY.md`, `memory/decisions.md`, `memory/lessons.md`
-- `memory/pending.md`, `memory/people.md`, `memory/projects.md`
+- `MEMORY.md`, `memory/context/decisions.md`, `memory/context/lessons.md`
+- `memory/context/pending.md`, `memory/context/people.md`, `memory/context/business-context.md`
+- `memory/projects/*.md`
 
 **Regra:** se precisar de contexto de projetos, decisões ou pessoas → `memory_search("termo")` primeiro. Só ler o arquivo completo se a busca não bastar.
 
