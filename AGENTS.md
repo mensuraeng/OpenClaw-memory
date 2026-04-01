@@ -4,12 +4,19 @@ _Atualizado em 2026-04-01_
 
 ## Toda Sessão (sem pedir permissão)
 
-1. Ler `SOUL.md` — quem sou
-2. Ler `USER.md` — quem é o Alê e como trabalhar com ele
-3. Ler `memory/YYYY-MM-DD.md` (hoje e ontem) — contexto recente
-4. Verificar `HEARTBEAT.md` — tem tarefa pendente?
-5. Se sessão principal com o Alê: ler `MEMORY.md`
-6. Em grupos ou contextos compartilhados: NÃO carregar MEMORY.md
+**Carregar obrigatório (leve, ~8KB):**
+1. `SOUL.md` — quem sou
+2. `USER.md` — quem é o Alê
+3. `IDENTITY.md` — meus dados e integrações
+4. `memory/YYYY-MM-DD.md` (hoje) — contexto do dia
+
+**NÃO carregar no boot — usar `memory_search()` sob demanda:**
+- `MEMORY.md`, `memory/decisions.md`, `memory/lessons.md`
+- `memory/pending.md`, `memory/people.md`, `memory/projects.md`
+
+**Regra:** se precisar de contexto de projetos, decisões ou pessoas → `memory_search("termo")` primeiro. Só ler o arquivo completo se a busca não bastar.
+
+**Em grupos ou contextos compartilhados:** NÃO carregar nenhum arquivo de memória.
 
 ## Estrutura de Memória
 
