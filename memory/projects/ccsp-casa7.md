@@ -119,20 +119,11 @@
 
 > Registrar semanalmente: aprovações, pendências de decisão, solicitações do cliente, diretrizes da gerenciadora.
 
-| Data | Origem | Decisão / Deliberação | Status |
-|------|--------|----------------------|--------|
-| 23/03/26 | MIA + Cliente | **Assinatura do contrato** — obra CCSP Casa 7 formalizada | ✅ Concluído |
-| 30/03/26 | TOOLS (Gerenciadora) | **Aprovação formal dos quadros civil, elétrica e hidráulica** — liberação para execução | ✅ Aprovado |
-| 02/04/26 | MIA (Alexandre) | Recomposição do baldrame aprovada — execução 08-09/04 | ✅ Aprovado |
-| 02/04/26 | MIA (Alexandre) | Victor deve enviar mapas e orçamentos até 07/04 para aprovação TOOLS | ⏳ Pendente Victor |
-| 02/04/26 | TOOLS | **Aprovação mapa acabamentos elétricos** (tomadas, aterramento) | ✅ Aprovado |
-| 02/04/26 | TOOLS | Aprovação mapa de custos de pintura — prazo crítico (início 20/04) | ⏳ Aguardando Victor → TOOLS |
-| 02/04/26 | TOOLS | Aprovação mapa exaustores mecânicos — instalação prevista 16/04 | ⏳ Aguardando Victor → TOOLS |
-| 02/04/26 | TOOLS | Aprovação mini-guia garagem + batedor garagem | ⏳ Aguardando Victor → TOOLS |
-| 02/04/26 | TOOLS | Aprovação película UV (janelas) | ⏳ Aguardando Victor → TOOLS |
-| 02/04/26 | TOOLS | Aprovação fecho de forro drywall (Banho Hóspede) | ⏳ Aguardando orçamento |
-| 02/04/26 | Cliente (Rafael) | Transparência e rastreabilidade da obra — RDO diário obrigatório | 🔴 Em cobrança |
-| 02/04/26 | MIA (Alexandre) | Comunicação formal ao cliente sobre ocorrência do baldrame (fotos + laudo) | ⏳ Pendente MIA |
+| Data | Origem | Decisão / Deliberação | Responsável | Status |
+|------|--------|----------------------|-------------|--------|
+| —    | TOOLS + Cliente | **Assinatura do contrato** — formalização da obra CCSP Casa 7 | TOOLS + Cliente | ⏳ Aguardando aprovação |
+| —    | TOOLS + Cliente | **Aprovação dos quadros de concorrência — Civil, Elétrica e Hidráulica** | TOOLS + Cliente | ⏳ Aguardando aprovação |
+| —    | TOOLS + Cliente | **Aprovação mapa de acabamentos elétricos** | TOOLS + Cliente | ⏳ Aguardando aprovação |
 
 ---
 
