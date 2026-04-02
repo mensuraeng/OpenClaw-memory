@@ -115,6 +115,18 @@
 
 ---
 
+## 🏛️ Decisões e Deliberações — Cliente e Gerenciadora
+
+> Registrar semanalmente: aprovações, pendências de decisão, solicitações do cliente, diretrizes da gerenciadora.
+
+| Data | Origem | Decisão / Deliberação | Status |
+|------|--------|----------------------|--------|
+| 02/04/26 | MIA (Alexandre) | Recomposição do baldrame aprovada — execução 08-09/04 | ✅ Aprovado |
+| 02/04/26 | MIA (Alexandre) | Victor deve enviar mapas e orçamentos até 07/04 para aprovação TOOLS | ⏳ Pendente |
+| 02/04/26 | TOOLS | Aprovação de acabamentos elétricos ainda pendente desde 01/04 | ⏳ Aguardando TOOLS |
+
+---
+
 ## 📈 Histórico de Progresso
 
 | Data | % Global | Notas |

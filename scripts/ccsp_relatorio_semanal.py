@@ -12,18 +12,22 @@ hoje = datetime.now(BRT)
 semana_str = hoje.strftime("%d/%m/%Y")
 
 def gerar_alerta():
-    return f"""📊 *CCSP Casa 7 — Relatório Semanal | {semana_str}*
+    return f"""📊 *CCSP Casa 7 — Atualização Semanal | {semana_str}*
 
-Alê, é hora de atualizar o acompanhamento da Casa 7.
+Alê, preciso de 3 inputs para fechar o relatório desta semana:
 
-Para gerar o relatório atualizado, me mande o cronograma atualizado do Victor (arquivo .mpp ou os dados de % avanço por atividade).
+*1. Cronograma atualizado do Victor*
+  → Arquivo .mpp ou % de avanço por atividade
 
-Com os dados, gero:
-  • Análise de desvio (Previsto x Realizado)
-  • Look Ahead das próximas 2 semanas
-  • Alertas de risco atualizados
-  • Relatório HTML completo
-  • Mensagem de cobrança para o Victor
+*2. Decisões e deliberações da semana*
+  → O que o cliente (TOOLS/Rafael) aprovou, pediu ou questionou?
+  → Alguma diretriz nova da gerenciadora?
+  → Aprovações pendentes que foram resolvidas?
+
+*3. Ocorrências novas*
+  → Algum imprevisto, não conformidade ou desvio não registrado?
+
+Com isso gero: relatório interno, relatório TOOLS, look ahead, alertas e histórico atualizado.
 
 _Flávia | MIA Engenharia 🟢_"""
 
