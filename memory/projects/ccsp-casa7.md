@@ -125,7 +125,7 @@
 | 30/03/26 | TOOLS (Gerenciadora) | **Aprovação formal dos quadros civil, elétrica e hidráulica** — liberação para execução | ✅ Aprovado |
 | 02/04/26 | MIA (Alexandre) | Recomposição do baldrame aprovada — execução 08-09/04 | ✅ Aprovado |
 | 02/04/26 | MIA (Alexandre) | Victor deve enviar mapas e orçamentos até 07/04 para aprovação TOOLS | ⏳ Pendente Victor |
-| 02/04/26 | TOOLS | Aprovação acabamentos elétricos (tomadas, acabamentos, aterramento) | ⏳ Aguardando TOOLS |
+| 02/04/26 | TOOLS | **Aprovação mapa acabamentos elétricos** (tomadas, aterramento) | ✅ Aprovado |
 | 02/04/26 | TOOLS | Aprovação mapa de custos de pintura — prazo crítico (início 20/04) | ⏳ Aguardando Victor → TOOLS |
 | 02/04/26 | TOOLS | Aprovação mapa exaustores mecânicos — instalação prevista 16/04 | ⏳ Aguardando Victor → TOOLS |
 | 02/04/26 | TOOLS | Aprovação mini-guia garagem + batedor garagem | ⏳ Aguardando Victor → TOOLS |
