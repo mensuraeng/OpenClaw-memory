@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCSP Casa 7 — Relatório de Acompanhamento | Semana 01 | 02/04/2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #1a1a1a; font-size: 14px; }
+
+  .header {
+    background: #1a1a2e;
+    color: white;
+    padding: 36px 48px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .logo-area h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  .logo-area h2 { font-size: 13px; color: #aaa; font-weight: 400; margin-top: 4px; }
+  .header-meta { text-align: right; font-size: 13px; color: #bbb; line-height: 1.8; }
+  .header-meta strong { color: #fff; }
+  .header-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0 0 20px; }
+  .header-bottom { display: flex; gap: 48px; }
+  .header-info-item { }
+  .header-info-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #888; }
+  .header-info-value { font-size: 14px; color: #fff; margin-top: 2px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 48px; }
+
+  /* Resumo executivo */
+  .exec-summary {
+    background: white;
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid #1a1a2e;
+  }
+  .exec-summary h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: #888; margin-bottom: 10px; }
+  .exec-summary p { line-height: 1.7; color: #333; }
+
+  /* KPIs */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .kpi {
+    background: white;
+    border-radius: 6px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-top: 3px solid #ddd;
+  }
+  .kpi.ok { border-top-color: #43a047; }
+  .kpi.atencao { border-top-color: #f9a825; }
+  .kpi.risco { border-top-color: #e53935; }
+  .kpi.info { border-top-color: #1e88e5; }
+  .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; }
+  .kpi-value { font-size: 28px; font-weight: 700; margin: 6px 0 2px; color: #1a1a1a; }
+  .kpi-sub { font-size: 11px; color: #aaa; }
+
+  /* Seção padrão */
+  .section {
+    background: white;
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .section h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #888;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  /* Progress bars */
+  .prog-row { margin-bottom: 12px; }
+  .prog-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; color: #333; }
+  .prog-pct { font-weight: 600; }
+  .prog-bar-bg { background: #f0f0f0; border-radius: 3px; height: 8px; }
+  .prog-bar { height: 8px; border-radius: 3px; }
+  .prog-bar.concluido { background: #43a047; }
+  .prog-bar.andamento { background: #1e88e5; }
+  .prog-bar.atencao { background: #f9a825; }
+  .prog-bar.inativo { background: #e0e0e0; }
+
+  /* Tabela status ambientes */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #999;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid #f5f5f5; color: #333; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge.concluido { background: #e8f5e9; color: #2e7d32; }
+  .badge.andamento { background: #e3f2fd; color: #1565c0; }
+  .badge.atencao { background: #fffde7; color: #f57f17; }
+  .badge.pendente { background: #f5f5f5; color: #616161; }
+  .badge.critico { background: #ffebee; color: #c62828; }
+
+  /* Alertas */
+  .alert { border-radius: 5px; padding: 12px 16px; margin-bottom: 10px; font-size: 13px; display: flex; gap: 12px; }
+  .alert:last-child { margin-bottom: 0; }
+  .alert.atencao { background: #fffde7; border-left: 3px solid #f9a825; }
+  .alert.critico { background: #ffebee; border-left: 3px solid #e53935; }
+  .alert.info { background: #e3f2fd; border-left: 3px solid #1e88e5; }
+  .alert-icon { font-size: 15px; flex-shrink: 0; padding-top: 1px; }
+  .alert strong { display: block; margin-bottom: 3px; color: #1a1a1a; }
+  .alert span { color: #555; line-height: 1.5; }
+
+  /* Marcos */
+  .marco-row { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+  .marco-row:last-child { border-bottom: none; }
+  .marco-data { min-width: 90px; font-size: 13px; font-weight: 600; color: #1a1a2e; flex-shrink: 0; }
+  .marco-desc { flex: 1; font-size: 13px; color: #333; line-height: 1.5; }
+
+  /* Nota técnica (não conformidades — versão cliente) */
+  .nc-item { padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; display: flex; gap: 12px; }
+  .nc-item:last-child { border-bottom: none; }
+  .nc-local { min-width: 140px; font-weight: 600; color: #333; flex-shrink: 0; }
+  .nc-desc { flex: 1; color: #555; line-height: 1.5; }
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #aaa;
+  }
+  .footer strong { color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo-area">
+      <h1>MIA ENGENHARIA</h1>
+      <h2>Relatório de Acompanhamento de Obra</h2>
+    </div>
+    <div class="header-meta">
+      <div><strong>Relatório N.º</strong> 001/2026</div>
+      <div><strong>Emissão:</strong> 02 de abril de 2026</div>
+      <div><strong>Próxima emissão:</strong> 09 de abril de 2026</div>
+    </div>
+  </div>
+  <hr class="header-divider">
+  <div class="header-bottom">
+    <div class="header-info-item">
+      <div class="header-info-label">Obra</div>
+      <div class="header-info-value">CCSP — Casa 7</div>
+    </div>
+    <div class="header-info-item">
+      <div class="header-info-label">Destinatário</div>
+      <div class="header-info-value">TOOLS Engenharia</div>
+    </div>
+    <div class="header-info-item">
+      <div class="header-info-label">Engenheiro de Obra</div>
+      <div class="header-info-value">Victor Evangelista</div>
+    </div>
+    <div class="header-info-item">
+      <div class="header-info-label">Período do relatório</div>
+      <div class="header-info-value">23/03/2026 — 02/04/2026</div>
+    </div>
+    <div class="header-info-item">
+      <div class="header-info-label">Prazo de entrega</div>
+      <div class="header-info-value">22/05/2026</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Resumo Executivo -->
+  <div class="exec-summary">
+    <h3>Resumo Executivo</h3>
+    <p>
+      A obra CCSP Casa 7 apresenta progresso global de <strong>7%</strong>, dentro do esperado para o estágio atual de execução.
+      Os serviços iniciais foram <strong>concluídos integralmente</strong> (remoção de mobiliário e proteção de piso).
+      A 1ª onda de ambientes internos foi iniciada em 02/04/2026, com foco nas suítes e banheiros do pavimento íntimo.
+      Durante inspeção de campo, foi identificada uma ocorrência não prevista na área externa — ausência de baldrame —
+      cuja solução foi planejada e está em curso. Os prazos contratuais <strong>não foram impactados</strong> até o momento.
+      O período crítico da obra concentra-se entre <strong>07 e 20 de abril</strong>, com múltiplas contratações e aprovações necessárias
+      para garantir o início da pintura geral na data prevista.
+    </p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi info">
+      <div class="kpi-label">Progresso Global</div>
+      <div class="kpi-value">7%</div>
+      <div class="kpi-sub">Previsto: ~10%</div>
+    </div>
+    <div class="kpi info">
+      <div class="kpi-label">Dias Decorridos</div>
+      <div class="kpi-value">11</div>
+      <div class="kpi-sub">de 43 dias totais</div>
+    </div>
+    <div class="kpi ok">
+      <div class="kpi-label">Serviços Iniciais</div>
+      <div class="kpi-value">100%</div>
+      <div class="kpi-sub">Concluídos</div>
+    </div>
+    <div class="kpi atencao">
+      <div class="kpi-label">Prazo de Entrega</div>
+      <div class="kpi-value">22/05</div>
+      <div class="kpi-sub">Mantido</div>
+    </div>
+  </div>
+
+  <!-- Progresso por frente -->
+  <div class="section">
+    <h3>Progresso por Frente de Serviço</h3>
+    <div class="prog-row">
+      <div class="prog-label"><span>Serviços Iniciais</span><span class="prog-pct">100%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar concluido" style="width:100%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>1ª Onda — Suítes e Banheiros</span><span class="prog-pct">10%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar andamento" style="width:10%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>2ª Onda — Área Social e Dormitório 4</span><span class="prog-pct">4%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar atencao" style="width:4%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>3ª Onda — Área Externa e Garagem</span><span class="prog-pct">6%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar atencao" style="width:6%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>Pintura Geral</span><span class="prog-pct">0%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar inativo" style="width:0%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>Comissionamento e Entrega</span><span class="prog-pct">0%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar inativo" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Status por ambiente -->
+  <div class="section">
+    <h3>Status por Ambiente</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Ambiente</th>
+          <th>Avanço</th>
+          <th>Previsão de conclusão</th>
+          <th>Situação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Suíte Master (Suíte 3)</strong></td>
+          <td>10%</td>
+          <td>09/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Banheiro Master</strong></td>
+          <td>8%</td>
+          <td>14/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Suíte de Hóspedes</strong></td>
+          <td>10%</td>
+          <td>10/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Banheiro de Hóspedes</strong></td>
+          <td>8%</td>
+          <td>10/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Suíte Infantil</strong></td>
+          <td>10%</td>
+          <td>10/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Banheiro Infantil</strong></td>
+          <td>10%</td>
+          <td>14/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Circulação Íntima</strong></td>
+          <td>10%</td>
+          <td>14/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dormitório 4</strong></td>
+          <td>6%</td>
+          <td>17/04/2026</td>
+          <td><span class="badge pendente">Aguardando início</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sala de Jantar</strong></td>
+          <td>10%</td>
+          <td>17/04/2026</td>
+          <td><span class="badge andamento">Em andamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Cozinha</strong></td>
+          <td>0%</td>
+          <td>17/04/2026</td>
+          <td><span class="badge pendente">Não iniciado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Área de Serviço</strong></td>
+          <td>0%</td>
+          <td>17/04/2026</td>
+          <td><span class="badge pendente">Não iniciado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Área Externa — Baldrame e Rodapé</strong></td>
+          <td>40%</td>
+          <td>15/04/2026</td>
+          <td><span class="badge atencao">Ocorrência em tratamento</span></td>
+        </tr>
+        <tr>
+          <td><strong>Garagem</strong></td>
+          <td>0%</td>
+          <td>08/05/2026</td>
+          <td><span class="badge pendente">Não iniciado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Pintura Geral (interna e externa)</strong></td>
+          <td>0%</td>
+          <td>15/05/2026</td>
+          <td><span class="badge pendente">Não iniciado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Comissionamento e Checklist Final</strong></td>
+          <td>0%</td>
+          <td>22/05/2026</td>
+          <td><span class="badge pendente">Não iniciado</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Ocorrências -->
+  <div class="section">
+    <h3>Ocorrências e Tratativas</h3>
+
+    <div class="alert critico">
+      <div class="alert-icon">⚠️</div>
+      <div>
+        <strong>Ausência de baldrame na área externa — Ocorrência não prevista</strong>
+        <span>Durante inspeção de campo, identificou-se que o piso da área externa está assentado diretamente sobre o solo, sem a execução do baldrame previsto, resultando em infiltração. A situação não constava no escopo original do contrato. A MIA Engenharia planeja a solução em três etapas: (1) medida paliativa imediata com separação física do solo; (2) recomposição do baldrame em 08 e 09/04; (3) impermeabilização e revestimento argamassado até 15/04. A ocorrência está sendo documentada com registros fotográficos e será formalmente comunicada ao proprietário.</span>
+      </div>
+    </div>
+
+    <div class="alert atencao">
+      <div class="alert-icon">⚙️</div>
+      <div>
+        <strong>Instalações elétricas — Não conformidade identificada</strong>
+        <span>Identificadas tomadas com condutores fora do padrão cromático em algumas unidades (alimentação com cores não padronizadas). A equipe está levantando a extensão do problema, com registro fotográfico, e providenciará a correção dentro do prazo de execução elétrica previsto para a 1ª onda.</span>
+      </div>
+    </div>
+
+    <div class="alert atencao">
+      <div class="alert-icon">🪟</div>
+      <div>
+        <strong>Esquadrias — Ajustes de acabamento</strong>
+        <span>Identificados pontos de ajuste em batentes, guarnições e vedação de portas em alguns ambientes. As correções estão mapeadas e serão executadas no decorrer da 1ª e 2ª ondas, sem impacto no prazo de entrega.</span>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <div class="alert-icon">🏊</div>
+      <div>
+        <strong>Drenagem — Início agendado</strong>
+        <span>O fornecedor de drenagem tem início agendado para 06/04/2026. A equipe de campo está coordenando a execução para que não haja interferência com os serviços de recomposição do baldrame, previstos para a mesma semana.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marcos das próximas semanas -->
+  <div class="section">
+    <h3>Próximos Marcos — Abril e Maio de 2026</h3>
+
+    <div class="marco-row">
+      <div class="marco-data">07/04 (Ter)</div>
+      <div class="marco-desc">Envio de mapas para aprovação: exaustores, pintura, mini-guias, batedores e película UV</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">09/04 (Qui)</div>
+      <div class="marco-desc">Conclusão prevista da Suíte Master</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">10/04 (Sex)</div>
+      <div class="marco-desc">Conclusão prevista: Banheiro Master, Suíte de Hóspedes, Banheiro de Hóspedes e Suíte Infantil</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">14/04 (Ter)</div>
+      <div class="marco-desc">Conclusão prevista: Banheiro Infantil e Circulação Íntima</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">15/04 (Qua)</div>
+      <div class="marco-desc">Conclusão prevista da Área Externa (baldrame + impermeabilização + rodapé)</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">16/04 (Qui)</div>
+      <div class="marco-desc">Instalação dos exaustores mecânicos</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">17/04 (Sex)</div>
+      <div class="marco-desc">Conclusão prevista: Dormitório 4, Área de Serviço, Cozinha e Sala de Jantar</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data"><strong>20/04 (Seg)</strong></div>
+      <div class="marco-desc"><strong>Início da Pintura Geral (interna e externa) — marco crítico do cronograma</strong></div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">08/05 (Sex)</div>
+      <div class="marco-desc">Conclusão prevista da Garagem e Área Externa completa</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data">15/05 (Sex)</div>
+      <div class="marco-desc">Conclusão prevista da Pintura Geral e Limpeza Final</div>
+    </div>
+    <div class="marco-row">
+      <div class="marco-data"><strong>22/05 (Sex)</strong></div>
+      <div class="marco-desc"><strong>Entrega da Obra — Conclusão do Checklist Final</strong></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <strong>MIA Engenharia</strong> · Relatório N.º 001/2026 · CCSP Casa 7<br>
+      Emitido em 02/04/2026 · Próximo relatório: 09/04/2026
+    </div>
+    <div style="text-align:right">
+      Destinatário: <strong>TOOLS Engenharia</strong><br>
+      Uso restrito — documento de prestação de contas
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

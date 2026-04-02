@@ -1,6 +1,6 @@
 # CCSP Casa 7 — Histórico de Acompanhamento
 
-> Obra: CCSP Casa 7 | Cliente: Rafael (TUS) / proprietário acessa BI diariamente
+> Obra: CCSP Casa 7 | Cliente: Rafael (TOOLS Engenharia) / proprietário acessa BI diariamente
 > Engenheiro responsável: **Victor Evangelista**
 > Período: 23/03/26 → 22/05/26 (43 dias)
 > Empresa: MIA Engenharia
@@ -111,7 +111,7 @@
 - Diversas pedras rachadas ou mal cortadas
 - Baldrame ausente na área externa
 
-**Documentação:** Victor deve fazer RDO diariamente antes das 15h. Cliente Rafael (TUS) cobra falta de transparência. Proprietário acessa BI diariamente.
+**Documentação:** Victor deve fazer RDO diariamente antes das 15h. Cliente Rafael (TOOLS Engenharia) cobra falta de transparência. Proprietário acessa BI diariamente.
 
 ---
 
