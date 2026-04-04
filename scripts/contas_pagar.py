@@ -14,17 +14,36 @@ CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
 CONTAS_FILE = os.path.expanduser("~/.openclaw/workspace/memory/contas_pagar.json")
 
 USERS = [
-    "alexandre@mensuraengenharia.com.br",
-    "alexandre@miaengenharia.com.br",
+    {
+        "email": "alexandre@mensuraengenharia.com.br",
+        "config": os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json"),
+    },
+    {
+        "email": "alexandre@miaengenharia.com.br",
+        "config": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-mia.json"),
+    },
 ]
 
-# Palavras-chave para identificar emails financeiros
+# Palavras-chave para identificar emails financeiros (contas a PAGAR)
 KEYWORDS_SUBJECT = [
-    "boleto", "fatura", "cobrança", "vencimento", "pagamento", "conta",
-    "nota fiscal", "nf-e", "nfe", "invoice", "condomínio", "condominio",
-    "luz", "energia", "celular", "telefone", "internet", "água", "agua",
+    "boleto", "fatura", "cobrança", "vencimento",
+    "condomínio", "condominio",
+    "luz", "energia elétrica", "celular", "telefone", "internet", "água", "agua",
     "gás", "gas", "aluguel", "iptu", "ipva", "seguro", "mensalidade",
-    "recibo", "débito", "debito", "aviso de cobrança", "segunda via"
+    "aviso de cobrança", "segunda via", "prazo de pagamento",
+    "débito automático", "debito automatico",
+]
+
+# Assuntos a ignorar explicitamente (falsos positivos comuns)
+KEYWORDS_IGNORE = [
+    "documento aguarda sua assinatura",
+    "pagamento pix recebido",   # pix recebido = entrada, não saída
+    "pix recebido",
+    "folha de pagamento",
+    "nf-e da compra",           # nota de compra, não boleto
+    "autorização de chave pix",
+    "solicitação de conexão",
+    "acabei de solicitar conexão",
 ]
 
 KEYWORDS_BODY = [
@@ -77,6 +96,11 @@ def graph_request(token, path, method="GET", body=None):
 def is_financial_email(subject, body_preview):
     subject_lower = subject.lower()
     body_lower = body_preview.lower()
+
+    # Ignorar falsos positivos explícitos
+    for kw in KEYWORDS_IGNORE:
+        if kw in subject_lower:
+            return False
 
     for kw in KEYWORDS_SUBJECT:
         if kw in subject_lower:
@@ -206,15 +230,24 @@ def fetch_financial_emails(token, user, days_back=8):
 
 
 def scan_emails(args):
-    cfg = load_config()
-    token = get_token(cfg)
     contas_data = load_contas()
     existing_ids = {c["email_id"] for c in contas_data["contas"]}
 
     novas_contas = []
-    calendar_user = USERS[0]  # Agenda Mensura como padrão
+    # Agenda Mensura como padrão para eventos
+    cfg_mensura = load_config()
+    token_mensura = get_token(cfg_mensura)
+    calendar_user = USERS[0]["email"]
 
-    for user in USERS:
+    for user_entry in USERS:
+        user = user_entry["email"]
+        cfg_path = user_entry["config"]
+
+        # Carregar config específica da conta
+        with open(cfg_path) as f:
+            cfg = json.load(f)
+        token = get_token(cfg)
+
         print(f"\n📬 Escaneando {user}...")
         emails = fetch_financial_emails(token, user, days_back=8)
         print(f"   {len(emails)} emails recentes encontrados")
@@ -259,9 +292,9 @@ def scan_emails(args):
                 "evento_id": None,
             }
 
-            # Criar evento na agenda
+            # Criar evento na agenda (sempre na conta Mensura)
             if due_date:
-                event_id = create_calendar_event(token, calendar_user, conta)
+                event_id = create_calendar_event(token_mensura, calendar_user, conta)
                 if event_id:
                     conta["evento_id"] = event_id
                     print(f"   📅 Evento criado na agenda (vence {due_date.strftime('%d/%m/%Y')})")
