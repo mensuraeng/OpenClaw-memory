@@ -1,46 +1,19 @@
 {
   "contas": [
     {
-      "id": "alexandre@mensuraengenharia.com.br_AAMkADAwZDk2Mjk2",
-      "email_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAEMAAD_2b2i-O-CQ7g2VaW8BTq6AAU-8hLdAAA=",
-      "conta": "alexandre@mensuraengenharia.com.br",
-      "assunto": "O pagamento da sua reserva para Hotel Fazenda Sete Lagos está confirmado - Viagem BDTE5KJ",
-      "descricao": "O pagamento da sua reserva para Hotel Fazenda Sete Lagos está confirmado - Viage",
-      "remetente": "nts@notification.niara.tech",
-      "recebido": "2026-04-02",
-      "vencimento": "08/04/2026",
-      "valor": "68,30",
-      "codigo_barras": null,
-      "status": "pendente",
-      "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVBTj6hAAA="
-    },
-    {
-      "id": "alexandre@miaengenharia.com.br_AAMkADA5ZGRjMjEx",
+      "id": "alexandre@miaengenharia.com.br_irpj_csll_30042026",
       "email_id": "AAMkADA5ZGRjMjExLWU4MDQtNDkyNi1hZGI0LTc1N2NiYjlhNTFmNQBGAAAAAADD1eYX3FzUSLHLJjJMLP18BwDVJ-X561luSbyAZS6PXzMWAAAAAAEMAADVJ-X561luSbyAZS6PXzMWAAYD5eEoAAA=",
       "conta": "alexandre@miaengenharia.com.br",
       "assunto": "O prazo de pagamento do IRPJ e CSLL é até 30/04/2026",
-      "descricao": "O prazo de pagamento do IRPJ e CSLL é até 30/04/2026",
+      "descricao": "IRPJ e CSLL — pagamento trimestral (Receita Federal)",
       "remetente": "C6empresas@mail.c6bank.com.br",
       "recebido": "2026-03-30",
       "vencimento": "30/04/2026",
-      "valor": null,
-      "codigo_barras": null,
+      "valor": "a apurar",
+      "codigo_barras": "DARF — gerar via C6 Empresas ou Receita Federal",
+      "observacao": "Pagamento via DARF no app C6 Empresas ou portal Receita Federal. Apurar valor de IRPJ+CSLL trimestral.",
       "status": "pendente",
       "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVBTj6iAAA="
-    },
-    {
-      "id": "alexandre@miaengenharia.com.br_AAMkADA5ZGRjMjEx",
-      "email_id": "AAMkADA5ZGRjMjExLWU4MDQtNDkyNi1hZGI0LTc1N2NiYjlhNTFmNQBGAAAAAADD1eYX3FzUSLHLJjJMLP18BwDVJ-X561luSbyAZS6PXzMWAAAAAAEMAADVJ-X561luSbyAZS6PXzMWAAYD5eEnAAA=",
-      "conta": "alexandre@miaengenharia.com.br",
-      "assunto": "O prazo de pagamento do IRPJ e CSLL é até 30/04/2026",
-      "descricao": "O prazo de pagamento do IRPJ e CSLL é até 30/04/2026",
-      "remetente": "C6empresas@mail.c6bank.com.br",
-      "recebido": "2026-03-30",
-      "vencimento": "30/04/2026",
-      "valor": null,
-      "codigo_barras": null,
-      "status": "pendente",
-      "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVBTj6jAAA="
     }
   ],
   "pagos": []

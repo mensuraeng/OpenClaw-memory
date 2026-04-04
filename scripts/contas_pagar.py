@@ -37,13 +37,18 @@ KEYWORDS_SUBJECT = [
 # Assuntos a ignorar explicitamente (falsos positivos comuns)
 KEYWORDS_IGNORE = [
     "documento aguarda sua assinatura",
-    "pagamento pix recebido",   # pix recebido = entrada, não saída
+    "pagamento pix recebido",       # pix recebido = entrada, não saída
     "pix recebido",
+    "pagamento confirmado",         # confirmação = já pago
+    "sua reserva para",             # confirmação de reserva já paga
+    "está confirmado",
     "folha de pagamento",
-    "nf-e da compra",           # nota de compra, não boleto
+    "nf-e da compra",               # nota de compra, não boleto
     "autorização de chave pix",
     "solicitação de conexão",
     "acabei de solicitar conexão",
+    "windson acabou de enviar",
+    "using third-party harnesses",
 ]
 
 KEYWORDS_BODY = [
