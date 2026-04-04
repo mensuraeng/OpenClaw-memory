@@ -1,0 +1,33 @@
+{
+  "contas": [
+    {
+      "id": "alexandre@mensuraengenharia.com.br_AAMkADAwZDk2Mjk2",
+      "email_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAEMAAD_2b2i-O-CQ7g2VaW8BTq6AAU-8hLyAAA=",
+      "conta": "alexandre@mensuraengenharia.com.br",
+      "assunto": "PRESTAÇÃO DE CONTAS MENSAL",
+      "descricao": "PRESTAÇÃO DE CONTAS MENSAL",
+      "remetente": "prestacaodecontas@graiche.com.br",
+      "recebido": "2026-04-02",
+      "vencimento": null,
+      "valor": null,
+      "codigo_barras": null,
+      "status": "pendente",
+      "evento_id": null
+    },
+    {
+      "id": "alexandre@mensuraengenharia.com.br_AAMkADAwZDk2Mjk2",
+      "email_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAEMAAD_2b2i-O-CQ7g2VaW8BTq6AAU-8hLdAAA=",
+      "conta": "alexandre@mensuraengenharia.com.br",
+      "assunto": "O pagamento da sua reserva para Hotel Fazenda Sete Lagos está confirmado - Viagem BDTE5KJ",
+      "descricao": "O pagamento da sua reserva para Hotel Fazenda Sete Lagos está confirmado - Viage",
+      "remetente": "nts@notification.niara.tech",
+      "recebido": "2026-04-02",
+      "vencimento": "08/04/2026",
+      "valor": "68,30",
+      "codigo_barras": null,
+      "status": "pendente",
+      "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVBTj6hAAA="
+    }
+  ],
+  "pagos": []
+}
