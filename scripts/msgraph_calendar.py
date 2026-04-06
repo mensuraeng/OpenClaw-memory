@@ -40,11 +40,33 @@ def graph_request(token, path, method="GET", body=None):
         print(f"Erro {e.code}: {e.read().decode()}")
         sys.exit(1)
 
+BRT = timezone(timedelta(hours=-3))
+
+def parse_event_dt(dt_str, tz_str):
+    """Converte dateTime retornado pela API para horário de Brasília."""
+    if not dt_str:
+        return ""
+    # A API pode retornar com ou sem 'Z'. Normaliza para UTC.
+    dt_str_clean = dt_str.rstrip('Z')
+    try:
+        dt = datetime.fromisoformat(dt_str_clean)
+    except ValueError:
+        return dt_str[:16].replace("T", " ")
+    # Se o timeZone do evento já é America/Sao_Paulo, não há conversão a fazer
+    # A API retorna dateTime no fuso do evento; se for UTC, converte.
+    if tz_str in ("UTC", "tzone://Microsoft/Utc", ""):
+        dt = dt.replace(tzinfo=timezone.utc).astimezone(BRT)
+    else:
+        # Já está no fuso correto (America/Sao_Paulo ou similar)
+        dt = dt.replace(tzinfo=BRT)
+    return dt.strftime("%Y-%m-%d %H:%M")
+
 def list_events(token, user, days=7):
     now = datetime.now(timezone.utc)
     end = now + timedelta(days=days)
     start_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     end_str = end.strftime("%Y-%m-%dT%H:%M:%SZ")
+    # Solicita o fuso do evento junto com os dados
     path = f"/users/{user}/calendarView?startDateTime={start_str}&endDateTime={end_str}&$orderby=start/dateTime&$select=id,subject,start,end,location,organizer,isAllDay,bodyPreview&$top=20"
     data = graph_request(token, path)
     events = data.get("value", [])
@@ -53,8 +75,10 @@ def list_events(token, user, days=7):
         return
     print(f"📅 Próximos {days} dias ({len(events)} eventos):\n")
     for e in events:
-        start = e.get("start", {}).get("dateTime", "")[:16].replace("T", " ")
-        end_t = e.get("end", {}).get("dateTime", "")[:16].replace("T", " ")
+        start_obj = e.get("start", {})
+        end_obj = e.get("end", {})
+        start = parse_event_dt(start_obj.get("dateTime", ""), start_obj.get("timeZone", ""))
+        end_t = parse_event_dt(end_obj.get("dateTime", ""), end_obj.get("timeZone", ""))
         loc = e.get("location", {}).get("displayName", "")
         org = e.get("organizer", {}).get("emailAddress", {}).get("name", "")
         all_day = " (dia inteiro)" if e.get("isAllDay") else ""
