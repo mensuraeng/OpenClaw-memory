@@ -70,6 +70,13 @@ def e_relevante(descricao):
 PNCP_SEARCH = "https://pncp.gov.br/api/search/"
 PNCP_BASE   = "https://pncp.gov.br"
 
+def _build_url(item_url):
+    """Converte /compras/CNPJ/ANO/SEQ -> /app/editais/CNPJ/ANO/SEQ"""
+    partes = item_url.strip('/').split('/')
+    if len(partes) == 4:
+        return f"{PNCP_BASE}/app/editais/{partes[1]}/{partes[2]}/{partes[3]}"
+    return PNCP_BASE + item_url
+
 def fetch_json(url):
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "Mozilla/5.0"})
     try:
@@ -162,7 +169,7 @@ def coletar_licitacoes(filtro_uf=None, dias_minimos=0):
                 "prazo":      prazo,
                 "publicado":  parse_dt(item.get("data_publicacao_pncp", "")),
                 "numero_pncp": item.get("numero_controle_pncp", "—"),
-                "url":        PNCP_BASE + item.get("item_url", ""),
+                "url":        _build_url(item.get("item_url", "")),
                 "situacao":   item.get("situacao_nome", "—"),
                 "cancelado":  item.get("cancelado", False),
             })
