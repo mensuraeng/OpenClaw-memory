@@ -26,8 +26,8 @@ def get_token(cfg):
 
 def gerar_relatorio_txt():
     result = subprocess.run(
-        ["python3", "/root/.openclaw/workspace/scripts/monitor_licitacoes.py"],
-        capture_output=True, text=True, timeout=120
+        ["python3", "/root/.openclaw/workspace/scripts/monitor_licitacoes.py", "--valores"],
+        capture_output=True, text=True, timeout=300
     )
     if result.returncode != 0:
         print(f"Erro ao gerar relatório: {result.stderr}", file=sys.stderr)
@@ -73,6 +73,7 @@ def montar_html(cards, agora):
   body {{ font-family: Arial, sans-serif; font-size: 14px; color: #222; max-width: 900px; margin: 0 auto; padding: 16px; }}
   h1 {{ color: #1a3c6e; border-bottom: 2px solid #1a3c6e; padding-bottom: 8px; }}
   h2 {{ color: #1a3c6e; font-size: 13px; margin: 0 0 4px 0; }}
+  h3.estado {{ background: #1a3c6e; color: white; padding: 6px 14px; border-radius: 6px; margin: 28px 0 10px 0; font-size: 14px; }}
   .card {{ border: 1px solid #ddd; border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; background: #fafafa; }}
   .card.urgente {{ border-left: 4px solid #c0392b; background: #fff5f5; }}
   .card.atencao {{ border-left: 4px solid #e67e22; background: #fffaf5; }}
@@ -81,6 +82,7 @@ def montar_html(cards, agora):
   .badge-red {{ background: #c0392b; color: white; }}
   .badge-orange {{ background: #e67e22; color: white; }}
   .meta {{ font-size: 12px; color: #555; margin: 3px 0; }}
+  .valor {{ font-size: 13px; font-weight: bold; color: #1a3c6e; }}
   .objeto {{ font-size: 12px; color: #444; margin: 6px 0 4px 0; font-style: italic; }}
   a {{ color: #1a3c6e; font-size: 12px; }}
   .total {{ background: #1a3c6e; color: white; padding: 6px 14px; border-radius: 6px; display: inline-block; margin-bottom: 20px; font-weight: bold; }}
@@ -94,26 +96,46 @@ def montar_html(cards, agora):
 <p class="total">🔎 {len(cards)} licitações em aberto</p>
 '''
 
+    # Agrupar por UF — SP primeiro, resto em ordem alfabética
+    from collections import defaultdict
+    por_uf = defaultdict(list)
     for c in cards:
-        prazo = c.get('prazo', '')
-        css = 'normal'
-        badge = ''
-        if 'HOJE' in prazo or 'AMANHÃ' in prazo:
-            css = 'urgente'
-            badge = '<span class="badge badge-red">⚠️ URGENTE</span> '
-        elif any(f'{i} dias' in prazo for i in range(2, 6)):
-            css = 'atencao'
-            badge = '<span class="badge badge-orange">⏳ ATENÇÃO</span> '
+        local = c.get('local', '')
+        uf = local.split('/')[-1].strip() if '/' in local else ''
+        por_uf[uf].append(c)
 
-        obj    = c.get('objeto', '').replace('<', '&lt;').replace('>', '&gt;')
-        titulo = c.get('titulo', '').replace('<', '&lt;').replace('>', '&gt;')
+    ufs_ordenadas = sorted(por_uf.keys(), key=lambda u: ('0' if u == 'SP' else u))
 
-        html += f'''<div class="card {css}">
-  <h2>{titulo}</h2>
+    contador = 0
+    for uf in ufs_ordenadas:
+        nome_estado = uf if uf else 'Não informado'
+        qtd = len(por_uf[uf])
+        html += f'<h3 class="estado">📍 {nome_estado} &nbsp;·&nbsp; {qtd} licitação{"" if qtd==1 else "ões"}</h3>\n'
+
+        for c in por_uf[uf]:
+            contador += 1
+            prazo = c.get('prazo', '')
+            valor = c.get('valor', '—')
+            css = 'normal'
+            badge = ''
+            if 'HOJE' in prazo or 'AMANHÃ' in prazo:
+                css = 'urgente'
+                badge = '<span class="badge badge-red">⚠️ URGENTE</span> '
+            elif any(f'{i} dias' in prazo for i in range(2, 6)):
+                css = 'atencao'
+                badge = '<span class="badge badge-orange">⏳ ATENÇÃO</span> '
+
+            obj    = c.get('objeto', '').replace('<', '&lt;').replace('>', '&gt;')
+            titulo = c.get('titulo', '').replace('<', '&lt;').replace('>', '&gt;')
+            orgao  = c.get('orgao', '').replace('<', '&lt;').replace('>', '&gt;')
+
+            html += f'''<div class="card {css}">
+  <h2>#{contador} {titulo}</h2>
   {badge}
-  <div class="meta">🏛 {c.get('orgao','')} | 📍 {c.get('local','')} | {c.get('modalidade','')}</div>
-  <div class="meta">💰 {c.get('valor','—')} | ⏰ {prazo}</div>
-  <div class="meta">📄 {c.get('pncp','')}</div>
+  <div class="meta">🏛 {orgao} | 📍 {c.get('local','')} | {c.get('modalidade','')}</div>
+  <div class="meta valor">💰 Valor estimado: {valor}</div>
+  <div class="meta">⏰ Prazo: {prazo}</div>
+  <div class="meta">📄 PNCP: {c.get('pncp','')}</div>
   <div class="objeto">{obj}</div>
   <a href="{c.get('url','#')}" target="_blank">🔗 Ver edital no PNCP</a>
 </div>

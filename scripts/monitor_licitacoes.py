@@ -17,6 +17,7 @@ import argparse
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 BRT = timezone(timedelta(hours=-3))
 
@@ -148,15 +149,16 @@ def coletar_licitacoes(filtro_uf=None, dias_minimos=0):
                 if dias_restantes < dias_minimos:
                     continue
 
+            valor_raw = item.get("valor_global")
             licitacoes.append({
                 "titulo":     item.get("title", "—"),
                 "descricao":  item.get("description", "—"),
                 "orgao":      item.get("orgao_nome", "—"),
                 "unidade":    item.get("unidade_nome", ""),
                 "municipio":  item.get("municipio_nome", "—"),
-                "uf":         item.get("uf", "—"),
+                "uf":         item.get("uf", "—").upper(),
                 "modalidade": item.get("modalidade_licitacao_nome", "—"),
-                "valor":      format_valor(item.get("valor_global")),
+                "valor":      format_valor(valor_raw),
                 "prazo":      prazo,
                 "publicado":  parse_dt(item.get("data_publicacao_pncp", "")),
                 "numero_pncp": item.get("numero_controle_pncp", "—"),
@@ -165,8 +167,14 @@ def coletar_licitacoes(filtro_uf=None, dias_minimos=0):
                 "cancelado":  item.get("cancelado", False),
             })
 
-    # Ordena por prazo crescente (mais urgente primeiro)
-    licitacoes.sort(key=lambda x: x["prazo"] or datetime.max.replace(tzinfo=BRT))
+    # Ordena: SP primeiro, depois demais UFs alfabético; dentro de cada UF por prazo
+    def sort_key(x):
+        uf = x.get("uf", "ZZ")
+        uf_order = "AA" if uf == "SP" else uf
+        prazo = x["prazo"] or datetime.max.replace(tzinfo=BRT)
+        return (uf_order, prazo)
+
+    licitacoes.sort(key=sort_key)
     return licitacoes
 
 def dias_restantes_str(prazo):
@@ -201,11 +209,21 @@ def formatar_relatorio_texto(licitacoes, filtro_uf=None):
         linhas.append("\nNenhuma licitação em aberto encontrada.")
         return "\n".join(linhas)
 
-    for i, lic in enumerate(licitacoes, 1):
+    uf_atual = None
+    contador = 0
+    for lic in licitacoes:
+        contador += 1
+        # Cabeçalho por estado
+        if lic["uf"] != uf_atual:
+            uf_atual = lic["uf"]
+            linhas.append(f"\n{'═'*60}")
+            linhas.append(f"  📍 ESTADO: {uf_atual}")
+            linhas.append(f"{'═'*60}")
+
         prazo_str = format_dt(lic["prazo"])
         restante = dias_restantes_str(lic["prazo"])
         linhas.append(f"\n{'─'*60}")
-        linhas.append(f"#{i} {lic['titulo']}")
+        linhas.append(f"#{contador} {lic['titulo']}")
         linhas.append(f"   Órgão:      {lic['orgao']}")
         if lic["unidade"] and lic["unidade"] != lic["orgao"]:
             linhas.append(f"   Unidade:    {lic['unidade']}")
@@ -273,6 +291,37 @@ def enviar_telegram(texto):
         if resultado.returncode != 0:
             print(f"Erro ao enviar Telegram: {resultado.stderr}", file=sys.stderr)
 
+def buscar_valor_detalhe(lic):
+    """Busca valor estimado via API de detalhe do edital."""
+    pncp = lic.get("numero_pncp", "")
+    # Formato: CNPJ-1-SEQUENCIAL/ANO
+    try:
+        partes = pncp.split("-")
+        cnpj = partes[0]
+        seq_ano = partes[2]  # ex: 000534/2026
+        seq, ano = seq_ano.split("/")
+        seq_int = int(seq)
+        url = f"https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq_int}"
+        det = fetch_json(url)
+        v = det.get("valorTotalEstimado") or det.get("valorTotalHomologado")
+        if v is not None:
+            lic["valor"] = format_valor(v)
+    except Exception:
+        pass
+    return lic
+
+def enriquecer_valores(licitacoes, workers=10):
+    """Busca valores em paralelo para licitações sem valor informado."""
+    sem_valor = [l for l in licitacoes if l["valor"] == "—"]
+    if not sem_valor:
+        return licitacoes
+    print(f"  Buscando valores para {len(sem_valor)} editais...", file=sys.stderr)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futures = {ex.submit(buscar_valor_detalhe, l): l for l in sem_valor}
+        for f in as_completed(futures):
+            f.result()  # atualiza in-place
+    return licitacoes
+
 def salvar_json(licitacoes, caminho):
     """Salva resultado em JSON para integração futura."""
     dados = []
@@ -292,6 +341,7 @@ def main():
     p.add_argument("--telegram", action="store_true", help="Enviar relatório via Telegram")
     p.add_argument("--json",     default="", help="Salvar resultado em arquivo JSON")
     p.add_argument("--max",      type=int, default=999, help="Número máximo de licitações no relatório")
+    p.add_argument("--valores",  action="store_true", help="Buscar valores estimados via API de detalhe (mais lento)")
     args = p.parse_args()
 
     print(f"🔍 Buscando licitações no PNCP...", file=sys.stderr)
@@ -302,6 +352,10 @@ def main():
 
     # Limitar quantidade se pedido
     licitacoes = licitacoes[:args.max]
+
+    # Enriquecer valores se solicitado
+    if args.valores:
+        licitacoes = enriquecer_valores(licitacoes)
 
     if args.json:
         salvar_json(licitacoes, args.json)
