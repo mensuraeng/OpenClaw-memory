@@ -9,7 +9,7 @@ from datetime import datetime, timezone, timedelta
 
 BRT = timezone(timedelta(hours=-3))
 CONFIG_FILE = os.path.expanduser("/root/.openclaw/workspace/config/ms-graph.json")
-SENDER      = "alexandre@mensuraengenharia.com.br"
+SENDER      = "flavia@mensuraengenharia.com.br"
 DESTINATARIO_PADRAO = "alexandre@pcsengenharia.com.br"
 
 def get_token(cfg):
