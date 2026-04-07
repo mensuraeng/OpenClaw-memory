@@ -8,10 +8,23 @@ import json, sys, os, argparse, re
 import urllib.request, urllib.parse, urllib.error
 from datetime import datetime, timedelta, timezone
 
-CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
+DEFAULT_CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
+ACCOUNT_CONFIG_MAP = {
+    "mensura": os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json"),
+    "mia": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-mia.json"),
+}
 
-def load_config():
-    with open(CONFIG_FILE) as f:
+def load_config(config_path=None, account=None):
+    if config_path:
+        path = os.path.expanduser(config_path)
+    elif account:
+        key = account.strip().lower()
+        if key not in ACCOUNT_CONFIG_MAP:
+            raise SystemExit(f"Conta inválida: {account}. Use: {', '.join(sorted(ACCOUNT_CONFIG_MAP))}")
+        path = ACCOUNT_CONFIG_MAP[key]
+    else:
+        path = DEFAULT_CONFIG_FILE
+    with open(path) as f:
         return json.load(f)
 
 def get_token(cfg):
@@ -110,6 +123,8 @@ def delete_event(token, user, event_id):
 def main():
     p = argparse.ArgumentParser(description="Gerenciador de calendário Microsoft Graph")
     p.add_argument("cmd", choices=["list","create","delete"], help="Comando")
+    p.add_argument("--account", choices=["mensura","mia"], help="Conta/config a usar")
+    p.add_argument("--config", help="Caminho explícito do arquivo de configuração")
     p.add_argument("--user", default="alexandre@mensuraengenharia.com.br")
     p.add_argument("--days", type=int, default=7, help="Dias a listar (padrão: 7)")
     p.add_argument("--id", help="ID do evento")
@@ -121,7 +136,7 @@ def main():
     p.add_argument("--attendees", default="", help="Convidados (emails separados por vírgula)")
     args = p.parse_args()
 
-    cfg = load_config()
+    cfg = load_config(config_path=args.config, account=args.account)
     token = get_token(cfg)
 
     if args.cmd == "list":
