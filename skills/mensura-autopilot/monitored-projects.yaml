@@ -1,0 +1,36 @@
+projects:
+  - id: mensura-pg-louveira
+    company: MENSURA
+    project_name: P&G Louveira
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
+  - id: mia-casa-tres
+    company: MIA
+    project_name: Casa Três
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
+  - id: pcs-beacon-school
+    company: PCS
+    project_name: Beacon School
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: medium
+    source_notes: []
+
+  - id: pcs-sofitel-rj
+    company: PCS
+    project_name: Sofitel RJ
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: medium
+    source_notes: []
