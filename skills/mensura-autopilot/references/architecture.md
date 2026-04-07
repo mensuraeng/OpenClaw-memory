@@ -14,10 +14,11 @@ Todos os dias, antes do início da operação, entregar uma leitura clara de:
 Começar pequeno.
 
 ### Portfólio inicial
+- CCSP Casa7
 - P&G Louveira
-- Casa Três
-- Beacon School
-- Sofitel RJ
+- Paranapiacaba
+- Paranapiacaba - Paralelepípedo
+- Teatro Suzano
 
 ## Funções do autopilot
 1. Ler status e sinais disponíveis por obra

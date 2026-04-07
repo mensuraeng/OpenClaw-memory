@@ -1,4 +1,13 @@
 projects:
+  - id: mensura-ccsp-casa7
+    company: MENSURA
+    project_name: CCSP Casa7
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
   - id: mensura-pg-louveira
     company: MENSURA
     project_name: P&G Louveira
@@ -8,29 +17,29 @@ projects:
     report_priority: high
     source_notes: []
 
-  - id: mia-casa-tres
-    company: MIA
-    project_name: Casa Três
+  - id: mensura-paranapiacaba
+    company: MENSURA
+    project_name: Paranapiacaba
     status: active
     silence_warning_days: 5
     silence_critical_days: 10
     report_priority: high
     source_notes: []
 
-  - id: pcs-beacon-school
-    company: PCS
-    project_name: Beacon School
+  - id: mensura-paranapiacaba-paralelelepipedo
+    company: MENSURA
+    project_name: Paranapiacaba - Paralelepípedo
     status: active
     silence_warning_days: 5
     silence_critical_days: 10
     report_priority: medium
     source_notes: []
 
-  - id: pcs-sofitel-rj
-    company: PCS
-    project_name: Sofitel RJ
+  - id: mensura-teatro-suzano
+    company: MENSURA
+    project_name: Teatro Suzano
     status: active
     silence_warning_days: 5
     silence_critical_days: 10
-    report_priority: medium
+    report_priority: high
     source_notes: []
