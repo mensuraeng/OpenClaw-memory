@@ -7,10 +7,23 @@ Uso: email.py <comando> [opções]
 import json, sys, os, argparse, re
 import urllib.request, urllib.parse, urllib.error
 
-CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
+DEFAULT_CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
+ACCOUNT_CONFIG_MAP = {
+    "mensura": os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json"),
+    "mia": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-mia.json"),
+}
 
-def load_config():
-    with open(CONFIG_FILE) as f:
+def load_config(config_path=None, account=None):
+    if config_path:
+        path = os.path.expanduser(config_path)
+    elif account:
+        key = account.strip().lower()
+        if key not in ACCOUNT_CONFIG_MAP:
+            raise SystemExit(f"Conta inválida: {account}. Use: {', '.join(sorted(ACCOUNT_CONFIG_MAP))}")
+        path = ACCOUNT_CONFIG_MAP[key]
+    else:
+        path = DEFAULT_CONFIG_FILE
+    with open(path) as f:
         return json.load(f)
 
 def get_token(cfg):
@@ -32,9 +45,12 @@ def graph_request(token, path, method="GET", body=None):
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req) as r:
-            if r.status == 204:
+            if r.status in (202, 204):
                 return {}
-            return json.load(r)
+            content = r.read()
+            if not content:
+                return {}
+            return json.loads(content)
     except urllib.error.HTTPError as e:
         print(f"Erro {e.code}: {e.read().decode()}")
         sys.exit(1)
@@ -68,16 +84,34 @@ def read_email(token, user, msg_id):
         text = re.sub(r'<[^>]+>', '', body.get("content", ""))
         print(text[:2000])
 
-def send_email(token, user, to, subject, body):
+def parse_recipients(value):
+    if not value:
+        return []
+    if isinstance(value, list):
+        items = value
+    else:
+        items = [value]
+    recipients = []
+    for item in items:
+        recipients.extend([addr.strip() for addr in item.split(",") if addr.strip()])
+    return [{"emailAddress": {"address": addr}} for addr in recipients]
+
+def send_email(token, user, to, subject, body, cc=None):
     payload = {
         "message": {
             "subject": subject,
             "body": {"contentType": "Text", "content": body},
-            "toRecipients": [{"emailAddress": {"address": to}}]
+            "toRecipients": parse_recipients(to)
         }
     }
+    cc_recipients = parse_recipients(cc)
+    if cc_recipients:
+        payload["message"]["ccRecipients"] = cc_recipients
     graph_request(token, f"/users/{user}/sendMail", method="POST", body=payload)
-    print(f"✅ E-mail enviado para {to}")
+    cc_text = ""
+    if cc_recipients:
+        cc_text = " | CC: " + ", ".join(r["emailAddress"]["address"] for r in cc_recipients)
+    print(f"✅ E-mail enviado para {to}{cc_text}")
 
 def move_email(token, user, msg_id, dest_folder):
     folders = graph_request(token, f"/users/{user}/mailFolders?$select=id,displayName")
@@ -94,6 +128,8 @@ def list_folders(token, user):
 def main():
     p = argparse.ArgumentParser(description="Gerenciador de e-mail Microsoft Graph")
     p.add_argument("cmd", choices=["list","read","send","move","folders"], help="Comando")
+    p.add_argument("--account", choices=["mensura","mia"], help="Conta/config a usar")
+    p.add_argument("--config", help="Caminho explícito do arquivo de configuração")
     p.add_argument("--user", default="alexandre@mensuraengenharia.com.br")
     p.add_argument("--folder", default="inbox")
     p.add_argument("--limit", type=int, default=10)
@@ -101,10 +137,16 @@ def main():
     p.add_argument("--to", help="Destinatário")
     p.add_argument("--subject", help="Assunto")
     p.add_argument("--body", help="Corpo do e-mail")
+    p.add_argument("--body-file", help="Arquivo texto com o corpo do e-mail")
+    p.add_argument("--cc", action="append", help="Destinatários em cópia (aceita múltiplos --cc ou lista separada por vírgula)")
     p.add_argument("--dest", help="Pasta destino (para mover)")
     args = p.parse_args()
 
-    cfg = load_config()
+    if args.body_file:
+        with open(args.body_file, encoding="utf-8") as f:
+            args.body = f.read()
+
+    cfg = load_config(config_path=args.config, account=args.account)
     token = get_token(cfg)
 
     if args.cmd == "list":
@@ -115,7 +157,7 @@ def main():
     elif args.cmd == "send":
         if not all([args.to, args.subject, args.body]):
             print("--to, --subject e --body são obrigatórios"); sys.exit(1)
-        send_email(token, args.user, args.to, args.subject, args.body)
+        send_email(token, args.user, args.to, args.subject, args.body, args.cc)
     elif args.cmd == "move":
         if not args.id or not args.dest:
             print("--id e --dest são obrigatórios"); sys.exit(1)
