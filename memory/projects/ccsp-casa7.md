@@ -157,6 +157,29 @@
 | 10/04/26 | Rafael Dias + MIA | **Consolidação de contratações e definições pendentes** — solicitado envio de levantamento consolidado pela MIA | MIA | ⏳ Aguardando envio |
 | 10/04/26 | Gerenciadora | **Chapa testa de porta** — Victor questionou disponibilidade do item na obra, sem resposta registrada até o momento | Gerenciadora | ⏳ Aguardando verificação |
 
+### Quadro-resumo executivo (10/04/26)
+
+| Item | Tema | Responsável | Status | Criticidade |
+|------|------|-------------|--------|-------------|
+| 1 | Miolos fechaduras WC's | Tools / MIA | Pendente | Média |
+| 2 | Mata junta (modelo) | Tools → Cliente | Sem resposta (3ª cobrança) | Alta |
+| 3 | Mapa acabamentos elétricos | Tools → Cliente | Sem aprovação, execução autorizada | Alta |
+| 4 | Cronograma executivo (.mpp) | Alexandre Aguiar | Entregue | Concluído |
+| 5 | Abertura laje / condensadora / AC | Tools + Brumi | Brumi confirmada 14/04 | Alta |
+| 6 | Exaustores (infra) | MIA → Tools (aprovação) | Executado, aprovação pendente | Média |
+| 7 | Toalheiros banheiro Mage + voltagem | Tools (medidas) + MIA (compra) | Pendente + avaliar 220V | Média |
+| 8 | Puxadores tela mosquiteiro | Tools | Adquirido, retirar na loja | Baixa |
+| 9 | Não conformidades elétricas (relatório) | Tools (Felipe) + MIA (Victor) | Em elaboração | Alta |
+| 10 | Luminárias corredor/quartos (Grappa) | Tools → Grappa | Aguardando retorno | Alta |
+| 11 | Relatório semanal (sextas) | MIA (Victor + Felipe) | Procedimento instituído | Média |
+| 12 | Consolidação pendências/contratações | MIA (Victor) | Aguardando envio | Alta |
+| 13 | Chapa testa de porta | Tools / MIA | Sem resposta | Média |
+
+### Observações críticas (10/04/26)
+
+- **Não conformidades elétricas:** circuitos 12 e 13 executados em 2,5mm², embora o projeto especifique 4mm². Registrar com fotos e referência à NBR 5410 para fortalecer eventual pleito contra a antiga construtora.
+- **Mata junta** e **mapa de acabamentos elétricos:** atraso de resposta superior a uma semana, com múltiplas cobranças da MIA. Há risco de impacto direto no cronograma e recomenda-se escalonamento com o cliente.
+
 ---
 
 ## 📈 Histórico de Progresso
