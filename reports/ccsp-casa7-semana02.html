@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCSP Casa 7 — Relatório Semanal | Semana 02 | 10/04/26</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #1a1a1a; }
+  
+  .header {
+    background: #1a1a2e;
+    color: white;
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+  .header-left h2 { font-size: 14px; font-weight: 400; color: #aaa; margin-top: 4px; }
+  .header-right { text-align: right; }
+  .header-right .data { font-size: 13px; color: #aaa; }
+  .header-right .semana { font-size: 18px; font-weight: 700; color: #4fc3f7; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .kpi {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    border-top: 4px solid #1a1a2e;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .kpi.red { border-top-color: #e53935; }
+  .kpi.yellow { border-top-color: #f9a825; }
+  .kpi.green { border-top-color: #43a047; }
+  .kpi.blue { border-top-color: #1e88e5; }
+  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+  .kpi-value { font-size: 32px; font-weight: 700; margin: 6px 0 4px; }
+  .kpi-sub { font-size: 12px; color: #999; }
+
+  .progress-section { background: white; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .progress-section h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #333; }
+  .prog-row { margin-bottom: 14px; }
+  .prog-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; }
+  .prog-bar-bg { background: #eee; border-radius: 4px; height: 10px; }
+  .prog-bar { height: 10px; border-radius: 4px; background: #1e88e5; }
+  .prog-bar.red { background: #e53935; }
+  .prog-bar.yellow { background: #f9a825; }
+  .prog-bar.green { background: #43a047; }
+
+  .section { background: white; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .section h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+  .alert { border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; font-size: 13px; display: flex; align-items: flex-start; gap: 10px; }
+  .alert.red { background: #ffebee; border-left: 4px solid #e53935; }
+  .alert.yellow { background: #fffde7; border-left: 4px solid #f9a825; }
+  .alert.green { background: #e8f5e9; border-left: 4px solid #43a047; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; }
+  .alert-content strong { display: block; margin-bottom: 2px; }
+  .alert-content span { color: #555; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f8f8f8; text-align: left; padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #666; border-bottom: 2px solid #eee; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge.red { background: #ffebee; color: #c62828; }
+  .badge.yellow { background: #fffde7; color: #f57f17; }
+  .badge.green { background: #e8f5e9; color: #2e7d32; }
+  .badge.gray { background: #f5f5f5; color: #555; }
+  .badge.blue { background: #e3f2fd; color: #1565c0; }
+
+  .semana-block { margin-bottom: 20px; }
+  .semana-titulo { font-size: 13px; font-weight: 700; color: #1a1a2e; background: #e8eaf6; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; }
+  .lookahead-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+  .lookahead-row:last-child { border-bottom: none; }
+  .lookahead-day { min-width: 90px; font-weight: 600; color: #555; flex-shrink: 0; }
+  .lookahead-task { flex: 1; }
+  .lookahead-resp { min-width: 80px; text-align: right; color: #999; font-size: 11px; }
+
+  .action-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; align-items: flex-start; }
+  .action-item:last-child { border-bottom: none; }
+  .action-num { background: #1a1a2e; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .action-text { flex: 1; }
+  .action-prazo { color: #e53935; font-size: 11px; font-weight: 600; margin-top: 2px; }
+
+  .footer { text-align: center; padding: 24px; font-size: 12px; color: #aaa; }
+  .footer strong { color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>CCSP — CASA 7</h1>
+    <h2>MIA Engenharia · Eng. Responsável: Victor Evangelista</h2>
+  </div>
+  <div class="header-right">
+    <div class="semana">SEMANA 02</div>
+    <div class="data">Relatório gerado em 10/04/2026</div>
+    <div class="data">Entrega prevista: <strong style="color:#fff">22/05/2026</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="kpis">
+    <div class="kpi green">
+      <div class="kpi-label">Progresso Global</div>
+      <div class="kpi-value" style="color:#43a047">32%</div>
+      <div class="kpi-sub">Baseline geral de 43 dias</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">1ª Onda</div>
+      <div class="kpi-value" style="color:#1e88e5">80%</div>
+      <div class="kpi-sub">Frentes íntimas quase concluídas</div>
+    </div>
+    <div class="kpi yellow">
+      <div class="kpi-label">2ª Onda</div>
+      <div class="kpi-value" style="color:#f9a825">29%</div>
+      <div class="kpi-sub">Frente já iniciada em 10/04</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Risco Geral</div>
+      <div class="kpi-value" style="color:#e53935; font-size:22px;">🔴 ALTO</div>
+      <div class="kpi-sub">Risco por aprovações e terceiros</div>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <h3>Progresso por Frente</h3>
+    <div class="prog-row">
+      <div class="prog-label"><span>Serviços Iniciais</span><span>100%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar green" style="width:100%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>Ambientes</span><span>30%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar" style="width:30%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>1ª Onda (Suítes + Banheiros + Circulação)</span><span>80%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar green" style="width:80%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>2ª Onda (Dorm. 4 / Cozinha / Sala / Área Serviço)</span><span>29%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar yellow" style="width:29%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>3ª Onda (Área Técnica / Externa / Demais Itens)</span><span>14%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar red" style="width:14%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>Exaustores Mecânicos</span><span>36%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar yellow" style="width:36%"></div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-label"><span>Pendentes a Contratar</span><span>8%</span></div>
+      <div class="prog-bar-bg"><div class="prog-bar red" style="width:8%"></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🚨 Alertas de Risco</h3>
+
+    <div class="alert red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-content">
+        <strong>Mata junta e acabamentos elétricos seguem sem definição formal</strong>
+        <span>Os itens 2 e 3 acumulam múltiplas cobranças sem resposta definitiva. Isso já cria risco real de impacto no cronograma executivo recém-atualizado.</span>
+      </div>
+    </div>
+
+    <div class="alert red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-content">
+        <strong>Não conformidades elétricas exigem relatório técnico robusto</strong>
+        <span>Circuitos 12 e 13 executados em 2,5mm², apesar de previsão em 4mm². O relatório deve incluir fotos, rastreabilidade e referência à NBR 5410.</span>
+      </div>
+    </div>
+
+    <div class="alert red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-content">
+        <strong>Ar condicionado trava sequência de fechamentos</strong>
+        <span>A Brumi está confirmada para 14/04. A MIA depende da execução das infraestruturas de AC para avançar com os fechamentos dos rasgos.</span>
+      </div>
+    </div>
+
+    <div class="alert yellow">
+      <div class="alert-icon">🟡</div>
+      <div class="alert-content">
+        <strong>Luminárias e exaustores ainda dependem de aprovação/definição</strong>
+        <span>A locação de algumas luminárias já é conhecida, mas falta altura de ponto e retorno da Grappa. Exaustores têm infraestrutura pronta, aguardando validação final.</span>
+      </div>
+    </div>
+
+    <div class="alert yellow">
+      <div class="alert-icon">🟡</div>
+      <div class="alert-content">
+        <strong>Pintura segue no caminho crítico</strong>
+        <span>Embora ainda não iniciada, a pintura permanece sem folga. Atrasos nas definições e na mobilização de terceiros pressionam as próximas semanas.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>📅 Look Ahead — Próximas 2 Semanas</h3>
+
+    <div class="semana-block">
+      <div class="semana-titulo">📌 Semana 02 — 10/04 a 17/04</div>
+
+      <div class="lookahead-row">
+        <div class="lookahead-day">Sex 10</div>
+        <div class="lookahead-task">Consolidação do relatório semanal, atualização das pendências e início formal da 2ª onda</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">Seg 13</div>
+        <div class="lookahead-task">Impermeabilização externa do rodapé e envio dos mapas de miniguia/batedor conforme combinado</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">Ter 14</div>
+        <div class="lookahead-task"><strong>Brumi na obra</strong> para ajustes das evaporadoras e recolhimento de gás, liberando avanço das infras de AC</div>
+        <div class="lookahead-resp">Brumi</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">Qua 15</div>
+        <div class="lookahead-task">Conclusão prevista da aprovação de mapas e compras associadas a miniguia e batedor, se houver retorno da Tools</div>
+        <div class="lookahead-resp">Tools / MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">Qui 16</div>
+        <div class="lookahead-task">Início da limpeza especializada de pedras e sequência de compras pendentes conforme aprovações</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">Sex 17</div>
+        <div class="lookahead-task">Meta de avanço da 2ª onda, fechamento das pendências críticas da semana e preparação para mobilização da pintura</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+    </div>
+
+    <div class="semana-block">
+      <div class="semana-titulo">📌 Semana 03 — 20/04 a 30/04</div>
+
+      <div class="lookahead-row">
+        <div class="lookahead-day">Seg 20</div>
+        <div class="lookahead-task"><strong>Área técnica, pergolado e garagem entram no cronograma</strong>, junto com checklist da área externa</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">20 a 22</div>
+        <div class="lookahead-task">Instalação de miniguia e batedor da garagem, se materiais estiverem aprovados e comprados</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">21</div>
+        <div class="lookahead-task">Instalação dos exaustores mecânicos após compra e definição final</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+      <div class="lookahead-row">
+        <div class="lookahead-day">23 a 30</div>
+        <div class="lookahead-task">Mobilização da pintura geral, limpeza e preparação para repintura interna e externa</div>
+        <div class="lookahead-resp">MIA</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>✅ Ações Abertas — Victor Evangelista</h3>
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-text">Tirar fotos na segunda-feira e subir no relatório<div class="action-prazo">Seg 13/04</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-text">Cobrar orçamento de pintura e reportar no grupo copiando Gustavo<div class="action-prazo">Urgente</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-text">Marcar visita com Gustavo para a próxima semana<div class="action-prazo">Próxima semana</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-text">Enviar mapa do miniguia na segunda-feira<div class="action-prazo">Seg 13/04</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-text">Solicitar orçamento da BRB para armário novo<div class="action-prazo">Aberto</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">6</div>
+      <div class="action-text">Levantar cerâmicas/pedras para troca<div class="action-prazo">Seg 13/04</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">7</div>
+      <div class="action-text">Confirmar com Felipe as prateleiras de pedra da lavanderia e cozinha<div class="action-prazo">Aberto</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">8</div>
+      <div class="action-text">Comprar peças e enviar mapa do banheiro para aprovação<div class="action-prazo">Aberto</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">9</div>
+      <div class="action-text">Orçar lixamento e aplicação de stain na madeira<div class="action-prazo">Aberto</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">10</div>
+      <div class="action-text">Cobrar instalação de película e solicitar amostra para aprovação<div class="action-prazo">Aberto</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">11</div>
+      <div class="action-text">Rodar com Felipe o laudo/relatório de não conformidades elétricas<div class="action-prazo">Alta prioridade</div></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">12</div>
+      <div class="action-text">Enviar consolidação de contratações e definições pendentes<div class="action-prazo">Alta prioridade</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🏠 Status por Ambiente</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Ambiente</th>
+          <th>%</th>
+          <th>Prazo Meta</th>
+          <th>Status</th>
+          <th>Observação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Suíte 3 (Smaster)</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Restam pintura, acabamentos, luminárias e ajustes dependentes de definição externa</td>
+        </tr>
+        <tr>
+          <td><strong>Banho 03 (Smaster)</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Toalheiro, revestimento, acabamentos e armário seguem como pontos pendentes</td>
+        </tr>
+        <tr>
+          <td><strong>Suíte 2 - Hóspede</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Fase final da 1ª onda, dependente de acabamentos e pintura</td>
+        </tr>
+        <tr>
+          <td><strong>Banho 02 (Hóspede)</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Exaustor e acabamentos ainda dependem de definição</td>
+        </tr>
+        <tr>
+          <td><strong>Suíte 1 - Crianças</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Serviços principais executados</td>
+        </tr>
+        <tr>
+          <td><strong>Banho 01 - Crianças</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Infraestrutura de exaustão executada, aguardando aprovações finais</td>
+        </tr>
+        <tr>
+          <td><strong>Circulação Íntima</strong></td>
+          <td>80%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge green">Quase concluído</span></td>
+          <td>Luminárias dependem de retorno da Grappa</td>
+        </tr>
+        <tr>
+          <td><strong>Dormitório 4</strong></td>
+          <td>20%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Frente iniciada, aguardando definição de luminária e alguns ajustes da BRB</td>
+        </tr>
+        <tr>
+          <td><strong>Banho 4</strong></td>
+          <td>20%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Toalheiro em 220V e ajustes finos seguem pendentes</td>
+        </tr>
+        <tr>
+          <td><strong>Cozinha</strong></td>
+          <td>20%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Diversos ajustes de marcenaria, acabamento, espelho cego e nivelamento ainda pendentes</td>
+        </tr>
+        <tr>
+          <td><strong>Sala de Jantar</strong></td>
+          <td>55%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Película, ar condicionado, esquadrias e repintura são os principais pontos abertos</td>
+        </tr>
+        <tr>
+          <td><strong>Área de Serviço</strong></td>
+          <td>20%</td>
+          <td>17/04 (Sex)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Prateleiras de pedra e acabamentos ainda precisam de definição/execução</td>
+        </tr>
+        <tr>
+          <td><strong>Área Técnica</strong></td>
+          <td>18%</td>
+          <td>18/05 (Seg)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Frente depende de sequência das instalações e liberações</td>
+        </tr>
+        <tr>
+          <td><strong>Área Externa</strong></td>
+          <td>25%</td>
+          <td>18/05 (Seg)</td>
+          <td><span class="badge yellow">Em andamento</span></td>
+          <td>Drenagem concluída; rodapé, impermeabilização, pedras e paisagismo seguem no caminho</td>
+        </tr>
+        <tr>
+          <td><strong>Garagem</strong></td>
+          <td>0%</td>
+          <td>08/05 (Sex)</td>
+          <td><span class="badge gray">Não iniciado</span></td>
+          <td>Miniguia, batedor e pedras ainda dependem de mapa, aprovação e compra</td>
+        </tr>
+        <tr>
+          <td><strong>Pintura Geral</strong></td>
+          <td>0%</td>
+          <td>15/05 (Sex)</td>
+          <td><span class="badge red">Crítico</span></td>
+          <td>Mobilização ainda depende de orçamento, contratação e destravamento de pendências</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>⚠️ Não Conformidades / Pontos Críticos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Local</th>
+          <th>Situação</th>
+          <th>Ação requerida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Não conformidades elétricas</strong></td>
+          <td>Instalações existentes</td>
+          <td><span class="badge red">Crítico</span></td>
+          <td>Emitir relatório técnico com fotos, circuito a circuito, e referência à NBR 5410</td>
+        </tr>
+        <tr>
+          <td>Mata junta sem definição</td>
+          <td>Ambientes internos</td>
+          <td><span class="badge red">Crítico</span></td>
+          <td>Escalonar com cliente para aprovação imediata</td>
+        </tr>
+        <tr>
+          <td>Mapa de acabamentos elétricos sem aprovação</td>
+          <td>Ambientes internos</td>
+          <td><span class="badge yellow">Execução autorizada</span></td>
+          <td>Formalizar a decisão da gerenciadora e cobrar validação final do cliente</td>
+        </tr>
+        <tr>
+          <td>Infra de exaustores com aprovação pendente</td>
+          <td>Banheiros</td>
+          <td><span class="badge yellow">Pendente</span></td>
+          <td>Definir posição final dos ventiladores e saída de parede</td>
+        </tr>
+        <tr>
+          <td>Luminárias sem altura/modelo final</td>
+          <td>Corredor íntimo / quartos</td>
+          <td><span class="badge yellow">Pendente</span></td>
+          <td>Cobrar retorno da Grappa</td>
+        </tr>
+        <tr>
+          <td>Toalheiros com dúvida de voltagem</td>
+          <td>Banheiros</td>
+          <td><span class="badge yellow">Pendente</span></td>
+          <td>Fechar decisão 110V vs. 220V e comprar item faltante</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>🏛️ Decisões e Deliberações — Cliente e Gerenciadora</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Origem</th>
+          <th>Decisão / Deliberação</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10/04</td>
+          <td>Gerenciadora + BRB</td>
+          <td><strong>Miolos das fechaduras dos WC's</strong> são responsabilidade da contratante; Gustavo verificará excedentes já adquiridos</td>
+          <td><span class="badge yellow">Pendente</span></td>
+        </tr>
+        <tr>
+          <td>10/04</td>
+          <td>Tools → Cliente</td>
+          <td><strong>Mata junta</strong> segue sem resposta formal após terceira cobrança</td>
+          <td><span class="badge red">Crítico</span></td>
+        </tr>
+        <tr>
+          <td>10/04</td>
+          <td>Gerenciadora</td>
+          <td><strong>Mapa de acabamentos elétricos</strong> sem aprovação formal, porém com autorização para executar sem travar cronograma</td>
+          <td><span class="badge yellow">Executar</span></td>
+        </tr>
+        <tr>
+          <td>07/04</td>
+          <td>MIA</td>
+          <td><strong>Cronograma executivo em MS Project</strong> entregue e recebido</td>
+          <td><span class="badge green">Concluído</span></td>
+        </tr>
+        <tr>
+          <td>10/04</td>
+          <td>Gerenciadora + Brumi</td>
+          <td><strong>Ar condicionado</strong> com mobilização da Brumi confirmada para 14/04</td>
+          <td><span class="badge blue">Agendado</span></td>
+        </tr>
+        <tr>
+          <td>10/04</td>
+          <td>Rafael Dias</td>
+          <td><strong>Relatório de status semanal</strong> institucionalizado às sextas-feiras</td>
+          <td><span class="badge blue">Instituído</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>🏁 Marcos Críticos — Próximas Semanas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Marco</th>
+          <th>Risco</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>14/04</strong></td>
+          <td>Brumi na obra para ajustes de ar condicionado</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>15/04</strong></td>
+          <td>Fechamento de aprovações de miniguia e batedor, se houver retorno da Tools</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>16/04</strong></td>
+          <td>Início da limpeza especializada de pedras</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>17/04</strong></td>
+          <td>Meta de avanço da 2ª onda e preparação da mobilização de pintura</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>20/04</strong></td>
+          <td>Início das frentes da 3ª onda, garagem e área externa</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>21/04</strong></td>
+          <td>Instalação dos exaustores mecânicos</td>
+          <td><span class="badge yellow">Alto</span></td>
+        </tr>
+        <tr>
+          <td><strong>23/04 a 15/05</strong></td>
+          <td>Pintura geral, repintura final e limpeza</td>
+          <td><span class="badge red">Crítico</span></td>
+        </tr>
+        <tr>
+          <td><strong>22/05</strong></td>
+          <td><strong>Entrega da obra e conclusão checklist</strong></td>
+          <td><span class="badge red">Prazo final</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  Gerado por <strong>Flávia 🟢</strong> · MIA Engenharia · CCSP Casa 7 · Semana 02 · 10/04/2026<br>
+  Próxima atualização: <strong>17/04/2026</strong>
+</div>
+
+</body>
+</html>

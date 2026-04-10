@@ -1,6 +1,6 @@
 ---
 name: mensura-relatorio-semanal
-description: Gera relatórios semanais de obra no padrão MENSURA a partir de dados de planejamento, execução, restrições, riscos e pendências. Use quando o usuário pedir relatório semanal de obra, diagnóstico rápido da semana, comparação com a semana anterior, leitura de travas, cálculo de PPC, cálculo de IRR, consolidação de ações com responsável e prazo, ou estruturação de um resumo executivo acionável para acompanhamento de obra.
+description: Gera relatórios semanais de obra no padrão MENSURA. Use quando o usuário pedir: relatório semanal, fechamento da semana, semanal da obra, como foi a semana, monta o semanal, fecha o relatório, diagnóstico rápido, o que está travando, por que está atrasando, compara essa semana com a passada, calcula PPC, calcula IRR, consolidação de ações com responsável e prazo, ou um resumo executivo acionável da semana da obra. Também acione quando o pedido vier em linguagem informal com o mesmo sentido.
 ---
 
 # mensura-relatorio-semanal
@@ -39,14 +39,56 @@ O foco do MVP é:
 
 Se o pedido depender fortemente desses itens, responda com a limitação e entregue a melhor versão parcial possível.
 
+## Demarcação com outras skills
+
+| Pedido | Skill correta |
+|---|---|
+| Relatório semanal, fechamento Lean | mensura-relatorio-semanal (esta skill) |
+| Diagnóstico rápido da semana | mensura-relatorio-semanal (esta skill) |
+| Comparativo semanal | mensura-relatorio-semanal (esta skill) |
+| Monitoramento proativo diário de obras | mensura-autopilot |
+| Checklist diário executivo | mensura-autopilot |
+
+Dúvida: se o pedido for sobre o dia a dia ou monitoramento contínuo, usar `mensura-autopilot`. Se for sobre fechamento, relatório ou diagnóstico da semana, usar esta skill.
+
 ## Ordem de operação
 
-1. Identificar o modo do pedido
-2. Inventariar os dados recebidos
-3. Declarar nível de confiança dos dados
-4. Calcular somente os KPIs defensáveis
-5. Identificar travas, riscos e decisões pendentes
-6. Gerar a saída no template adequado
+### Etapa 1 — Classificar o pedido
+
+Classificar antes de qualquer saída:
+- RELATÓRIO SEMANAL
+- DIAGNÓSTICO RÁPIDO
+- COMPARATIVO SEMANAL
+
+### Etapa 2 — Inventariar os dados recebidos
+
+Responder internamente antes de qualquer cálculo:
+- o que veio solto ou incompleto
+- o que está ausente e é crítico
+- restrições vencidas sem remoção
+- decisões sem resposta há mais de uma semana
+- risco crítico sem ação de contenção definida
+
+| Situação | Ação |
+|---|---|
+| Bloco A ausente (identificação) | Perguntar: qual obra? qual período? |
+| Bloco B ausente (tarefas) | Perguntar: quais atividades foram prometidas? quais foram concluídas? |
+| Bloco C ausente (restrições) | Prosseguir sem IRR. Declarar ausência. |
+| Bloco D ausente (riscos) | Prosseguir. Omitir seção de riscos ou indicar "não informado". |
+| Bloco E ausente (decisões) | Prosseguir. Indicar "decisões não informadas". |
+| Dados contraditórios | Apontar contradição. Não corrigir por conta própria. Seguir com ressalva. |
+
+### Etapa 3 — Declarar nível de confiança
+
+Antes de calcular qualquer KPI ou concluir leitura executiva, declarar o nível de confiança da base.
+
+### Etapa 4 — Calcular somente os KPIs defensáveis
+
+### Etapa 5 — Identificar travas, riscos e decisões pendentes
+
+### Etapa 6 — Gerar a saída no template adequado
+
+Ver `references/output-template.md`.
 
 ## Modos
 
@@ -182,5 +224,10 @@ Exemplos errados:
 - `references/kpis.md`
 - `references/output-template.md`
 - `references/rules.md`
+- `references/exemplo-casa7.md` — relatório de exemplo preenchido com dados reais. Carregar quando precisar calibrar formato ou checar padrão de saída.
+- `references/workflow.md` — etapas detalhadas de operação e tabela de fallback por bloco ausente. Carregar quando precisar orientar o fluxo de processamento.
+
+Use `references/exemplo-casa7.md` como âncora de formato para as primeiras execuções reais.
+Use `references/workflow.md` quando precisar seguir o fluxo operacional resumido da skill ponta a ponta.
 
 Carregue apenas o arquivo necessário para o pedido em questão.

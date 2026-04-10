@@ -179,6 +179,7 @@
 
 - **Não conformidades elétricas:** circuitos 12 e 13 executados em 2,5mm², embora o projeto especifique 4mm². Registrar com fotos e referência à NBR 5410 para fortalecer eventual pleito contra a antiga construtora.
 - **Mata junta** e **mapa de acabamentos elétricos:** atraso de resposta superior a uma semana, com múltiplas cobranças da MIA. Há risco de impacto direto no cronograma e recomenda-se escalonamento com o cliente.
+- **Template oficial CCSP:** adotar `reports/templates/ccsp-template.html` como base padrão dos próximos relatórios HTML da obra.
 
 ---
 
