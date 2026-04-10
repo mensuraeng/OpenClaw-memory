@@ -150,6 +150,12 @@
 | 10/04/26 | Gerenciadora + Brumi | **Ar condicionado** — Brumi confirmada na obra em 14/04 para mudar evaporadoras e recolher gás; infraestrutura depende dessa mobilização | Brumi + Gerenciadora | 📅 Mobilização confirmada |
 | 10/04/26 | Gerenciadora | **Exaustores dos banheiros** — quantidade e diretriz elétrica definidas; infraestrutura executada; posição final e saída em parede aguardam aprovação | Gerenciadora + Cliente | ⏳ Pendente aprovação final |
 | 10/04/26 | Gerenciadora + MIA | **Toalheiros** — reposicionamento mais alto, segundo item a adquirir e voltagem em revisão (110V vs. 220V) por impacto no circuito | Gerenciadora + MIA | ⏳ Pendente definição |
+| 10/04/26 | Gerenciadora + BRB | **Puxadores das telas mosquiteiro** — item do checklist da cliente; Gustavo informou que já foram adquiridos e serão retirados na loja | Gerenciadora + BRB | ⏳ Pendente retirada/instalação |
+| 10/04/26 | Rafael Dias + Tools | **Não conformidades elétricas** — levantamento comparou projeto x execução e determinou emissão de relatório técnico na plataforma Tools para subsidiar discussão com a antiga construtora | Felipe + Victor | ⚠️ Relatório em elaboração |
+| 10/04/26 | Gerenciadora + Grappa | **Luminárias corredor/quartos** — locação conhecida, mas altura do ponto e definição da luminária do corredor pendentes de retorno da projetista | Gerenciadora + Grappa | ⏳ Pendente retorno |
+| 10/04/26 | Rafael Dias | **Relatório de status semanal** — instituída entrega semanal às sextas-feiras pela MIA | MIA | 📌 Procedimento instituído |
+| 10/04/26 | Rafael Dias + MIA | **Consolidação de contratações e definições pendentes** — solicitado envio de levantamento consolidado pela MIA | MIA | ⏳ Aguardando envio |
+| 10/04/26 | Gerenciadora | **Chapa testa de porta** — Victor questionou disponibilidade do item na obra, sem resposta registrada até o momento | Gerenciadora | ⏳ Aguardando verificação |
 
 ---
 
