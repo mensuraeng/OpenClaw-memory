@@ -90,6 +90,18 @@
 
   .footer { text-align: center; padding: 24px; font-size: 12px; color: #aaa; }
   .footer strong { color: #555; }
+  .item-card { border: 1px solid #eee; border-left: 4px solid #d4af37; border-radius: 8px; padding: 18px; margin-bottom: 16px; background: #fff; }
+  .item-card.normal { border-left-color: #ddd; }
+  .item-header { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .item-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+  .item-number { font-size: 12px; font-weight: 700; color: #999; margin-bottom: 4px; }
+  .item-body { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 12px; }
+  .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+  .meta-box { background: #fafafa; border-radius: 6px; padding: 10px; }
+  .meta-label { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 4px; letter-spacing: 0.4px; }
+  .meta-value { font-size: 12px; color: #222; font-weight: 600; }
+  .action-line { font-size: 13px; color: #333; background: #f8f8f8; border-radius: 6px; padding: 10px 12px; }
+  .gold-note { background: #fff8e1; border-left: 4px solid #d4af37; padding: 12px 14px; border-radius: 6px; margin-top: 10px; font-size: 13px; color: #5d4700; }
 </style>
 </head>
 <body>
@@ -505,55 +517,136 @@
   </div>
 
   <div class="section">
-    <h3>🏛️ Decisões e Deliberações — Cliente e Gerenciadora</h3>
+    <h3>📌 Itens em Aberto — Deliberações do Período 06–10/04/2026</h3>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">01</div><div class="item-title">Miolos das Fechaduras — WC's</div></div><span class="badge yellow">Média</span></div>
+      <div class="item-body">BRB informa que o fornecimento é de responsabilidade da contratante. Gerenciadora indicou existência de miolos excedentes adquiridos anteriormente e comprometeu-se a verificar a localização. Em 08/04 Victor cobrou novamente sem confirmação de resolução.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools / Gustavo Brancato</div></div><div class="meta-box"><div class="meta-label">Última cobrança</div><div class="meta-value">08/04/2026</div></div><div class="meta-box"><div class="meta-label">Impacto</div><div class="meta-value">Instalação BRB bloqueada</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Confirmar localização dos miolos e agendar instalação com BRB. Prazo: imediato.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">02</div><div class="item-title">Mata Junta — Definição de Modelo</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Levantado em 06/04, reiterado em 08/04 e cobrado novamente em 09/04. Terceira cobrança sem resposta formal registrada. A ausência de definição está bloqueando execução da BRB e gerando risco de impacto no cronograma recém-entregue.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools → Cliente</div></div><div class="meta-box"><div class="meta-label">Cobranças</div><div class="meta-value">3ª sem retorno</div></div><div class="meta-box"><div class="meta-label">Impacto</div><div class="meta-value">Risco cronograma</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Escalonamento junto ao cliente para destravar aprovação. Acúmulo de +1 semana sem resposta, item crítico.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">03</div><div class="item-title">Mapa de Acabamentos Elétricos — Aprovação Cliente</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Enviado por Victor em 31/03. Cobrado em 06/04 e 08/04. Em 09/04 Victor reforçou: "Preciso desses acabamentos." Gerenciadora autorizou prosseguir para não travar cronograma, mas aprovação formal do cliente final ainda não obtida.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools → Cliente</div></div><div class="meta-box"><div class="meta-label">Aberto em</div><div class="meta-value">31/03/2026</div></div><div class="meta-box"><div class="meta-label">Decisão</div><div class="meta-value">Execução autorizada pela Gerenciadora</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Registrar formalmente a decisão de prosseguir como risco aceito (Decision Log). Pressionar aprovação do cliente. Escalonamento se sem retorno até 11/04.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">04</div><div class="item-title">Cronograma Executivo — MS Project ✓</div></div><span class="badge green">Concluído</span></div>
+      <div class="item-body">Gerenciadora solicitou cronograma executivo detalhado em formato MS Project em 06/04. Alexandre Aguiar enviou o arquivo no mesmo dia (18h50). Recebimento confirmado em 07/04.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Alexandre Aguiar</div></div><div class="meta-box"><div class="meta-label">Entregue em</div><div class="meta-value">06/04/2026 — 18h50</div></div><div class="meta-box"><div class="meta-label">Confirmado</div><div class="meta-value">07/04/2026</div></div></div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">05</div><div class="item-title">Ar-Condicionado — Abertura Laje / Condensadora / Brumi</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Abertura frontal na parede e possivelmente demolição da laje superior confirmadas. Impermeabilização e ralo para dreno necessários. Em 09/04 Victor cobrou presença da empresa de ar. Em 10/04 Gustavo confirmou: equipe Brumi comparecerá em 14/04 para mudar evaporadoras e recolher gás.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools + Brumi</div></div><div class="meta-box"><div class="meta-label">Mobilização</div><div class="meta-value">Brumi — 14/04/2026</div></div><div class="meta-box"><div class="meta-label">MIA aguarda</div><div class="meta-value">Infras de AC para fechamentos</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Confirmar presença Brumi em 14/04. MIA preparar frente de fechamento dos rasgos imediatamente após execução das infras. Verificar necessidade de laudo estrutural para demolição da laje.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">06</div><div class="item-title">Exaustores — Posição no Teto e Aprovação Cliente</div></div><span class="badge yellow">Média</span></div>
+      <div class="item-body">Infra executada em 09/04. Especificações: Banho Casal = 2 exaustores; Suíte 01 = 1 exaustor; ligação independente da iluminação; master = 1 saída externa. Saída na parede marcada. Posição dos ventiladores no teto aguarda aprovação do cliente.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Resp. Aprovação</div><div class="meta-value">Tools / Gustavo Brancato</div></div><div class="meta-box"><div class="meta-label">Infra</div><div class="meta-value">Concluída — 09/04</div></div><div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">Aguardando aprovação</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Submeter posição dos ventiladores para aprovação formal do cliente. Registrar aprovação por escrito antes da execução final.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">07</div><div class="item-title">Toalheiros Banheiro da Mage — Reinstalação e Voltagem</div></div><span class="badge yellow">Média</span></div>
+      <div class="item-body">Reposicionamento para cima confirmado. Segundo toalheiro a adquirir (modelo Docol). Medidas não enviadas por Gustavo até 08/04. Novo ponto em 10/04: mudança de tomadas para 110V nos quartos impactou circuito dos toalheiros. Avalia-se troca para 220V.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Resp. Medidas</div><div class="meta-value">Tools / Gustavo Brancato</div></div><div class="meta-box"><div class="meta-label">Resp. Compra</div><div class="meta-value">Victor Evangelista</div></div><div class="meta-box"><div class="meta-label">Decisão pendente</div><div class="meta-value">Tensão: 110V vs 220V</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Gustavo enviar medidas. Victor acionar Docol. Gerenciadora definir voltagem antes da compra para evitar retrabalho.</div>
+    </div>
+
+    <div class="item-card normal">
+      <div class="item-header"><div><div class="item-number">08</div><div class="item-title">Puxadores — Telas Mosquiteiro</div></div><span class="badge gray">Baixa</span></div>
+      <div class="item-body">Constava no checklist da cliente. BRB desconhecia o requisito e o modelo. Gustavo confirmou que os puxadores já foram adquiridos e serão retirados na loja.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools / Gustavo Brancato</div></div><div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">Adquirido — retirada pendente</div></div><div class="meta-box"><div class="meta-label">Impacto</div><div class="meta-value">Baixo</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Confirmar retirada na loja, entrega na obra e comunicar BRB sobre o requisito formalmente.</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-header"><div><div class="item-number">09 · Novo</div><div class="item-title">Não Conformidades Elétricas — Projeto vs. Execução</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Rafael Dias apresentou levantamento técnico identificando divergências significativas entre projeto elétrico e execução da construtora anterior. Inconsistências críticas: circuitos 1, 2 e 3 com alimentação diferente do projetado; circuitos 4, 5 e 11 não identificados; circuitos 6–9 a testar; circuito 10 interligado ao 11; circuitos 12 e 13 executados em 2,5mm² onde o projeto especifica 4mm².</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Resp. Relatório</div><div class="meta-value">Tools / Felipe</div></div><div class="meta-box"><div class="meta-label">Resp. Acesso</div><div class="meta-value">Victor Evangelista</div></div><div class="meta-box"><div class="meta-label">Plataforma</div><div class="meta-value">Tools (acesso concedido)</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Felipe elaborar relatório técnico de NCs na plataforma Tools. Incluir registro fotográfico e referência normativa (NBR 5410). Victor orientado presencialmente por Felipe na obra.</div>
+      <div class="gold-note">⚠️ Circuitos 12 e 13 em 2,5mm² onde o projeto especifica 4mm² configuram não conformidade técnica com potencial risco de segurança. Documentação rigorosa é indispensável para subsidiar eventuais pleitos contratuais.</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-header"><div><div class="item-number">10 · Novo</div><div class="item-title">Luminárias — Corredor Íntimo / Quartos de Hóspedes / Quarto 4</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Victor solicitou posicionamento das luminárias que serão realocadas do corredor íntimo para quartos de hóspedes e quarto 4, para iniciar serviços civis. Locação já definida. Pendente: deliberação sobre altura do ponto e definição da luminária do corredor. Gustavo e Felipe orientados a formalizar com a Grappa.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools → Grappa</div></div><div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">Solicitação enviada à Grappa</div></div><div class="meta-box"><div class="meta-label">Bloqueio</div><div class="meta-value">Serviços civis aguardando definição</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Grappa retornar com altura do ponto e modelo da luminária do corredor. Definição urgente para liberar a frente.</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-header"><div><div class="item-number">11 · Novo</div><div class="item-title">Relatório de Status Semanal — Procedimento Instituído</div></div><span class="badge yellow">Média</span></div>
+      <div class="item-body">Rafael Dias formalizou em 10/04 que a MIA deverá entregar relatório de status semanal às sextas-feiras. Victor confirmou que alinhará os detalhes do formato com Felipe.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">MIA — Victor + Felipe</div></div><div class="meta-box"><div class="meta-label">Periodicidade</div><div class="meta-value">Sextas-feiras</div></div><div class="meta-box"><div class="meta-label">Primeiro relatório</div><div class="meta-value">10/04/2026</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Victor e Felipe alinharem formato e template do relatório semanal. Este documento passa a integrar o ciclo de reporting às sextas.</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-header"><div><div class="item-number">12 · Novo</div><div class="item-title">Consolidação de Contratações e Definições Pendentes</div></div><span class="badge red">Alta</span></div>
+      <div class="item-body">Rafael Dias solicitou em 10/04 atualização consolidada sobre todas as contratações e definições pendentes do projeto. Victor Evangelista confirmou envio do levantamento.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">MIA / Victor Evangelista</div></div><div class="meta-box"><div class="meta-label">Solicitado em</div><div class="meta-value">10/04/2026</div></div><div class="meta-box"><div class="meta-label">Destinatário</div><div class="meta-value">Rafael Dias / Gerenciadora</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Victor enviar levantamento consolidado de contratações e definições pendentes à Gerenciadora. Prazo: urgente.</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-header"><div><div class="item-number">13 · Novo</div><div class="item-title">Chapa Testa de Porta — Verificação de Disponibilidade</div></div><span class="badge yellow">Média</span></div>
+      <div class="item-body">Em 10/04 Victor questionou se a chapa testa de porta específica está disponível e/ou na obra. Sem resposta registrada no canal até o fechamento desta semana.</div>
+      <div class="meta-grid"><div class="meta-box"><div class="meta-label">Responsável</div><div class="meta-value">Tools / MIA — verificar</div></div><div class="meta-box"><div class="meta-label">Aberto em</div><div class="meta-value">10/04/2026</div></div><div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">Sem resposta</div></div></div>
+      <div class="action-line"><strong>→ Ação:</strong> Verificar disponibilidade da chapa testa de porta em obra ou estoque e confirmar a Victor.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>📊 Quadro Resumo — Visão Consolidada</h3>
     <table>
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Origem</th>
-          <th>Decisão / Deliberação</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>#</th><th>Item</th><th>Responsável</th><th>Status</th><th>Criticidade</th></tr></thead>
       <tbody>
-        <tr>
-          <td>10/04</td>
-          <td>Gerenciadora + BRB</td>
-          <td><strong>Miolos das fechaduras dos WC's</strong> são responsabilidade da contratante; Gustavo verificará excedentes já adquiridos</td>
-          <td><span class="badge yellow">Pendente</span></td>
-        </tr>
-        <tr>
-          <td>10/04</td>
-          <td>Tools → Cliente</td>
-          <td><strong>Mata junta</strong> segue sem resposta formal após terceira cobrança</td>
-          <td><span class="badge red">Crítico</span></td>
-        </tr>
-        <tr>
-          <td>10/04</td>
-          <td>Gerenciadora</td>
-          <td><strong>Mapa de acabamentos elétricos</strong> sem aprovação formal, porém com autorização para executar sem travar cronograma</td>
-          <td><span class="badge yellow">Executar</span></td>
-        </tr>
-        <tr>
-          <td>07/04</td>
-          <td>MIA</td>
-          <td><strong>Cronograma executivo em MS Project</strong> entregue e recebido</td>
-          <td><span class="badge green">Concluído</span></td>
-        </tr>
-        <tr>
-          <td>10/04</td>
-          <td>Gerenciadora + Brumi</td>
-          <td><strong>Ar condicionado</strong> com mobilização da Brumi confirmada para 14/04</td>
-          <td><span class="badge blue">Agendado</span></td>
-        </tr>
-        <tr>
-          <td>10/04</td>
-          <td>Rafael Dias</td>
-          <td><strong>Relatório de status semanal</strong> institucionalizado às sextas-feiras</td>
-          <td><span class="badge blue">Instituído</span></td>
-        </tr>
+        <tr><td>02</td><td>Mata Junta — modelo aprovado</td><td>Tools → Cliente</td><td>3ª cobrança sem retorno</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>03</td><td>Mapa acabamentos elétricos</td><td>Tools → Cliente</td><td>Sem aprovação, execução autorizada</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>05</td><td>Abertura laje / AC / Brumi</td><td>Tools + Brumi</td><td>Brumi confirmada 14/04</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>09</td><td>Não conformidades elétricas</td><td>Tools (Felipe) + MIA</td><td>Em elaboração</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>10</td><td>Luminárias corredor / quartos</td><td>Tools → Grappa</td><td>Aguardando retorno</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>12</td><td>Consolidação pendências / contratações</td><td>MIA / Victor</td><td>Aguardando envio</td><td><span class="badge red">Alta</span></td></tr>
+        <tr><td>01</td><td>Miolos fechaduras WC's</td><td>Tools / MIA</td><td>Pendente confirmação</td><td><span class="badge yellow">Média</span></td></tr>
+        <tr><td>06</td><td>Exaustores — aprovação posição</td><td>Tools → Cliente</td><td>Executado, aprovação pendente</td><td><span class="badge yellow">Média</span></td></tr>
+        <tr><td>07</td><td>Toalheiros Mage + voltagem</td><td>Tools + MIA</td><td>Medidas pendentes + definir tensão</td><td><span class="badge yellow">Média</span></td></tr>
+        <tr><td>11</td><td>Relatório semanal (sextas)</td><td>MIA — Victor + Felipe</td><td>Procedimento instituído</td><td><span class="badge yellow">Média</span></td></tr>
+        <tr><td>13</td><td>Chapa testa de porta</td><td>Tools / MIA</td><td>Sem resposta</td><td><span class="badge yellow">Média</span></td></tr>
+        <tr><td>08</td><td>Puxadores tela mosquiteiro</td><td>Tools</td><td>Adquirido, retirar na loja</td><td><span class="badge gray">Baixa</span></td></tr>
+        <tr><td>04</td><td>Cronograma executivo (.mpp)</td><td>Alexandre Aguiar</td><td>Entregue e confirmado</td><td><span class="badge green">Concluído</span></td></tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="section">
+    <h3>🧭 Observações Estratégicas · Para a Gerenciadora</h3>
+    <div class="alert red"><div class="alert-icon">—</div><div class="alert-content"><strong>Itens 02 e 03 exigem escalonamento imediato</strong><span>Mata junta e mapa elétrico acumulam atraso de resposta superior a uma semana, com múltiplas cobranças registradas. A ausência de definição já gera risco direto de impacto no cronograma executivo.</span></div></div>
+    <div class="alert red"><div class="alert-icon">—</div><div class="alert-content"><strong>Item 09 é estratégico do ponto de vista patrimonial</strong><span>Os circuitos 12 e 13 executados em 2,5mm² onde o projeto especifica 4mm² configuram não conformidade técnica com potencial risco de segurança. O relatório deve incluir registro fotográfico e referência à NBR 5410.</span></div></div>
+    <div class="alert yellow"><div class="alert-icon">—</div><div class="alert-content"><strong>Item 07 exige decisão antes da compra</strong><span>A definição de tensão 110V vs. 220V deve preceder a aquisição do segundo toalheiro. Comprar antes da decisão gera risco de retrabalho e custo desnecessário.</span></div></div>
+    <div class="alert yellow"><div class="alert-icon">—</div><div class="alert-content"><strong>Item 10 bloqueia frente civil</strong><span>O retorno da Grappa sobre altura do ponto e modelo da luminária do corredor é gargalo direto para início/continuidade da execução.</span></div></div>
+  </div>
+
+  <div class="section">
+    <h3>🏗️ Governança · Transição · Próximos Passos</h3>
+    <div class="action-item"><div class="action-num">1</div><div class="action-text"><strong>Ativar RDO como canal oficial de registro</strong><div class="action-prazo">Gatilho: próxima reunião de obra</div>Todo item de deliberação entra no RDO antes de ser comunicado no grupo. WhatsApp passa a ser canal de alinhamento rápido, sem valor contratual de decisão.</div></div>
+    <div class="action-item"><div class="action-num">2</div><div class="action-text"><strong>Alinhar Victor e Gustavo ao rito semanal</strong><div class="action-prazo">Prazo: 14/04/2026</div>Relatório semanal às sextas exige informações consolidadas na quinta. Victor e Felipe devem alinhar o fluxo interno de coleta de dados.</div></div>
+    <div class="action-item"><div class="action-num">3</div><div class="action-text"><strong>Formalizar Decision Log para riscos aceitos</strong><div class="action-prazo">Prazo: 11/04/2026</div>Decisão de prosseguir sem aprovação formal no item 03 e demais riscos aceitos precisam de registro rastreável.</div></div>
+    <div class="action-item"><div class="action-num">4</div><div class="action-text"><strong>Consolidar envio de pendências à Gerenciadora</strong><div class="action-prazo">Prazo: urgente, esta semana</div>O item 12 exige envio de levantamento consolidado de contratações e definições pendentes. Este documento pode servir como base.</div></div>
   </div>
 
   <div class="section">
