@@ -5,6 +5,25 @@
 > Período: 23/03/26 → 22/05/26 (43 dias)
 > Empresa: MIA Engenharia
 
+## 🔔 Regra de Notificação (04/04/26)
+
+**Toda mensagem, email ou relatório relacionado à CCSP Casa 7 deve ser reportado no fórum "MIA Engenharia" (topic:3) no Telegram.**
+- Mensagens recebidas de Victor, Rafael (TOOLS) ou qualquer subcontratado → notificar imediatamente
+- Emails nas contas Mensura ou MIA sobre a obra → notificar e resumir
+- Relatórios gerados → notificar com link/arquivo
+
+## 📡 Configuração de Envio Automático (07/04/26)
+
+| Parâmetro | Valor |
+|-----------|-------|
+| Telegram Grupo | MIA Engenharia |
+| chat_id | -1003704703669 |
+| thread_id (tópico) | 3 |
+| Email remetente | flavia@mensuraengenharia.com.br |
+| Email destinatário | victor.evangelista@miaengenharia.com.br |
+| Horários de envio | 9h BRT e 15h BRT (diário) |
+| Conteúdo | Resumo executivo: avanço físico, executado, prazos críticos, NCs, observações |
+
 ---
 
 ## 📋 Cronograma Baseline r0 (23/03/26)
@@ -124,6 +143,13 @@
 | —    | TOOLS + Cliente | **Assinatura do contrato** — formalização da obra CCSP Casa 7 | TOOLS + Cliente | ⏳ Aguardando aprovação |
 | —    | TOOLS + Cliente | **Aprovação dos quadros de concorrência — Civil, Elétrica e Hidráulica** | TOOLS + Cliente | ⏳ Aguardando aprovação |
 | —    | TOOLS + Cliente | **Aprovação mapa de acabamentos elétricos** | TOOLS + Cliente | ⏳ Aguardando aprovação |
+| 10/04/26 | Gerenciadora + BRB | **Fechaduras dos WC's** — BRB informou que os miolos são responsabilidade da contratante; Gustavo ficou de verificar excedentes já adquiridos | Gerenciadora | ⏳ Pendente confirmação de entrega/instalação |
+| 10/04/26 | Gerenciadora + Cliente | **Mata junta** — definição do modelo aprovado segue sem resposta formal após terceira cobrança de Victor | Gerenciadora + Cliente | 🔴 Crítico |
+| 10/04/26 | Gerenciadora | **Mapa de acabamentos elétricos** — sem aprovação formal do cliente, mas execução liberada pela Gerenciadora para não travar cronograma | Gerenciadora | ⚠️ Executar sem travar cronograma |
+| 07/04/26 | Gerenciadora | **Cronograma executivo em MS Project** recebido após envio por Alexandre em 06/04 | MIA | ✅ Entregue |
+| 10/04/26 | Gerenciadora + Brumi | **Ar condicionado** — Brumi confirmada na obra em 14/04 para mudar evaporadoras e recolher gás; infraestrutura depende dessa mobilização | Brumi + Gerenciadora | 📅 Mobilização confirmada |
+| 10/04/26 | Gerenciadora | **Exaustores dos banheiros** — quantidade e diretriz elétrica definidas; infraestrutura executada; posição final e saída em parede aguardam aprovação | Gerenciadora + Cliente | ⏳ Pendente aprovação final |
+| 10/04/26 | Gerenciadora + MIA | **Toalheiros** — reposicionamento mais alto, segundo item a adquirir e voltagem em revisão (110V vs. 220V) por impacto no circuito | Gerenciadora + MIA | ⏳ Pendente definição |
 
 ---
 
