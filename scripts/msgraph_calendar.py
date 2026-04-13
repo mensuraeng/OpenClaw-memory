@@ -120,6 +120,13 @@ def delete_event(token, user, event_id):
     graph_request(token, f"/users/{user}/events/{event_id}", method="DELETE")
     print(f"✅ Evento removido.")
 
+def resolve_user(args_user, cfg):
+    user = args_user or cfg.get("defaultUser")
+    if not user:
+        print("Erro: nenhum usuário resolvido. Defina --user ou 'defaultUser' no JSON de configuração.")
+        sys.exit(1)
+    return user
+
 def main():
     p = argparse.ArgumentParser(description="Gerenciador de calendário Microsoft Graph")
     p.add_argument("cmd", choices=["list","create","delete"], help="Comando")
@@ -137,7 +144,7 @@ def main():
     args = p.parse_args()
 
     cfg = load_config(config_path=args.config, account=args.account)
-    user = args.user or cfg.get("defaultUser") or "alexandre@mensuraengenharia.com.br"
+    user = resolve_user(args.user, cfg)
     token = get_token(cfg)
 
     if args.cmd == "list":

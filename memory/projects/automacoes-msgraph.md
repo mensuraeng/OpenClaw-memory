@@ -9,7 +9,9 @@ _Atualizado em 2026-04-13_
 ## Ajuste recente
 - Corrigido bug nos scripts `msgraph_email.py` e `msgraph_calendar.py`: o usuário padrão estava hardcoded como `alexandre@mensuraengenharia.com.br`.
 - Agora cada conta usa `defaultUser` do respectivo JSON de configuração, com `--user` opcional para override.
-- Validação concluída na MIA: email e calendário responderam corretamente após o ajuste.
+- Os scripts também passaram a falhar explicitamente quando `defaultUser` não existir, em vez de cair para fallback silencioso.
+- `config/ms-graph.json` recebeu `defaultUser` da Mensura para padronizar o comportamento entre contas.
+- Validação concluída em Mensura e MIA: email e calendário responderam corretamente após o ajuste.
 
 ## Integrações ativas
 - Email Mensura (`alexandre@mensuraengenharia.com.br`) — ✅

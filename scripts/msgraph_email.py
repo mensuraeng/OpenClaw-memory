@@ -125,6 +125,13 @@ def list_folders(token, user):
     for f in data.get("value", []):
         print(f"📁 {f['displayName']} (total: {f['totalItemCount']}, não lidos: {f['unreadItemCount']})")
 
+def resolve_user(args_user, cfg):
+    user = args_user or cfg.get("defaultUser")
+    if not user:
+        print("Erro: nenhum usuário resolvido. Defina --user ou 'defaultUser' no JSON de configuração.")
+        sys.exit(1)
+    return user
+
 def main():
     p = argparse.ArgumentParser(description="Gerenciador de e-mail Microsoft Graph")
     p.add_argument("cmd", choices=["list","read","send","move","folders"], help="Comando")
@@ -147,7 +154,7 @@ def main():
             args.body = f.read()
 
     cfg = load_config(config_path=args.config, account=args.account)
-    user = args.user or cfg.get("defaultUser") or "alexandre@mensuraengenharia.com.br"
+    user = resolve_user(args.user, cfg)
     token = get_token(cfg)
 
     if args.cmd == "list":

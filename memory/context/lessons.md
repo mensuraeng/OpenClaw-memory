@@ -27,6 +27,9 @@ Varredura cega arrasta lixo, duplicata e contexto errado. Auditar primeiro, migr
 ### Script multi-conta não pode fixar usuário padrão no código (2026-04-13)
 Quando a conta muda, o script deve puxar `defaultUser` da config ou exigir `--user`. Hardcode silencioso gera falso negativo e mascara integração saudável.
 
+### Fallback silencioso em automação operacional é erro de desenho (2026-04-13)
+Se faltar parâmetro essencial, o script deve falhar com mensagem clara. Cair para valor padrão genérico mascara problema de configuração e atrasa diagnóstico.
+
 ## Temporárias
 
 ### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)
