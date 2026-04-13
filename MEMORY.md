@@ -17,6 +17,7 @@ Serve para responder rápido:
 ### Frentes ativas
 - **Setup OpenClaw + Flávia** — em andamento
 - **Automações Microsoft Graph** — ativas para Mensura, MIA e Flávia
+- **Grupo Telegram MENSURA** — ativo como canal operacional do agente da MENSURA
 - **Monitor semanal** — ativo, segunda 8h BRT
 - **Relatório de cursos** — ativo, sexta 16h BRT
 - **Monitoramento de cronogramas** — ativo para P&G Louveira e CCSP Casa 3
@@ -56,6 +57,7 @@ Serve para responder rápido:
 ### Projetos
 - `memory/projects/setup-openclaw-flavia.md` → setup da operação Flávia
 - `memory/projects/automacoes-msgraph.md` → email, calendário e SharePoint
+- `memory/projects/grupo-telegram-mensura.md` → protocolo operacional do grupo da MENSURA no Telegram
 - `memory/projects/monitor-semanal.md` → rotina semanal de monitoramento
 - `memory/projects/relatorio-cursos.md` → relatório semanal de cursos
 - `memory/projects/pcs-comercial-posicionamento.md` → posicionamento comercial da PCS
