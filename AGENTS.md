@@ -63,6 +63,14 @@ _Atualizado em 2026-04-13_
 - Não repetir erro já documentado
 - Registrar decisões, padrões e lições recorrentes na memória correta
 
+## Imunidade Operacional
+
+- Antes de mudança estrutural, rodar `scripts/backup_before_change.sh <rotulo>` e conferir `ROLLBACK.md`
+- Mudança estrutural inclui config do OpenClaw, cron, auth, scripts compartilhados e memória operacional central
+- Antes de repetir sugestão de ferramenta, abordagem ou formato já discutido, consultar `memory/feedback/*.json`
+- Quando o usuário aprovar ou rejeitar explicitamente uma sugestão, registrar no domínio correto em `memory/feedback/`
+- Não fazer retry cego em automação com side effect externo ambíguo; priorizar retry automático só quando a falha parecer transitória e segura
+
 ### Regra obrigatória — Sub-agents nunca "fire and forget"
 
 Todo sub-agent exige follow-up explícito. Nunca pode ser disparado e abandonado em silêncio.

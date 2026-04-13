@@ -1,0 +1,21 @@
+{
+  "targetsUsd": {
+    "daily": 0.10,
+    "weekly": 0.70
+  },
+  "alertsUsd": {
+    "daily": 0.50,
+    "weekly": 3.50
+  },
+  "policy": {
+    "interactive": "anthropic/claude-opus-4-6",
+    "scheduledReasoning": "anthropic/claude-sonnet-4-6",
+    "heartbeats": "anthropic/claude-haiku-4-5",
+    "maintenance": "openai/gpt-4o-mini"
+  },
+  "notes": [
+    "Meta agressiva: US$ 0,10/dia e US$ 0,70/semana.",
+    "Alerta operacional serve para runaway, não para micro-otimização.",
+    "Se Anthropic estiver indisponível, cair para openai/gpt-4o-mini é preferível a quebrar o fluxo."
+  ]
+}

@@ -23,6 +23,7 @@ Serve para responder rápido:
 - **Relatório de cursos** — ativo, sexta 16h BRT
 - **Monitoramento de cronogramas** — ativo para P&G Louveira e CCSP Casa 3
 - **PCS Engenharia** — posicionamento, narrativa institucional e estrutura comercial em evolução
+- **Sistema imunológico do OpenClaw** — watchdog de cron, guardrail de custo, backup estrutural e rollback documentado ativos
 
 ### Pendências críticas
 - LinkedIn Client ID + Secret
@@ -44,6 +45,9 @@ Serve para responder rápido:
 - `memory_search()` está indisponível por erro de API key de embeddings
 - Parte do contexto de longo prazo existe, mas ainda precisa de consolidação contínua por tema
 - Há risco de espalhamento de contexto em notas diárias se não houver promoção periódica para arquivos temáticos
+- Custo real das últimas 24h e 7d ainda está muito acima da meta e foi dominado por `gpt-5.4` antes da troca de política
+- `skills/capability-evolver-src` segue como risco crítico até quarentena ou remoção
+- `gateway.controlUi.allowInsecureAuth=true` segue aberto e precisa ser desativado quando houver janela segura
 
 ## Onde está cada coisa
 
