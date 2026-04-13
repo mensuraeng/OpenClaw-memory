@@ -88,54 +88,24 @@ function formatSchedule(schedule: Record<string, unknown>): string {
   }
 }
 
-// PUT: Toggle enable/disable a cron job
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { id, enabled } = body;
-
-    if (!id) {
-      return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
-    }
-
-    const action = enabled ? "enable" : "disable";
-    // Use openclaw CLI to update the job
-    const output = execSync(
-      `openclaw cron ${action} ${id} --json 2>/dev/null || openclaw cron update ${id} --enabled=${enabled} --json 2>/dev/null`,
-      { timeout: 10000, encoding: "utf-8" }
-    );
-
-    return NextResponse.json({ success: true, id, enabled });
-  } catch (error) {
-    console.error("Error updating cron job:", error);
-    return NextResponse.json(
-      { error: "Failed to update cron job" },
-      { status: 500 }
-    );
-  }
+// PUT: disabled in v1
+export async function PUT(_request: NextRequest) {
+  return NextResponse.json(
+    {
+      error: 'cron mutation disabled in mission control v1',
+      code: 'DISABLED_IN_V1',
+    },
+    { status: 403 }
+  );
 }
 
-// DELETE: Remove a cron job
-export async function DELETE(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
-    }
-
-    execSync(`openclaw cron remove ${id} 2>/dev/null`, {
-      timeout: 10000,
-      encoding: "utf-8",
-    });
-
-    return NextResponse.json({ success: true, deleted: id });
-  } catch (error) {
-    console.error("Error deleting cron job:", error);
-    return NextResponse.json(
-      { error: "Failed to delete cron job" },
-      { status: 500 }
-    );
-  }
+// DELETE: disabled in v1
+export async function DELETE(_request: NextRequest) {
+  return NextResponse.json(
+    {
+      error: 'cron deletion disabled in mission control v1',
+      code: 'DISABLED_IN_V1',
+    },
+    { status: 403 }
+  );
 }

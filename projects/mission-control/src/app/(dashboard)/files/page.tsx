@@ -1,222 +1,71 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { List, Grid3X3 } from "lucide-react";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { FileBrowser } from "@/components/FileBrowser";
-
-interface Workspace {
-  id: string;
-  name: string;
-  emoji: string;
-  path: string;
-  agentName?: string;
-}
+import { FolderLock, ShieldAlert } from 'lucide-react';
 
 export default function FilesPage() {
-  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
-  const [selectedWorkspace, setSelectedWorkspace] = useState<string | null>(null);
-  const [currentPath, setCurrentPath] = useState("");
-  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
-
-  useEffect(() => {
-    fetch("/api/files/workspaces")
-      .then((res) => res.json())
-      .then((data) => {
-        setWorkspaces(data.workspaces || []);
-        if (data.workspaces.length > 0) {
-          setSelectedWorkspace(data.workspaces[0].id);
-        }
-      })
-      .catch(() => setWorkspaces([]));
-  }, []);
-
-  const handleWorkspaceSelect = (workspaceId: string) => {
-    setSelectedWorkspace(workspaceId);
-    setCurrentPath("");
-  };
-
-  const selectedWorkspaceData = workspaces.find((w) => w.id === selectedWorkspace);
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%", gap: "0" }}>
-      {/* Page header */}
-      <div style={{ padding: "24px 24px 16px 24px" }}>
-        <h1
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "24px",
-            fontWeight: 700,
-            letterSpacing: "-1px",
-            color: "var(--text-primary)",
-            marginBottom: "4px",
-          }}
-        >
-          File Browser
-        </h1>
-        <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "var(--text-secondary)" }}>
-          Navega por los workspaces y archivos de los agentes
-        </p>
-      </div>
-
-      {/* Two-column layout */}
+    <div className="p-4 md:p-8">
       <div
         style={{
-          display: "flex",
-          flex: 1,
-          overflow: "hidden",
-          borderTop: "1px solid var(--border)",
+          backgroundColor: 'var(--card)',
+          border: '1px solid var(--border)',
+          borderRadius: '1rem',
+          padding: '2rem',
+          maxWidth: '900px',
         }}
       >
-        {/* ── LEFT SIDEBAR: Workspace list ─────────────────────────────────── */}
-        <aside
-          style={{
-            width: "220px",
-            flexShrink: 0,
-            borderRight: "1px solid var(--border)",
-            overflowY: "auto",
-            padding: "16px 0",
-            backgroundColor: "var(--surface, var(--card))",
-          }}
-        >
-          <p
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div
             style={{
-              fontSize: "10px",
-              fontWeight: 700,
-              letterSpacing: "0.08em",
-              color: "var(--text-muted)",
-              padding: "0 16px 8px",
-              textTransform: "uppercase",
+              width: '3rem',
+              height: '3rem',
+              borderRadius: '0.875rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(245,158,11,0.12)',
+              color: 'var(--warning, #f59e0b)',
             }}
           >
-            Workspaces
-          </p>
+            <FolderLock className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              Navegação de arquivos desativada
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+              O navegador genérico de arquivos saiu do escopo da v1.
+            </p>
+          </div>
+        </div>
 
-          {workspaces.map((workspace) => {
-            const isSelected = selectedWorkspace === workspace.id;
-            return (
-              <button
-                key={workspace.id}
-                onClick={() => handleWorkspaceSelect(workspace.id)}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "9px 16px",
-                  background: isSelected ? "var(--accent-soft)" : "transparent",
-                  border: "none",
-                  borderLeft: isSelected ? "3px solid var(--accent)" : "3px solid transparent",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "all 120ms ease",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isSelected) e.currentTarget.style.background = "var(--surface-hover, rgba(255,255,255,0.05))";
-                }}
-                onMouseLeave={(e) => {
-                  if (!isSelected) e.currentTarget.style.background = "transparent";
-                }}
-              >
-                <span style={{ fontSize: "18px", lineHeight: 1, flexShrink: 0 }}>{workspace.emoji}</span>
-                <div style={{ minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-heading)",
-                      fontSize: "13px",
-                      fontWeight: isSelected ? 600 : 400,
-                      color: isSelected ? "var(--accent)" : "var(--text-primary)",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {workspace.name}
-                  </div>
-                  {workspace.agentName && (
-                    <div
-                      style={{
-                        fontSize: "11px",
-                        color: "var(--text-muted)",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {workspace.agentName}
-                    </div>
-                  )}
-                </div>
-              </button>
-            );
-          })}
-        </aside>
+        <div style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          <p>Motivo: leitura ampla, download e edição de arquivos aumentam demais a superfície de exposição.</p>
+          <p>Direção: substituir isso por visões dedicadas, com paths e conteúdos explicitamente permitidos.</p>
+        </div>
 
-        {/* ── RIGHT PANEL: File explorer ────────────────────────────────────── */}
-        <main style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
-          {selectedWorkspace && selectedWorkspaceData ? (
-            <>
-              {/* Breadcrumb bar + view toggle */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "8px 16px",
-                  borderBottom: "1px solid var(--border)",
-                  backgroundColor: "var(--surface, var(--card))",
-                  flexShrink: 0,
-                  gap: "12px",
-                }}
-              >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <Breadcrumbs
-                    path={currentPath}
-                    onNavigate={setCurrentPath}
-                    prefix={selectedWorkspaceData.name}
-                  />
-                </div>
-
-                {/* View mode toggle */}
-                <div style={{ display: "flex", gap: "4px", flexShrink: 0 }}>
-                  <button
-                    onClick={() => setViewMode("list")}
-                    title="Vista lista"
-                    style={{
-                      padding: "5px 7px",
-                      borderRadius: "6px",
-                      border: "none",
-                      cursor: "pointer",
-                      backgroundColor: viewMode === "list" ? "var(--accent)" : "transparent",
-                      color: viewMode === "list" ? "var(--bg, #111)" : "var(--text-muted)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      transition: "all 120ms ease",
-                    }}
-                  >
-                    <List size={15} />
-                  </button>
-                  <button
-                    onClick={() => setViewMode("grid")}
-                    title="Vista iconos"
-                    style={{
-                      padding: "5px 7px",
-                      borderRadius: "6px",
-                      border: "none",
-                      cursor: "pointer",
-                      backgroundColor: viewMode === "grid" ? "var(--accent)" : "transparent",
-                      color: viewMode === "grid" ? "var(--bg, #111)" : "var(--text-muted)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      transition: "all 120ms ease",
-                    }}
-                  >
-                    <Grid3X3 size={15} />
-                  </button>
-                </div>
-              </div>
+        <div
+          style={{
+            marginTop: '1.25rem',
+            padding: '1rem',
+            borderRadius: '0.75rem',
+            background: 'var(--card-elevated)',
+            border: '1px solid var(--border)',
+            display: 'flex',
+            gap: '0.75rem',
+            alignItems: 'flex-start',
+          }}
+        >
+          <ShieldAlert className="w-5 h-5" style={{ color: 'var(--text-muted)', flexShrink: 0, marginTop: '0.1rem' }} />
+          <div>
+            <strong style={{ color: 'var(--text-primary)' }}>Próximo formato</strong>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+              Entradas futuras devem usar leitores específicos para memória, docs operacionais e painéis de status, sem browser arbitrário.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
               {/* File list */}
               <div style={{ flex: 1, padding: "0" }}>

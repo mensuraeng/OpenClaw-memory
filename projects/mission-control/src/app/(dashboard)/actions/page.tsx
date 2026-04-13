@@ -1,223 +1,118 @@
-"use client";
+import { Shield, ShieldAlert } from 'lucide-react';
 
-import { useState } from "react";
-import {
-  GitBranch, RotateCcw, Trash2, BarChart3, Heart, Shield,
-  Play, Loader2, X, CheckCircle, AlertCircle, Clock, Terminal,
-} from "lucide-react";
-import { format } from "date-fns";
-
-interface ActionResult {
-  action: string;
-  status: "success" | "error";
-  output: string;
-  duration_ms: number;
-  timestamp: string;
-}
-
-interface QuickAction {
-  id: string;
-  label: string;
-  description: string;
-  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  color: string;
-  dangerous?: boolean;
-}
-
-const ACTIONS: QuickAction[] = [
+const SAFE_ACTIONS = [
   {
-    id: "heartbeat",
-    label: "Check Heartbeat",
-    description: "Verify all services are up and the site is reachable",
-    icon: Heart,
-    color: "var(--success)",
+    id: 'refresh',
+    label: 'Refresh',
+    description: 'Atualiza widgets e consultas de leitura já permitidas',
   },
   {
-    id: "git-status",
-    label: "Git Status (All Repos)",
-    description: "Check uncommitted changes in all workspace repositories",
-    icon: GitBranch,
-    color: "#60A5FA",
+    id: 'ack-alert',
+    label: 'Acknowledge alert',
+    description: 'Marca um alerta visual como visto na interface',
   },
   {
-    id: "usage-stats",
-    label: "Collect Usage Stats",
-    description: "Get disk, CPU, and memory usage summary",
-    icon: BarChart3,
-    color: "#C084FC",
+    id: 'copy-command',
+    label: 'Copy command',
+    description: 'Copia um comando recomendado para execução fora da UI',
   },
   {
-    id: "restart-gateway",
-    label: "Restart Gateway",
-    description: "Restart the OpenClaw gateway service",
-    icon: RotateCcw,
-    color: "var(--warning, #f59e0b)",
-    dangerous: true,
+    id: 'open-link',
+    label: 'Open link',
+    description: 'Abre um recurso permitido e previamente cadastrado',
   },
   {
-    id: "clear-temp",
-    label: "Clear Temp Files",
-    description: "Remove temporary files and trim large PM2 logs",
-    icon: Trash2,
-    color: "var(--error)",
-    dangerous: true,
-  },
-  {
-    id: "npm-audit",
-    label: "NPM Security Audit",
-    description: "Check for vulnerabilities in mission-control dependencies",
-    icon: Shield,
-    color: "#4ADE80",
+    id: 'rerun-safe-check',
+    label: 'Rerun safe check',
+    description: 'Reexecuta uma checagem leve e controlada',
   },
 ];
 
 export default function ActionsPage() {
-  const [running, setRunning] = useState<string | null>(null);
-  const [results, setResults] = useState<Record<string, ActionResult>>({});
-  const [selectedResult, setSelectedResult] = useState<ActionResult | null>(null);
-  const [confirmAction, setConfirmAction] = useState<QuickAction | null>(null);
-
-  const runAction = async (action: QuickAction) => {
-    if (action.dangerous) {
-      setConfirmAction(action);
-      return;
-    }
-    await executeAction(action);
-  };
-
-  const executeAction = async (action: QuickAction) => {
-    setConfirmAction(null);
-    setRunning(action.id);
-
-    try {
-      const res = await fetch("/api/actions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: action.id }),
-      });
-      const data: ActionResult = await res.json();
-      setResults((prev) => ({ ...prev, [action.id]: data }));
-      setSelectedResult(data);
-    } catch {
-      const result: ActionResult = {
-        action: action.id,
-        status: "error",
-        output: "Network error",
-        duration_ms: 0,
-        timestamp: new Date().toISOString(),
-      };
-      setResults((prev) => ({ ...prev, [action.id]: result }));
-    } finally {
-      setRunning(null);
-    }
-  };
-
   return (
     <div className="p-4 md:p-8">
-      {/* Header */}
-      <div className="mb-8">
+      <div style={{ marginBottom: '1.5rem' }}>
         <h1
           className="text-3xl font-bold mb-2"
-          style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
+          style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
         >
-          Quick Actions Hub
+          Ações leves allowlistadas
         </h1>
-        <p style={{ color: "var(--text-secondary)" }}>
-          Run common maintenance and diagnostic tasks with one click
+        <p style={{ color: 'var(--text-secondary)' }}>
+          A v1 não expõe manutenção genérica, restart, shell ou limpeza arbitrária.
         </p>
       </div>
 
-      {/* Action Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {ACTIONS.map((action) => {
-          const Icon = action.icon;
-          const isRunning = running === action.id;
-          const result = results[action.id];
+      <div
+        style={{
+          backgroundColor: 'var(--card)',
+          border: '1px solid var(--border)',
+          borderRadius: '1rem',
+          padding: '1.5rem',
+          marginBottom: '1.25rem',
+        }}
+      >
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+          <ShieldAlert className="w-5 h-5" style={{ color: 'var(--warning, #f59e0b)', flexShrink: 0, marginTop: '0.1rem' }} />
+          <div>
+            <strong style={{ color: 'var(--text-primary)' }}>Postura da v1</strong>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.35rem', lineHeight: 1.7 }}>
+              A interface só deve concentrar ações operacionais leves, específicas e auditáveis. Tudo que implique mutação ampla,
+              execução de comando, restart de serviço ou impacto genérico no host fica fora.
+            </p>
+          </div>
+        </div>
+      </div>
 
-          return (
-            <div
-              key={action.id}
-              className="p-5 rounded-xl"
-              style={{
-                backgroundColor: "var(--card)",
-                border: `1px solid ${result ? (result.status === "success" ? "rgba(34,197,94,0.3)" : "rgba(239,68,68,0.3)") : "var(--border)"}`,
-                transition: "border-color 0.3s",
-              }}
-            >
-              {/* Action header */}
-              <div className="flex items-start gap-3 mb-3">
-                <div
-                  className="p-2 rounded-lg flex-shrink-0"
-                  style={{ backgroundColor: `color-mix(in srgb, ${action.color} 15%, transparent)` }}
-                >
-                  <Icon className="w-5 h-5" style={{ color: action.color }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
-                    {action.label}
-                  </h3>
-                  <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
-                    {action.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Last result summary */}
-              {result && !isRunning && (
-                <div
-                  className="flex items-center gap-2 mb-3 p-2 rounded-lg text-xs cursor-pointer"
-                  style={{
-                    backgroundColor: result.status === "success" ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
-                    color: result.status === "success" ? "var(--success)" : "var(--error)",
-                  }}
-                  onClick={() => setSelectedResult(result)}
-                >
-                  {result.status === "success" ? (
-                    <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                  ) : (
-                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                  )}
-                  <span className="flex-1 truncate">
-                    {result.status === "success" ? "Success" : "Failed"} · {result.duration_ms}ms
-                  </span>
-                  <Clock className="w-3 h-3 flex-shrink-0" />
-                  <span style={{ color: "var(--text-muted)" }}>
-                    {format(new Date(result.timestamp), "HH:mm")}
-                  </span>
-                </div>
-              )}
-
-              {/* Run button */}
-              <button
-                onClick={() => runAction(action)}
-                disabled={isRunning || running !== null}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {SAFE_ACTIONS.map((action) => (
+          <div
+            key={action.id}
+            style={{
+              backgroundColor: 'var(--card)',
+              border: '1px solid var(--border)',
+              borderRadius: '0.875rem',
+              padding: '1rem',
+            }}
+          >
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+              <div
                 style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
-                  padding: "0.625rem",
-                  borderRadius: "0.5rem",
-                  backgroundColor: isRunning ? `color-mix(in srgb, ${action.color} 20%, transparent)` : `color-mix(in srgb, ${action.color} 12%, transparent)`,
-                  color: action.color,
-                  border: `1px solid color-mix(in srgb, ${action.color} 25%, transparent)`,
-                  cursor: isRunning || running !== null ? "not-allowed" : "pointer",
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  opacity: running !== null && !isRunning ? 0.5 : 1,
-                  transition: "all 0.2s",
+                  width: '2.5rem',
+                  height: '2.5rem',
+                  borderRadius: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(34,197,94,0.1)',
+                  color: 'var(--success)',
+                  flexShrink: 0,
                 }}
               >
-                {isRunning ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Running...
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4" />
-                    Run
+                <Shield className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{action.label}</h3>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem', lineHeight: 1.6 }}>{action.description}</p>
+                <div
+                  style={{
+                    marginTop: '0.75rem',
+                    fontSize: '0.8rem',
+                    color: 'var(--text-muted)',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  id: {action.id}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
                     {action.dangerous && <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>⚠️</span>}
                   </>
                 )}
