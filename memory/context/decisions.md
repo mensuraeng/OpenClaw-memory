@@ -1,31 +1,46 @@
 # Decisões Permanentes
 
-> Decisões que a Flávia deve respeitar SEMPRE.
-> Formato: O que decidiu + Por que + Data
+> Decisões que a Flávia deve respeitar sempre.
 
-_Atualizado em 2026-04-01_
+_Atualizado em 2026-04-13_
 
----
+## Operação
 
-### Usar Microsoft Graph API para email/calendário (01/04/2026)
-Microsoft bloqueia basic auth no Office 365. Todo acesso a email e calendário via Graph API com client credentials flow. Nunca tentar IMAP/SMTP direto.
+### Ações externas sempre exigem confirmação (2026-04-01)
+Enviar email, mensagem, post em rede social, apagar arquivo, alterar configuração crítica ou agir fora do ambiente controlado exige confirmação do Alê.
 
-### Filtro do relatório de cursos (01/04/2026)
-Incluir apenas: cursos curtos, workshops, certificações, eventos. Excluir sempre: MBAs, pós-graduações, especializações longas.
+### Microsoft Graph é o padrão para email e calendário (2026-04-01)
+Microsoft 365 bloqueia auth básica. Email e calendário devem usar Graph API com client credentials flow. Não usar IMAP/SMTP direto como padrão.
 
-### Threshold de obras sem atualização (01/04/2026)
-Mais de 10 dias sem atualização no .mpp = alerta 🔴 OBRA ENCERRADA? no monitor semanal.
+### KeePassXC é o cofre principal da operação (2026-04-07)
+Credenciais persistentes devem viver no cofre, não espalhadas em memória operacional ou documentação.
 
-### Nome e identidade do agente (01/04/2026)
-Nome: Flávia. Gênero feminino. Emoji 🏗️. Email próprio: flavia@mensuraengenharia.com.br.
+### Segredos migram por lote aprovado, nunca por varredura cega (2026-04-07)
+Migração de credenciais deve acontecer com auditoria e recorte aprovado, para evitar lixo, duplicata ou segredo fora de contexto.
 
-### Modelos por contexto (01/04/2026)
-- Conversas com Alê → Sonnet 4-6
-- Heartbeats → Haiku 4-5 (economia ~90%)
-- Fallback → Sonnet 4
+## Modelo e automação
 
-### Confirmar antes de qualquer ação externa (01/04/2026)
-Enviar email, mensagem, post em rede social, deletar arquivos, mudar config crítica — sempre confirmar com Alê antes. Sem exceção.
+### Heartbeats e checagens leves devem usar Haiku (2026-04-07)
+Monitoramentos recorrentes e tarefas simples de rotina devem preferir Haiku por custo-benefício.
 
-### Horário protegido para notificações (01/04/2026)
-Monitor semanal: segunda 8h BRT. Relatório de cursos: sexta 16h BRT. Não criar automações que disparam fora de horário útil sem confirmar.
+### Crons novos devem ser explícitos e auditáveis (2026-04-07)
+Toda cron nova deve ter nome claro e único, tipo explícito, destino explícito, `deleteAfterRun` explícito e recibo com ID/status após criação.
+
+### Crons devem usar GPT 4o Mini por padrão (2026-04-13)
+Para crons novos, adotar GPT 4o Mini como modelo padrão, salvo exceção justificada.
+
+## Operação recorrente
+
+### Horário protegido para notificações (2026-04-01)
+Monitor semanal na segunda às 8h BRT. Relatório de cursos na sexta às 16h BRT. Não disparar automações fora de horário útil sem confirmação.
+
+### Obras sem atualização por mais de 10 dias viram alerta (2026-04-01)
+Mais de 10 dias sem atualização no `.mpp` deve gerar alerta de obra potencialmente parada ou encerrada.
+
+### Filtro do relatório de cursos é restritivo (2026-04-01)
+Incluir cursos curtos, workshops, certificações e eventos. Excluir MBAs, pós-graduações e especializações longas.
+
+## Identidade
+
+### Identidade operacional da agente (2026-04-01)
+Nome: Flávia. Papel: COO digital / braço direito executivo. Idioma: português brasileiro.
