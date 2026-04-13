@@ -23,8 +23,15 @@ _Atualizado em 2026-04-13_
 ## Scripts
 - `scripts/msgraph_email.py` — listar, ler, mover emails
 - `scripts/msgraph_calendar.py` — listar, criar, deletar eventos
+- `scripts/msgraph_healthcheck.py` — valida email e calendário de Mensura, MIA e caixa da Flávia
 - `scripts/monitor_semanal.py` — monitor toda segunda 8h BRT
 - `scripts/relatorio_cursos_telegram.py` — relatório toda sexta 16h BRT
+
+## Healthcheck operacional
+- Script criado para detectar quebra de token, resolução de usuário e acesso a inbox/calendário antes de impactar a rotina.
+- Cobertura atual: Mensura email, Mensura calendário, MIA email, MIA calendário e inbox da Flávia.
+- Saída é resumida e com exit code 1 em caso de falha, pronta para cron ou monitoramento posterior.
+- Validação manual executada em 2026-04-13 com todos os checks em `OK`.
 
 ## Config
 - Mensura: `config/ms-graph.json`
