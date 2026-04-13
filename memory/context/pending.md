@@ -15,6 +15,7 @@ _Atualizado em 2026-04-13_
 - [ ] **LinkedIn integration** — fornecer Client ID + Client Secret do app no LinkedIn Developer.
 - [ ] **Instagram integration** — criar app no Meta Developer e fornecer App ID + Secret.
 - [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
+- [ ] **Roteamento do tópico `AGENTE FINANCEIRO`** — o agente `finance` existe e tem sessão própria, mas este tópico ainda está preso ao agente `main`; decidir se quer migrar o roteamento deste tópico para o `finance`.
 
 ## Em andamento interno
 
