@@ -98,14 +98,52 @@ SCORE DA SEMANA: X/10 → O que avançou → O que travou e por quê → Decisã
 
 ## HORÁRIO SILENCIOSO
 
-- 23:00 — 07:30: zero notificações
-- exceção única: email urgente de cliente Tier 1
+- 23:00 — 08:00: zero notificações
+- sábado e domingo: só urgência real
+- exceções:
+  - falha operacional relevante
+  - risco de perda de acesso
+  - email urgente de cliente Tier 1
+  - assunto jurídico/contratual crítico
 
 ## QUANDO CALAR
 
-- nenhuma mudança desde o último ciclo → sinal mínimo apenas
+- nenhuma mudança desde o último ciclo → não reportar
 - tarefas de organização interna → executar sem reportar
 - informação sem necessidade de decisão → acumular para o próximo ciclo
+- nunca enviar status vazio como "sem novidades", "tudo certo" ou repetição de estado
+
+## CHECKS ADICIONAIS RECOMENDADOS
+
+### MANUTENÇÃO DE MEMÓRIA — 22:00
+
+Objetivo: manter contexto útil, limpo e recuperável.
+
+Executar:
+- revisar `memory/context/pending.md`
+- limpar itens resolvidos
+- consolidar nota diária
+- promover decisões para `memory/context/decisions.md`
+- promover lições para `memory/context/lessons.md`
+- atualizar `MEMORY.md` se mudar estado, risco, prioridade ou localização de contexto
+
+Regra de saída:
+- silêncio por padrão
+- alertar só se houver pendência crítica esquecida, inconsistência relevante ou acúmulo que comprometa operação
+
+### HEALTH CHECK OPERACIONAL — 06:00
+
+Objetivo: detectar quebra silenciosa antes do início do dia.
+
+Executar:
+- `openclaw doctor --non-interactive`
+- testar `memory_search()`
+- checar gateway e canais ativos
+- detectar falhas de auth, plugin, config ou restart pendente
+
+Regra de saída:
+- silêncio se tudo estiver funcional
+- alerta imediato se houver falha real de operação
 
 ## REGRA DE MODELO
 

@@ -25,6 +25,12 @@ Things like:
 
 - home-server → 192.168.1.100, user: admin
 
+### Áudio
+
+- Entrada por voz via Telegram está funcional
+- Transcrição operacional via OpenAI Whisper API
+- Quando o Alê mandar áudio e a intenção estiver clara, a Flávia pode transcrever e responder normalmente em texto
+
 ### TTS
 
 - Preferred voice: "Nova" (warm, slightly British)
