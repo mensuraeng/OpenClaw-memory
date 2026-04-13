@@ -1,30 +1,44 @@
 # Contexto de Negócio
 
-_Atualizado em 2026-04-01_
+_Atualizado em 2026-04-13_
 
-## MENSURA Engenharia
+## Para que serve
 
-**Posicionamento:** Torre de Controle Técnica e Executiva de Obras
-**Mantra:** "Obras não atrasam por falta de esforço. Atrasam por falta de sistema."
-**Para quem:** Construtoras/incorporadoras de médio/grande porte, obras de alta complexidade
-**Compete por:** redução de risco e preservação de capital — não por preço
-**Números:** +100 obras | +1MM m² | R$1Bi carteira
-**Visão:** PMO-as-a-Service → plataforma nacional de gestão de empreendimentos
-**Apresentação:** `referencias/MENSURA_apresentacao.pdf`
-**Email:** alexandre@mensuraengenharia.com.br
+Este arquivo concentra o contexto institucional das empresas.
+Não deve duplicar perfil pessoal do Alê nem virar apresentação longa.
+Serve para orientar linguagem, posicionamento e decisão por frente.
 
-## MIA Engenharia
+## MENSURA
 
-**Posicionamento:** Engenharia de performance para alto padrão. Um responsável técnico do conceito à entrega.
-**Produto central:** tranquilidade sustentada por precisão técnica
-**Frase:** "Mais do que construir, a MIA organiza o processo construtivo para que o cliente tenha controle, clareza e tranquilidade em todas as etapas."
-**Para quem:** Alto patrimônio — proprietários, investidores, famílias
-**Diferencial:** Pré-Construção como núcleo do valor — decisões antes da obra = risco eliminado na origem
-**Pilares:** Planejamento Técnico | Engenharia de Valor | BIM | Lean Construction | Gestão Integrada
-**Apresentação:** `referencias/MIA_apresentacao.pdf`
-**Email:** alexandre@miaengenharia.com.br
+- **Posicionamento:** torre de controle técnica e executiva de obras
+- **Tese central:** obras não atrasam por falta de esforço, atrasam por falta de sistema
+- **Cliente-alvo:** construtoras e incorporadoras de médio e grande porte, obras de alta complexidade
+- **Vantagem competitiva:** redução de risco, proteção de capital e antecipação de decisão
+- **Linguagem:** técnico-executiva, baseada em dados, risco, prazo, governança e proteção de decisão
+- **Referência:** `referencias/MENSURA_apresentacao.pdf`
 
-## Tom de comunicação por empresa
+## MIA
 
-**MENSURA:** executivo, técnico, dados no centro, sem adjetivos vazios, foco em proteção de decisão
-**MIA:** sofisticado, silencioso, cliente no centro, tranquilidade como produto, precisão como valor
+- **Posicionamento:** engenharia de performance para empreendimentos de alto padrão
+- **Tese central:** tranquilidade do cliente sustentada por precisão técnica e governança do processo
+- **Cliente-alvo:** famílias, proprietários e investidores de alto padrão
+- **Vantagem competitiva:** pré-construção forte, eliminação de improviso e responsável técnico único
+- **Linguagem:** premium, precisa, discreta, cliente no centro, confiança sem excesso de marketing
+- **Referência:** `referencias/MIA_apresentacao.pdf`
+
+## PCS
+
+- **Posicionamento:** integradora de engenharia e obras com foco prioritário em obras públicas e licitações
+- **Tese central:** robustez operacional, governança e capacidade real de entrega
+- **Base concreta:** PCS Obras e Locações Ltda. | CNPJ 07.753.834/0001-17
+- **Vantagem competitiva:** estrutura empresarial verificável, planejamento, controle e execução combinados
+- **Ponto cego atual:** fragmentação de marca enfraquece clareza comercial e autoridade pública
+- **Linguagem:** técnico-institucional, capacidade operacional, contratos, previsibilidade, compliance e entrega
+- **Referência:** `referencias/PCS_apresentacao.pdf`
+
+## Regras de uso
+
+- Se a dúvida for sobre linguagem, usar este arquivo antes de improvisar tom.
+- Se a dúvida for sobre o Alê como pessoa, usar `USER.md`, não este arquivo.
+- Se a dúvida for sobre projeto específico, usar o arquivo do projeto, não este resumo.
+- Atualizar quando houver mudança real de posicionamento, foco ou narrativa institucional.
