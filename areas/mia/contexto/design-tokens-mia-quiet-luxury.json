@@ -1,0 +1,79 @@
+{
+  "brand": "MIA Engenharia",
+  "theme": "quiet-luxury",
+  "colors": {
+    "bgPrimary": "#F9F9F7",
+    "bgContrast": "#050505",
+    "accent": "#A0A0A0",
+    "textPrimary": "#1C1917",
+    "textSecondary": "#737373",
+    "borderSubtle": "rgba(28,25,23,0.12)",
+    "watermark": "rgba(28,25,23,0.03)"
+  },
+  "typography": {
+    "display": {
+      "fontFamily": "Playfair Display",
+      "fontWeightMin": 400,
+      "fontWeightMax": 600,
+      "italicKeywords": ["MIA", "Silêncio", "End to End", "Precisão", "Execução"]
+    },
+    "body": {
+      "fontFamily": "Lato",
+      "bodyWeight": 300,
+      "labelLetterSpacing": "0.25em",
+      "labelsUppercase": true
+    },
+    "technicalNumerals": {
+      "style": "mono-or-wide-tracking",
+      "examples": ["01", "02", "03", "04"]
+    }
+  },
+  "layout": {
+    "sidebar": {
+      "collapsedWidth": "80px",
+      "expandedWidth": "256px",
+      "background": "#050505",
+      "borderWidth": "1px",
+      "activeIndicatorWidth": "1px",
+      "activeIndicatorColor": "#F9F9F7"
+    },
+    "hero": {
+      "background": "#050505",
+      "logoScale": "1.3",
+      "hasVerticalGradientGuide": true
+    },
+    "methodologyGrid": {
+      "columns": 4,
+      "connectorWidth": "1px"
+    },
+    "watermark": {
+      "character": "M",
+      "size": "40rem",
+      "opacity": 0.03
+    }
+  },
+  "motion": {
+    "scrollBehavior": "smooth",
+    "fadeInUp": {
+      "distance": "50px",
+      "durationMs": 1000,
+      "easing": "ease-out"
+    },
+    "logoHover": {
+      "durationMs": 700,
+      "scale": 1.05,
+      "brightness": 1.1
+    },
+    "footerContactPills": {
+      "hoverFrom": "#A0A0A0",
+      "hoverTo": "#FFFFFF"
+    }
+  },
+  "copy": {
+    "slogans": [
+      "Precisão. Silêncio. Previsibilidade.",
+      "Engenharia aplicada à tranquilidade do cliente.",
+      "Antes de construir, nós projetamos a execução."
+    ]
+  }
+}
