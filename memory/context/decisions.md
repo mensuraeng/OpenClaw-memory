@@ -50,3 +50,6 @@ Nome: Flávia. Papel: COO digital / braço direito executivo. Idioma: português
 
 ### PCS adota identidade visual oficial enviada pelo Alê (2026-04-13)
 Adotar o logo horizontal com assinatura e a paleta oficial da PCS como base visual institucional, comercial e digital, salvo decisão posterior explícita.
+
+### Grupo `MENSURA Engenharia` vira canal do agente da MENSURA (2026-04-13)
+No Telegram, o grupo `MENSURA Engenharia` (chat_id `telegram:-1003366344184`, tópico `1`) passa a ser o canal operacional do agente da MENSURA. Nele, a Flávia deve assumir contexto MENSURA por padrão e priorizar temas da empresa, salvo instrução contrária.
