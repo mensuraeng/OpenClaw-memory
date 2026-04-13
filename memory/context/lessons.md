@@ -1,33 +1,39 @@
 # Lições Aprendidas
 
-> Erros, padrões e aprendizados do dia a dia com a Flávia.
-> 🔒 Estratégicas = permanentes | ⏳ Táticas = expiram em 30 dias
+> Erros recorrentes, armadilhas e padrões úteis da operação.
 
-_Atualizado em 2026-04-01_
+_Atualizado em 2026-04-13_
 
----
+## Permanentes
 
-## 🔒 Estratégicas
+### Microsoft 365 não aceita auth básica (2026-04-01)
+Clientes IMAP/SMTP tradicionais falham para essas contas. O padrão é Microsoft Graph API com client credentials.
 
-### Microsoft 365 não aceita basic auth (2026-04-01)
-Himalaya CLI e qualquer cliente IMAP/SMTP padrão são bloqueados pelo Microsoft para contas Office 365. Sempre usar Microsoft Graph API com client credentials flow (app registration no Entra ID).
+### Script de monitor deve ser testado antes de ir para cron (2026-04-01)
+Rodar manualmente antes evita agendar saída quebrada, formato ruim ou dado errado.
 
-### Testar antes de commitar no monitor (2026-04-01)
-Scripts de monitoramento devem ser testados com `python3 script.py` antes de ir para cron. O output no terminal é idêntico ao que vai para o Telegram — valida formato e dados de uma vez.
+### Configuração do OpenClaw deve ser agrupada antes de restart (2026-04-01)
+Mudanças de config aplicam após restart. Melhor consolidar alterações e reiniciar uma vez.
 
-### Configurar via `openclaw config set` antes de reiniciar (2026-04-01)
-Mudanças de config só aplicam após restart do gateway. Agrupar todas as mudanças de uma sessão e reiniciar uma vez só.
+### Auditoria de cron não pode olhar só o estado atual (2026-04-07)
+Jobs one-shot com `deleteAfterRun: true` somem depois de executar. Conferir `jobs.json`, backup e histórico de runs antes de concluir que não existiram.
 
----
+### Segredo não pertence à memória operacional (2026-04-07)
+Se um segredo parar em `memory/`, isso deve ser tratado como contenção temporária. O destino correto é o cofre.
 
-## ⏳ Táticas
+### Migração de credenciais deve ser controlada (2026-04-07)
+Varredura cega arrasta lixo, duplicata e contexto errado. Auditar primeiro, migrar depois.
 
-### `openclaw thinking` não existe nessa versão (2026-04-01 | expira 2026-05-01)
-O comando `openclaw thinking medium/off` não está disponível na versão atual. Reasoning é controlado com `/reasoning` dentro do chat.
+## Temporárias
 
-### `reserveTokensFloor` fica em `compaction`, não em `agents.defaults` diretamente (2026-04-01 | expira 2026-05-01)
-O path correto é `agents.defaults.compaction.reserveTokensFloor`, não `agents.defaults.reserveTokensFloor`.
+### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)
+O controle de reasoning disponível está no chat via `/reasoning`, não em comando CLI `openclaw thinking`.
 
----
+### `reserveTokensFloor` fica em `agents.defaults.compaction` (2026-04-01 | revisar depois de upgrade)
+O path correto atual é `agents.defaults.compaction.reserveTokensFloor`.
 
-*Revisão mensal: deletar táticas vencidas.*
+## Regra de manutenção
+
+- Promover para `decisions.md` o que deixar de ser só lição e virar regra permanente.
+- Remover lição temporária quando o ambiente mudar e ela deixar de ser verdade.
+- Não registrar aqui detalhe de sessão que só importa uma vez.
