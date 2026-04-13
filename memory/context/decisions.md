@@ -53,3 +53,6 @@ Adotar o logo horizontal com assinatura e a paleta oficial da PCS como base visu
 
 ### Grupo `MENSURA Engenharia` vira canal do agente da MENSURA (2026-04-13)
 No Telegram, o grupo `MENSURA Engenharia` (chat_id `telegram:-1003366344184`, tópico `1`) passa a ser o canal operacional do agente da MENSURA. Nele, a Flávia deve assumir contexto MENSURA por padrão e priorizar temas da empresa, salvo instrução contrária.
+
+### Grupo `PCS Engenharia` vira canal do agente da PCS (2026-04-13)
+No Telegram, o grupo `PCS Engenharia` (chat_id `telegram:-1003146152550`, tópico `1`) passa a ser o canal operacional do agente da PCS. Nele, a Flávia deve assumir contexto PCS por padrão e priorizar temas da empresa, salvo instrução contrária.
