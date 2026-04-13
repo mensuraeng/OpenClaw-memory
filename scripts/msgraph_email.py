@@ -130,7 +130,7 @@ def main():
     p.add_argument("cmd", choices=["list","read","send","move","folders"], help="Comando")
     p.add_argument("--account", choices=["mensura","mia"], help="Conta/config a usar")
     p.add_argument("--config", help="Caminho explícito do arquivo de configuração")
-    p.add_argument("--user", default="alexandre@mensuraengenharia.com.br")
+    p.add_argument("--user", help="Caixa postal alvo")
     p.add_argument("--folder", default="inbox")
     p.add_argument("--limit", type=int, default=10)
     p.add_argument("--id", help="ID da mensagem")
@@ -147,23 +147,24 @@ def main():
             args.body = f.read()
 
     cfg = load_config(config_path=args.config, account=args.account)
+    user = args.user or cfg.get("defaultUser") or "alexandre@mensuraengenharia.com.br"
     token = get_token(cfg)
 
     if args.cmd == "list":
-        list_emails(token, args.user, args.folder, args.limit)
+        list_emails(token, user, args.folder, args.limit)
     elif args.cmd == "read":
         if not args.id: print("--id obrigatório"); sys.exit(1)
-        read_email(token, args.user, args.id)
+        read_email(token, user, args.id)
     elif args.cmd == "send":
         if not all([args.to, args.subject, args.body]):
             print("--to, --subject e --body são obrigatórios"); sys.exit(1)
-        send_email(token, args.user, args.to, args.subject, args.body, args.cc)
+        send_email(token, user, args.to, args.subject, args.body, args.cc)
     elif args.cmd == "move":
         if not args.id or not args.dest:
             print("--id e --dest são obrigatórios"); sys.exit(1)
-        move_email(token, args.user, args.id, args.dest)
+        move_email(token, user, args.id, args.dest)
     elif args.cmd == "folders":
-        list_folders(token, args.user)
+        list_folders(token, user)
 
 if __name__ == "__main__":
     main()

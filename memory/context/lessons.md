@@ -24,6 +24,9 @@ Se um segredo parar em `memory/`, isso deve ser tratado como contenção tempor�
 ### Migração de credenciais deve ser controlada (2026-04-07)
 Varredura cega arrasta lixo, duplicata e contexto errado. Auditar primeiro, migrar depois.
 
+### Script multi-conta não pode fixar usuário padrão no código (2026-04-13)
+Quando a conta muda, o script deve puxar `defaultUser` da config ou exigir `--user`. Hardcode silencioso gera falso negativo e mascara integração saudável.
+
 ## Temporárias
 
 ### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)

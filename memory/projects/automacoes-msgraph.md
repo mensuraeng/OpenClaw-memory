@@ -1,10 +1,15 @@
 # Automações Microsoft Graph
 
-_Atualizado em 2026-04-01_
+_Atualizado em 2026-04-13_
 
 - **Status:** base operacional ativa
 - **Próximo passo:** usar flavia@mensuraengenharia.com.br como remetente nos scripts de automação
 - **Bloqueios:** nenhum
+
+## Ajuste recente
+- Corrigido bug nos scripts `msgraph_email.py` e `msgraph_calendar.py`: o usuário padrão estava hardcoded como `alexandre@mensuraengenharia.com.br`.
+- Agora cada conta usa `defaultUser` do respectivo JSON de configuração, com `--user` opcional para override.
+- Validação concluída na MIA: email e calendário responderam corretamente após o ajuste.
 
 ## Integrações ativas
 - Email Mensura (`alexandre@mensuraengenharia.com.br`) — ✅

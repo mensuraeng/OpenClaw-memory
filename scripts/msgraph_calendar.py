@@ -125,7 +125,7 @@ def main():
     p.add_argument("cmd", choices=["list","create","delete"], help="Comando")
     p.add_argument("--account", choices=["mensura","mia"], help="Conta/config a usar")
     p.add_argument("--config", help="Caminho explícito do arquivo de configuração")
-    p.add_argument("--user", default="alexandre@mensuraengenharia.com.br")
+    p.add_argument("--user", help="Usuário/calendário alvo")
     p.add_argument("--days", type=int, default=7, help="Dias a listar (padrão: 7)")
     p.add_argument("--id", help="ID do evento")
     p.add_argument("--subject", help="Título do evento")
@@ -137,17 +137,18 @@ def main():
     args = p.parse_args()
 
     cfg = load_config(config_path=args.config, account=args.account)
+    user = args.user or cfg.get("defaultUser") or "alexandre@mensuraengenharia.com.br"
     token = get_token(cfg)
 
     if args.cmd == "list":
-        list_events(token, args.user, args.days)
+        list_events(token, user, args.days)
     elif args.cmd == "create":
         if not all([args.subject, args.start, args.end]):
             print("--subject, --start e --end são obrigatórios"); sys.exit(1)
-        create_event(token, args.user, args.subject, args.start, args.end, args.location, args.body, args.attendees)
+        create_event(token, user, args.subject, args.start, args.end, args.location, args.body, args.attendees)
     elif args.cmd == "delete":
         if not args.id: print("--id obrigatório"); sys.exit(1)
-        delete_event(token, args.user, args.id)
+        delete_event(token, user, args.id)
 
 if __name__ == "__main__":
     main()
