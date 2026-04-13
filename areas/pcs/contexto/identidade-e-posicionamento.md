@@ -58,3 +58,12 @@ Evitar:
 - linguagem premium da MIA
 - linguagem de PMO puro da MENSURA quando o objetivo for institucional
 - marketing genérico sem prova operacional
+
+## Identidade visual
+
+A PCS adota como base visual oficial:
+- logo horizontal com assinatura
+- paleta oficial com cinza escuro, warm red e off white
+
+Referência detalhada:
+- `areas/pcs/contexto/identidade-visual.md`

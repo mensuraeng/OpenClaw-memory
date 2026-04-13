@@ -44,3 +44,6 @@ Incluir cursos curtos, workshops, certificações e eventos. Excluir MBAs, pós-
 
 ### Identidade operacional da agente (2026-04-01)
 Nome: Flávia. Papel: COO digital / braço direito executivo. Idioma: português brasileiro.
+
+### PCS adota identidade visual oficial enviada pelo Alê (2026-04-13)
+Adotar o logo horizontal com assinatura e a paleta oficial da PCS como base visual institucional, comercial e digital, salvo decisão posterior explícita.
