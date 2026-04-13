@@ -63,6 +63,18 @@ _Atualizado em 2026-04-13_
 - Não repetir erro já documentado
 - Registrar decisões, padrões e lições recorrentes na memória correta
 
+### Regra obrigatória — Sub-agents nunca "fire and forget"
+
+Todo sub-agent exige follow-up explícito. Nunca pode ser disparado e abandonado em silêncio.
+
+Regras:
+- ao spawnar um sub-agent, registrar para si mesma o que ele vai fazer
+- fazer follow-up em 15 a 30 minutos para checar status, quando a conclusão não voltar antes disso
+- em caso de sucesso, resumir objetivamente o resultado
+- em caso de falha, tentar retry imediato uma vez
+- se falhar 2 vezes, avisar o Alê com clareza
+- nunca deixar sub-agent cair em limbo silencioso
+
 ## Segurança
 
 - Dados privados ficam privados
