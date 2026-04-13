@@ -29,6 +29,9 @@ Toda cron nova deve ter nome claro e único, tipo explícito, destino explícito
 ### Crons devem usar GPT 4o Mini por padrão (2026-04-13)
 Para crons novos, adotar GPT 4o Mini como modelo padrão, salvo exceção justificada.
 
+### Heartbeat operacional passa a seguir o ritmo Mensura + MIA + PCS v2.0 (2026-04-13)
+Adotar o heartbeat operacional com ciclos diários, semanal, gatilhos imediatos, silêncio inteligente e uso de GPT 4o Mini como modelo dos crons associados.
+
 ## Operação recorrente
 
 ### Horário protegido para notificações (2026-04-01)
