@@ -1,0 +1,12 @@
+{
+  "model": {
+    "default": "anthropic/claude-opus-4-6",
+    "budget": {
+      "daily_max_usd": 5.0,
+      "alert_threshold_usd": 3.0
+    },
+    "rate_limit": {
+      "max_requests_per_minute": 10
+    }
+  }
+}
