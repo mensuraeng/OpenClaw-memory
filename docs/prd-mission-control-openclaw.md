@@ -35,12 +35,17 @@ Sem isso, parte da operação depende de leitura manual, CLI e memória de conte
 
 ## 3. Resultado desejado
 
-Criar um Mission Control privado, interno e seguro que permita:
+Criar um Mission Control privado, interno e seguro que funcione como camada de observabilidade operacional do ecossistema OpenClaw e permita:
 - enxergar o estado do ecossistema OpenClaw em tempo real
 - diagnosticar falhas rapidamente
 - navegar contexto e memória sem expor superfícies perigosas
 - reduzir dependência de shell manual no VPS
 - apoiar operação executiva sem virar vetor de ataque ao host ou à memória da Flávia
+
+### Tese do produto
+
+Mission Control não é um painel genérico de administração.
+É uma camada privada de observabilidade operacional para a estrutura da Flávia, com privilégios mínimos, foco em leitura e desenho anti-prompt-injection.
 
 ---
 
@@ -56,7 +61,7 @@ Entregar uma primeira versão com:
 - leitura de arquivos operacionais permitidos
 - logs e alertas resumidos
 - autenticação forte
-- deploy interno atrás de proxy seguro
+- deploy interno privado via Tailscale
 
 ### 4.2 Fora do escopo inicial
 
@@ -178,12 +183,14 @@ Opcional na v1.1:
 ### RNF1. Segurança primeiro
 A solução deve ser desenhada como painel de observabilidade com superfícies mínimas de escrita.
 
-### RNF2. Deploy privado
-Acesso apenas interno, via pelo menos um destes controles:
-- Tailscale
-- Cloudflare Access
-- IP allowlist no proxy
-- VPN
+### RNF2. Deploy privado via Tailscale
+Acesso apenas interno pela tailnet já existente na VPS.
+
+Diretriz:
+- sem exposição pública aberta
+- sem Cloud Tunnel
+- autenticação do app continua obrigatória como segunda barreira
+- Tailscale funciona como primeira barreira de rede
 
 ### RNF3. Performance suficiente
 O painel deve carregar rápido e funcionar bem em VPS modesto.
@@ -193,6 +200,9 @@ Deploy, restart e rollback precisam ser simples.
 
 ### RNF5. Auditabilidade
 Ações de escrita, se existirem, devem ser poucas e auditáveis.
+
+### RNF6. Read-only por padrão
+A v1 deve nascer como produto de observabilidade, não de administração ativa.
 
 ---
 
@@ -270,10 +280,11 @@ Obrigatório:
 - rate limit
 - proteção adicional de rede
 
-### F7. Isolar por subdomínio interno e proxy
-Exemplo:
-- `mission-control.interno...`
-- reverse proxy com TLS
+### F7. Isolar pela tailnet Tailscale
+Modelo recomendado:
+- serviço acessível apenas pela rede Tailscale
+- bind local ou interface restrita
+- proxy local opcional apenas se agregar organização operacional
 - sem exposição pública aberta
 
 ### F8. Sanitizar rendering de markdown/conteúdo
@@ -304,7 +315,15 @@ Melhor caminho:
 - fork interno ou cópia controlada
 - remover superfícies perigosas
 - adaptar à estrutura OpenClaw real
-- subir como painel interno privado
+- subir como painel interno privado via Tailscale
+
+### 10.1.1 Princípios de design
+- observabilidade antes de ação
+- read-only por padrão
+- privilégios mínimos
+- anti-prompt-injection by design
+- arquitetura real antes de UI genérica
+- rollback simples antes de expansão de escopo
 
 ### 10.2 Modo de operação
 O painel deve operar em três níveis:
@@ -366,9 +385,9 @@ Validar:
 
 ### Fase E — Produção restrita
 Subir com:
-- proxy seguro
-- autenticação forte
-- acesso privado
+- acesso privado via Tailscale
+- autenticação forte no app
+- bind restrito
 - logs mínimos de acesso
 - rotina de atualização controlada
 
@@ -381,10 +400,39 @@ O Mission Control só pode ir para produção se:
 - arquivos-raiz sensíveis estiverem bloqueados para escrita
 - navegação de arquivo estiver em allowlist restrita
 - auth estiver endurecida
-- acesso estiver protegido por camada adicional de rede
+- acesso estiver restrito à tailnet Tailscale
 - a arquitetura refletir os agentes reais do ambiente
 - risco de prompt injection persistente estiver reduzido a nível aceitável
 - houver plano de rollback simples
+
+## 12.1 Critérios de segurança verificáveis
+- sem terminal web ativo na v1
+- sem PUT genérico de arquivos
+- sem escrita em `SOUL.md`, `AGENTS.md`, `MEMORY.md`, `USER.md`, `IDENTITY.md`, `TOOLS.md`
+- sem navegação fora da allowlist definida
+- sem exposição pública aberta
+- sem edição ampla de `memory/`
+
+## 12.2 Zonas de acesso
+
+### Zona verde — leitura segura
+- métricas de host aprovadas
+- estado de agentes
+- sessões resumidas
+- crons
+- docs permitidos
+
+### Zona amarela — leitura sensível e controlada
+- partes de `memory/`
+- partes de `openclaw.json`
+- logs operacionais selecionados
+
+### Zona vermelha — proibido na v1
+- terminal remoto
+- escrita ampla em memória
+- edição de arquivos-raiz sensíveis
+- navegação livre no filesystem
+- ações destrutivas ou administrativas pelo browser
 
 ---
 
@@ -443,5 +491,17 @@ Esse é o equilíbrio certo entre ganho operacional e risco aceitável.
 
 Próximo passo recomendado:
 - fazer a auditoria estática completa do repo
-- transformar os achados em checklist técnico de hardening
+- transformar os achados em checklist técnico de hardening e implantação Tailscale-first
 - só depois começar a adaptação/deploy
+
+## 17. Rollback
+
+Se o deploy falhar ou aumentar risco operacional:
+- desligar o serviço do Mission Control
+- remover o binding de proxy local, se existir
+- manter OpenClaw principal intocado
+- voltar para a versão anterior do diretório do Mission Control
+- preservar logs mínimos para diagnóstico
+
+Princípio:
+O rollback do Mission Control não pode depender de intervenção delicada no OpenClaw principal.
