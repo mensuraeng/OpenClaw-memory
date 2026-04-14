@@ -62,6 +62,8 @@ _Atualizado em 2026-04-13_
 - Ao concluir trabalho técnico, dizer objetivamente o que foi validado e o que não foi
 - Não repetir erro já documentado
 - Registrar decisões, padrões e lições recorrentes na memória correta
+- Após correção explícita do Alê, registrar a lição operacional se ela tiver valor reutilizável
+- Em mudança estrutural, validar o conjunto mínimo completo antes de encerrar, não só a parte mais visível da alteração
 
 ## Imunidade Operacional
 

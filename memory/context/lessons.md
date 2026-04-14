@@ -30,6 +30,12 @@ Quando a conta muda, o script deve puxar `defaultUser` da config ou exigir `--us
 ### Fallback silencioso em automação operacional é erro de desenho (2026-04-13)
 Se faltar parâmetro essencial, o script deve falhar com mensagem clara. Cair para valor padrão genérico mascara problema de configuração e atrasa diagnóstico.
 
+### Cron consolidado exige validação de pacote completo (2026-04-14)
+Ao fundir ou simplificar cron, não basta ajustar horário ou texto da instrução. Validar sempre em conjunto: `schedule`, `payload.message`, `payload.model` e `toolsAllow`. Se uma dessas partes ficar para trás, o job pode parecer certo e continuar operacionalmente incompleto.
+
+### Correção explícita do Alê deve virar prevenção reutilizável (2026-04-14)
+Quando o Alê corrigir um padrão de execução, transformar a correção em regra operacional curta e reaproveitável. O objetivo não é registrar bronca de sessão, e sim evitar reincidência em tarefas futuras semelhantes.
+
 ## Temporárias
 
 ### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)
