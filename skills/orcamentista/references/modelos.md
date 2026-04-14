@@ -1,37 +1,72 @@
 # Modelos de saída — Orçamentista
 
-## 1. Orçamento preliminar
-- Objetivo
-- Escopo considerado
-- Premissas principais
-- Estrutura macro de custo
-- Faixa estimada
-- Principais riscos
-- Próximos dados necessários
+## 1. Abertura de composição
+- Código / base usada
+- Descrição do serviço
+- Unidade
+- Material
+- Mão de obra
+- Equipamentos, se houver
+- Observações sobre coeficientes
+- Alertas de inconsistência
 
-## 2. Revisão crítica de proposta recebida
+## 2. Quantificação
+- Item
+- Unidade
+- Memória de cálculo
+- Quantidade encontrada
+- Premissas adotadas
+- Lacunas de informação
+
+## 3. Medição
+- Escopo medido
+- Base contratual
+- Quantidade contratada
+- Quantidade acumulada anterior
+- Quantidade medida no período
+- Quantidade acumulada atual
+- Saldo
+- Divergências / risco de aditivo
+
+## 4. Lista de compra
+- Item
+- Unidade
+- Quantidade
+- Origem do quantitativo
+- Observações de compra
+- Itens críticos / dependências
+
+## 5. Conferência de orçamento
 - Resumo executivo
-- Pontos fortes
+- Itens consistentes
 - Lacunas e omissões
 - Itens subcotados suspeitos
 - Itens superestimados
-- Riscos contratuais/comerciais
+- Erros de unidade / coeficiente / totalização
+- Riscos técnicos, comerciais e contratuais
 - Recomendação final
 
-## 3. Comparativo entre alternativas
-- Alternativas comparadas
-- Diferença de custo
-- Diferença de prazo
-- Diferença de risco
-- Impacto em qualidade/operação
-- Recomendação com justificativa
+## 6. Análise de BDI
+- Composição apresentada
+- Componentes do BDI
+- Faixas de referência
+- Pontos fora do padrão
+- Impacto no preço final
+- Parecer
 
-## 4. Proposta técnico-comercial resumida
-- Escopo
-- Entregáveis
-- Premissas
-- Exclusões
-- Prazo
-- Valor
-- Condições
-- Observações críticas
+## 7. Proposta de subcontratado
+- Escopo considerado
+- Escopo ausente
+- Preço / unidade / verba
+- Riscos de medição
+- Riscos de interface
+- Riscos contratuais
+- Parecer final
+
+## 8. Comparativo entre bases
+- Bases comparadas
+- Diferença de composição
+- Diferença de preço
+- Diferença de premissas
+- Limitações de comparabilidade
+- Recomendação com justificativa
