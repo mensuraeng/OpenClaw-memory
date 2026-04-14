@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Envia relatório de licitações PNCP por email via Microsoft Graph.
-Uso: python3 licitacoes_email.py [--to email@dest.com]
+Uso: python3 licitacoes_email.py [--to email@dest.com] [--force]
 """
 
 import json, sys, os, subprocess, argparse, urllib.request, urllib.parse, urllib.error
@@ -11,6 +11,10 @@ BRT = timezone(timedelta(hours=-3))
 CONFIG_FILE = os.path.expanduser("/root/.openclaw/workspace/config/ms-graph.json")
 SENDER      = "flavia@mensuraengenharia.com.br"
 DESTINATARIO_PADRAO = "alexandre@pcsengenharia.com.br"
+DIA_ENVIO_SEMANA = 0  # segunda
+HORA_ENVIO_BRT = 9
+MINUTO_ENVIO_BRT = 0
+JANELA_MINUTOS = 20
 
 def get_token(cfg):
     url = f"https://login.microsoftonline.com/{cfg['tenantId']}/oauth2/v2.0/token"
@@ -170,12 +174,24 @@ def enviar_email(token, to, subject, html):
         print(f"❌ Erro {e.code}: {e.read().decode()}", file=sys.stderr)
         sys.exit(1)
 
+def dentro_da_janela_programada(agora):
+    if agora.weekday() != DIA_ENVIO_SEMANA:
+        return False
+    alvo = agora.replace(hour=HORA_ENVIO_BRT, minute=MINUTO_ENVIO_BRT, second=0, microsecond=0)
+    delta_min = abs((agora - alvo).total_seconds()) / 60
+    return delta_min <= JANELA_MINUTOS
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--to", default=DESTINATARIO_PADRAO, help="Destinatário do email")
+    p.add_argument("--force", action="store_true", help="Ignora trava de agenda e envia mesmo fora da janela semanal")
     args = p.parse_args()
 
     agora = datetime.now(BRT)
+    if not args.force and not dentro_da_janela_programada(agora):
+        print("⏭️ Envio bloqueado: fora da janela semanal permitida (segunda 09:00 BRT).", file=sys.stderr)
+        return
+
     print(f"📡 Gerando relatório de licitações...", file=sys.stderr)
 
     cfg   = json.load(open(CONFIG_FILE))
