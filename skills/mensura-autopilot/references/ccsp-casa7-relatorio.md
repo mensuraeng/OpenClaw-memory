@@ -101,6 +101,11 @@ Sempre que o usuário pedir **Relatório CCSP - Casa 7**, assumir este formato c
 ## Regra de formatação
 Se o usuário pedir o relatório final, preferir gerar HTML estruturado no padrão do modelo de referência.
 
+Template-base oficial desta obra:
+- `assets/ccsp-casa7-relatorio-template.html`
+
+Usar este arquivo como base visual e estrutural, adaptando apenas os dados variáveis da semana corrente.
+
 ## Mapeamento dos insumos para a saída
 ### Cronograma alimenta
 - barra técnica
