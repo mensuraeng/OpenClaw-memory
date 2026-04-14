@@ -15,6 +15,7 @@ DIA_ENVIO_SEMANA = 0  # segunda
 HORA_ENVIO_BRT = 9
 MINUTO_ENVIO_BRT = 0
 JANELA_MINUTOS = 20
+LOCK_DIR = os.path.expanduser("/root/.openclaw/workspace/.state")
 
 def get_token(cfg):
     url = f"https://login.microsoftonline.com/{cfg['tenantId']}/oauth2/v2.0/token"
@@ -181,6 +182,21 @@ def dentro_da_janela_programada(agora):
     delta_min = abs((agora - alvo).total_seconds()) / 60
     return delta_min <= JANELA_MINUTOS
 
+def lock_path(agora):
+    os.makedirs(LOCK_DIR, exist_ok=True)
+    return os.path.join(LOCK_DIR, f"licitacoes_email_sent_{agora.strftime('%G-W%V')}.lock")
+
+def ja_enviado_na_semana(agora):
+    return os.path.exists(lock_path(agora))
+
+def registrar_envio_semana(agora, destinatario):
+    with open(lock_path(agora), "w", encoding="utf-8") as f:
+        f.write(json.dumps({
+            "sentAt": agora.isoformat(),
+            "to": destinatario,
+        }, ensure_ascii=False, indent=2))
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--to", default=DESTINATARIO_PADRAO, help="Destinatário do email")
@@ -190,6 +206,9 @@ def main():
     agora = datetime.now(BRT)
     if not args.force and not dentro_da_janela_programada(agora):
         print("⏭️ Envio bloqueado: fora da janela semanal permitida (segunda 09:00 BRT).", file=sys.stderr)
+        return
+    if not args.force and ja_enviado_na_semana(agora):
+        print("⏭️ Envio bloqueado: relatório semanal já enviado nesta semana.", file=sys.stderr)
         return
 
     print(f"📡 Gerando relatório de licitações...", file=sys.stderr)
@@ -206,6 +225,7 @@ def main():
     subject = f"📋 Licitações Construção Civil — {agora.strftime('%d/%m/%Y')} ({len(cards)} em aberto)"
 
     enviar_email(token, args.to, subject, html)
+    registrar_envio_semana(agora, args.to)
 
 if __name__ == "__main__":
     main()
