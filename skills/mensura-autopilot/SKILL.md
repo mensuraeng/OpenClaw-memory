@@ -37,6 +37,7 @@ Leia conforme a necessidade:
 - `references/checklists.md` para checklist diário e gatilhos de alerta
 - `references/report-template.md` para formato do relatório 7h
 - `references/rollout-plan.md` para implantação em fases
+- `references/ccsp-casa7-relatorio.md` quando o pedido for `Relatório CCSP - Casa 7` ou quando for necessário consolidar cronograma + ata + deliberações no padrão executivo MIA dessa obra
 
 ## Entregáveis típicos
 - desenho do autopilot por empresa ou portfólio
@@ -44,6 +45,7 @@ Leia conforme a necessidade:
 - regras de alerta e priorização
 - cronograma de execução recorrente
 - relatório executivo padronizado
+- relatório `CCSP - Casa 7` no padrão executivo MIA, consolidando cronograma, ata e deliberações
 - plano de rollout com guardrails
 
 ## Guardrails
