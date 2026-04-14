@@ -38,6 +38,7 @@ Leia conforme a necessidade:
 - `references/report-template.md` para formato do relatório 7h
 - `references/rollout-plan.md` para implantação em fases
 - `references/ccsp-casa7-relatorio.md` quando o pedido for `Relatório CCSP - Casa 7` ou quando for necessário consolidar cronograma + ata + deliberações no padrão executivo MIA dessa obra
+- `references/pg-louveira-relatorio-semanal.md` quando o pedido for `Relatório P&G`, `Relatório semanal P&G` ou relatório executivo da obra P&G no padrão MENSURA
 
 ## Entregáveis típicos
 - desenho do autopilot por empresa ou portfólio
@@ -46,6 +47,7 @@ Leia conforme a necessidade:
 - cronograma de execução recorrente
 - relatório executivo padronizado
 - relatório `CCSP - Casa 7` no padrão executivo MIA, consolidando cronograma, ata e deliberações
+- relatório semanal `P&G Louveira` no padrão executivo MENSURA, consolidando cronograma, riscos, look ahead, fornecedores críticos e plano de ação
 - plano de rollout com guardrails
 
 ## Guardrails
