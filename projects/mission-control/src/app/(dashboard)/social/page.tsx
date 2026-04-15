@@ -1,7 +1,36 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Globe, ShieldCheck, UserCircle2, Building2, Link2, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import {
+  Globe,
+  ShieldCheck,
+  UserCircle2,
+  Building2,
+  Link2,
+  CheckCircle2,
+  AlertTriangle,
+  ChevronRight,
+  ChevronDown,
+  KeyRound,
+  Workflow,
+  Send,
+} from 'lucide-react';
+
+type CompanyKey = 'pessoal' | 'mensura' | 'mia' | 'pcs';
+
+type SocialAsset = {
+  key: CompanyKey;
+  label: string;
+  type: 'pessoal' | 'empresa';
+  mode: string;
+  owner: string;
+  status: string;
+  color: string;
+  urnStatus: string;
+  publishingStatus: string;
+  oauthStatus: string;
+  notes: string[];
+};
 
 const app = {
   name: 'OpenClaw - Mensura',
@@ -9,17 +38,98 @@ const app = {
   clientId: '7731w27uswscu1',
   appType: 'Standalone app',
   shareRequested: true,
-  callbackStatus: 'pending',
+  callbackStatus: 'pending' as 'pending' | 'configured',
 };
 
-const assets = [
-  { name: 'Perfil pessoal do Alê', mode: 'assistido', owner: 'Alexandre', status: 'aguardando conexão' },
-  { name: 'Página MENSURA', mode: 'governado', owner: 'Marketing', status: 'aguardando URN / publicação' },
-  { name: 'Página MIA', mode: 'governado', owner: 'Marketing', status: 'aguardando URN / publicação' },
-  { name: 'Página PCS', mode: 'governado', owner: 'Marketing', status: 'aguardando URN / publicação' },
+const assets: SocialAsset[] = [
+  {
+    key: 'pessoal',
+    label: 'Perfil pessoal do Alê',
+    type: 'pessoal',
+    mode: 'assistido',
+    owner: 'Alexandre',
+    status: 'aguardando conexão OAuth',
+    color: '#60a5fa',
+    urnStatus: 'member URN pendente',
+    publishingStatus: 'publicação assistida ainda não habilitada',
+    oauthStatus: 'pendente de callback + autorização',
+    notes: [
+      'Canal pessoal deve continuar com aprovação explícita para postagens sensíveis.',
+      'Este ativo usará 3-legged OAuth em nome do membro.',
+      'Depois da callback, dá para capturar identidade e member URN.',
+    ],
+  },
+  {
+    key: 'mensura',
+    label: 'Página MENSURA',
+    type: 'empresa',
+    mode: 'governado',
+    owner: 'Marketing',
+    status: 'aguardando URN / publicação',
+    color: '#22c55e',
+    urnStatus: 'organization URN pendente',
+    publishingStatus: 'depende de Share on LinkedIn aprovado',
+    oauthStatus: 'pendente de callback + autorização do admin',
+    notes: [
+      'Usar esta página como piloto principal da operação institucional.',
+      'Governança funcional: marketing. Segurança e integração: Flávia/main.',
+      'Depois do OAuth, validar se o perfil autenticado é admin da página.',
+    ],
+  },
+  {
+    key: 'mia',
+    label: 'Página MIA',
+    type: 'empresa',
+    mode: 'governado',
+    owner: 'Marketing',
+    status: 'aguardando URN / publicação',
+    color: '#f59e0b',
+    urnStatus: 'organization URN pendente',
+    publishingStatus: 'depende de Share on LinkedIn aprovado',
+    oauthStatus: 'pendente de autorização via app central',
+    notes: [
+      'A operação MIA deve manter voz premium e revisão final quando necessário.',
+      'Pode compartilhar a mesma app central do LinkedIn.',
+      'Precisa confirmar admin da página no perfil autenticado.',
+    ],
+  },
+  {
+    key: 'pcs',
+    label: 'Página PCS',
+    type: 'empresa',
+    mode: 'governado',
+    owner: 'Marketing',
+    status: 'aguardando URN / publicação',
+    color: '#a78bfa',
+    urnStatus: 'organization URN pendente',
+    publishingStatus: 'depende de Share on LinkedIn aprovado',
+    oauthStatus: 'pendente de autorização via app central',
+    notes: [
+      'PCS precisa manter posicionamento institucional técnico-institucional.',
+      'Mesmo fluxo técnico, mas com governança editorial separada por marca.',
+      'Depois da conexão, mapear URN e rotina de publicação dedicada.',
+    ],
+  },
+];
+
+const blockers = [
+  { label: 'App LinkedIn criada', done: true },
+  { label: 'Client ID obtido', done: true },
+  { label: 'Solicitação de Share on LinkedIn enviada', done: app.shareRequested },
+  { label: 'Definir e configurar Redirect URI no Auth', done: false },
+  { label: 'Completar OAuth 3-legged', done: false },
+  { label: 'Mapear URNs do perfil pessoal e páginas MENSURA, MIA e PCS', done: false },
 ];
 
 export default function SocialPage() {
+  const [selected, setSelected] = useState<CompanyKey>('mensura');
+  const [expanded, setExpanded] = useState<Record<CompanyKey, boolean>>({
+    pessoal: false,
+    mensura: true,
+    mia: false,
+    pcs: false,
+  });
+
   const readyPercent = useMemo(() => {
     let done = 0;
     if (app.clientId) done += 1;
@@ -28,19 +138,26 @@ export default function SocialPage() {
     return Math.round((done / 3) * 100);
   }, []);
 
+  const current = assets.find((asset) => asset.key === selected) || assets[0];
+
+  const toggle = (key: CompanyKey) => {
+    setSelected(key);
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   return (
-    <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
+    <div style={{ padding: '24px', maxWidth: 1200, margin: '0 auto' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
         <Globe size={28} style={{ color: '#60a5fa' }} />
         <div>
           <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 800, margin: 0 }}>Redes Sociais</h1>
           <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 6, fontSize: 14 }}>
-            Hub operacional de LinkedIn dentro do Mission Control.
+            Hub interativo de LinkedIn por empresa e perfil pessoal dentro do Mission Control.
           </p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 16, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16, marginBottom: 16 }}>
         <section style={card}>
           <div style={titleRow}>
             <Link2 size={18} style={{ color: '#22c55e' }} />
@@ -86,35 +203,118 @@ export default function SocialPage() {
         </section>
       </div>
 
-      <section style={{ ...card, marginBottom: 16 }}>
-        <div style={titleRow}>
-          <Building2 size={18} style={{ color: '#f59e0b' }} />
-          <span style={title}>Ativos conectáveis</span>
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.35fr', gap: 16, marginBottom: 16 }}>
+        <section style={card}>
+          <div style={titleRow}>
+            <Building2 size={18} style={{ color: '#f59e0b' }} />
+            <span style={title}>Empresas e perfil</span>
+          </div>
 
-        <div style={{ display: 'grid', gap: 10 }}>
-          {assets.map((asset) => (
-            <div key={asset.name} style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1fr',
-              gap: 12,
-              padding: '14px 16px',
-              borderRadius: 12,
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              alignItems: 'center',
-            }}>
-              <div style={{ color: '#fff', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
-                {asset.name.includes('Perfil') ? <UserCircle2 size={18} /> : <Building2 size={18} />}
-                {asset.name}
-              </div>
-              <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>{asset.mode}</div>
-              <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>{asset.owner}</div>
-              <div style={{ color: '#fbbf24', fontSize: 13 }}>{asset.status}</div>
+          <div style={{ display: 'grid', gap: 10 }}>
+            {assets.map((asset) => {
+              const isSelected = selected === asset.key;
+              const isExpanded = expanded[asset.key];
+              return (
+                <div
+                  key={asset.key}
+                  style={{
+                    borderRadius: 14,
+                    background: isSelected ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+                    border: isSelected ? `1px solid ${asset.color}` : '1px solid rgba(255,255,255,0.08)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <button
+                    onClick={() => toggle(asset.key)}
+                    style={{
+                      width: '100%',
+                      background: 'transparent',
+                      border: 'none',
+                      padding: '14px 16px',
+                      color: '#fff',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 10,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, textAlign: 'left' }}>
+                      {asset.type === 'pessoal' ? <UserCircle2 size={18} color={asset.color} /> : <Building2 size={18} color={asset.color} />}
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: 14 }}>{asset.label}</div>
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{asset.status}</div>
+                      </div>
+                    </div>
+                    {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                  </button>
+
+                  {isExpanded && (
+                    <div style={{ padding: '0 16px 14px 16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div style={{ display: 'grid', gap: 6, marginTop: 12, fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>
+                        <div><strong style={{ color: '#fff' }}>Modo:</strong> {asset.mode}</div>
+                        <div><strong style={{ color: '#fff' }}>Owner:</strong> {asset.owner}</div>
+                        <div><strong style={{ color: '#fff' }}>OAuth:</strong> {asset.oauthStatus}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section style={card}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
+            <div style={titleRow}>
+              {current.type === 'pessoal' ? <UserCircle2 size={18} color={current.color} /> : <Building2 size={18} color={current.color} />}
+              <span style={title}>{current.label}</span>
             </div>
-          ))}
-        </div>
-      </section>
+            <span style={{
+              padding: '6px 10px',
+              borderRadius: 999,
+              background: 'rgba(255,255,255,0.06)',
+              color: current.color,
+              fontSize: 12,
+              fontWeight: 800,
+            }}>
+              {current.mode}
+            </span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+            <DetailCard icon={<KeyRound size={16} color={current.color} />} label="OAuth" value={current.oauthStatus} />
+            <DetailCard icon={<Workflow size={16} color={current.color} />} label="URN" value={current.urnStatus} />
+            <DetailCard icon={<Send size={16} color={current.color} />} label="Publicação" value={current.publishingStatus} />
+            <DetailCard icon={<ShieldCheck size={16} color={current.color} />} label="Owner" value={current.owner} />
+          </div>
+
+          <div style={{
+            padding: 16,
+            borderRadius: 14,
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            marginBottom: 14,
+          }}>
+            <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 8 }}>Status atual</div>
+            <div style={{ color: '#fff', fontSize: 15, fontWeight: 700 }}>{current.status}</div>
+          </div>
+
+          <div style={{
+            padding: 16,
+            borderRadius: 14,
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+          }}>
+            <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 10 }}>Notas operacionais</div>
+            <ul style={{ margin: 0, paddingLeft: 18, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontSize: 14 }}>
+              {current.notes.map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </div>
 
       <section style={card}>
         <div style={titleRow}>
@@ -123,12 +323,9 @@ export default function SocialPage() {
         </div>
 
         <div style={{ display: 'grid', gap: 10 }}>
-          <Step done>App LinkedIn criada</Step>
-          <Step done>Client ID obtido</Step>
-          <Step done={app.shareRequested}>Solicitação de Share on LinkedIn enviada</Step>
-          <Step done={false}>Definir e configurar Redirect URI no Auth</Step>
-          <Step done={false}>Completar OAuth 3-legged</Step>
-          <Step done={false}>Mapear URNs do perfil pessoal e páginas MENSURA, MIA e PCS</Step>
+          {blockers.map((item) => (
+            <Step key={item.label} done={item.done}>{item.label}</Step>
+          ))}
         </div>
       </section>
     </div>
@@ -179,6 +376,23 @@ function Step({ children, done = false }: { children: React.ReactNode; done?: bo
     }}>
       {done ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} color="#f59e0b" />}
       {children}
+    </div>
+  );
+}
+
+function DetailCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div style={{
+      padding: 14,
+      borderRadius: 12,
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.08)',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        {icon}
+        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{label}</span>
+      </div>
+      <div style={{ color: '#fff', fontSize: 13, lineHeight: 1.5 }}>{value}</div>
     </div>
   );
 }
