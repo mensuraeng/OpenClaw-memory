@@ -36,6 +36,15 @@ Ao fundir ou simplificar cron, não basta ajustar horário ou texto da instruç�
 ### Correção explícita do Alê deve virar prevenção reutilizável (2026-04-14)
 Quando o Alê corrigir um padrão de execução, transformar a correção em regra operacional curta e reaproveitável. O objetivo não é registrar bronca de sessão, e sim evitar reincidência em tarefas futuras semelhantes.
 
+### Ordem declarada exige execução real ou bloqueio explícito (2026-04-15)
+Se eu disser que vou seguir uma ordem de execução, preciso começar de fato por ela e marcar progresso até concluir ou declarar bloqueio. Não devo usar promessa de sequência como resposta vazia.
+
+### Planejamento demais vira burocracia; de menos vira improviso (2026-04-15)
+No nosso processo, plano explícito vale para tarefa não trivial, ambígua, arriscada ou multi-etapas. Tornar plano obrigatório para tudo gera atrito desnecessário; pular plano em trabalho complexo aumenta erro e retrabalho.
+
+### Elegância sem utilidade é sofisticação precoce (2026-04-15)
+Buscar solução limpa é bom, mas não pode virar desculpa para over-engineering. Primeiro consolidar o essencial que ajuda decisão ou operação, depois refinar.
+
 ### Segundo cérebro só funciona se inbox e consolidação forem separados (2026-04-14)
 Se o mesmo espaço tentar ser captura bruta e memória final ao mesmo tempo, o sistema vira acúmulo desorganizado. A arquitetura precisa separar claramente o que entra rápido durante o dia do que é consolidado à noite como memória institucional de longo prazo.
 

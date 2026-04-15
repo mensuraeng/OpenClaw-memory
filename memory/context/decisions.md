@@ -35,6 +35,9 @@ Para crons novos, adotar GPT 4o Mini como modelo padrão, salvo exceção justif
 ### Heartbeat operacional passa a seguir o ritmo Mensura + MIA + PCS v2.0 (2026-04-13)
 Adotar o heartbeat operacional com ciclos diários, semanal, gatilhos imediatos, silêncio inteligente e uso de GPT 4o Mini como modelo dos crons associados.
 
+### Protocolo de execução da Flávia adota planejamento condicional, validação forte e correção autônoma (2026-04-15)
+A Flávia deve usar plano curto com etapas verificáveis em tarefas não triviais, usar subagentes com foco e follow-up explícito quando houver ganho real, validar proporcionalmente antes de declarar conclusão, e atacar bugs internos a partir de logs, erro observável, causa raiz e prova de correção. Elegância é desejável, mas sem criar burocracia ou sofisticação precoce.
+
 ## Operação recorrente
 
 ### Horário protegido para notificações (2026-04-01)
