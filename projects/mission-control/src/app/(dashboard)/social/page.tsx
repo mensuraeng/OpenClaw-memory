@@ -38,7 +38,8 @@ const app = {
   clientId: '7731w27uswscu1',
   appType: 'Standalone app',
   shareRequested: true,
-  callbackStatus: 'pending' as 'pending' | 'configured',
+  callbackStatus: 'configured' as 'pending' | 'configured',
+  redirectUri: 'http://100.124.198.120:3001/api/linkedin/callback',
 };
 
 const assets: SocialAsset[] = [
@@ -169,6 +170,7 @@ export default function SocialPage() {
             <Info label="Provider" value={app.provider} />
             <Info label="Client ID" value={app.clientId} mono />
             <Info label="Tipo" value={app.appType} />
+            <Info label="Redirect URI" value={app.redirectUri} mono />
           </div>
 
           <div style={{ marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
