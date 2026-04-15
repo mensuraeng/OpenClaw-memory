@@ -12,6 +12,9 @@ Enviar email, mensagem, post em rede social, apagar arquivo, alterar configuraç
 ### Microsoft Graph é o padrão para email e calendário (2026-04-01)
 Microsoft 365 bloqueia auth básica. Email e calendário devem usar Graph API com client credentials flow. Não usar IMAP/SMTP direto como padrão.
 
+### E-mails operacionais devem sair via Microsoft Graph usando a conta da Flávia (2026-04-14)
+Para envio de e-mails operacionais, usar sempre Microsoft Graph e priorizar a conta `flavia@mensuraengenharia.com.br` como remetente padrão da Flávia. Evitar Himalaya/IMAP/SMTP básico como caminho operacional.
+
 ### KeePassXC é o cofre principal da operação (2026-04-07)
 Credenciais persistentes devem viver no cofre, não espalhadas em memória operacional ou documentação.
 
@@ -59,3 +62,6 @@ No Telegram, o grupo `PCS Engenharia` (chat_id `telegram:-1003146152550`, tópic
 
 ### Tópico `AGENTE FINANCEIRO` é roteado para o agente `finance` (2026-04-13)
 No Telegram, o grupo `PESSOAL` (chat_id `telegram:-1003818163425`), tópico `13`, fica roteado para o agente `finance` via `channels.telegram.groups.-1003818163425.topics.13.agentId = finance`. Esse tópico passa a ser o canal financeiro do Alê para contas a pagar, cobranças, vencimentos, lembretes, comprovantes, baixas e acompanhamento financeiro, salvo instrução contrária.
+
+### GitHub será o segundo cérebro operacional (2026-04-14)
+A arquitetura-alvo da operação passa a tratar o GitHub como memória institucional de longo prazo, com versionamento, rastreabilidade e acesso compartilhado como base nativa. O OpenClaw deve operar como camada de captura e consolidação: durante o dia, trabalho e contexto entram como memória curta e registro bruto; no fechamento noturno, o sistema deve consolidar, conectar o que é relacionado, reduzir redundância e promover o que importa para memória durável versionada. A referência conceitual é: inbox = memória de curto prazo, consolidação noturna = sono, GitHub = memória de longo prazo.

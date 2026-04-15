@@ -22,6 +22,9 @@ _Atualizado em 2026-04-13_
 - [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
 - [ ] **Estruturar grupos do cofre** — consolidar grupos padrão: Email, APIs, Social, Infra, Financeiro.
 - [ ] **Revisar falha do calendário Mensura** — investigar erro `ErrorInvalidUser` na consulta da conta quando houver janela.
+- [ ] **Operacionalizar o segundo cérebro no GitHub** — definir a estrutura final do repositório de memória institucional, separar inbox de memória consolidada e implantar a consolidação noturna automática do OpenClaw.
+- [ ] **Mapear captura automática por estação/agente** — decidir quais eventos, arquivos e registros entram no inbox bruto sem exigir processo manual do time.
+- [ ] **Definir política de consolidação noturna** — critérios de promoção, deduplicação, vínculo entre itens relacionados e descarte de ruído.
 
 ## Aguardando terceiros
 

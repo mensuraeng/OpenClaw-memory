@@ -36,6 +36,9 @@ Ao fundir ou simplificar cron, não basta ajustar horário ou texto da instruç�
 ### Correção explícita do Alê deve virar prevenção reutilizável (2026-04-14)
 Quando o Alê corrigir um padrão de execução, transformar a correção em regra operacional curta e reaproveitável. O objetivo não é registrar bronca de sessão, e sim evitar reincidência em tarefas futuras semelhantes.
 
+### Segundo cérebro só funciona se inbox e consolidação forem separados (2026-04-14)
+Se o mesmo espaço tentar ser captura bruta e memória final ao mesmo tempo, o sistema vira acúmulo desorganizado. A arquitetura precisa separar claramente o que entra rápido durante o dia do que é consolidado à noite como memória institucional de longo prazo.
+
 ## Temporárias
 
 ### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)
