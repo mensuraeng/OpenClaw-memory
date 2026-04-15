@@ -24,10 +24,11 @@ Criar uma base operacional segura para:
 - publicação pessoal assistida
 - publicação institucional com governança por marca
 - trilha de auditoria de decisões e publicações
+- owner funcional em marketing, com operação técnica centralizada na Flávia
 
 ## Estrutura
 
-- `docs/` → arquitetura, permissões, fluxo OAuth, operação
+- `docs/` → arquitetura, permissões, fluxo OAuth, operação e ownership
 - `config/` → mapeamentos e exemplos de configuração
 - `scripts/` → bootstrap e operações auxiliares
 - `templates/` → modelos de conteúdo
