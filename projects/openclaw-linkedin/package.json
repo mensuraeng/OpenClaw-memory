@@ -1,0 +1,11 @@
+{
+  "name": "openclaw-linkedin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "auth:url": "node scripts/generate_auth_url.js",
+    "config:check": "node scripts/check_config.js",
+    "bootstrap": "bash scripts/bootstrap_linkedin_project.sh"
+  }
+}
