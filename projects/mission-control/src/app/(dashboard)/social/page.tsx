@@ -69,12 +69,12 @@ const assets: SocialAsset[] = [
     status: 'aguardando mapeamento institucional',
     color: '#22c55e',
     urnStatus: 'organization URN pendente',
-    publishingStatus: 'liberação depende de admin da página + URN + teste institucional',
-    oauthStatus: 'próxima checagem: autorização do admin da página',
+    publishingStatus: 'bloqueado por permissão da app para Organization APIs',
+    oauthStatus: 'OAuth pessoal ok, mas Organization ACLs retornou ACCESS_DENIED',
     notes: [
       'Usar esta página como piloto principal da operação institucional.',
       'Governança funcional: marketing. Segurança e integração: Flávia/main.',
-      'Próximo passo é confirmar admin da página no perfil autenticado e mapear organization URN.',
+      'Teste real em organizationAcls falhou com 403 ACCESS_DENIED, então o bloqueio atual é permissão institucional da app.',
     ],
   },
   {
@@ -122,6 +122,7 @@ const blockers = [
   { label: 'Mapear URNs do perfil pessoal e páginas MENSURA, MIA e PCS', done: false },
   { label: 'Fluxo de rascunho e aprovação do perfil pessoal estruturado', done: true },
   { label: 'Validar admin e URN das páginas MENSURA, MIA e PCS', done: false },
+  { label: 'Destravar permissão institucional da app para Organization APIs', done: false },
 ];
 
 export default function SocialPage() {
