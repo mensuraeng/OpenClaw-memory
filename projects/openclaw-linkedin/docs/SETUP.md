@@ -43,8 +43,17 @@ npm run auth:url
 A rota provisória do Mission Control para receber o callback ficou em:
 - `/api/linkedin/callback`
 
-URL completa atual:
-- `http://100.124.198.120:3001/api/linkedin/callback`
+URL pública atual:
+- `https://mc.mensuraengenharia.com.br/api/linkedin/callback`
+
+Estado validado até agora:
+- OAuth com `openid profile w_member_social` funcionando
+- `userinfo` funcionando para identidade autenticada
+- endpoint legado `/v2/me` não disponível com esse escopo atual
+
+Conclusão prática:
+- a conta pessoal já pode ser tratada como autenticada no Mission Control
+- para obter URN clássica de membro via API antiga, seria necessário escopo/produto adicional como `r_liteprofile` quando aplicável
 
 ## Regra de segurança
 

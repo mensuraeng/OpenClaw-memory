@@ -39,7 +39,7 @@ const app = {
   appType: 'Standalone app',
   shareRequested: true,
   callbackStatus: 'configured' as 'pending' | 'configured',
-  redirectUri: 'http://100.124.198.120:3001/api/linkedin/callback',
+  redirectUri: 'https://mc.mensuraengenharia.com.br/api/linkedin/callback',
 };
 
 const assets: SocialAsset[] = [
@@ -49,15 +49,15 @@ const assets: SocialAsset[] = [
     type: 'pessoal',
     mode: 'assistido',
     owner: 'Alexandre',
-    status: 'aguardando conexão OAuth',
+    status: 'autenticado via OAuth',
     color: '#60a5fa',
-    urnStatus: 'member URN pendente',
-    publishingStatus: 'publicação assistida ainda não habilitada',
-    oauthStatus: 'pendente de callback + autorização',
+    urnStatus: 'OIDC sub validado: JYAsCudAAE',
+    publishingStatus: 'OAuth validado; author de publicação ainda depende da trilha final da API LinkedIn',
+    oauthStatus: 'conectado',
     notes: [
       'Canal pessoal deve continuar com aprovação explícita para postagens sensíveis.',
-      'Este ativo usará 3-legged OAuth em nome do membro.',
-      'Depois da callback, dá para capturar identidade e member URN.',
+      'OAuth 3-legged concluído com openid + profile + w_member_social.',
+      'userinfo validado com nome Alexandre Aguiar; endpoint legado /v2/me segue indisponível com o escopo atual.',
     ],
   },
   {
@@ -117,8 +117,8 @@ const blockers = [
   { label: 'App LinkedIn criada', done: true },
   { label: 'Client ID obtido', done: true },
   { label: 'Solicitação de Share on LinkedIn enviada', done: app.shareRequested },
-  { label: 'Definir e configurar Redirect URI no Auth', done: false },
-  { label: 'Completar OAuth 3-legged', done: false },
+  { label: 'Definir e configurar Redirect URI no Auth', done: true },
+  { label: 'Completar OAuth 3-legged', done: true },
   { label: 'Mapear URNs do perfil pessoal e páginas MENSURA, MIA e PCS', done: false },
 ];
 
