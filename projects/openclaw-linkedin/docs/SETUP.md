@@ -21,21 +21,30 @@ Você precisará informar:
 Preencher em `config/pages.example.json` depois migrando para um arquivo real privado.
 
 ### 3. Definir a URL de callback
-Exemplo:
-- uma URL do Mission Control
-- uma URL dedicada de backend
-- ou uma rota provisória para completar OAuth
+Padrão provisório adotado agora:
+- `http://localhost:3000/api/linkedin/callback`
+
+Depois, isso pode migrar para uma URL pública do Mission Control.
 
 ## Bootstrap local
 
 1. copiar `.env.example` para `.env`
-2. preencher credenciais
-3. rodar:
+2. preencher o `LINKEDIN_CLIENT_SECRET`
+3. confirmar que a app do LinkedIn usa a redirect URI `http://localhost:3000/api/linkedin/callback`
+4. rodar:
 
 ```bash
 npm run config:check
 npm run auth:url
 ```
+
+## Validação rápida
+
+A rota provisória do Mission Control para receber o callback ficou em:
+- `/api/linkedin/callback`
+
+Exemplo local completo:
+- `http://localhost:3000/api/linkedin/callback`
 
 ## Regra de segurança
 
