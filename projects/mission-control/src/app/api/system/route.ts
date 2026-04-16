@@ -128,62 +128,19 @@ export async function GET() {
   return NextResponse.json(systemInfo);
 }
 
-export async function POST(request: Request) {
-  try {
-    const { action, data } = await request.json();
-    
-    if (action === 'change_password') {
-      const { currentPassword, newPassword } = data;
-      
-      // Read current .env.local
-      let envContent = '';
-      try {
-        envContent = fs.readFileSync(ENV_LOCAL_PATH, 'utf-8');
-      } catch {
-        return NextResponse.json({ error: 'Could not read configuration' }, { status: 500 });
-      }
-      
-      // Verify current password
-      const currentPassMatch = envContent.match(/AUTH_PASSWORD=(.+)/);
-      const storedPassword = currentPassMatch?.[1]?.trim();
-      
-      if (storedPassword !== currentPassword) {
-        return NextResponse.json({ error: 'Current password is incorrect' }, { status: 401 });
-      }
-      
-      // Update password
-      const newEnvContent = envContent.replace(
-        /AUTH_PASSWORD=.*/,
-        `AUTH_PASSWORD=${newPassword}`
-      );
-      
-      fs.writeFileSync(ENV_LOCAL_PATH, newEnvContent);
-      
-      return NextResponse.json({ success: true, message: 'Password updated successfully' });
-    }
-    
-    if (action === 'clear_activity_log') {
-      const activitiesPath = path.join(process.cwd(), 'data', 'activities.json');
-      fs.writeFileSync(activitiesPath, '[]');
-      return NextResponse.json({ success: true, message: 'Activity log cleared' });
-    }
-    
-    return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Action failed' }, { status: 500 });
-  }
+// F7: POST disabled in v1
+export async function POST() {
+  return NextResponse.json(
+    { error: "system write operations disabled in v1", code: "DISABLED_IN_V1" },
+    { status: 403 }
+  );
 }
 
 function formatUptime(seconds: number): string {
   const days = Math.floor(seconds / 86400);
   const hours = Math.floor((seconds % 86400) / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  
-  const parts = [];
-  if (days > 0) parts.push(`${days}d`);
-  if (hours > 0) parts.push(`${hours}h`);
-  if (minutes > 0) parts.push(`${minutes}m`);
-  if (parts.length === 0) parts.push(`${Math.floor(seconds)}s`);
-  
-  return parts.join(' ');
+  if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  return `${minutes}m`;
 }

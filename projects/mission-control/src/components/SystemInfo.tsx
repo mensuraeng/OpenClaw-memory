@@ -66,7 +66,7 @@ export function SystemInfo({ data }: SystemInfoProps) {
     },
     {
       icon: Cpu,
-      label: "Node.js Version",
+      label: "Versão Node.js",
       value: data.system.nodeVersion,
       sublabel: data.system.platform,
     },

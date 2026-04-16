@@ -1,7 +1,7 @@
 /**
- * Git Dashboard API
+ * Git Dashboard API — READ ONLY (v1)
  * GET /api/git - List all repos with status
- * POST /api/git - { repo, action } actions: status, pull, add, commit
+ * POST: DISABLED in v1 (git pull/push would introduce remote code)
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { exec } from 'child_process';
@@ -27,18 +27,20 @@ interface RepoStatus {
 }
 
 async function getRepos(): Promise<string[]> {
-  const { stdout } = await execAsync(`find "${WORKSPACE}" -maxdepth 2 -name ".git" -type d 2>/dev/null`);
-  return stdout.trim().split('\n').filter(Boolean).map((d) => d.replace('/.git', ''));
+  try {
+    const { stdout } = await execAsync(`find "${WORKSPACE}" -maxdepth 2 -name ".git" -type d 2>/dev/null`);
+    return stdout.trim().split('\n').filter(Boolean).map((d) => d.replace('/.git', ''));
+  } catch {
+    return [];
+  }
 }
 
 async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
   const name = repoPath.split('/').pop() || repoPath;
 
   try {
-    // Get branch
     const { stdout: branch } = await execAsync(`cd "${repoPath}" && git rev-parse --abbrev-ref HEAD 2>/dev/null`).catch(() => ({ stdout: 'unknown' }));
 
-    // Get ahead/behind
     let ahead = 0, behind = 0;
     try {
       const { stdout: abStr } = await execAsync(`cd "${repoPath}" && git rev-list --left-right --count HEAD...@{upstream} 2>/dev/null`).catch(() => ({ stdout: '0\t0' }));
@@ -47,7 +49,6 @@ async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
       behind = parseInt(parts[1]) || 0;
     } catch {}
 
-    // Get status
     const { stdout: statusOut } = await execAsync(`cd "${repoPath}" && git status --porcelain 2>/dev/null`).catch(() => ({ stdout: '' }));
     const lines = statusOut.trim().split('\n').filter(Boolean);
 
@@ -58,15 +59,13 @@ async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
     for (const line of lines) {
       const xy = line.slice(0, 2);
       const file = line.slice(3);
-      const x = xy[0]; // staged
-      const y = xy[1]; // unstaged
-
+      const x = xy[0];
+      const y = xy[1];
       if (x !== ' ' && x !== '?') staged.push(file);
       if (y !== ' ' && y !== '?') unstaged.push(file);
       if (xy === '??') untracked.push(file);
     }
 
-    // Last commit
     let lastCommit = null;
     try {
       const { stdout: commitOut } = await execAsync(`cd "${repoPath}" && git log -1 --format="%H|%s|%an|%ar" 2>/dev/null`);
@@ -76,11 +75,11 @@ async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
       }
     } catch {}
 
-    // Remote URL
+    // Sanitize remoteUrl — strip any embedded credentials
     let remoteUrl = '';
     try {
       const { stdout: remote } = await execAsync(`cd "${repoPath}" && git remote get-url origin 2>/dev/null`);
-      remoteUrl = remote.trim();
+      remoteUrl = remote.trim().replace(/:[^@/]+@/, ':***@');
     } catch {}
 
     return {
@@ -94,22 +93,10 @@ async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
       untracked,
       lastCommit,
       remoteUrl,
-      isDirty: staged.length > 0 || unstaged.length > 0 || untracked.length > 0,
+      isDirty: staged.length > 0 || unstaged.length > 0,
     };
-  } catch (error) {
-    return {
-      name,
-      path: repoPath,
-      branch: 'unknown',
-      ahead: 0,
-      behind: 0,
-      staged: [],
-      unstaged: [],
-      untracked: [],
-      lastCommit: null,
-      remoteUrl: '',
-      isDirty: false,
-    };
+  } catch {
+    return { name, path: repoPath, branch: 'unknown', ahead: 0, behind: 0, staged: [], unstaged: [], untracked: [], lastCommit: null, remoteUrl: '', isDirty: false };
   }
 }
 
@@ -117,54 +104,17 @@ export async function GET() {
   try {
     const repos = await getRepos();
     const statuses = await Promise.all(repos.map(getRepoStatus));
-    return NextResponse.json({ repos: statuses, total: statuses.length });
+    return NextResponse.json(statuses);
   } catch (error) {
-    console.error('[git] Error:', error);
-    return NextResponse.json({ error: 'Failed to get repos' }, { status: 500 });
+    console.error('[git] Error fetching repos:', error);
+    return NextResponse.json({ error: 'Failed to fetch git status' }, { status: 500 });
   }
 }
 
-const ALLOWED_REPOS = [WORKSPACE + '/mission-control', WORKSPACE];
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { repo, action } = body;
-
-    // Security: only allow repos under workspace
-    if (!repo || !repo.startsWith(WORKSPACE)) {
-      return NextResponse.json({ error: 'Invalid repo path' }, { status: 400 });
-    }
-
-    let output = '';
-
-    switch (action) {
-      case 'status': {
-        const { stdout } = await execAsync(`cd "${repo}" && git status 2>&1`);
-        output = stdout;
-        break;
-      }
-      case 'pull': {
-        const { stdout } = await execAsync(`cd "${repo}" && git pull 2>&1`);
-        output = stdout;
-        break;
-      }
-      case 'log': {
-        const { stdout } = await execAsync(`cd "${repo}" && git log --oneline -20 2>&1`);
-        output = stdout;
-        break;
-      }
-      case 'diff': {
-        const { stdout } = await execAsync(`cd "${repo}" && git diff --stat 2>&1`);
-        output = stdout || 'No changes';
-        break;
-      }
-      default:
-        return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
-    }
-
-    return NextResponse.json({ success: true, output, repo, action });
-  } catch (error) {
-    return NextResponse.json({ error: String(error) }, { status: 500 });
-  }
+// POST disabled in v1 — git pull/commit via browser would introduce remote code
+export async function POST() {
+  return NextResponse.json(
+    { error: 'git write operations disabled in mission control v1', code: 'DISABLED_IN_V1' },
+    { status: 403 }
+  );
 }

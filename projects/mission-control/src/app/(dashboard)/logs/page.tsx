@@ -152,7 +152,7 @@ export default function LogsPage() {
         <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem", alignItems: "center" }}>
           {/* Filter */}
           <input
-            placeholder="Filter logs..."
+            placeholder="Filtrar logs..."
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             style={{

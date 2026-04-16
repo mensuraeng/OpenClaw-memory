@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logActivity, getActivities } from '@/lib/activities-db';
+import { getActivities } from '@/lib/activities-db';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-
     const type = searchParams.get('type') || undefined;
     const status = searchParams.get('status') || undefined;
     const agent = searchParams.get('agent') || undefined;
@@ -17,17 +16,14 @@ export async function GET(request: NextRequest) {
 
     const result = getActivities({ type, status, agent, startDate, endDate, sort, limit, offset });
 
-    // CSV export
     if (format === 'csv') {
       const header = 'id,timestamp,type,description,status,duration_ms,tokens_used,agent\n';
       const rows = result.activities.map((a) => [
         a.id, a.timestamp, a.type,
-        `"${(a.description || '').replace(/"/g, '""')}"`,
-        a.status, a.duration_ms ?? '', a.tokens_used ?? '',
-        a.agent ?? '',
+        `"${String(a.description || '').replace(/"/g, '""')}"`,
+        a.status, a.duration_ms ?? '', a.tokens_used ?? '', a.agent ?? '',
       ].join(',')).join('\n');
-      const csv = header + rows;
-      return new NextResponse(csv, {
+      return new NextResponse(header + rows, {
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': `attachment; filename="activities-${new Date().toISOString().split('T')[0]}.csv"`,
@@ -48,35 +44,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-
-    if (!body.type || !body.description || !body.status) {
-      return NextResponse.json(
-        { error: 'Missing required fields: type, description, status' },
-        { status: 400 }
-      );
-    }
-
-    const validStatuses = ['success', 'error', 'pending', 'running'];
-    if (!validStatuses.includes(body.status)) {
-      return NextResponse.json(
-        { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` },
-        { status: 400 }
-      );
-    }
-
-    const activity = logActivity(body.type, body.description, body.status, {
-      duration_ms: body.duration_ms ?? null,
-      tokens_used: body.tokens_used ?? null,
-      agent: body.agent ?? null,
-      metadata: body.metadata ?? null,
-    });
-
-    return NextResponse.json(activity, { status: 201 });
-  } catch (error) {
-    console.error('Failed to save activity:', error);
-    return NextResponse.json({ error: 'Failed to save activity' }, { status: 500 });
-  }
+// POST disabled in v1
+export async function POST() {
+  return NextResponse.json(
+    { error: 'activity injection disabled in mission control v1', code: 'DISABLED_IN_V1' },
+    { status: 403 }
+  );
 }

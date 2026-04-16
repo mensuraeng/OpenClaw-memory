@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-04-15 01:40 UTC",
+  "day": "2026-04-14",
+  "agent": "mensura",
+  "type": "decision",
+  "title": "Obras operam apenas em dias úteis",
+  "body": "Crons de obra devem rodar de segunda a sexta.",
+  "source": "manual",
+  "meta": {
+    "scope": "cron",
+    "approved_by": "Alexandre"
+  }
+}

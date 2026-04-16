@@ -3,22 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Linkedin,
+  Briefcase,
+  DollarSign,
+  Brain,
   Home,
   Monitor,
   FolderOpen,
-  Brain,
   Bot,
   Building2,
   Activity,
   Clock,
   Puzzle,
-  DollarSign,
   Settings,
   History,
 } from "lucide-react";
 
 const dockItems = [
-  { href: "/", label: "Dashboard", icon: Home },
+  { href: "/", label: "Painel", icon: Home },
   { href: "/system", label: "System Monitor", icon: Monitor },
   { href: "/files", label: "Files", icon: FolderOpen },
   { href: "/memory", label: "Memory", icon: Brain },
@@ -29,7 +31,11 @@ const dockItems = [
   { href: "/sessions", label: "Sessions", icon: History },
   { href: "/skills", label: "Skills", icon: Puzzle },
   { href: "/costs", label: "Costs & Analytics", icon: DollarSign },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/memory-health", label: "Memory Health", icon: Brain },
+  { href: "/costs-company", label: "Custos Empresa", icon: DollarSign },
+  { href: "/kanban", label: "Kanban", icon: Briefcase },
+  { href: "/social", label: "Redes Sociais", icon: Linkedin },
+  { href: "/settings", label: "Configurações", icon: Settings },
 ];
 
 export function Dock() {

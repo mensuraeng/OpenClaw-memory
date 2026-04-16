@@ -30,10 +30,10 @@ function LoginForm() {
         router.push(from);
         router.refresh();
       } else {
-        setError("Contraseña incorrecta");
+        setError("Senha incorrecta");
       }
     } catch {
-      setError("Error de conexión");
+      setError("Erro de conexão");
     }
 
     setLoading(false);
@@ -91,7 +91,7 @@ function LoginForm() {
               border: '1px solid var(--border)',
               color: 'var(--text-primary)',
             }}
-            placeholder="Contraseña"
+            placeholder="Senha"
             required
           />
         </div>

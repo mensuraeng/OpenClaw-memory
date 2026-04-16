@@ -52,9 +52,9 @@ export async function GET() {
       workspaces.push({
         id: 'workspace',
         name: 'Workspace Principal',
-        emoji: mainInfo?.emoji || '🦞',
+        emoji: process.env.NEXT_PUBLIC_AGENT_EMOJI || mainInfo?.emoji || '🏗️',
         path: mainWorkspace,
-        agentName: mainInfo?.name || 'Tenacitas',
+        agentName: process.env.NEXT_PUBLIC_AGENT_NAME || mainInfo?.name || 'Flávia',
       });
     }
     

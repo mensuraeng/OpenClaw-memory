@@ -46,11 +46,11 @@ export default function MemoryPage() {
     try {
       setIsLoading(true);
       const res = await fetch(`/api/files?workspace=${encodeURIComponent(workspace)}`);
-      if (!res.ok) throw new Error("Failed to load files");
+      if (!res.ok) throw new Error("Falha ao carregar arquivos");
       const data = await res.json();
       setFiles(data);
     } catch (err) {
-      setError("Failed to load file tree");
+      setError("Falha ao carregar arquivos");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -63,12 +63,12 @@ export default function MemoryPage() {
       const res = await fetch(
         `/api/files?workspace=${encodeURIComponent(workspace)}&path=${encodeURIComponent(path)}`
       );
-      if (!res.ok) throw new Error("Failed to load file");
+      if (!res.ok) throw new Error("Falha ao carregar arquivo");
       const data = await res.json();
       setContent(data.content);
       setOriginalContent(data.content);
     } catch (err) {
-      setError("Failed to load file");
+      setError("Falha ao carregar arquivo");
       console.error(err);
     }
   }, []);
@@ -80,7 +80,7 @@ export default function MemoryPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ workspace: selectedWorkspace, path: selectedPath, content }),
     });
-    if (!res.ok) throw new Error("Failed to save file");
+    if (!res.ok) throw new Error("Falha ao salvar arquivo");
     setOriginalContent(content);
   }, [selectedWorkspace, selectedPath, content]);
 
@@ -135,10 +135,10 @@ export default function MemoryPage() {
             marginBottom: "4px",
           }}
         >
-          Memory Browser
+          Memória dos Agentes
         </h1>
         <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "var(--text-secondary)" }}>
-          Ver y editar archivos de memoria de los agentes
+          Visualize e edite os arquivos de memória dos agentes
         </p>
       </div>
 
@@ -334,7 +334,7 @@ export default function MemoryPage() {
                       }}
                     >
                       <Eye size={13} />
-                      Preview
+                      Visualizar
                     </button>
                     <button
                       onClick={() => setViewMode("edit")}
@@ -384,7 +384,7 @@ export default function MemoryPage() {
                   )}
                 </div>
 
-                {/* Editor / Preview */}
+                {/* Editor / Visualizar */}
                 <div
                   style={{
                     flex: 1,
@@ -420,7 +420,7 @@ export default function MemoryPage() {
                     >
                       <div style={{ textAlign: "center" }}>
                         <Brain style={{ width: "64px", height: "64px", margin: "0 auto 16px", opacity: 0.3 }} />
-                        <p style={{ fontSize: "14px" }}>Selecciona un archivo para ver o editar</p>
+                        <p style={{ fontSize: "14px" }}>Selecione um arquivo para visualizar ou editar</p>
                       </div>
                     </div>
                   )}

@@ -15,6 +15,7 @@ import {
   Workflow,
   Send,
 } from 'lucide-react';
+import { PageHeader, PageShell, SectionCard } from '@/components/PageShell';
 
 type CompanyKey = 'pessoal' | 'mensura' | 'mia' | 'pcs';
 
@@ -150,71 +151,52 @@ export default function SocialPage() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: 1200, margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-        <Globe size={28} style={{ color: '#60a5fa' }} />
-        <div>
-          <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 800, margin: 0 }}>Redes Sociais</h1>
-          <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 6, fontSize: 14 }}>
-            Hub interativo de LinkedIn por empresa e perfil pessoal dentro do Mission Control.
-          </p>
+    <PageShell>
+      <PageHeader
+        title="Redes Sociais"
+        subtitle="Hub interativo de LinkedIn por empresa e perfil pessoal dentro do Mission Control"
+        icon={<Globe size={24} style={{ color: 'var(--accent)', marginRight: 8, display: 'inline-block' }} />}
+      />
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-6">
+        <div className="xl:col-span-2">
+          <SectionCard title="Integração LinkedIn" icon={<Link2 size={18} style={{ color: '#22c55e', marginRight: 8, display: 'inline-block' }} />}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Info label="App" value={app.name} />
+              <Info label="Provider" value={app.provider} />
+              <Info label="Client ID" value={app.clientId} mono />
+              <Info label="Tipo" value={app.appType} />
+              <Info label="Redirect URI" value={app.redirectUri} mono />
+            </div>
+            <div style={{ marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <Badge ok>App criada</Badge>
+              <Badge ok={app.shareRequested}>{app.shareRequested ? 'Share on LinkedIn solicitado' : 'Share on LinkedIn pendente'}</Badge>
+              <Badge ok={app.callbackStatus === 'configured'}>
+                {app.callbackStatus === 'configured' ? 'Callback configurada' : 'Callback pendente'}
+              </Badge>
+            </div>
+          </SectionCard>
         </div>
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16, marginBottom: 16 }}>
-        <section style={card}>
-          <div style={titleRow}>
-            <Link2 size={18} style={{ color: '#22c55e' }} />
-            <span style={title}>Integração LinkedIn</span>
-          </div>
-
-          <div style={kvGrid}>
-            <Info label="App" value={app.name} />
-            <Info label="Provider" value={app.provider} />
-            <Info label="Client ID" value={app.clientId} mono />
-            <Info label="Tipo" value={app.appType} />
-            <Info label="Redirect URI" value={app.redirectUri} mono />
-          </div>
-
-          <div style={{ marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Badge ok>App criada</Badge>
-            <Badge ok={app.shareRequested}>{app.shareRequested ? 'Share on LinkedIn solicitado' : 'Share on LinkedIn pendente'}</Badge>
-            <Badge ok={app.callbackStatus === 'configured'}>
-              {app.callbackStatus === 'configured' ? 'Callback configurada' : 'Callback pendente'}
-            </Badge>
-          </div>
-        </section>
-
-        <section style={card}>
-          <div style={titleRow}>
-            <ShieldCheck size={18} style={{ color: '#a78bfa' }} />
-            <span style={title}>Governança</span>
-          </div>
-
-          <ul style={{ margin: 0, paddingLeft: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, fontSize: 14 }}>
+        <SectionCard title="Governança" icon={<ShieldCheck size={18} style={{ color: '#a78bfa', marginRight: 8, display: 'inline-block' }} />}>
+          <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: 14 }}>
             <li>Marketing é owner funcional da frente</li>
             <li>Flávia/main mantém OAuth, credenciais e automação</li>
             <li>Perfil pessoal do Alê continua assistido</li>
             <li>Páginas institucionais seguem operação governada por marca</li>
           </ul>
-
           <div style={{ marginTop: 18 }}>
-            <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 6 }}>Prontidão atual</div>
-            <div style={{ height: 10, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 6 }}>Prontidão atual</div>
+            <div style={{ height: 10, borderRadius: 999, background: 'var(--accent-soft)', overflow: 'hidden' }}>
               <div style={{ width: `${readyPercent}%`, height: '100%', background: 'linear-gradient(90deg,#22c55e,#60a5fa)' }} />
             </div>
-            <div style={{ color: '#fff', fontSize: 13, marginTop: 8 }}>{readyPercent}% concluído</div>
+            <div style={{ color: 'var(--text-primary)', fontSize: 13, marginTop: 8 }}>{readyPercent}% concluído</div>
           </div>
-        </section>
+        </SectionCard>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.35fr', gap: 16, marginBottom: 16 }}>
-        <section style={card}>
-          <div style={titleRow}>
-            <Building2 size={18} style={{ color: '#f59e0b' }} />
-            <span style={title}>Empresas e perfil</span>
-          </div>
-
+      <div className="grid grid-cols-1 xl:grid-cols-[0.95fr_1.35fr] gap-4 mb-6">
+        <SectionCard title="Empresas e perfil" icon={<Building2 size={18} style={{ color: '#f59e0b', marginRight: 8, display: 'inline-block' }} />}>
           <div style={{ display: 'grid', gap: 10 }}>
             {assets.map((asset) => {
               const isSelected = selected === asset.key;
@@ -224,8 +206,8 @@ export default function SocialPage() {
                   key={asset.key}
                   style={{
                     borderRadius: 14,
-                    background: isSelected ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
-                    border: isSelected ? `1px solid ${asset.color}` : '1px solid rgba(255,255,255,0.08)',
+                    background: isSelected ? 'var(--accent-soft)' : 'var(--surface)',
+                    border: isSelected ? `1px solid ${asset.color}` : '1px solid var(--border)',
                     overflow: 'hidden',
                   }}
                 >
@@ -236,7 +218,7 @@ export default function SocialPage() {
                       background: 'transparent',
                       border: 'none',
                       padding: '14px 16px',
-                      color: '#fff',
+                      color: 'var(--text-primary)',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -248,18 +230,18 @@ export default function SocialPage() {
                       {asset.type === 'pessoal' ? <UserCircle2 size={18} color={asset.color} /> : <Building2 size={18} color={asset.color} />}
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 14 }}>{asset.label}</div>
-                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{asset.status}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>{asset.status}</div>
                       </div>
                     </div>
                     {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                   </button>
 
                   {isExpanded && (
-                    <div style={{ padding: '0 16px 14px 16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                      <div style={{ display: 'grid', gap: 6, marginTop: 12, fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>
-                        <div><strong style={{ color: '#fff' }}>Modo:</strong> {asset.mode}</div>
-                        <div><strong style={{ color: '#fff' }}>Owner:</strong> {asset.owner}</div>
-                        <div><strong style={{ color: '#fff' }}>OAuth:</strong> {asset.oauthStatus}</div>
+                    <div style={{ padding: '0 16px 14px 16px', borderTop: '1px solid var(--border)' }}>
+                      <div style={{ display: 'grid', gap: 6, marginTop: 12, fontSize: 12, color: 'var(--text-secondary)' }}>
+                        <div><strong style={{ color: 'var(--text-primary)' }}>Modo:</strong> {asset.mode}</div>
+                        <div><strong style={{ color: 'var(--text-primary)' }}>Owner:</strong> {asset.owner}</div>
+                        <div><strong style={{ color: 'var(--text-primary)' }}>OAuth:</strong> {asset.oauthStatus}</div>
                       </div>
                     </div>
                   )}
@@ -267,81 +249,48 @@ export default function SocialPage() {
               );
             })}
           </div>
-        </section>
+        </SectionCard>
 
-        <section style={card}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
-            <div style={titleRow}>
-              {current.type === 'pessoal' ? <UserCircle2 size={18} color={current.color} /> : <Building2 size={18} color={current.color} />}
-              <span style={title}>{current.label}</span>
-            </div>
-            <span style={{
-              padding: '6px 10px',
-              borderRadius: 999,
-              background: 'rgba(255,255,255,0.06)',
-              color: current.color,
-              fontSize: 12,
-              fontWeight: 800,
-            }}>
-              {current.mode}
-            </span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+        <SectionCard title={current.label} icon={current.type === 'pessoal' ? <UserCircle2 size={18} color={current.color} style={{ marginRight: 8, display: 'inline-block' }} /> : <Building2 size={18} color={current.color} style={{ marginRight: 8, display: 'inline-block' }} />} right={<span style={{ padding: '6px 10px', borderRadius: 999, background: 'var(--accent-soft)', color: current.color, fontSize: 12, fontWeight: 800 }}>{current.mode}</span>}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             <DetailCard icon={<KeyRound size={16} color={current.color} />} label="OAuth" value={current.oauthStatus} />
             <DetailCard icon={<Workflow size={16} color={current.color} />} label="URN" value={current.urnStatus} />
             <DetailCard icon={<Send size={16} color={current.color} />} label="Publicação" value={current.publishingStatus} />
             <DetailCard icon={<ShieldCheck size={16} color={current.color} />} label="Owner" value={current.owner} />
           </div>
 
-          <div style={{
-            padding: 16,
-            borderRadius: 14,
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            marginBottom: 14,
-          }}>
-            <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 8 }}>Status atual</div>
-            <div style={{ color: '#fff', fontSize: 15, fontWeight: 700 }}>{current.status}</div>
+          <div style={{ padding: 16, borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 14 }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 8 }}>Status atual</div>
+            <div style={{ color: 'var(--text-primary)', fontSize: 15, fontWeight: 700 }}>{current.status}</div>
           </div>
 
-          <div style={{
-            padding: 16,
-            borderRadius: 14,
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-          }}>
-            <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 10 }}>Notas operacionais</div>
-            <ul style={{ margin: 0, paddingLeft: 18, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontSize: 14 }}>
+          <div style={{ padding: 16, borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 10 }}>Notas operacionais</div>
+            <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: 14 }}>
               {current.notes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
           </div>
-        </section>
+        </SectionCard>
       </div>
 
-      <section style={card}>
-        <div style={titleRow}>
-          <AlertTriangle size={18} style={{ color: '#ef4444' }} />
-          <span style={title}>Próximos passos bloqueantes</span>
-        </div>
-
+      <SectionCard title="Próximos passos bloqueantes" icon={<AlertTriangle size={18} style={{ color: '#ef4444', marginRight: 8, display: 'inline-block' }} />}>
         <div style={{ display: 'grid', gap: 10 }}>
           {blockers.map((item) => (
             <Step key={item.label} done={item.done}>{item.label}</Step>
           ))}
         </div>
-      </section>
-    </div>
+      </SectionCard>
+    </PageShell>
   );
 }
 
 function Info({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
   return (
     <div>
-      <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, marginBottom: 6 }}>{label}</div>
-      <div style={{ color: '#fff', fontSize: 14, fontFamily: mono ? 'monospace' : 'inherit' }}>{value}</div>
+      <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 6 }}>{label}</div>
+      <div style={{ color: 'var(--text-primary)', fontSize: 14, fontFamily: mono ? 'monospace' : 'inherit', wordBreak: 'break-word' }}>{value}</div>
     </div>
   );
 }
@@ -356,8 +305,8 @@ function Badge({ children, ok = true }: { children: React.ReactNode; ok?: boolea
       borderRadius: 999,
       fontSize: 12,
       fontWeight: 700,
-      background: ok ? 'rgba(34,197,94,0.14)' : 'rgba(245,158,11,0.14)',
-      color: ok ? '#86efac' : '#fcd34d',
+      background: ok ? 'var(--success-bg)' : 'var(--warning-soft)',
+      color: ok ? 'var(--success)' : 'var(--warning)',
       border: ok ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(245,158,11,0.25)',
     }}>
       {ok ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
@@ -374,9 +323,9 @@ function Step({ children, done = false }: { children: React.ReactNode; done?: bo
       gap: 10,
       padding: '12px 14px',
       borderRadius: 10,
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      color: done ? '#86efac' : 'rgba(255,255,255,0.75)',
+      background: 'var(--surface)',
+      border: '1px solid var(--border)',
+      color: done ? 'var(--success)' : 'var(--text-secondary)',
       fontSize: 14,
     }}>
       {done ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} color="#f59e0b" />}
@@ -387,43 +336,12 @@ function Step({ children, done = false }: { children: React.ReactNode; done?: bo
 
 function DetailCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div style={{
-      padding: 14,
-      borderRadius: 12,
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-    }}>
+    <div style={{ padding: 14, borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         {icon}
-        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{label}</span>
+        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{label}</span>
       </div>
-      <div style={{ color: '#fff', fontSize: 13, lineHeight: 1.5 }}>{value}</div>
+      <div style={{ color: 'var(--text-primary)', fontSize: 13, lineHeight: 1.5 }}>{value}</div>
     </div>
   );
 }
-
-const card: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(255,255,255,0.08)',
-  borderRadius: 16,
-  padding: 20,
-};
-
-const titleRow: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-  marginBottom: 16,
-};
-
-const title: React.CSSProperties = {
-  color: '#fff',
-  fontSize: 16,
-  fontWeight: 800,
-};
-
-const kvGrid: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: 16,
-};

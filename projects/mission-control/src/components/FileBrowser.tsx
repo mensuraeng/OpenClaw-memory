@@ -130,7 +130,7 @@ function EditorModal({ workspace, filePath, fileName, onClose }: EditorModalProp
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ workspace, path: filePath, content }),
       });
-      if (!res.ok) throw new Error("Save failed");
+      if (!res.ok) throw new Error("Falha ao salvar");
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch {
@@ -218,7 +218,7 @@ function EditorModal({ workspace, filePath, fileName, onClose }: EditorModalProp
             }}
           >
             <Save className="w-4 h-4" />
-            {saved ? "Saved!" : saving ? "Saving..." : "Save"}
+            {saved ? "Salvo!" : saving ? "Salvando..." : "Salvar"}
           </button>
 
           <button
@@ -367,12 +367,12 @@ export function FileBrowser({ workspace, path, onNavigate, viewMode = "list" }: 
       });
       if (!res.ok) {
         const data = await res.json();
-        alert(data.error || "Delete failed");
+        alert(data.error || "Falha ao excluir");
       } else {
         loadItems();
       }
     } catch {
-      alert("Delete failed");
+      alert("Falha ao excluir");
     } finally {
       setConfirmDelete(null);
     }

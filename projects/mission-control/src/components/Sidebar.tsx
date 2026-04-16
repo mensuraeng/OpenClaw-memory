@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -15,13 +15,11 @@ import {
   FolderOpen,
   Terminal,
   LogOut,
-  Settings,
   User,
   Menu,
   X,
   Users,
   Gamepad2,
-  GitBranch,
   Workflow,
   Zap,
   Server,
@@ -35,7 +33,7 @@ import { getAgentDisplayName } from "@/config/branding";
 const navItems = [
   { href: "/", label: "Painel", icon: LayoutDashboard },
   { href: "/agents", label: "Agentes", icon: Users },
-  { href: "/office", label: "🎮 Office", icon: Gamepad2, highlight: true },
+  { href: "/office", label: "Office", icon: Gamepad2, highlight: true },
   { href: "/actions", label: "Quick Actions", icon: Zap },
   { href: "/system", label: "Sistema", icon: Server },
   { href: "/logs", label: "Live Logs", icon: Terminal },
@@ -58,41 +56,47 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDesktopHovered, setIsDesktopHovered] = useState(false);
 
-  // Check if mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (!mobile) {
         setIsOpen(false);
       }
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Close sidebar when navigating on mobile
   useEffect(() => {
     if (isMobile) {
       setIsOpen(false);
     }
   }, [pathname, isMobile]);
 
-  // Prevent scroll when sidebar is open on mobile
   useEffect(() => {
-    if (isOpen && isMobile) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isOpen && isMobile ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen, isMobile]);
+
+  useEffect(() => {
+    const main = document.querySelector(".mc-main");
+    if (!main) return;
+    if (!isMobile && isDesktopHovered) {
+      main.classList.add("sidebar-hovered");
+    } else {
+      main.classList.remove("sidebar-hovered");
+    }
+  }, [isDesktopHovered, isMobile]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -100,215 +104,102 @@ export function Sidebar() {
     router.refresh();
   };
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
-  const closeSidebar = () => setIsOpen(false);
-
   return (
     <>
-      {/* Mobile hamburger button */}
-      <button
-        onClick={toggleSidebar}
-        className="mobile-menu-button"
-        aria-label="Toggle menu"
-        style={{
-          position: "fixed",
-          top: "1rem",
-          left: "1rem",
-          zIndex: 60,
-          padding: "0.5rem",
-          borderRadius: "0.5rem",
-          backgroundColor: "var(--card)",
-          border: "1px solid var(--border)",
-          color: "var(--text-primary)",
-          display: isMobile ? "flex" : "none",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          transition: "all 0.2s ease",
-        }}
-      >
-        <Menu className="w-6 h-6" />
-      </button>
-
-      {/* Overlay for mobile */}
       {isMobile && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="mc-mobile-menu-button"
+          aria-label="Abrir menu"
+        >
+          <Menu size={20} />
+        </button>
+      )}
+
+      {isMobile && isOpen && (
         <div
-          onClick={closeSidebar}
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 40,
-            opacity: isOpen ? 1 : 0,
-            pointerEvents: isOpen ? "auto" : "none",
-            transition: "opacity 0.3s ease",
-          }}
+          className="mc-mobile-overlay"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
 
-      {/* Sidebar */}
       <aside
-        className="sidebar"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "16rem",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
-          backgroundColor: "var(--card)",
-          borderRight: "1px solid var(--border)",
-          zIndex: 50,
-          transform: isMobile ? (isOpen ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
-          transition: "transform 0.3s ease",
+        className={`mc-sidebar ${isMobile && isOpen ? "mobile-open" : ""}`}
+        onMouseEnter={() => {
+          if (!isMobile) setIsDesktopHovered(true);
+        }}
+        onMouseLeave={() => {
+          if (!isMobile) setIsDesktopHovered(false);
         }}
       >
-        {/* Close button for mobile */}
-        {isMobile && (
-          <button
-            onClick={closeSidebar}
-            aria-label="Close menu"
-            style={{
-              position: "absolute",
-              top: "1rem",
-              right: "1rem",
-              padding: "0.25rem",
-              borderRadius: "0.375rem",
-              backgroundColor: "transparent",
-              border: "none",
-              color: "var(--text-muted)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--text-primary)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--text-muted)";
-            }}
-          >
-            <X className="w-5 h-5" />
-          </button>
-        )}
+        <div className="mc-sidebar-inner">
+          <div className="mc-sidebar-brand">
+            <div className="mc-brand-mark">
+              <Terminal size={18} />
+            </div>
 
-        {/* Logo */}
-        <div className="flex items-center gap-2.5 px-2 py-3 mb-4">
-          <Terminal
-            className="w-6 h-6"
-            style={{ color: "var(--accent)" }}
-          />
-          <h1
-            className="text-base font-bold tracking-tight"
-            style={{
-              fontFamily: "var(--font-heading)",
-              color: "var(--text-primary)",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            Mission Control
-          </h1>
-        </div>
+            <div className="mc-brand-copy">
+              <p className="mc-brand-kicker">MIA Engenharia</p>
+              <div className="mc-brand-title">
+                Mission <em>Control</em>
+              </div>
+            </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 pt-4">
-          <ul className="space-y-0.5">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              const Icon = item.icon;
-
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={`nav-item w-full ${isActive ? "active" : ""}`}
-                    style={
-                      !isActive
-                        ? {
-                            color: "var(--text-secondary)",
-                            ...(item.highlight
-                              ? {
-                                  background:
-                                    "linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
-                                  borderLeft: "3px solid var(--accent)",
-                                }
-                              : {}),
-                          }
-                        : {
-                            backgroundColor: "var(--accent)",
-                            color: "var(--text-primary)",
-                            fontFamily: "var(--font-heading)",
-                            fontWeight: 600,
-                          }
-                    }
-                  >
-                    <Icon
-                      className="w-5 h-5"
-                      style={!isActive ? { color: "var(--text-muted)" } : undefined}
-                    />
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        {/* Footer */}
-        <div
-          className="pt-4 mt-4"
-          style={{ borderTop: "1px solid var(--border)" }}
-        >
-          <Link
-            href="/settings"
-            className={`nav-item w-full mb-2 ${pathname === "/settings" ? "active" : ""}`}
-            style={
-              pathname !== "/settings"
-                ? {
-                    color: "var(--text-secondary)",
-                  }
-                : {
-                    backgroundColor: "var(--accent)",
-                    color: "var(--text-primary)",
-                    fontFamily: "var(--font-heading)",
-                    fontWeight: 600,
-                  }
-            }
-          >
-            <Settings
-              className="w-5 h-5"
-              style={pathname !== "/settings" ? { color: "var(--text-muted)" } : undefined}
-            />
-            Settings
-          </Link>
-
-          <div
-            className="px-4 py-2 text-xs"
-            style={{ color: "var(--text-muted)" }}
-          >
-            OpenClaw Agent
+            {isMobile && (
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Fechar menu"
+                style={{
+                  marginLeft: "auto",
+                  background: "transparent",
+                  border: "none",
+                  color: "rgba(249,249,247,0.82)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={20} />
+              </button>
+            )}
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-2 w-full rounded-lg transition-colors"
-            style={{ color: "var(--text-muted)" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--error)";
-              e.currentTarget.style.backgroundColor = "var(--card-elevated)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--text-muted)";
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="text-sm">Cerrar sesión</span>
-          </button>
+          <nav className="mc-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname?.startsWith(item.href));
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`mc-nav-item ${isActive ? "active" : ""} ${item.highlight ? "highlight" : ""}`}
+                >
+                  <Icon className="mc-nav-icon" />
+                  <span className="mc-nav-label">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="mc-sidebar-footer">
+            <button
+              onClick={handleLogout}
+              className="mc-nav-item"
+              style={{
+                width: "100%",
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              <LogOut className="mc-nav-icon" />
+              <span className="mc-nav-label">Sair</span>
+            </button>
+          </div>
         </div>
       </aside>
     </>

@@ -213,7 +213,7 @@ function SessionDetail({
   useEffect(() => {
     if (!session.sessionId) {
       setLoading(false);
-      setError("No session file available");
+      setError("Nenhum arquivo de sessão disponível");
       return;
     }
 
@@ -456,9 +456,11 @@ function SessionDetail({
 function SessionRow({
   session,
   onClick,
+  onKill,
 }: {
   session: Session;
   onClick: () => void;
+  onKill?: (e: React.MouseEvent) => void;
 }) {
   const color = typeColor(session.type);
   const contextBar =
@@ -586,6 +588,30 @@ function SessionRow({
         </span>
       </div>
 
+      {onKill && (
+        <button
+          onClick={onKill}
+          title="Remover sessão"
+          style={{
+            padding: "0.3rem",
+            borderRadius: "0.4rem",
+            background: "none",
+            border: "1px solid rgba(239,68,68,0.3)",
+            cursor: "pointer",
+            color: "#ef4444",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(239,68,68,0.15)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent"; }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+      )}
       <ChevronRight style={{ width: "14px", height: "14px", color: "var(--text-muted)", flexShrink: 0 }} />
     </div>
   );
@@ -596,7 +622,7 @@ function SessionRow({
 type FilterType = "all" | "main" | "cron" | "subagent" | "direct";
 
 const FILTER_TABS: Array<{ id: FilterType; label: string; emoji: string }> = [
-  { id: "all", label: "All", emoji: "📋" },
+  { id: "all", label: "Todas", emoji: "📋" },
   { id: "main", label: "Main", emoji: "🦞" },
   { id: "cron", label: "Cron", emoji: "🕐" },
   { id: "subagent", label: "Sub-agents", emoji: "🤖" },
@@ -621,6 +647,23 @@ export default function SessionsPage() {
       setError("Failed to load sessions");
     } finally {
       setLoading(false);
+    }
+  }, []);
+
+  const killSession = useCallback(async (session: Session, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm(`Remover sessão "${session.key}"?`)) return;
+    try {
+      const params = new URLSearchParams({ agent: 'main', id: session.sessionId || session.key });
+      const res = await fetch(`/api/sessions?${params}`, { method: 'DELETE' });
+      const d = await res.json();
+      if (res.ok) {
+        setSessions(prev => prev.filter(s => s.key !== session.key));
+      } else {
+        alert(d.error || 'Erro ao remover sessão');
+      }
+    } catch (err) {
+      alert(String(err));
     }
   }, []);
 
@@ -681,25 +724,25 @@ export default function SessionsPage() {
         >
           {[
             {
-              label: "Total Sessions",
+              label: "Total de Sessões",
               value: sessions.length,
               icon: MessageSquare,
               color: "var(--accent)",
             },
             {
-              label: "Total Tokens",
+              label: "Total de Tokens",
               value: formatTokens(totalTokens),
               icon: Hash,
               color: "#60a5fa",
             },
             {
-              label: "Cron Runs",
+              label: "Execuções Cron",
               value: counts.cron || 0,
               icon: Clock,
               color: "#a78bfa",
             },
             {
-              label: "Models Used",
+              label: "Modelos Utilizados",
               value: uniqueModels.length,
               icon: Bot,
               color: "#4ade80",
@@ -829,7 +872,7 @@ export default function SessionsPage() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Filter sessions..."
+                  placeholder="Filtrar sessões..."
                   style={{
                     background: "none",
                     border: "none",
@@ -949,6 +992,7 @@ export default function SessionsPage() {
                 key={session.id}
                 session={session}
                 onClick={() => setSelectedSession(session)}
+                onKill={(e) => killSession(session, e)}
               />
             ))}
         </div>

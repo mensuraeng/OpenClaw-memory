@@ -1,17 +1,6 @@
 /**
- * Office 3D — Agent Configuration
- *
- * This file defines the visual layout of agents in the 3D office.
- * Names, emojis and roles are loaded at runtime from the OpenClaw API
- * (/api/agents → openclaw.json), so you only need to set positions and colors here.
- *
- * Agent IDs correspond to workspace directory suffixes:
- *   id: "main"     → workspace/          (main agent)
- *   id: "studio"   → workspace-studio/
- *   id: "infra"    → workspace-infra/
- *   etc.
- *
- * Add, remove or reposition agents to match your own OpenClaw setup.
+ * Office 3D — Configuração de Agentes MENSURA
+ * Posições refletem a hierarquia real: Flávia no topo, empresas no meio, especialistas na base
  */
 
 export interface AgentConfig {
@@ -23,54 +12,112 @@ export interface AgentConfig {
   role: string;
 }
 
+// Layout hierárquico em 4 fileiras:
+// Fileira 0 (frente): Flávia — CEO/Main
+// Fileira 1: Mia, Mensura, PCS — empresas
+// Fileira 2: RH, Marketing, Producao, Finance — especialistas
+// Fileira 3 (fundo): Autopilot, Juridico, BI, Suprimentos — especialistas
+
 export const AGENTS: AgentConfig[] = [
+  // ── Nível 1: Main ──────────────────────────────────────────────────────────
   {
     id: "main",
-    name: process.env.NEXT_PUBLIC_AGENT_NAME || "Mission Control",
-    emoji: process.env.NEXT_PUBLIC_AGENT_EMOJI || "🦞",
-    position: [0, 0, 0], // Center — main desk
-    color: "#FFCC00",
-    role: "Main Agent",
+    name: "Flávia",
+    emoji: "🏗️",
+    position: [0, 0, 7],
+    color: "#ff6b35",
+    role: "Agente Principal",
+  },
+  // ── Nível 2: Empresas ──────────────────────────────────────────────────────
+  {
+    id: "mia",
+    name: "Mia",
+    emoji: "🏛️",
+    position: [-5, 0, 3],
+    color: "#3B82F6",
+    role: "MIA Engenharia",
   },
   {
-    id: "agent-2",
-    name: "Agent 2",
-    emoji: "🤖",
-    position: [-4, 0, -3],
-    color: "#4CAF50",
-    role: "Sub-agent",
+    id: "mensura",
+    name: "Mensura",
+    emoji: "📐",
+    position: [0, 0, 3],
+    color: "#EF4444",
+    role: "MENSURA Engenharia",
   },
   {
-    id: "agent-3",
-    name: "Agent 3",
-    emoji: "🤖",
-    position: [4, 0, -3],
-    color: "#E91E63",
-    role: "Sub-agent",
+    id: "pcs",
+    name: "PCS",
+    emoji: "🏢",
+    position: [5, 0, 3],
+    color: "#7C3AED",
+    role: "PCS Engenharia",
+  },
+  // ── Nível 3a: Especialistas ────────────────────────────────────────────────
+  {
+    id: "rh",
+    name: "RH",
+    emoji: "👥",
+    position: [-7.5, 0, -1],
+    color: "#8B5CF6",
+    role: "Recursos Humanos",
   },
   {
-    id: "agent-4",
-    name: "Agent 4",
-    emoji: "🤖",
-    position: [-4, 0, 3],
-    color: "#0077B5",
-    role: "Sub-agent",
+    id: "marketing",
+    name: "Marketing",
+    emoji: "📣",
+    position: [-2.5, 0, -1],
+    color: "#EC4899",
+    role: "Marketing & Comunicação",
   },
   {
-    id: "agent-5",
-    name: "Agent 5",
-    emoji: "🤖",
-    position: [4, 0, 3],
-    color: "#9C27B0",
-    role: "Sub-agent",
+    id: "producao",
+    name: "Produção",
+    emoji: "🏗️",
+    position: [2.5, 0, -1],
+    color: "#F59E0B",
+    role: "Produção de Obras",
   },
   {
-    id: "agent-6",
-    name: "Agent 6",
+    id: "finance",
+    name: "Finance",
+    emoji: "💰",
+    position: [7.5, 0, -1],
+    color: "#10B981",
+    role: "Financeiro",
+  },
+  // ── Nível 3b: Especialistas ────────────────────────────────────────────────
+  {
+    id: "autopilot",
+    name: "Autopilot",
     emoji: "🤖",
-    position: [0, 0, 6],
-    color: "#607D8B",
-    role: "Sub-agent",
+    position: [-7.5, 0, -5],
+    color: "#6B7280",
+    role: "Automação de Obras",
+  },
+  {
+    id: "juridico",
+    name: "Jurídico",
+    emoji: "⚖️",
+    position: [-2.5, 0, -5],
+    color: "#6366F1",
+    role: "Jurídico & Contratos",
+  },
+  {
+    id: "bi",
+    name: "BI / Dados",
+    emoji: "📊",
+    position: [2.5, 0, -5],
+    color: "#06B6D4",
+    role: "Business Intelligence",
+  },
+  {
+    id: "suprimentos",
+    name: "Suprimentos",
+    emoji: "📦",
+    position: [7.5, 0, -5],
+    color: "#D97706",
+    role: "Suprimentos & Compras",
   },
 ];
 
@@ -80,8 +127,8 @@ export interface AgentState {
   id: string;
   status: AgentStatus;
   currentTask?: string;
-  model?: string; // opus, sonnet, haiku
+  model?: string;
   tokensPerHour?: number;
   tasksInQueue?: number;
-  uptime?: number; // days
+  uptime?: number;
 }

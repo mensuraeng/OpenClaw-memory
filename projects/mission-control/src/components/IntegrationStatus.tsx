@@ -48,7 +48,7 @@ const statusConfig = {
     color: "text-yellow-400",
     bg: "bg-yellow-500/10",
     border: "border-yellow-500/30",
-    label: "Not Configured",
+    label: "Não configurado",
   },
 };
 

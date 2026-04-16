@@ -41,7 +41,7 @@ export function ChangePasswordModal({
 
     // Validation
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setError("All fields are required");
+      setError("Todos os campos são obrigatórios");
       return;
     }
 
@@ -185,7 +185,7 @@ export function ChangePasswordModal({
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-12 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
-                placeholder="Confirm new password"
+                placeholder="Confirmar nova senha"
               />
               <button
                 type="button"

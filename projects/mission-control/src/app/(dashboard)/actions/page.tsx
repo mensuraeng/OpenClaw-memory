@@ -1,269 +1,262 @@
-import { Shield, ShieldAlert } from 'lucide-react';
+'use client';
 
-const SAFE_ACTIONS = [
+import { useState, useCallback, useEffect } from 'react';
+import { Zap, RefreshCw, Play, CheckCircle, AlertTriangle, Activity, RotateCcw, Power, Database, Terminal } from 'lucide-react';
+
+interface Action {
+  id: string;
+  icon: string;
+  label: string;
+  description: string;
+  category: string;
+  color: string;
+  confirmRequired?: boolean;
+  apiEndpoint?: string;
+  apiMethod?: string;
+  apiBody?: Record<string, unknown>;
+}
+
+const ACTIONS: Action[] = [
+  // Agentes
   {
-    id: 'refresh',
-    label: 'Refresh',
-    description: 'Atualiza widgets e consultas de leitura já permitidas',
+    id: 'refresh-agents',
+    icon: '🔄',
+    label: 'Atualizar Status dos Agentes',
+    description: 'Atualiza o status de todos os agentes no dashboard',
+    category: 'Agentes',
+    color: '#22c55e',
+    apiEndpoint: '/api/agents',
+    apiMethod: 'GET',
   },
   {
-    id: 'ack-alert',
-    label: 'Acknowledge alert',
-    description: 'Marca um alerta visual como visto na interface',
+    id: 'restart-mc',
+    icon: '♻️',
+    label: 'Reiniciar Mission Control',
+    description: 'Reinicia o processo do Mission Control via PM2',
+    category: 'Agentes',
+    color: '#f59e0b',
+    confirmRequired: true,
+    apiEndpoint: '/api/system',
+    apiMethod: 'POST',
+    apiBody: { action: 'restart-pm2', target: 'mission-control' },
+  },
+  // Sistema
+  {
+    id: 'health-check',
+    icon: '❤️',
+    label: 'Health Check',
+    description: 'Verifica saúde do sistema e conexões',
+    category: 'Sistema',
+    color: '#3b82f6',
+    apiEndpoint: '/api/health',
+    apiMethod: 'GET',
   },
   {
-    id: 'copy-command',
-    label: 'Copy command',
-    description: 'Copia um comando recomendado para execução fora da UI',
+    id: 'clear-logs',
+    icon: '🧹',
+    label: 'Limpar Logs Antigos',
+    description: 'Remove logs com mais de 30 dias do workspace',
+    category: 'Sistema',
+    color: '#8b5cf6',
+    confirmRequired: true,
+    apiEndpoint: '/api/system',
+    apiMethod: 'POST',
+    apiBody: { action: 'clear-old-logs' },
+  },
+  // Cron
+  {
+    id: 'run-all-cron',
+    icon: '⏰',
+    label: 'Executar Todos os Cron Jobs',
+    description: 'Força execução imediata de todos os workflows ativos',
+    category: 'Cron',
+    color: '#f59e0b',
+    confirmRequired: true,
+    apiEndpoint: '/api/cron/run',
+    apiMethod: 'POST',
+    apiBody: { all: true },
+  },
+  // Memória
+  {
+    id: 'memory-backup',
+    icon: '💾',
+    label: 'Backup de Memória',
+    description: 'Cria backup dos arquivos de memória de todos os agentes',
+    category: 'Memória',
+    color: '#06b6d4',
+    apiEndpoint: '/api/system',
+    apiMethod: 'POST',
+    apiBody: { action: 'backup-memory' },
   },
   {
-    id: 'open-link',
-    label: 'Open link',
-    description: 'Abre um recurso permitido e previamente cadastrado',
-  },
-  {
-    id: 'rerun-safe-check',
-    label: 'Rerun safe check',
-    description: 'Reexecuta uma checagem leve e controlada',
+    id: 'reload-config',
+    icon: '🔧',
+    label: 'Recarregar Config OpenClaw',
+    description: 'Recarrega openclaw.json sem reiniciar o sistema',
+    category: 'Sistema',
+    color: '#ff6b35',
+    apiEndpoint: '/api/system',
+    apiMethod: 'POST',
+    apiBody: { action: 'reload-config' },
   },
 ];
 
+interface ActionResult {
+  id: string;
+  status: 'running' | 'success' | 'error';
+  message: string;
+  timestamp: Date;
+}
+
 export default function ActionsPage() {
+  const [results, setResults] = useState<ActionResult[]>([]);
+  const [running, setRunning] = useState<Set<string>>(new Set());
+
+  const categories = [...new Set(ACTIONS.map(a => a.category))];
+
+  const executeAction = useCallback(async (action: Action) => {
+    if (action.confirmRequired) {
+      if (!confirm(`Executar: "${action.label}"?\n\n${action.description}`)) return;
+    }
+
+    setRunning(prev => new Set([...prev, action.id]));
+    setResults(prev => [
+      { id: action.id, status: 'running', message: 'Executando...', timestamp: new Date() },
+      ...prev.filter(r => r.id !== action.id).slice(0, 19),
+    ]);
+
+    try {
+      const endpoint = action.apiEndpoint || '/api/health';
+      const method = action.apiMethod || 'GET';
+      const opts: RequestInit = { method };
+      if (method !== 'GET' && action.apiBody) {
+        opts.headers = { 'Content-Type': 'application/json' };
+        opts.body = JSON.stringify(action.apiBody);
+      }
+
+      const res = await fetch(endpoint, opts);
+      const data = await res.json().catch(() => ({}));
+
+      setResults(prev => prev.map(r => r.id === action.id ? {
+        ...r,
+        status: res.ok ? 'success' : 'error',
+        message: data.message || data.error || (res.ok ? 'Concluído com sucesso' : `Erro ${res.status}`),
+      } : r));
+    } catch (e) {
+      setResults(prev => prev.map(r => r.id === action.id ? {
+        ...r, status: 'error', message: String(e),
+      } : r));
+    }
+
+    setRunning(prev => { const n = new Set(prev); n.delete(action.id); return n; });
+  }, []);
+
+  const getResult = (id: string) => results.find(r => r.id === id);
+
+  const btnStyle = (color: string, disabled: boolean) => ({
+    display: 'flex', alignItems: 'center', gap: 8,
+    padding: '12px 16px', borderRadius: 10, cursor: disabled ? 'wait' : 'pointer',
+    backgroundColor: `${color}12`, border: `1px solid ${color}35`,
+    width: '100%', textAlign: 'left' as const,
+    opacity: disabled ? 0.6 : 1,
+    transition: 'all 150ms',
+  });
+
   return (
-    <div className="p-4 md:p-8">
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1
-          className="text-3xl font-bold mb-2"
-          style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
-        >
-          Ações leves allowlistadas
+    <div style={{ padding: '24px', maxWidth: 900 }}>
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ color: '#fff', fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Zap size={24} style={{ color: '#f59e0b' }} />
+          Ações Rápidas
         </h1>
-        <p style={{ color: 'var(--text-secondary)' }}>
-          A v1 não expõe manutenção genérica, restart, shell ou limpeza arbitrária.
+        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, marginTop: 4 }}>
+          Execute ações administrativas no sistema OpenClaw
         </p>
       </div>
 
-      <div
-        style={{
-          backgroundColor: 'var(--card)',
-          border: '1px solid var(--border)',
-          borderRadius: '1rem',
-          padding: '1.5rem',
-          marginBottom: '1.25rem',
-        }}
-      >
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-          <ShieldAlert className="w-5 h-5" style={{ color: 'var(--warning, #f59e0b)', flexShrink: 0, marginTop: '0.1rem' }} />
-          <div>
-            <strong style={{ color: 'var(--text-primary)' }}>Postura da v1</strong>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.35rem', lineHeight: 1.7 }}>
-              A interface só deve concentrar ações operacionais leves, específicas e auditáveis. Tudo que implique mutação ampla,
-              execução de comando, restart de serviço ou impacto genérico no host fica fora.
-            </p>
+      {/* Results log */}
+      {results.length > 0 && (
+        <div style={{
+          marginBottom: 24, backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 12, padding: 16,
+        }}>
+          <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, fontWeight: 700, letterSpacing: '1px', marginBottom: 10 }}>
+            LOG DE EXECUÇÃO
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {SAFE_ACTIONS.map((action) => (
-          <div
-            key={action.id}
-            style={{
-              backgroundColor: 'var(--card)',
-              border: '1px solid var(--border)',
-              borderRadius: '0.875rem',
-              padding: '1rem',
-            }}
-          >
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-              <div
-                style={{
-                  width: '2.5rem',
-                  height: '2.5rem',
-                  borderRadius: '0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'rgba(34,197,94,0.1)',
-                  color: 'var(--success)',
-                  flexShrink: 0,
-                }}
-              >
-                <Shield className="w-4 h-4" />
+          {results.map((r, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
+              {r.status === 'running' && <RefreshCw size={13} className="animate-spin" style={{ color: '#60a5fa', marginTop: 1, flexShrink: 0 }} />}
+              {r.status === 'success' && <CheckCircle size={13} style={{ color: '#22c55e', marginTop: 1, flexShrink: 0 }} />}
+              {r.status === 'error' && <AlertTriangle size={13} style={{ color: '#ef4444', marginTop: 1, flexShrink: 0 }} />}
+              <div style={{ flex: 1 }}>
+                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>
+                  {r.timestamp.toLocaleTimeString('pt-BR')} · {ACTIONS.find(a => a.id === r.id)?.label}:
+                </span>
+                <span style={{
+                  fontSize: 11, marginLeft: 6,
+                  color: r.status === 'success' ? '#22c55e' : r.status === 'error' ? '#ef4444' : '#60a5fa',
+                }}>
+                  {r.message}
+                </span>
               </div>
-              <div>
-                <h3 style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{action.label}</h3>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem', lineHeight: 1.6 }}>{action.description}</p>
-                <div
-                  style={{
-                    marginTop: '0.75rem',
-                    fontSize: '0.8rem',
-                    color: 'var(--text-muted)',
-                    fontFamily: 'monospace',
-                  }}
+            </div>
+          ))}
+          <button
+            onClick={() => setResults([])}
+            style={{ marginTop: 8, fontSize: 11, color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
+            Limpar log
+          </button>
+        </div>
+      )}
+
+      {/* Actions by category */}
+      {categories.map(cat => (
+        <div key={cat} style={{ marginBottom: 24 }}>
+          <h2 style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, fontWeight: 700, letterSpacing: '1px', marginBottom: 12 }}>
+            {cat.toUpperCase()}
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+            {ACTIONS.filter(a => a.category === cat).map(action => {
+              const result = getResult(action.id);
+              const isRunning = running.has(action.id);
+              return (
+                <button
+                  key={action.id}
+                  style={btnStyle(action.color, isRunning)}
+                  onClick={() => executeAction(action)}
+                  disabled={isRunning}
+                  onMouseEnter={e => { if (!isRunning) (e.currentTarget as HTMLButtonElement).style.backgroundColor = `${action.color}20`; }}
+                  onMouseLeave={e => { if (!isRunning) (e.currentTarget as HTMLButtonElement).style.backgroundColor = `${action.color}12`; }}
                 >
-                  id: {action.id}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-                    {action.dangerous && <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>⚠️</span>}
-                  </>
-                )}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Recent Results */}
-      {Object.keys(results).length > 0 && (
-        <div className="rounded-xl" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
-          <div className="p-4 border-b" style={{ borderColor: "var(--border)" }}>
-            <h2 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
-              Recent Results
-            </h2>
-          </div>
-          <div className="divide-y" style={{ borderColor: "var(--border)" }}>
-            {Object.values(results)
-              .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-              .map((result) => {
-                const action = ACTIONS.find((a) => a.id === result.action);
-                const Icon = (action?.icon || Terminal) as React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-                return (
-                  <div
-                    key={result.action}
-                    className="flex items-center gap-3 p-3 cursor-pointer transition-colors"
-                    style={{ borderBottom: "1px solid var(--border)" }}
-                    onClick={() => setSelectedResult(result)}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--card-elevated)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
-                  >
-                    <div style={{
-                      width: "1.75rem", height: "1.75rem", borderRadius: "0.375rem",
-                      backgroundColor: `color-mix(in srgb, ${action?.color || "#888"} 15%, transparent)`,
-                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    }}>
-                      <Icon className="w-3.5 h-3.5" style={{ color: action?.color || "#888" }} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
-                          {action?.label || result.action}
-                        </span>
-                        <span
-                          className="px-1.5 py-0.5 rounded text-xs"
-                          style={{
-                            backgroundColor: result.status === "success" ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
-                            color: result.status === "success" ? "var(--success)" : "var(--error)",
-                          }}
-                        >
-                          {result.status}
-                        </span>
+                  <span style={{ fontSize: 22 }}>{action.icon}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>{action.label}</div>
+                    <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, marginTop: 2 }}>{action.description}</div>
+                    {result && result.status !== 'running' && (
+                      <div style={{
+                        fontSize: 11, marginTop: 4,
+                        color: result.status === 'success' ? '#22c55e' : '#ef4444',
+                      }}>
+                        {result.status === 'success' ? '✓ ' : '✗ '}{result.message}
                       </div>
-                      <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        {result.duration_ms}ms · {format(new Date(result.timestamp), "HH:mm:ss")}
-                      </div>
-                    </div>
-                    <Terminal className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--text-muted)" }} />
+                    )}
                   </div>
-                );
-              })}
+                  <div style={{ flexShrink: 0 }}>
+                    {isRunning
+                      ? <RefreshCw size={16} className="animate-spin" style={{ color: action.color }} />
+                      : result?.status === 'success'
+                        ? <CheckCircle size={16} style={{ color: '#22c55e' }} />
+                        : result?.status === 'error'
+                          ? <AlertTriangle size={16} style={{ color: '#ef4444' }} />
+                          : <Play size={16} style={{ color: action.color }} />
+                    }
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
-      )}
-
-      {/* Confirm Dialog */}
-      {confirmAction && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 1000,
-          backgroundColor: "rgba(0,0,0,0.75)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          padding: "1rem",
-        }}>
-          <div style={{
-            backgroundColor: "var(--card)",
-            borderRadius: "1rem", padding: "2rem",
-            maxWidth: "400px", width: "100%",
-            border: "1px solid var(--border)",
-          }}>
-            <h3 style={{ color: "var(--text-primary)", marginBottom: "0.75rem", fontWeight: 600 }}>
-              ⚠️ Confirm: {confirmAction.label}
-            </h3>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", fontSize: "0.9rem" }}>
-              This action may affect running services. Are you sure?
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
-              <button
-                onClick={() => setConfirmAction(null)}
-                style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", background: "var(--card-elevated)", color: "var(--text-secondary)", border: "none", cursor: "pointer" }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => executeAction(confirmAction)}
-                style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", background: "var(--error, #ef4444)", color: "#fff", border: "none", cursor: "pointer", fontWeight: 600 }}
-              >
-                Run Anyway
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Output Modal */}
-      {selectedResult && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 1000,
-          backgroundColor: "rgba(0,0,0,0.85)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          padding: "1rem",
-        }}>
-          <div style={{
-            width: "95vw", maxWidth: "800px", height: "75vh",
-            backgroundColor: "#0d1117",
-            borderRadius: "1rem", border: "1px solid var(--border)",
-            display: "flex", flexDirection: "column",
-            overflow: "hidden",
-          }}>
-            <div style={{
-              display: "flex", alignItems: "center", gap: "0.75rem",
-              padding: "0.875rem 1rem",
-              borderBottom: "1px solid #30363d",
-              flexShrink: 0,
-            }}>
-              <Terminal className="w-4 h-4" style={{ color: selectedResult.status === "success" ? "var(--success)" : "var(--error)" }} />
-              <span style={{ color: "#c9d1d9", fontFamily: "monospace", fontSize: "0.9rem", flex: 1 }}>
-                {ACTIONS.find((a) => a.id === selectedResult.action)?.label || selectedResult.action}
-              </span>
-              <span style={{ fontSize: "0.75rem", color: "#8b949e" }}>
-                {selectedResult.duration_ms}ms · {format(new Date(selectedResult.timestamp), "HH:mm:ss")}
-              </span>
-              <button
-                onClick={() => setSelectedResult(null)}
-                style={{ padding: "0.375rem", borderRadius: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#8b949e" }}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div style={{ flex: 1, overflow: "auto", padding: "1rem" }}>
-              <pre style={{
-                fontFamily: "monospace", fontSize: "0.8rem",
-                color: "#c9d1d9", whiteSpace: "pre-wrap", wordBreak: "break-all",
-                lineHeight: 1.6,
-              }}>
-                {selectedResult.output}
-              </pre>
-            </div>
-          </div>
-        </div>
-      )}
+      ))}
     </div>
   );
 }

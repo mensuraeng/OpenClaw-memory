@@ -1,13 +1,16 @@
 /**
- * Sessions API
- * GET /api/sessions          → list all sessions (from openclaw sessions list --json)
- * GET /api/sessions?id=xxx   → get messages from a specific session (reads JSONL)
+ * Sessions API — READ ONLY (v1)
+ * GET /api/sessions            → list sessions for agent (default: main)
+ * GET /api/sessions?agent=rh   → list sessions for agent rh
+ * GET /api/sessions?id=xxx     → get messages from a specific session
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { execSync } from 'child_process';
-import { readFileSync, existsSync } from 'fs';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
+const execAsync = promisify(exec);
 const OPENCLAW_DIR = process.env.OPENCLAW_DIR || '/root/.openclaw';
 
 interface RawSession {
@@ -27,268 +30,204 @@ interface RawSession {
   contextTokens?: number;
 }
 
-interface ParsedSession {
-  id: string;
-  key: string;
-  type: 'main' | 'cron' | 'subagent' | 'direct' | 'unknown';
-  typeLabel: string;
-  typeEmoji: string;
-  sessionId: string | null;
-  cronJobId?: string;
-  subagentId?: string;
-  updatedAt: number;
-  ageMs: number;
-  model: string;
-  modelProvider: string;
-  inputTokens: number;
-  outputTokens: number;
-  totalTokens: number;
-  contextTokens: number;
-  contextUsedPercent: number | null;
-  aborted: boolean;
-}
-
-function parseSessionKey(key: string): {
-  type: 'main' | 'cron' | 'subagent' | 'direct' | 'unknown';
-  typeLabel: string;
-  typeEmoji: string;
-  cronJobId?: string;
-  subagentId?: string;
-  isRunEntry: boolean;
-} {
-  // Examples:
-  // agent:main:main
-  // agent:main:cron:<jobId>
-  // agent:main:cron:<jobId>:run:<sessionId>
-  // agent:main:subagent:<subagentId>
-  // agent:main:telegram:<chatId> or agent:main:direct:<...>
-
+function parseSessionKey(key: string) {
   const parts = key.split(':');
-
-  // Skip the ":run:" duplicate entries - these are redundant
   if (parts.includes('run')) {
-    return { type: 'unknown', typeLabel: 'Run Entry', typeEmoji: '🔁', isRunEntry: true };
+    return { type: 'unknown' as const, typeLabel: 'Run Entry', typeEmoji: '🔁', isRunEntry: true };
   }
-
-  if (parts[2] === 'main') {
-    return { type: 'main', typeLabel: 'Main Session', typeEmoji: '🦞', isRunEntry: false };
-  }
-
-  if (parts[2] === 'cron') {
-    return {
-      type: 'cron',
-      typeLabel: 'Cron Job',
-      typeEmoji: '🕐',
-      cronJobId: parts[3],
-      isRunEntry: false,
-    };
-  }
-
-  if (parts[2] === 'subagent') {
-    return {
-      type: 'subagent',
-      typeLabel: 'Sub-agent',
-      typeEmoji: '🤖',
-      subagentId: parts[3],
-      isRunEntry: false,
-    };
-  }
-
-  // telegram, direct, etc.
+  if (parts[2] === 'main') return { type: 'main' as const, typeLabel: 'Main Session', typeEmoji: '🦞', isRunEntry: false };
+  if (parts[2] === 'cron') return { type: 'cron' as const, typeLabel: 'Cron Job', typeEmoji: '🕐', cronJobId: parts[3], isRunEntry: false };
+  if (parts[2] === 'subagent') return { type: 'subagent' as const, typeLabel: 'Sub-agent', typeEmoji: '🤖', subagentId: parts[3], isRunEntry: false };
   return {
-    type: 'direct',
+    type: 'direct' as const,
     typeLabel: parts[2] ? `${parts[2].charAt(0).toUpperCase() + parts[2].slice(1)} Chat` : 'Direct Chat',
     typeEmoji: '💬',
     isRunEntry: false,
   };
 }
 
+function getValidAgentIds(): string[] {
+  try {
+    const config = JSON.parse(readFileSync(`${OPENCLAW_DIR}/openclaw.json`, 'utf-8'));
+    return (config.agents?.list || []).map((a: { id: string }) => a.id);
+  } catch {
+    return ['main'];
+  }
+}
+
+function sanitizeAgentId(agentId: string): string | null {
+  if (!agentId || agentId.includes('/') || agentId.includes('..') || agentId.length > 64) return null;
+  const valid = getValidAgentIds();
+  return valid.includes(agentId) ? agentId : null;
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('id');
+  const rawAgent = searchParams.get('agent') || 'main';
+  const agentId = sanitizeAgentId(rawAgent) || 'main';
 
-  // Return messages for a specific session
-  if (sessionId) {
-    return getSessionMessages(sessionId);
-  }
-
-  // Return list of all sessions
-  return listSessions();
+  if (sessionId) return getSessionMessages(sessionId, agentId);
+  return listSessions(agentId);
 }
 
-async function listSessions(): Promise<NextResponse> {
+async function listSessions(agentId: string): Promise<NextResponse> {
   try {
-    const output = execSync('openclaw sessions list --json 2>/dev/null', {
-      timeout: 10000,
-      encoding: 'utf-8',
-    });
-
-    const data = JSON.parse(output);
-    const rawSessions: RawSession[] = data.sessions || [];
-
-    const sessions: ParsedSession[] = rawSessions
-      .reduce<ParsedSession[]>((acc, raw) => {
-        const parsed = parseSessionKey(raw.key);
-
-        // Skip run-entry duplicates and unknown types
-        if (parsed.isRunEntry || parsed.type === 'unknown') return acc;
-
-        const totalTokens = raw.totalTokens || 0;
-        const contextTokens = raw.contextTokens || 0;
-        const contextUsedPercent =
-          contextTokens > 0 && raw.totalTokensFresh
-            ? Math.round((totalTokens / contextTokens) * 100)
-            : null;
-
-        acc.push({
-          id: raw.key,
-          key: raw.key,
-          type: parsed.type,
-          typeLabel: parsed.typeLabel,
-          typeEmoji: parsed.typeEmoji,
-          sessionId: raw.sessionId || null,
-          cronJobId: parsed.cronJobId,
-          subagentId: parsed.subagentId,
-          updatedAt: raw.updatedAt,
-          ageMs: raw.ageMs,
-          model: raw.model || 'unknown',
-          modelProvider: raw.modelProvider || 'anthropic',
-          inputTokens: raw.inputTokens || 0,
-          outputTokens: raw.outputTokens || 0,
-          totalTokens,
-          contextTokens,
-          contextUsedPercent,
-          aborted: raw.abortedLastRun || false,
-        });
-        return acc;
-      }, []);
-
-    // Sort by updatedAt desc
-    sessions.sort((a, b) => b.updatedAt - a.updatedAt);
-
-    return NextResponse.json({ sessions, total: sessions.length });
-  } catch (error) {
-    console.error('[sessions] Error listing sessions:', error);
-    return NextResponse.json({ error: 'Failed to list sessions', sessions: [] }, { status: 500 });
-  }
-}
-
-interface JsonlLine {
-  type: string;
-  id?: string;
-  timestamp?: string;
-  message?: {
-    role: string;
-    content: string | Array<{ type: string; text?: string; name?: string; input?: unknown; id?: string }>;
-    timestamp?: number;
-  };
-  provider?: string;
-  modelId?: string;
-  customType?: string;
-  data?: unknown;
-}
-
-async function getSessionMessages(sessionId: string): Promise<NextResponse> {
-  // Security: only allow UUID-like session IDs
-  if (!/^[a-f0-9-]{36}$/.test(sessionId)) {
-    return NextResponse.json({ error: 'Invalid session ID' }, { status: 400 });
-  }
-
-  const sessionsDir = join(OPENCLAW_DIR, 'agents', 'main', 'sessions');
-  const filePath = join(sessionsDir, `${sessionId}.jsonl`);
-
-  if (!existsSync(filePath)) {
-    return NextResponse.json({ error: 'Session not found', messages: [] }, { status: 404 });
-  }
-
-  try {
-    const raw = readFileSync(filePath, 'utf-8');
-    const lines = raw.trim().split('\n').filter(Boolean);
-
-    interface ParsedMessage {
-      id: string;
-      type: 'user' | 'assistant' | 'tool_use' | 'tool_result' | 'model_change' | 'system';
-      role?: string;
-      content: string;
-      timestamp: string;
-      model?: string;
-      toolName?: string;
-    }
-
-    const messages: ParsedMessage[] = [];
-    let currentModel = '';
-
-    for (const line of lines) {
-      try {
-        const obj: JsonlLine = JSON.parse(line);
-
-        if (obj.type === 'model_change' && obj.modelId) {
-          currentModel = obj.modelId;
-        }
-
-        if (obj.type !== 'message' || !obj.message) continue;
-
-        const msg = obj.message;
-        const role = msg.role;
-        const timestamp = obj.timestamp || new Date().toISOString();
-
-        if (typeof msg.content === 'string') {
-          messages.push({
-            id: obj.id || Math.random().toString(),
-            type: role === 'user' ? 'user' : 'assistant',
-            role,
-            content: msg.content,
-            timestamp,
-            model: currentModel || undefined,
-          });
-        } else if (Array.isArray(msg.content)) {
-          for (const block of msg.content) {
-            if (block.type === 'text' && block.text) {
-              messages.push({
-                id: (obj.id || '') + '-text',
-                type: role === 'user' ? 'user' : 'assistant',
-                role,
-                content: block.text,
-                timestamp,
-                model: currentModel || undefined,
-              });
-            } else if (block.type === 'tool_use' && block.name) {
-              messages.push({
-                id: block.id || (obj.id || '') + '-tool',
-                type: 'tool_use',
-                role,
-                content: `${block.name}(${block.input ? JSON.stringify(block.input).slice(0, 200) : ''})`,
-                timestamp,
-                toolName: block.name,
-                model: currentModel || undefined,
-              });
-            } else if (block.type === 'tool_result') {
-              const resultContent = Array.isArray(block.text)
-                ? (block.text as Array<{ type: string; text?: string }>).map((b) => b.text || '').join('\n')
-                : (block.text as string) || '';
-              messages.push({
-                id: (obj.id || '') + '-result',
-                type: 'tool_result',
-                role,
-                content: resultContent.slice(0, 500),
-                timestamp,
-                model: currentModel || undefined,
-              });
-            }
-          }
-        }
-      } catch {
-        // Skip malformed lines
+    // Try openclaw CLI first (F17: execAsync with timeout)
+    let sessions: RawSession[] = [];
+    try {
+      const { stdout } = await execAsync(
+        `openclaw sessions list --json --agent ${agentId} 2>/dev/null`,
+        { timeout: 10000 }
+      );
+      const data = JSON.parse(stdout);
+      sessions = Array.isArray(data) ? data : (data.sessions || []);
+    } catch {
+      // Fallback: read JSONL files directly from agent sessions dir
+      const sessionsDir = join(OPENCLAW_DIR, 'agents', agentId, 'sessions');
+      if (existsSync(sessionsDir)) {
+        try {
+          const files = readdirSync(sessionsDir)
+            .filter(f => f.endsWith('.jsonl') && !f.includes('.deleted'))
+            .map(f => ({ file: f, stat: statSync(join(sessionsDir, f)) }))
+            .sort((a, b) => b.stat.mtime.getTime() - a.stat.mtime.getTime())
+            .slice(0, 50);
+          sessions = files.map(({ file, stat }) => ({
+            key: `agent:${agentId}:main`,
+            kind: 'session',
+            updatedAt: stat.mtime.getTime(),
+            ageMs: Date.now() - stat.mtime.getTime(),
+            sessionId: file.replace('.jsonl', ''),
+          }));
+        } catch { /* no sessions dir */ }
       }
     }
 
-    return NextResponse.json({
-      sessionId,
-      messages,
-      total: messages.length,
-    });
+    const parsed = sessions
+      .map((s: RawSession) => {
+        const keyInfo = parseSessionKey(s.key || '');
+        if (keyInfo.isRunEntry) return null;
+        const contextPct = s.contextTokens && s.totalTokens
+          ? Math.round((s.totalTokens / s.contextTokens) * 100)
+          : null;
+        return {
+          id: s.sessionId || s.key,
+          key: s.key,
+          agentId,
+          ...keyInfo,
+          updatedAt: s.updatedAt,
+          ageMs: s.ageMs,
+          model: s.model || 'unknown',
+          modelProvider: s.modelProvider || 'unknown',
+          inputTokens: s.inputTokens || 0,
+          outputTokens: s.outputTokens || 0,
+          totalTokens: s.totalTokens || 0,
+          contextTokens: s.contextTokens || 0,
+          contextUsedPercent: contextPct,
+          aborted: s.abortedLastRun || false,
+        };
+      })
+      .filter(Boolean)
+      .sort((a: any, b: any) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .slice(0, 50);
+
+    return NextResponse.json(parsed);
   } catch (error) {
-    console.error('[sessions] Error reading session file:', error);
-    return NextResponse.json({ error: 'Failed to read session', messages: [] }, { status: 500 });
+    console.error('[sessions] Error listing sessions:', error);
+    return NextResponse.json({ error: 'Failed to fetch sessions' }, { status: 500 });
+  }
+}
+
+async function getSessionMessages(sessionId: string, agentId: string): Promise<NextResponse> {
+  // Sanitize sessionId
+  if (!sessionId || sessionId.includes('/') || sessionId.includes('..') || sessionId.length > 64) {
+    return NextResponse.json({ error: 'Invalid session id' }, { status: 400 });
+  }
+
+  try {
+    const sessionsDir = join(OPENCLAW_DIR, 'agents', agentId, 'sessions');
+    const filePath = join(sessionsDir, `${sessionId}.jsonl`);
+
+    // Verify path stays within sessions dir
+    const { resolve } = await import('path');
+    if (!resolve(filePath).startsWith(resolve(sessionsDir))) {
+      return NextResponse.json({ error: 'Invalid session path' }, { status: 400 });
+    }
+
+    if (!existsSync(filePath)) {
+      return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    }
+
+    const content = readFileSync(filePath, 'utf-8');
+    const lines = content.split('\n').filter(Boolean);
+    const messages = lines
+      .map((line) => {
+        try { return JSON.parse(line); } catch { return null; }
+      })
+      .filter(Boolean)
+      .map((msg: Record<string, unknown>) => {
+        // Sanitize: truncate content, omit tool_use payloads
+        const sanitized: Record<string, unknown> = {
+          id: msg.id,
+          role: msg.role,
+          timestamp: msg.timestamp,
+          model: msg.model,
+        };
+        if (msg.content) {
+          if (typeof msg.content === 'string') {
+            sanitized.content = msg.content.substring(0, 500);
+          } else if (Array.isArray(msg.content)) {
+            sanitized.content = (msg.content as Array<Record<string, unknown>>)
+              .filter((c) => c.type === 'text')
+              .map((c) => ({ type: 'text', text: String(c.text || '').substring(0, 500) }));
+          }
+        }
+        return sanitized;
+      });
+
+    return NextResponse.json({ sessionId, agentId, messages, count: messages.length });
+  } catch (error) {
+    console.error('[sessions] Error reading session:', error);
+    return NextResponse.json({ error: 'Failed to read session' }, { status: 500 });
+  }
+}
+
+
+
+// DELETE: Kill/remove a session
+export async function DELETE(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const rawAgent = searchParams.get('agent') || 'main';
+  const sessionId = searchParams.get('id');
+  const agentId = sanitizeAgentId(rawAgent) || 'main';
+
+  try {
+    const sessionsDir = join(OPENCLAW_DIR, 'agents', agentId, 'sessions');
+    if (sessionId) {
+      const f1 = join(sessionsDir, `${sessionId}.jsonl`);
+      if (existsSync(f1)) {
+        const fsMod = await import('fs');
+        fsMod.unlinkSync(f1);
+        return NextResponse.json({ ok: true, message: 'Sessao removida.' });
+      }
+      try {
+        const { stdout: out } = await execAsync(
+          `openclaw sessions kill --agent ${agentId} --id ${sessionId} 2>&1`,
+          { timeout: 8000 }
+        );
+        return NextResponse.json({ ok: true, message: out.trim() || 'Sessao encerrada.' });
+      } catch { /* ignore */ }
+      return NextResponse.json({ error: 'Sessao nao encontrada' }, { status: 404 });
+    } else {
+      if (existsSync(sessionsDir)) {
+        const fsMod = await import('fs');
+        const files = fsMod.readdirSync(sessionsDir).filter((f: string) => f.endsWith('.jsonl'));
+        files.forEach((f: string) => { try { fsMod.unlinkSync(join(sessionsDir, f)); } catch { /* ignore */ } });
+        return NextResponse.json({ ok: true, message: `${files.length} sessao(oes) removida(s).` });
+      }
+      return NextResponse.json({ ok: true, message: 'Nenhuma sessao para remover.' });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 });
   }
 }

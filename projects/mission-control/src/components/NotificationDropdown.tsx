@@ -241,7 +241,7 @@ export function NotificationDropdown() {
                 Notifications
               </h3>
               <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                {unreadCount > 0 ? `${unreadCount} unread` : "All caught up!"}
+                {unreadCount > 0 ? `${unreadCount} não lida${unreadCount > 1 ? "s" : ""}` : "Tudo em dia!"}
               </p>
             </div>
 

@@ -75,7 +75,7 @@ export default function GitPage() {
         body: JSON.stringify({ repo: repo.path, action }),
       });
       const data = await res.json();
-      setOutputModal({ title: `${repo.name}: git ${action}`, content: data.output || data.error || "No output", loading: false });
+      setOutputModal({ title: `${repo.name}: git ${action}`, content: data.output || data.error || "Sem saída", loading: false });
     } catch {
       setOutputModal({ title: `${repo.name}: git ${action}`, content: "Request failed", loading: false });
     } finally {

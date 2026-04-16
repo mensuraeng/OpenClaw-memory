@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Sora, JetBrains_Mono } from "next/font/google";
+import { Playfair_Display, Lato, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ 
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"],
 });
 
-const sora = Sora({ 
+const lato = Lato({
   subsets: ["latin"],
-  variable: "--font-sora",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-lato",
+  weight: ["300", "400", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -19,10 +20,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mission Control - OpenClaw",
-  description: "Your OpenClaw agent dashboard",
+  title: "Mission Control — MIA Engenharia",
+  description: "Cockpit operacional da MIA Engenharia",
   manifest: "/manifest.json",
-  themeColor: "#1a1a2e",
+  themeColor: "#050505",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -38,16 +39,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="pt-BR" style={{ scrollBehavior: "smooth" }}>
       <head>
-        <script dangerouslySetInnerHTML={{__html:`if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js")`}} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js")`,
+          }}
+        />
       </head>
-      <body 
-        className={`${inter.variable} ${sora.variable} ${jetbrainsMono.variable} font-sans`}
-        style={{ 
-          backgroundColor: 'var(--background)', 
-          color: 'var(--foreground)',
-          fontFamily: 'var(--font-body)'
+      <body
+        className={`${playfair.variable} ${lato.variable} ${jetbrainsMono.variable}`}
+        style={{
+          backgroundColor: "var(--background)",
+          color: "var(--foreground)",
+          fontFamily: "var(--font-body)",
         }}
       >
         {children}

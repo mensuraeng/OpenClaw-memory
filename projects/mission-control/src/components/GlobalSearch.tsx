@@ -60,7 +60,7 @@ export function GlobalSearch({ fullPage = false }: GlobalSearchProps) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search activities, tasks, and documents..."
+          placeholder="Buscar atividades, tarefas e documentos..."
           className="w-full pl-12 pr-10 py-3 rounded-xl transition-colors focus:outline-none"
           style={{ 
             backgroundColor: "var(--card)", 

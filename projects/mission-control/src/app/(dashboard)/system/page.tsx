@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Cpu, HardDrive, MemoryStick, Activity, Network, Server, ShieldCheck, RotateCw, Wifi, Monitor, Play, Square, X, Loader2, Terminal, ArrowDown, ArrowUp } from "lucide-react";
+import { PageHeader, PageShell, SectionCard } from "@/components/PageShell";
 
 interface SystemdService {
   name: string;
@@ -168,7 +169,8 @@ export default function SystemMonitorPage() {
   const activeServices = systemData.systemd.filter((s) => s.status === "active").length;
 
   return (
-    <div className="space-y-6">
+    <PageShell>
+      <div className="space-y-6">
       {/* Toast */}
       {toast && (
         <div style={{
@@ -185,23 +187,22 @@ export default function SystemMonitorPage() {
       )}
 
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
-            System Monitor
-          </h1>
-          <p style={{ color: "var(--text-secondary)" }}>Real-time monitoring of server resources and services</p>
-        </div>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: "rgba(34,197,94,0.12)", color: "var(--success)" }}>
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--success)" }} />
-            Live
-          </span>
-          {lastUpdated && (
-            <span className="text-xs" style={{ color: "var(--text-muted)" }}>{lastUpdated.toLocaleTimeString()}</span>
-          )}
-        </div>
-      </div>
+      <PageHeader
+        title="System Monitor"
+        subtitle="Monitoramento em tempo real de recursos e serviços do servidor"
+        icon={<Server className="inline-block w-6 h-6 mr-2 mb-1" style={{ color: 'var(--accent)' }} />}
+        actions={
+          <div className="flex items-center gap-2 mt-1">
+            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: "rgba(34,197,94,0.12)", color: "var(--success)" }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--success)" }} />
+              Live
+            </span>
+            {lastUpdated && (
+              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{lastUpdated.toLocaleTimeString()}</span>
+            )}
+          </div>
+        }
+      />
 
       {/* Tabs */}
       <div className="flex gap-2 border-b" style={{ borderColor: "var(--border)" }}>
@@ -601,13 +602,14 @@ export default function SystemMonitorPage() {
                   color: "#c9d1d9", whiteSpace: "pre-wrap", wordBreak: "break-all",
                   lineHeight: 1.6,
                 }}>
-                  {logsModal.content || "No log output"}
+                  {logsModal.content || "Sem saída de log"}
                 </pre>
               )}
             </div>
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </PageShell>
   );
 }

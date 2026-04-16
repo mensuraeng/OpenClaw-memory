@@ -47,7 +47,7 @@ export function TopBar() {
       >
         {/* Left: Logo & Title */}
         <div className="flex items-center gap-3">
-          <span style={{ fontSize: "20px" }}>🦞</span>
+          <span style={{ fontSize: "20px" }}>🏗️</span>
           <h1
             style={{
               fontFamily: "var(--font-heading)",
@@ -57,7 +57,7 @@ export function TopBar() {
               letterSpacing: "-0.5px",
             }}
           >
-            TenacitOS
+            Mission Control
           </h1>
           {/* Version Badge */}
           <div
@@ -76,7 +76,7 @@ export function TopBar() {
                 letterSpacing: "1px",
               }}
             >
-              v1.0
+              MENSURA
             </span>
           </div>
         </div>
@@ -110,7 +110,7 @@ export function TopBar() {
                 color: "var(--text-muted)",
               }}
             >
-              Search... ⌘K
+              Buscar... ⌘K
             </span>
           </button>
 
@@ -151,7 +151,7 @@ export function TopBar() {
                 color: "var(--text-secondary)",
               }}
             >
-              Carlos
+              Alexandre Aguiar
             </span>
           </div>
         </div>

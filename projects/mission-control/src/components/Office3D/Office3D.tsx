@@ -2,7 +2,7 @@
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sky, Environment } from '@react-three/drei';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect, useCallback } from 'react';
 import { Vector3 } from 'three';
 import { AGENTS } from './agentsConfig';
 import type { AgentState } from './agentsConfig';
@@ -19,74 +19,227 @@ import WallClock from './WallClock';
 import FirstPersonControls from './FirstPersonControls';
 import MovingAvatar from './MovingAvatar';
 
+interface ApiAgent {
+  id: string;
+  name: string;
+  emoji: string;
+  color: string;
+  model: string;
+  status: 'online' | 'offline' | 'unknown';
+  lastActivity?: string;
+  activeSessions: number;
+}
+
+// Mapeia status da API para status 3D
+function mapStatus(agent: ApiAgent): AgentState['status'] {
+  if (agent.status === 'offline') return 'idle';
+  if (agent.activeSessions > 0) return 'working';
+  if (agent.status === 'online') return 'thinking';
+  return 'idle';
+}
+
+// Formata "tarefa atual" baseado no último acesso
+function formatTask(agent: ApiAgent): string | undefined {
+  if (agent.activeSessions > 0) return `${agent.activeSessions} sessão${agent.activeSessions > 1 ? 'ões' : ''} ativa${agent.activeSessions > 1 ? 's' : ''}`;
+  if (!agent.lastActivity) return undefined;
+  const mins = Math.floor((Date.now() - new Date(agent.lastActivity).getTime()) / 60000);
+  if (mins < 60) return `Ativo há ${mins}min`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `Ativo há ${hrs}h`;
+  return `Ativo há ${Math.floor(hrs / 24)}d`;
+}
+
 export default function Office3D() {
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
   const [interactionModal, setInteractionModal] = useState<string | null>(null);
   const [controlMode, setControlMode] = useState<'orbit' | 'fps'>('orbit');
-  const [avatarPositions, setAvatarPositions] = useState<Map<string, any>>(new Map());
-  
-  // Mock data - TODO: Replace with real API data
-  const [agentStates] = useState<Record<string, AgentState>>({
-    main: { id: 'main', status: 'working', currentTask: 'Procesando emails', model: 'opus', tokensPerHour: 15000, tasksInQueue: 3, uptime: 12 },
-    academic: { id: 'academic', status: 'idle', model: 'sonnet', tokensPerHour: 0, tasksInQueue: 0, uptime: 8 },
-    studio: { id: 'studio', status: 'thinking', currentTask: 'Generando guión YouTube', model: 'opus', tokensPerHour: 8000, tasksInQueue: 1, uptime: 5 },
-    linkedin: { id: 'linkedin', status: 'working', currentTask: 'Redactando post', model: 'sonnet', tokensPerHour: 5000, tasksInQueue: 2, uptime: 10 },
-    social: { id: 'social', status: 'idle', model: 'sonnet', tokensPerHour: 0, tasksInQueue: 0, uptime: 7 },
-    infra: { id: 'infra', status: 'error', currentTask: 'Failed deployment', model: 'haiku', tokensPerHour: 1000, tasksInQueue: 0, uptime: 15 },
-  });
+  const [avatarPositions, setAvatarPositions] = useState<Map<string, Vector3>>(new Map());
+  const [agentStates, setAgentStates] = useState<Record<string, AgentState>>({});
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
-  const handleDeskClick = (agentId: string) => {
-    setSelectedAgent(agentId);
-  };
+  // Buscar dados reais dos agentes
+  const fetchAgents = useCallback(async () => {
+    try {
+      const res = await fetch('/api/agents');
+      const data = await res.json();
+      const agents: ApiAgent[] = data.agents || [];
 
-  const handleClosePanel = () => {
-    setSelectedAgent(null);
-  };
+      const states: Record<string, AgentState> = {};
+      for (const agent of agents) {
+        states[agent.id] = {
+          id: agent.id,
+          status: mapStatus(agent),
+          currentTask: formatTask(agent),
+          model: agent.model?.split('/').pop() || 'gpt',
+          tokensPerHour: agent.activeSessions * 5000,
+          tasksInQueue: agent.activeSessions,
+          uptime: undefined,
+        };
+      }
+      setAgentStates(states);
+      setLastUpdate(new Date());
+    } catch (e) {
+      console.error('[Office3D] Erro ao buscar agentes:', e);
+    }
+  }, []);
 
-  const handleFileCabinetClick = () => {
-    setInteractionModal('memory');
-  };
+  useEffect(() => {
+    fetchAgents();
+    const interval = setInterval(fetchAgents, 15000);
+    return () => clearInterval(interval);
+  }, [fetchAgents]);
 
-  const handleWhiteboardClick = () => {
-    setInteractionModal('roadmap');
-  };
+  // Estado padrão para agentes sem dados
+  const getState = (id: string): AgentState =>
+    agentStates[id] || { id, status: 'idle', model: 'gpt' };
 
-  const handleCoffeeClick = () => {
-    setInteractionModal('energy');
-  };
-
-  const handleCloseModal = () => {
-    setInteractionModal(null);
-  };
-
-  const handleAvatarPositionUpdate = (id: string, position: any) => {
-    setAvatarPositions(prev => new Map(prev).set(id, position));
-  };
-
-  // Definir obstáculos (muebles)
   const obstacles = [
-    // Escritorios (6)
     ...AGENTS.map(agent => ({
       position: new Vector3(agent.position[0], 0, agent.position[2]),
-      radius: 1.5
+      radius: 1.5,
     })),
-    // Archivador
-    { position: new Vector3(-8, 0, -5), radius: 0.8 },
-    // Pizarra
-    { position: new Vector3(0, 0, -8), radius: 1.5 },
-    // Máquina de café
-    { position: new Vector3(8, 0, -5), radius: 0.6 },
-    // Plantas
-    { position: new Vector3(-7, 0, 6), radius: 0.5 },
-    { position: new Vector3(7, 0, 6), radius: 0.5 },
-    { position: new Vector3(-9, 0, 0), radius: 0.4 },
-    { position: new Vector3(9, 0, 0), radius: 0.4 },
+    { position: new Vector3(-10, 0, -7), radius: 0.8 },
+    { position: new Vector3(0, 0, -10), radius: 1.5 },
+    { position: new Vector3(10, 0, -7), radius: 0.6 },
+    { position: new Vector3(-10, 0, 8), radius: 0.5 },
+    { position: new Vector3(10, 0, 8), radius: 0.5 },
   ];
 
+  const onlineCount = Object.values(agentStates).filter(s => s.status !== 'idle').length;
+  const workingCount = Object.values(agentStates).filter(s => s.status === 'working').length;
+
   return (
-    <div className="fixed inset-0 bg-gray-900" style={{ height: '100vh', width: '100vw' }}>
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: '#0a0a1a' }}>
+
+      {/* ── HUD overlay ─────────────────────────────────────────────────────── */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 20px',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)',
+        pointerEvents: 'none',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 20 }}>🏗️</span>
+          <div>
+            <div style={{ color: '#fff', fontSize: 14, fontWeight: 700, letterSpacing: '-0.5px' }}>
+              GRUPO MENSURA — Office Virtual
+            </div>
+            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>
+              {AGENTS.length} agentes •{' '}
+              <span style={{ color: '#4ade80' }}>{onlineCount} ativos</span> •{' '}
+              <span style={{ color: '#f59e0b' }}>{workingCount} trabalhando</span>
+              {lastUpdate && (
+                <span style={{ marginLeft: 8 }}>
+                  · Atualizado {new Date(lastUpdate).toLocaleTimeString('pt-BR')}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Controles */}
+        <div style={{ display: 'flex', gap: 8, pointerEvents: 'all' }}>
+          <button
+            onClick={() => setControlMode(controlMode === 'orbit' ? 'fps' : 'orbit')}
+            style={{
+              padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+              backgroundColor: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)',
+              color: '#fff', cursor: 'pointer',
+            }}
+          >
+            {controlMode === 'orbit' ? '🎮 Modo FPS' : '🌐 Modo Órbita'}
+          </button>
+          <button
+            onClick={fetchAgents}
+            style={{
+              padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+              backgroundColor: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)',
+              color: '#fff', cursor: 'pointer',
+            }}
+          >
+            🔄 Atualizar
+          </button>
+          <a
+            href="/agents"
+            style={{
+              padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+              backgroundColor: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)',
+              color: '#fff', textDecoration: 'none',
+            }}
+          >
+            ← Voltar
+          </a>
+        </div>
+      </div>
+
+      {/* ── Status bar inferior ──────────────────────────────────────────────── */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10,
+        padding: '8px 20px',
+        background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+        display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap',
+        pointerEvents: 'none',
+      }}>
+        {AGENTS.map(agent => {
+          const state = getState(agent.id);
+          const dotColor = state.status === 'working' ? '#4ade80'
+            : state.status === 'thinking' ? '#60a5fa'
+            : state.status === 'error' ? '#f87171' : '#6b7280';
+          return (
+            <div key={agent.id} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: dotColor }} />
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 10 }}>
+                {agent.emoji} {agent.name}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Modal de interação ───────────────────────────────────────────────── */}
+      {interactionModal && (
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 50,
+          backgroundColor: 'rgba(0,0,0,0.85)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}
+          onClick={() => setInteractionModal(null)}
+        >
+          <div style={{
+            backgroundColor: '#1a1a2e', borderRadius: 16, padding: 32,
+            border: '1px solid rgba(255,255,255,0.1)', maxWidth: 480, width: '90%',
+          }}
+            onClick={e => e.stopPropagation()}
+          >
+            <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
+              {interactionModal === 'memory' ? '🗄️ Arquivo de Memória'
+                : interactionModal === 'roadmap' ? '📋 Quadro de Tarefas'
+                : '☕ Máquina de Café'}
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, marginBottom: 24 }}>
+              {interactionModal === 'memory' ? 'Arquivos de memória dos agentes MENSURA'
+                : interactionModal === 'roadmap' ? 'Próximos marcos e tarefas da equipe'
+                : 'Pausa para café... os agentes agradecem!'}
+            </p>
+            <a
+              href={interactionModal === 'memory' ? '/memory' : interactionModal === 'roadmap' ? '/workflows' : '#'}
+              style={{
+                display: 'inline-block', padding: '8px 20px', borderRadius: 8,
+                backgroundColor: 'var(--accent, #ff6b35)', color: '#000',
+                textDecoration: 'none', fontWeight: 700, fontSize: 13,
+              }}
+              onClick={() => setInteractionModal(null)}
+            >
+              {interactionModal === 'energy' ? 'Fechar ☕' : 'Abrir →'}
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* ── Canvas 3D ───────────────────────────────────────────────────────── */}
       <Canvas
-        camera={{ position: [0, 8, 12], fov: 60 }}
+        camera={{ position: [0, 10, 16], fov: 55 }}
         shadows
         gl={{ antialias: true, alpha: false }}
         style={{ width: '100%', height: '100%' }}
@@ -94,79 +247,62 @@ export default function Office3D() {
         <Suspense fallback={
           <mesh>
             <boxGeometry args={[2, 2, 2]} />
-            <meshStandardMaterial color="orange" />
+            <meshStandardMaterial color="#ff6b35" />
           </mesh>
         }>
-          {/* Iluminación */}
           <Lights />
-
-          {/* Cielo y ambiente */}
           <Sky sunPosition={[100, 20, 100]} />
-          <Environment preset="sunset" />
-
-          {/* Suelo */}
+          <Environment preset="city" />
           <Floor />
-
-          {/* Paredes */}
           <Walls />
 
-          {/* Escritorios de agentes (sin avatares) */}
+          {/* Mesas dos agentes com dados reais */}
           {AGENTS.map((agent) => (
             <AgentDesk
               key={agent.id}
               agent={agent}
-              state={agentStates[agent.id]}
-              onClick={() => handleDeskClick(agent.id)}
+              state={getState(agent.id)}
+              onClick={() => setSelectedAgent(agent.id)}
               isSelected={selectedAgent === agent.id}
             />
           ))}
 
-          {/* Avatares móviles */}
+          {/* Avatares móveis */}
           {AGENTS.map((agent) => (
             <MovingAvatar
               key={`avatar-${agent.id}`}
               agent={agent}
-              state={agentStates[agent.id]}
-              officeBounds={{ minX: -8, maxX: 8, minZ: -7, maxZ: 7 }}
+              state={getState(agent.id)}
+              officeBounds={{ minX: -10, maxX: 10, minZ: -8, maxZ: 9 }}
               obstacles={obstacles}
               otherAvatarPositions={avatarPositions}
-              onPositionUpdate={handleAvatarPositionUpdate}
+              onPositionUpdate={(id, pos) =>
+                setAvatarPositions(prev => new Map(prev).set(id, pos))
+              }
             />
           ))}
 
-          {/* Mobiliario interactivo */}
-          <FileCabinet
-            position={[-8, 0, -5]}
-            onClick={handleFileCabinetClick}
-          />
-          <Whiteboard
-            position={[0, 0, -8]}
-            rotation={[0, 0, 0]}
-            onClick={handleWhiteboardClick}
-          />
-          <CoffeeMachine
-            position={[8, 0.8, -5]}
-            onClick={handleCoffeeClick}
-          />
+          {/* Mobiliário interativo */}
+          <FileCabinet position={[-10, 0, -7]} onClick={() => setInteractionModal('memory')} />
+          <Whiteboard position={[0, 0, -10]} rotation={[0, 0, 0]} onClick={() => setInteractionModal('roadmap')} />
+          <CoffeeMachine position={[10, 0.8, -7]} onClick={() => setInteractionModal('energy')} />
 
-          {/* Decoración */}
-          <PlantPot position={[-7, 0, 6]} size="large" />
-          <PlantPot position={[7, 0, 6]} size="medium" />
-          <PlantPot position={[-9, 0, 0]} size="small" />
-          <PlantPot position={[9, 0, 0]} size="small" />
-          <WallClock
-            position={[0, 2.5, -8.4]}
-            rotation={[0, 0, 0]}
-          />
+          {/* Decoração */}
+          <PlantPot position={[-10, 0, 8]} size="large" />
+          <PlantPot position={[10, 0, 8]} size="medium" />
+          <PlantPot position={[-11, 0, 0]} size="small" />
+          <PlantPot position={[11, 0, 0]} size="small" />
+          <WallClock position={[0, 2.5, -10.4]} rotation={[0, 0, 0]} />
 
-          {/* Controles de cámara */}
+          {/* Controles de câmera */}
           {controlMode === 'orbit' ? (
             <OrbitControls
               enableDamping
               dampingFactor={0.05}
-              minDistance={5}
-              maxDistance={30}
+              minDistance={6}
+              maxDistance={35}
               maxPolarAngle={Math.PI / 2.2}
+              target={[0, 0, 0]}
             />
           ) : (
             <FirstPersonControls moveSpeed={5} />
@@ -174,160 +310,18 @@ export default function Office3D() {
         </Suspense>
       </Canvas>
 
-      {/* Panel lateral cuando se selecciona un agente */}
-      {selectedAgent && (
-        <AgentPanel
-          agent={AGENTS.find(a => a.id === selectedAgent)!}
-          state={agentStates[selectedAgent]}
-          onClose={handleClosePanel}
-        />
-      )}
-
-      {/* Modal de interacciones con objetos */}
-      {interactionModal && (
-        <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-gray-900 border border-yellow-500 rounded-lg p-8 max-w-2xl w-full mx-4 shadow-2xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-yellow-400">
-                {interactionModal === 'memory' && '📁 Memory Browser'}
-                {interactionModal === 'roadmap' && '📋 Roadmap & Planning'}
-                {interactionModal === 'energy' && '☕ Agent Energy Dashboard'}
-              </h2>
-              <button
-                onClick={handleCloseModal}
-                className="text-gray-400 hover:text-white text-3xl leading-none"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="text-gray-300 space-y-4">
-              {interactionModal === 'memory' && (
-                <>
-                  <p className="text-lg">🧠 Access to workspace memories and files</p>
-                  <div className="bg-gray-800 p-4 rounded border border-gray-700">
-                    <p className="text-sm text-gray-400 mb-2">Quick links:</p>
-                    <ul className="space-y-2">
-                      <li><a href="/memory" className="text-yellow-400 hover:underline">→ Full Memory Browser</a></li>
-                      <li><a href="/files" className="text-yellow-400 hover:underline">→ File Explorer</a></li>
-                    </ul>
-                  </div>
-                  <p className="text-sm text-gray-500 italic">
-                    This would show a file tree of memory/*.md and workspace files
-                  </p>
-                </>
-              )}
-
-              {interactionModal === 'roadmap' && (
-                <>
-                  <p className="text-lg">🗺️ Project roadmap and planning board</p>
-                  <div className="bg-gray-800 p-4 rounded border border-gray-700">
-                    <p className="text-sm text-gray-400 mb-2">Active phases:</p>
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2">
-                        <span className="text-green-400">✓</span>
-                        <span>Phase 0: TenacitOS Shell</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="text-yellow-400">●</span>
-                        <span>Phase 8: The Office 3D (MVP)</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="text-gray-500">○</span>
-                        <span>Phase 2: File Browser Pro</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <p className="text-sm text-gray-500 italic">
-                    Full roadmap available at workspace/mission-control/ROADMAP.md
-                  </p>
-                </>
-              )}
-
-              {interactionModal === 'energy' && (
-                <>
-                  <p className="text-lg">⚡ Agent activity and energy levels</p>
-                  <div className="bg-gray-800 p-4 rounded border border-gray-700 space-y-3">
-                    <div>
-                      <p className="text-sm text-gray-400">Tokens consumed today:</p>
-                      <p className="text-2xl font-bold text-yellow-400">47,000</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Active agents:</p>
-                      <p className="text-2xl font-bold text-green-400">3 / 6</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">System uptime:</p>
-                      <p className="text-2xl font-bold text-blue-400">12h 34m</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-500 italic">
-                    This would show real-time agent mood/productivity metrics
-                  </p>
-                </>
-              )}
-            </div>
-
-            <button
-              onClick={handleCloseModal}
-              className="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Controles UI overlay */}
-      <div className="absolute top-4 left-4 bg-black/70 text-white p-4 rounded-lg backdrop-blur-sm">
-        <h2 className="text-lg font-bold mb-2">🏢 The Office</h2>
-        <div className="text-sm space-y-1 mb-3">
-          <p><strong>Mode: {controlMode === 'orbit' ? '🖱️ Orbit' : '🎮 FPS'}</strong></p>
-          {controlMode === 'orbit' ? (
-            <>
-              <p>🖱️ Mouse: Rotar vista</p>
-              <p>🔄 Scroll: Zoom</p>
-              <p>👆 Click: Seleccionar</p>
-            </>
-          ) : (
-            <>
-              <p>Click to lock cursor</p>
-              <p>WASD/Arrows: Mover</p>
-              <p>Space: Subir | Shift: Bajar</p>
-              <p>Mouse: Mirar | ESC: Unlock</p>
-            </>
-          )}
-        </div>
-        <button
-          onClick={() => setControlMode(controlMode === 'orbit' ? 'fps' : 'orbit')}
-          className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-3 rounded text-xs transition-colors"
-        >
-          Switch to {controlMode === 'orbit' ? 'FPS Mode' : 'Orbit Mode'}
-        </button>
-      </div>
-
-      {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-black/70 text-white p-4 rounded-lg backdrop-blur-sm">
-        <h3 className="text-sm font-bold mb-2">Estados</h3>
-        <div className="text-xs space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Working</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-            <span>Thinking</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-            <span>Idle</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span>Error</span>
-          </div>
-        </div>
-      </div>
+      {/* ── Painel lateral do agente selecionado ─────────────────────────────── */}
+      {selectedAgent && (() => {
+        const agentCfg = AGENTS.find(a => a.id === selectedAgent);
+        if (!agentCfg) return null;
+        return (
+          <AgentPanel
+            agent={agentCfg}
+            state={getState(selectedAgent)}
+            onClose={() => setSelectedAgent(null)}
+          />
+        );
+      })()}
     </div>
   );
 }

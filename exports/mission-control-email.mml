@@ -1,0 +1,45 @@
+From: Flávia | MENSURA Engenharia <flavia@mensuraengenharia.com.br>
+To: alexandre@mensuraengenharia.com.br
+Subject: Mission Control - arquivos txt
+Content-Type: multipart/mixed; boundary="frontier"
+
+--frontier
+Content-Type: text/plain; charset=utf-8
+
+Alê,
+
+Segue em anexo os 4 arquivos .txt do Mission Control para visualização.
+
+Arquivos:
+- prd-mission-control-openclaw.txt
+- mission-control-v1-design.txt
+- mission-control-v1-implementation-plan.txt
+- mission-control-patch-list-v1.txt
+
+Flávia
+
+--frontier
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="prd-mission-control-openclaw.txt"
+
+< /root/.openclaw/workspace/exports/prd-mission-control-openclaw.txt
+
+--frontier
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="mission-control-v1-design.txt"
+
+< /root/.openclaw/workspace/exports/mission-control-v1-design.txt
+
+--frontier
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="mission-control-v1-implementation-plan.txt"
+
+< /root/.openclaw/workspace/exports/mission-control-v1-implementation-plan.txt
+
+--frontier
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="mission-control-patch-list-v1.txt"
+
+< /root/.openclaw/workspace/exports/mission-control-patch-list-v1.txt
+
+--frontier--

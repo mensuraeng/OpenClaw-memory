@@ -6,6 +6,7 @@ import { ActivityPieChart } from "@/components/charts/ActivityPieChart";
 import { HourlyHeatmap } from "@/components/charts/HourlyHeatmap";
 import { SuccessRateGauge } from "@/components/charts/SuccessRateGauge";
 import { BarChart3, TrendingUp, Clock, Target } from "lucide-react";
+import { PageHeader, PageShell, SectionCard } from "@/components/PageShell";
 
 interface AnalyticsData {
   byDay: { date: string; count: number }[];
@@ -60,18 +61,12 @@ export default function AnalyticsPage() {
   )?.date || "-";
 
   return (
-    <div className="p-4 md:p-8" style={{ backgroundColor: "var(--background)", minHeight: "100vh" }}>
-      <div className="mb-4 md:mb-8">
-        <h1
-          className="text-2xl md:text-3xl font-bold mb-2"
-          style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
-        >
-          📊 Analytics
-        </h1>
-        <p className="text-sm md:text-base" style={{ color: "var(--text-secondary)" }}>
-          Insights and trends from agent activity
-        </p>
-      </div>
+    <PageShell>
+      <PageHeader
+        title="Analytics"
+        subtitle="Insights e tendências da atividade operacional"
+        icon={<span style={{ marginRight: 8 }}>📊</span>}
+      />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
@@ -116,73 +111,25 @@ export default function AnalyticsPage() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Activity Over Time */}
-        <div
-          className="rounded-xl p-4 md:p-6"
-          style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <TrendingUp className="w-4 h-4 md:w-5 md:h-5" style={{ color: "var(--accent)" }} />
-            <h2
-              className="text-lg md:text-xl font-bold"
-              style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
-            >
-              Activity Over Time
-            </h2>
-          </div>
+        <SectionCard title="Activity Over Time" icon={<TrendingUp className="inline-block w-4 h-4 md:w-5 md:h-5 mr-2 mb-0.5" style={{ color: "var(--accent)" }} />}>
           <ActivityLineChart data={data.byDay} />
-        </div>
+        </SectionCard>
 
         {/* Activity by Type */}
-        <div
-          className="rounded-xl p-4 md:p-6"
-          style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <BarChart3 className="w-4 h-4 md:w-5 md:h-5" style={{ color: "var(--accent)" }} />
-            <h2
-              className="text-lg md:text-xl font-bold"
-              style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
-            >
-              Activity by Type
-            </h2>
-          </div>
+        <SectionCard title="Activity by Type" icon={<BarChart3 className="inline-block w-4 h-4 md:w-5 md:h-5 mr-2 mb-0.5" style={{ color: "var(--accent)" }} />}>
           <ActivityPieChart data={data.byType} />
-        </div>
+        </SectionCard>
 
         {/* Hourly Heatmap */}
-        <div
-          className="rounded-xl p-4 md:p-6"
-          style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <Clock className="w-4 h-4 md:w-5 md:h-5" style={{ color: "var(--accent)" }} />
-            <h2
-              className="text-lg md:text-xl font-bold"
-              style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
-            >
-              Activity by Hour
-            </h2>
-          </div>
+        <SectionCard title="Activity by Hour" icon={<Clock className="inline-block w-4 h-4 md:w-5 md:h-5 mr-2 mb-0.5" style={{ color: "var(--accent)" }} />}>
           <HourlyHeatmap data={data.byHour} />
-        </div>
+        </SectionCard>
 
         {/* Success Rate Gauge */}
-        <div
-          className="rounded-xl p-4 md:p-6"
-          style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <Target className="w-4 h-4 md:w-5 md:h-5" style={{ color: "var(--accent)" }} />
-            <h2
-              className="text-lg md:text-xl font-bold"
-              style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
-            >
-              Success Rate
-            </h2>
-          </div>
+        <SectionCard title="Success Rate" icon={<Target className="inline-block w-4 h-4 md:w-5 md:h-5 mr-2 mb-0.5" style={{ color: "var(--accent)" }} />}>
           <SuccessRateGauge rate={data.successRate} />
-        </div>
+        </SectionCard>
       </div>
-    </div>
+    </PageShell>
   );
 }

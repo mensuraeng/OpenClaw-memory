@@ -37,7 +37,7 @@ const skills = [
   { name: "Web Search", icon: Search, color: "#facc15" },
   { name: "File Management", icon: FileText, color: "#60a5fa" },
   { name: "Cron Scheduler", icon: Timer, color: "#f472b6" },
-  { name: "Memory System", icon: Brain, color: "#34d399" },
+  { name: "Sistema de Memória", icon: Brain, color: "#34d399" },
   { name: "YouTube Research", icon: Youtube, color: "#FF0000" },
   { name: "Email (Gmail)", icon: Mail, color: "#EA4335" },
 ];
@@ -50,7 +50,7 @@ const personality = [
 ];
 
 const philosophies = [
-  "Actions over words. Less 'I can help you' and more actually helping.",
+  "Ações acima de palavras. Menos 'posso te ajudar' e mais ajuda de verdade.",
   "Having opinions is fine. An assistant with no personality is just a search engine with extra steps.",
   "Try before asking. Read the file, search, explore — then ask if needed.",
   "Privacy is sacred. Access ≠ permission to share.",

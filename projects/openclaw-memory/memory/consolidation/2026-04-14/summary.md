@@ -1,11 +1,15 @@
-# Consolidation Summary
+# Consolidação noturna — 2026-04-14
 
-## Itens promovidos
+Gerado em 2026-04-15 01:33 UTC.
 
-## Itens descartados
+## Agentes processados
 
-## Duplicações encontradas
+- main: eventos=0, notas=sim, resumo=main-summary.md
+- mensura: eventos=0, notas=sim, resumo=mensura-summary.md
+- mia: eventos=0, notas=sim, resumo=mia-summary.md
+- pcs: eventos=0, notas=sim, resumo=pcs-summary.md
+- finance: eventos=0, notas=sim, resumo=finance-summary.md
 
-## Conflitos / revisão humana
+## Próximo passo
 
-## Próximas ações
+Revisar os resumos por agente e promover decisões, lições, pendências e contexto de projeto para a memória institucional compartilhada.
