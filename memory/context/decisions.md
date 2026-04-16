@@ -44,6 +44,9 @@ O app `OpenClaw - Mensura` permanece para OAuth/OIDC e publicação pessoal assi
 ### Skills do ecossistema seguem modelo híbrido: transversal compartilhada, domínio específico isolado (2026-04-16)
 Skills transversais devem viver no workspace principal como biblioteca compartilhada. Skills fortemente específicas de um domínio/agente devem viver no workspace desse agente. Não duplicar skill em múltiplos workspaces sem ganho operacional claro.
 
+### Main pode delegar por subagent aos agentes especializados com política explícita (2026-04-16)
+O agente `main` deve poder delegar a agentes especializados por subagent com `allowAgents` explícito, `requireAgentId=true`, limites de spawn controlados e validação real de runtime. Delegação declarada sem capacidade prática validada não conta como arquitetura funcionando.
+
 ## Operação recorrente
 
 ### Horário protegido para notificações (2026-04-01)
