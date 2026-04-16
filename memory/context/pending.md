@@ -19,6 +19,8 @@ _Atualizado em 2026-04-16_
 
 ## Em andamento interno
 
+- [ ] **Avaliar triagem operacional da inbox PCS** — a integração Graph da PCS foi habilitada, mas vale decidir se e como tratar automaticamente emails como `ENC: INSTALAÇÃO ELÉTRICA` com marca de urgência.
+
 - [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
 - [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
 - [ ] **Estruturar grupos do cofre** — consolidar grupos padrão: Email, APIs, Social, Infra, Financeiro.

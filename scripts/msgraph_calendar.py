@@ -12,6 +12,7 @@ DEFAULT_CONFIG_FILE = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.
 ACCOUNT_CONFIG_MAP = {
     "mensura": os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json"),
     "mia": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-mia.json"),
+    "pcs": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-pcs.json"),
 }
 
 def load_config(config_path=None, account=None):
@@ -130,7 +131,7 @@ def resolve_user(args_user, cfg):
 def main():
     p = argparse.ArgumentParser(description="Gerenciador de calendário Microsoft Graph")
     p.add_argument("cmd", choices=["list","create","delete"], help="Comando")
-    p.add_argument("--account", choices=["mensura","mia"], help="Conta/config a usar")
+    p.add_argument("--account", choices=["mensura","mia","pcs"], help="Conta/config a usar")
     p.add_argument("--config", help="Caminho explícito do arquivo de configuração")
     p.add_argument("--user", help="Usuário/calendário alvo")
     p.add_argument("--days", type=int, default=7, help="Dias a listar (padrão: 7)")

@@ -16,8 +16,9 @@ _Atualizado em 2026-04-13_
 ## Integrações ativas
 - Email Mensura (`alexandre@mensuraengenharia.com.br`) — ✅
 - Email MIA (`alexandre@miaengenharia.com.br`) — ✅
+- Email PCS (`alexandre@pcsengenharia.com.br`) — ✅
 - Email Flávia (`flavia@mensuraengenharia.com.br`) — ✅
-- Calendário Mensura + MIA — ✅
+- Calendário Mensura + MIA + PCS — ✅
 - SharePoint Mensura + MIA — ✅
 
 ## Scripts
@@ -36,4 +37,14 @@ _Atualizado em 2026-04-13_
 ## Config
 - Mensura: `config/ms-graph.json`
 - MIA: `config/ms-graph-mia.json`
+- PCS: `config/ms-graph-pcs.json`
 - Flávia identity: `config/flavia-identity.json`
+
+## PCS habilitado em 2026-04-16
+- Criado `config/ms-graph-pcs.json` com `defaultUser=alexandre@pcsengenharia.com.br`.
+- `scripts/msgraph_email.py` e `scripts/msgraph_calendar.py` passaram a aceitar `--account pcs`.
+- Validação concluída com sucesso:
+  - inbox PCS respondeu normalmente
+  - calendário PCS respondeu normalmente
+- Evidência operacional relevante da inbox:
+  - email de `dyonisiojpf@spobras.sp.gov.br` com assunto `ENC: INSTALAÇÃO ELÉTRICA`, incluindo uma ocorrência marcada como urgente em 15/04/2026.
