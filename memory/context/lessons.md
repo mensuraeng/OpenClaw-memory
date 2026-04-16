@@ -45,6 +45,9 @@ No nosso processo, plano explícito vale para tarefa não trivial, ambígua, arr
 ### Elegância sem utilidade é sofisticação precoce (2026-04-15)
 Buscar solução limpa é bom, mas não pode virar desculpa para over-engineering. Primeiro consolidar o essencial que ajuda decisão ou operação, depois refinar.
 
+### Workspaces separados exigem política explícita de skills (2026-04-16)
+Quando cada agente roda em workspace próprio, não dá para assumir que toda skill do workspace principal estará operacionalmente disponível e homogênea para todos. O desenho precisa separar biblioteca transversal compartilhada de skill específica por domínio para evitar duplicação burra e ambiguidade de manutenção.
+
 ### Segundo cérebro só funciona se inbox e consolidação forem separados (2026-04-14)
 Se o mesmo espaço tentar ser captura bruta e memória final ao mesmo tempo, o sistema vira acúmulo desorganizado. A arquitetura precisa separar claramente o que entra rápido durante o dia do que é consolidado à noite como memória institucional de longo prazo.
 

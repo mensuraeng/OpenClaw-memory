@@ -38,6 +38,12 @@ Adotar o heartbeat operacional com ciclos diários, semanal, gatilhos imediatos,
 ### Protocolo de execução da Flávia adota planejamento condicional, validação forte e correção autônoma (2026-04-15)
 A Flávia deve usar plano curto com etapas verificáveis em tarefas não triviais, usar subagentes com foco e follow-up explícito quando houver ganho real, validar proporcionalmente antes de declarar conclusão, e atacar bugs internos a partir de logs, erro observável, causa raiz e prova de correção. Elegância é desejável, mas sem criar burocracia ou sofisticação precoce.
 
+### LinkedIn pessoal e institucional seguem trilhas separadas (2026-04-15)
+O app `OpenClaw - Mensura` permanece para OAuth/OIDC e publicação pessoal assistida. O fluxo institucional de páginas deve seguir no app `OpenClaw - Community API`, aguardando aprovação e novo OAuth/token antes de qualquer reteste.
+
+### Skills do ecossistema seguem modelo híbrido: transversal compartilhada, domínio específico isolado (2026-04-16)
+Skills transversais devem viver no workspace principal como biblioteca compartilhada. Skills fortemente específicas de um domínio/agente devem viver no workspace desse agente. Não duplicar skill em múltiplos workspaces sem ganho operacional claro.
+
 ## Operação recorrente
 
 ### Horário protegido para notificações (2026-04-01)

@@ -1,6 +1,6 @@
 # MEMORY.md — Painel de Continuidade da Flávia
 
-_Última atualização: 2026-04-13_
+_Última atualização: 2026-04-16_
 
 ## O que este arquivo é
 
@@ -23,14 +23,17 @@ Serve para responder rápido:
 - **Relatório de cursos** — ativo, sexta 16h BRT
 - **Monitoramento de cronogramas** — ativo para P&G Louveira e CCSP Casa 3
 - **PCS Engenharia** — posicionamento, narrativa institucional e estrutura comercial em evolução
+- **Mission Control 10/10** — em evolução funcional, com foco em sinais operacionais, decisões e drill-down útil
+- **OpenClaw Memory / GitHub segundo cérebro** — MVP implantado, em fase de fortalecimento de captura e consolidação
 - **Sistema imunológico do OpenClaw** — watchdog de cron, guardrail de custo, backup estrutural e rollback documentado ativos
 
 ### Pendências críticas
-- LinkedIn Client ID + Secret
 - Instagram App ID + Secret
-- OpenAI API key válida para Whisper + embeddings
+- OpenAI API key / quota válida para Whisper + embeddings
 - Confirmar SSH key antes de hardening
+- Corrigir cadeia real de fallback de modelos
 - Revisar falha de calendário da conta Mensura quando houver janela para isso
+- Aguardar aprovação do app institucional do LinkedIn para páginas
 
 ### Integrações ativas
 - Email Mensura ✅
@@ -42,7 +45,8 @@ Serve para responder rápido:
 - VPS ✅
 
 ### Riscos ou atenção
-- `memory_search()` está indisponível por erro de API key de embeddings
+- `memory_search()` está indisponível por quota insuficiente de embeddings
+- A cadeia de fallback configurada não está saudável na prática, por quota da OpenAI e auth ausente na Anthropic
 - Parte do contexto de longo prazo existe, mas ainda precisa de consolidação contínua por tema
 - Há risco de espalhamento de contexto em notas diárias se não houver promoção periódica para arquivos temáticos
 - Custo real das últimas 24h e 7d ainda está muito acima da meta e foi dominado por `gpt-5.4` antes da troca de política
