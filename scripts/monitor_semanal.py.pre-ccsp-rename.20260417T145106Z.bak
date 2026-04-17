@@ -48,9 +48,9 @@ OBRAS_ATIVAS = [
     },
     {
         "empresa": "MIA",
-        "nome": "CCSP Casa 7",
+        "nome": "CCSP Casa 3",
         "config": "/root/.openclaw/workspace/config/ms-graph-mia.json",
-        "site_name": "CCSP-Casa7",
+        "site_name": "CCSP-CasaCapela3",
         "busca": "CCSP CASA 3 - Cronograma Executivo",
         "alerta_dias": 7
     },
