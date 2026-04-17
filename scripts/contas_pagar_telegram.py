@@ -1,85 +1,76 @@
 #!/usr/bin/env python3
 """
-Relatório semanal de contas a pagar via Telegram.
-Roda toda segunda-feira às 10h Brasília (13h UTC).
+Relatório semanal de contas a pagar.
+Roda toda segunda-feira às 10h BRT (cron 0 13 * * 1).
+
+Pós-FASE 5: NÃO fala mais com Telegram diretamente.
+Fluxo:
+1. roda contas_pagar.py scan (escaneia emails Mensura+MIA buscando boletos)
+2. carrega memory/contas_pagar.json
+3. monta payload para Flávia
+4. entrega via send_to_flavia.py — domínio FINANCEIRO,
+   Flávia decide se delega para o agente `finance` ou resolve direta
+
+Flags:
+  --skip-scan         pula a etapa de scan (usa o JSON atual)
+  --skip-flavia       imprime relatório no stdout em vez de entregar
 """
 
-import json, os, sys, subprocess, re
-import urllib.request, urllib.parse
+import argparse
+import json
+import os
+import subprocess
+import sys
 from datetime import datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from send_to_flavia import send_to_flavia  # noqa: E402
+
 CONTAS_FILE = os.path.expanduser("~/.openclaw/workspace/memory/contas_pagar.json")
-OPENCLAW_CONFIG = os.path.expanduser("~/.openclaw/openclaw.json")
+SCAN_SCRIPT = os.path.expanduser("~/.openclaw/workspace/scripts/contas_pagar.py")
 
 
-def get_telegram_token():
-    """Lê o bot token do config do OpenClaw."""
-    with open(OPENCLAW_CONFIG) as f:
-        content = f.read()
-    # Tenta HJSON (aspas simples) e JSON (aspas duplas)
-    for pattern in [r'botToken:\s*\'([^\']+)\'', r'"botToken":\s*"([^"]+)"']:
-        match = re.search(pattern, content)
-        if match:
-            return match.group(1)
-    raise ValueError("botToken não encontrado no config")
-
-
-def send_telegram(token, chat_id, text, message_thread_id=None):
-    url = "https://api.telegram.org/bot{}/sendMessage".format(token)
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "Markdown",
-    }
-    if message_thread_id:
-        payload["message_thread_id"] = message_thread_id
-
-    data = json.dumps(payload).encode()
-    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
-    try:
-        with urllib.request.urlopen(req) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        print(f"Erro Telegram: {e.code} — {e.read().decode()}", file=sys.stderr)
-        return None
-
-
-def load_contas():
+def load_contas() -> dict:
     if os.path.exists(CONTAS_FILE):
         with open(CONTAS_FILE) as f:
             return json.load(f)
     return {"contas": [], "pagos": []}
 
 
-def run_scan():
+def run_scan() -> int:
     """Executa o scan de emails para detectar novas contas."""
-    result = subprocess.run(
-        ["python3", os.path.expanduser("~/.openclaw/workspace/scripts/contas_pagar.py"), "scan"],
-        capture_output=True, text=True, timeout=120
-    )
-    print(result.stdout)
-    if result.returncode != 0:
-        print(f"Scan stderr: {result.stderr}", file=sys.stderr)
+    try:
+        result = subprocess.run(
+            ["python3", SCAN_SCRIPT, "scan"],
+            capture_output=True, text=True, timeout=180,
+        )
+        if result.stdout:
+            sys.stderr.write(result.stdout)
+        if result.returncode != 0:
+            sys.stderr.write(f"Scan stderr: {result.stderr}\n")
+        return result.returncode
+    except subprocess.TimeoutExpired:
+        sys.stderr.write("Timeout no scan de contas\n")
+        return 1
 
 
-def formatar_relatorio():
-    contas_data = load_contas()
-    pendentes = [c for c in contas_data["contas"] if c.get("status") == "pendente"]
+def formatar_relatorio(contas_data: dict) -> str:
+    pendentes = [c for c in contas_data.get("contas", []) if c.get("status") == "pendente"]
     pagos_recentes = contas_data.get("pagos", [])
 
     hoje = datetime.now().strftime("%d/%m/%Y")
     linhas = [f"💰 *CONTAS A PAGAR — {hoje}*\n"]
 
     if not pendentes:
-        linhas.append("✅ Nenhuma conta pendente identificada esta semana\\. Tudo em dia\\!")
+        linhas.append("✅ Nenhuma conta pendente identificada esta semana. Tudo em dia!")
     else:
         linhas.append(f"*{len(pendentes)} conta(s) pendente(s):*\n")
         for c in pendentes:
             venc = c.get("vencimento") or "⚠️ não identificado"
             valor = c.get("valor") or "não identificado"
             barcode = c.get("codigo_barras")
-            desc = c.get("descricao", "Conta")[:60]
-            conta_label = "Mensura" if "mensura" in c.get("conta", "").lower() else "MIA"
+            desc = (c.get("descricao") or "Conta")[:60]
+            conta_label = "Mensura" if "mensura" in (c.get("conta") or "").lower() else "MIA"
             evento = "📅 na agenda" if c.get("evento_id") else "⚠️ sem evento na agenda"
 
             linhas.append(f"📄 *{desc}*")
@@ -87,7 +78,7 @@ def formatar_relatorio():
             if barcode:
                 linhas.append(f"🔑 `{barcode}`")
             else:
-                linhas.append(f"🔑 Código não identificado automaticamente")
+                linhas.append("🔑 Código não identificado automaticamente")
             linhas.append(f"{evento}\n")
 
     linhas.append("─────────────────────")
@@ -99,30 +90,70 @@ def formatar_relatorio():
     return "\n".join(linhas)
 
 
+def calcular_urgency(contas_data: dict) -> str:
+    """high se tem pendente vencendo em <=3 dias; normal se há pendentes; low se nenhum."""
+    pendentes = [c for c in contas_data.get("contas", []) if c.get("status") == "pendente"]
+    if not pendentes:
+        return "low"
+    hoje = datetime.now().date()
+    for c in pendentes:
+        venc = c.get("vencimento")
+        if not venc:
+            continue
+        try:
+            # tenta dd/mm/yyyy
+            d = datetime.strptime(venc, "%d/%m/%Y").date()
+        except ValueError:
+            try:
+                d = datetime.strptime(venc, "%Y-%m-%d").date()
+            except ValueError:
+                continue
+        if (d - hoje).days <= 3:
+            return "high"
+    return "normal"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--skip-scan", action="store_true",
+                        help="Pula scan de emails; usa o JSON existente")
+    parser.add_argument("--skip-flavia", action="store_true",
+                        help="Imprime relatório no stdout em vez de entregar à Flávia")
+    args = parser.parse_args()
+
+    if not args.skip_scan:
+        sys.stderr.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] Escaneando emails...\n")
+        run_scan()
+
+    contas_data = load_contas()
+    relatorio_texto = formatar_relatorio(contas_data)
+
+    if args.skip_flavia:
+        print(relatorio_texto)
+        return 0
+
+    pendentes = [c for c in contas_data.get("contas", []) if c.get("status") == "pendente"]
+    pagos = contas_data.get("pagos", [])
+
+    payload = {
+        "source": "contas_pagar_telegram.py",
+        "kind": "relatorio_contas_a_pagar",
+        "project": None,
+        "company": None,
+        "domain": "financeiro",
+        "urgency": calcular_urgency(contas_data),
+        "scheduled_at": datetime.now().isoformat(),
+        "totals": {
+            "pendentes": len(pendentes),
+            "pagos_historico": len(pagos),
+        },
+        "body": relatorio_texto,
+        "raw": {
+            "pendentes": pendentes,
+        },
+    }
+    return send_to_flavia(payload)
+
+
 if __name__ == "__main__":
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] Iniciando relatório de contas a pagar...")
-
-    # 1. Escanear emails
-    print("Escaneando emails...")
-    run_scan()
-
-    # 2. Formatar relatório
-    texto = formatar_relatorio()
-
-    # 3. Enviar via Telegram
-    try:
-        token = get_telegram_token()
-        # Grupo FLÁVIA | PESSOAL, topic 13
-        result = send_telegram(
-            token=token,
-            chat_id="-1003818163425",
-            text=texto,
-            message_thread_id=13
-        )
-        if result and result.get("ok"):
-            print("Envio direto desativado temporariamente")
-        else:
-            print("Envio direto desativado temporariamente")
-    except Exception as e:
-        print(f"❌ Erro: {e}", file=sys.stderr)
-        sys.exit(1)
+    sys.exit(main())

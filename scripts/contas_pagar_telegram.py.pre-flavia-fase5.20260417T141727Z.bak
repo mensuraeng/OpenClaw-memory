@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""
+Relatório semanal de contas a pagar via Telegram.
+Roda toda segunda-feira às 10h Brasília (13h UTC).
+"""
+
+import json, os, sys, subprocess, re
+import urllib.request, urllib.parse
+from datetime import datetime
+
+CONTAS_FILE = os.path.expanduser("~/.openclaw/workspace/memory/contas_pagar.json")
+OPENCLAW_CONFIG = os.path.expanduser("~/.openclaw/openclaw.json")
+
+
+def get_telegram_token():
+    """Lê o bot token do config do OpenClaw."""
+    with open(OPENCLAW_CONFIG) as f:
+        content = f.read()
+    # Tenta HJSON (aspas simples) e JSON (aspas duplas)
+    for pattern in [r'botToken:\s*\'([^\']+)\'', r'"botToken":\s*"([^"]+)"']:
+        match = re.search(pattern, content)
+        if match:
+            return match.group(1)
+    raise ValueError("botToken não encontrado no config")
+
+
+def send_telegram(token, chat_id, text, message_thread_id=None):
+    url = "https://api.telegram.org/bot{}/sendMessage".format(token)
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "Markdown",
+    }
+    if message_thread_id:
+        payload["message_thread_id"] = message_thread_id
+
+    data = json.dumps(payload).encode()
+    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        print(f"Erro Telegram: {e.code} — {e.read().decode()}", file=sys.stderr)
+        return None
+
+
+def load_contas():
+    if os.path.exists(CONTAS_FILE):
+        with open(CONTAS_FILE) as f:
+            return json.load(f)
+    return {"contas": [], "pagos": []}
+
+
+def run_scan():
+    """Executa o scan de emails para detectar novas contas."""
+    result = subprocess.run(
+        ["python3", os.path.expanduser("~/.openclaw/workspace/scripts/contas_pagar.py"), "scan"],
+        capture_output=True, text=True, timeout=120
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print(f"Scan stderr: {result.stderr}", file=sys.stderr)
+
+
+def formatar_relatorio():
+    contas_data = load_contas()
+    pendentes = [c for c in contas_data["contas"] if c.get("status") == "pendente"]
+    pagos_recentes = contas_data.get("pagos", [])
+
+    hoje = datetime.now().strftime("%d/%m/%Y")
+    linhas = [f"💰 *CONTAS A PAGAR — {hoje}*\n"]
+
+    if not pendentes:
+        linhas.append("✅ Nenhuma conta pendente identificada esta semana\\. Tudo em dia\\!")
+    else:
+        linhas.append(f"*{len(pendentes)} conta(s) pendente(s):*\n")
+        for c in pendentes:
+            venc = c.get("vencimento") or "⚠️ não identificado"
+            valor = c.get("valor") or "não identificado"
+            barcode = c.get("codigo_barras")
+            desc = c.get("descricao", "Conta")[:60]
+            conta_label = "Mensura" if "mensura" in c.get("conta", "").lower() else "MIA"
+            evento = "📅 na agenda" if c.get("evento_id") else "⚠️ sem evento na agenda"
+
+            linhas.append(f"📄 *{desc}*")
+            linhas.append(f"🏢 {conta_label}  |  📆 Vence: {venc}  |  💵 R$ {valor}")
+            if barcode:
+                linhas.append(f"🔑 `{barcode}`")
+            else:
+                linhas.append(f"🔑 Código não identificado automaticamente")
+            linhas.append(f"{evento}\n")
+
+    linhas.append("─────────────────────")
+    linhas.append("Após pagar, manda o comprovante que dou baixa. ✅")
+
+    if pagos_recentes:
+        linhas.append(f"\n_Histórico: {len(pagos_recentes)} conta(s) já paga(s) registrada(s)_")
+
+    return "\n".join(linhas)
+
+
+if __name__ == "__main__":
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] Iniciando relatório de contas a pagar...")
+
+    # 1. Escanear emails
+    print("Escaneando emails...")
+    run_scan()
+
+    # 2. Formatar relatório
+    texto = formatar_relatorio()
+
+    # 3. Enviar via Telegram
+    try:
+        token = get_telegram_token()
+        # Grupo FLÁVIA | PESSOAL, topic 13
+        result = send_telegram(
+            token=token,
+            chat_id="-1003818163425",
+            text=texto,
+            message_thread_id=13
+        )
+        if result and result.get("ok"):
+            print("Envio direto desativado temporariamente")
+        else:
+            print("Envio direto desativado temporariamente")
+    except Exception as e:
+        print(f"❌ Erro: {e}", file=sys.stderr)
+        sys.exit(1)

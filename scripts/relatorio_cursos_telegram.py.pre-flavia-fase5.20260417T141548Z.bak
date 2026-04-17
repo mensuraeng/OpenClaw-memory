@@ -1,31 +1,44 @@
 #!/usr/bin/env python3
 """
-Relatório semanal de cursos — Construção Civil
-Roda toda sexta às 16h BRT (cron 0 19 * * 5).
-
-Pós-FASE 5: NÃO fala mais com Telegram.
-Gera o relatório (curadoria) e entrega como payload à Flávia,
-que decide a saída final (resumir, consolidar com prioridades,
-mostrar no DM, registrar etc.).
-
-Domínio: formação profissional / cursos. Sem agente especializado
-correspondente — Flávia resolve direta.
-
-Flag --skip-flavia: imprime o relatório no stdout sem entregar.
+Relatório semanal de cursos - Construção Civil
+Gera curadoria real via web search e envia via Telegram
 """
 
-import argparse
-import os
+import json
+import urllib.request
+import urllib.parse
+import subprocess
 import sys
+import os
 from datetime import datetime
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from send_to_flavia import send_to_flavia  # noqa: E402
+CHAT_ID = "1067279351"
+CONFIG_FILE = "/root/.openclaw/openclaw.json"
 
+def get_bot_token():
+    with open(CONFIG_FILE) as f:
+        d = json.load(f)
+    return d["channels"]["telegram"]["botToken"]
 
-def generate_report(search_results=None) -> str:
+def send_telegram(bot_token, chat_id, text):
+    max_len = 4000
+    chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
+    for chunk in chunks:
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        data = urllib.parse.urlencode({
+            "chat_id": chat_id,
+            "text": chunk,
+        }).encode()
+        req = urllib.request.Request(url, data=data, method="POST")
+        try:
+            with urllib.request.urlopen(req) as r:
+                pass
+        except Exception as e:
+            print(f"Erro ao enviar: {e}")
+
+def generate_report(search_results):
     today = datetime.now().strftime("%d/%m/%Y")
-
+    
     report = f"""📚 RELATÓRIO SEMANAL — CURSOS CONSTRUÇÃO CIVIL
 📅 {today} | Curadoria por James
 
@@ -130,32 +143,12 @@ SindusCon e SENAI — acompanhar a programação semanal; surgem boas oportunida
 
     return report
 
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--skip-flavia", action="store_true",
-                        help="Imprime o relatório no stdout; não entrega à Flávia")
-    args = parser.parse_args()
-
-    today = datetime.now().strftime("%d/%m/%Y")
-    report = generate_report({})
-
-    if args.skip_flavia:
-        print(report)
-        return 0
-
-    payload = {
-        "source": "relatorio_cursos_telegram.py",
-        "kind": "relatorio_semanal_cursos",
-        "project": None,
-        "company": None,
-        "domain": "formacao_profissional",
-        "urgency": "low",
-        "scheduled_at": datetime.now().isoformat(),
-        "body": report,
-    }
-    return send_to_flavia(payload)
-
-
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        bot_token = get_bot_token()
+        report = generate_report({})
+        send_telegram(bot_token, CHAT_ID, report)
+        print("✅ Relatório enviado!")
+    except Exception as e:
+        print(f"❌ Erro: {e}")
+        raise
