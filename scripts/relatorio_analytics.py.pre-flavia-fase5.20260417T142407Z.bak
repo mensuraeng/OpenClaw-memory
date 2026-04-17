@@ -1,32 +1,21 @@
 #!/usr/bin/env python3
 """
-Analytics Semanal — Mensura + MIA.
-
-Pós-FASE 5: NÃO envia HTML direto via Telegram.
-Coleta dados do Google Analytics, gera HTML em reports/,
-calcula um resumo executivo e entrega payload à Flávia
-(domínio BI / analytics web — sem agente especializado).
-
-A Flávia decide o que fazer: mostrar resumo no DM, agendar envio,
-pedir review do Alê, ou nada (silêncio quando não há mudança relevante).
-
-Flags:
-  --skip-flavia    gera HTML localmente; não entrega à Flávia
-  --print          alias retrocompat: equivale a --skip-flavia
+Analytics Semanal — Mensura + MIA
+Gera relatório em HTML e envia via Telegram
 """
 
-import argparse
 import os
 import sys
+import requests
 from datetime import datetime
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import RunReportRequest, DateRange, Metric, Dimension
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from send_to_flavia import send_to_flavia  # noqa: E402
-
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/root/.openclaw/workspace/credentials/ga_service_account.json"
 
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "-1003818163425")
+TELEGRAM_THREAD_ID = os.environ.get("TELEGRAM_THREAD_ID", "1")
 OUTPUT_PATH = "/root/.openclaw/workspace/reports/analytics_semanal.html"
 
 PROPRIEDADES = {
@@ -251,79 +240,34 @@ def gerar_html(dados_lista):
 </body>
 </html>"""
 
-def montar_resumo_texto(dados_lista):
-    """Resumo executivo curto em texto plano para a Flávia."""
-    linhas = ["📊 Analytics Semanal (últimos 7 dias)\n"]
-    for d in dados_lista:
-        linhas.append(f"*{d['nome']}*")
-        linhas.append(f"  Sessões: {d.get('sessions', 0):,} | Usuários: {d.get('users', 0):,}"
-                      f" | Novos: {d.get('new_users', 0):,} | Bounce: {d.get('bounce', 0)}%")
-        if d.get("origens"):
-            top_origens = ", ".join(f"{o} ({s:,})" for o, s in d["origens"][:3])
-            linhas.append(f"  Top origens: {top_origens}")
-        if d.get("paginas"):
-            top_paginas = ", ".join(f"{p} ({v:,})" for p, v in d["paginas"][:3])
-            linhas.append(f"  Top páginas: {top_paginas}")
-        linhas.append("")
-    return "\n".join(linhas).strip()
-
-
-def montar_metrics_estruturado(dados_lista):
-    """Métricas resumidas em dict para a Flávia raciocinar."""
-    out = {}
-    for d in dados_lista:
-        out[d["nome"]] = {
-            "sessions": d.get("sessions", 0),
-            "users": d.get("users", 0),
-            "new_users": d.get("new_users", 0),
-            "bounce_pct": d.get("bounce", 0),
-            "top_origens": d.get("origens", [])[:5],
-            "top_paginas": d.get("paginas", [])[:5],
-            "dispositivos": d.get("dispositivos", []),
-        }
-    return out
-
+def enviar_telegram_doc(html_path):
+    if not TELEGRAM_TOKEN:
+        print(f"HTML gerado: {html_path}")
+        return
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
+    with open(html_path, "rb") as f:
+        r = requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "message_thread_id": TELEGRAM_THREAD_ID, "caption": "📊 Analytics Semanal — Mensura + MIA"}, files={"document": ("analytics_semanal.html", f, "text/html")})
+    if not r.ok:
+        print(f"Erro Telegram: {r.text}")
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--skip-flavia", action="store_true",
-                        help="Gera HTML localmente; não entrega à Flávia")
-    parser.add_argument("--print", action="store_true",
-                        help="Alias retrocompat para --skip-flavia")
-    args = parser.parse_args()
-    skip_flavia = args.skip_flavia or args.print
-
     client = BetaAnalyticsDataClient()
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
     dados_lista = []
     for nome, prop_id in PROPRIEDADES.items():
-        print(f"Coletando {nome}...", file=sys.stderr)
+        print(f"Coletando {nome}...")
         dados_lista.append(coletar_dados(nome, prop_id, client))
 
     html = gerar_html(dados_lista)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"HTML gerado: {OUTPUT_PATH}", file=sys.stderr)
+    print(f"HTML gerado: {OUTPUT_PATH}")
 
-    if skip_flavia:
-        return 0
-
-    payload = {
-        "source": "relatorio_analytics.py",
-        "kind": "analytics_semanal",
-        "project": None,
-        "company": None,
-        "domain": "bi_web",
-        "urgency": "low",
-        "scheduled_at": datetime.now().isoformat(),
-        "metrics": montar_metrics_estruturado(dados_lista),
-        "html_path": OUTPUT_PATH,
-        "body": montar_resumo_texto(dados_lista),
-    }
-    return send_to_flavia(payload)
-
+    if "--print" not in sys.argv:
+        enviar_telegram_doc(OUTPUT_PATH)
+        print("Relatório enviado.")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

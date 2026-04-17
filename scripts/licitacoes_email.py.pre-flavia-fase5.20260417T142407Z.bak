@@ -1,34 +1,15 @@
 #!/usr/bin/env python3
 """
-Relatório semanal de licitações PNCP — entrega ao Alê (PCS).
-Cron: segunda 9h BRT (12h UTC), com lock semanal.
-
-Pós-FASE 5:
-1. Email para alexandre@pcsengenharia.com.br → MANTIDO automático,
-   mas via helper canônico msgraph_email.py em vez de chamar Graph
-   API direto. Classificado como envio pré-autorizado:
-   destinatário fixo, cadência fixa (seg 9h), template estável.
-   Domínio: PCS (licitações públicas).
-2. Em paralelo, envia payload à Flávia (com summary + cards parsed)
-   para visibilidade interna e potencial delegação ao agente `pcs`
-   se ela detectar necessidade de voz institucional ou bloqueio.
-
-Flags:
-  --to <email>      override do destinatário
-  --force           ignora janela e lock semanal
-  --dry-run         não envia email; mostra preview no stderr
-  --skip-email      só envia payload à Flávia
+Envia relatório de licitações PNCP por email via Microsoft Graph.
+Uso: python3 licitacoes_email.py [--to email@dest.com] [--force]
 """
 
-import json, sys, os, subprocess, argparse
+import json, sys, os, subprocess, argparse, urllib.request, urllib.parse, urllib.error
 from datetime import datetime, timezone, timedelta
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from send_to_flavia import send_to_flavia  # noqa: E402
-
 BRT = timezone(timedelta(hours=-3))
+CONFIG_FILE = os.path.expanduser("/root/.openclaw/workspace/config/ms-graph.json")
 SENDER      = "flavia@mensuraengenharia.com.br"
-EMAIL_ACCOUNT = "mensura"
 DESTINATARIO_PADRAO = "alexandre@pcsengenharia.com.br"
 DIA_ENVIO_SEMANA = 0  # segunda
 HORA_ENVIO_BRT = 9
@@ -36,9 +17,17 @@ MINUTO_ENVIO_BRT = 0
 JANELA_MINUTOS = 20
 LOCK_DIR = os.path.expanduser("/root/.openclaw/workspace/.state")
 
-HELPER_EMAIL = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "msgraph_email.py"
-)
+def get_token(cfg):
+    url = f"https://login.microsoftonline.com/{cfg['tenantId']}/oauth2/v2.0/token"
+    data = urllib.parse.urlencode({
+        "client_id": cfg["clientId"],
+        "client_secret": cfg["clientSecret"],
+        "scope": "https://graph.microsoft.com/.default",
+        "grant_type": "client_credentials"
+    }).encode()
+    req = urllib.request.Request(url, data=data, method="POST")
+    with urllib.request.urlopen(req) as r:
+        return json.load(r)["access_token"]
 
 def gerar_relatorio_txt():
     result = subprocess.run(
@@ -164,55 +153,27 @@ Fonte: PNCP — Portal Nacional de Contratações Públicas (pncp.gov.br)
 </body></html>'''
     return html
 
-def html_to_plain(html):
-    """Conversão crua de HTML em texto plano (preserva carregamento de cards)."""
-    import re
-    # 1. remover blocos <style>, <script> e seus conteúdos
-    text = re.sub(r'<style\b[^>]*>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r'<script\b[^>]*>.*?</script>', '', text, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r'<head\b[^>]*>.*?</head>', '', text, flags=re.DOTALL | re.IGNORECASE)
-    # 2. quebras semânticas
-    text = re.sub(r'<br\s*/?>', '\n', text)
-    text = re.sub(r'</p>', '\n', text)
-    text = re.sub(r'</h[1-6]>', '\n\n', text)
-    text = re.sub(r'</div>', '\n', text)
-    # 3. remover demais tags
-    text = re.sub(r'<[^>]+>', '', text)
-    # 4. normalizar espaços
-    text = re.sub(r'\n{3,}', '\n\n', text)
-    text = re.sub(r'[ \t]+', ' ', text)
-    return text.strip()
-
-
-def enviar_email_pre_autorizado(corpo, subject, to, dry_run):
-    """Chama msgraph_email.py como helper canônico de envio."""
-    if dry_run:
-        print("--- [DRY RUN] Email NÃO enviado ---", file=sys.stderr)
-        print(f"to:      {to}", file=sys.stderr)
-        print(f"user:    {SENDER}", file=sys.stderr)
-        print(f"subject: {subject}", file=sys.stderr)
-        print("--- corpo (primeiras 800 chars) ---", file=sys.stderr)
-        print(corpo[:800], file=sys.stderr)
-        print("--- fim ---", file=sys.stderr)
-        return 0
-    cmd = [
-        "python3", HELPER_EMAIL, "send",
-        "--account", EMAIL_ACCOUNT,
-        "--user", SENDER,
-        "--to", to,
-        "--subject", subject,
-        "--body", corpo,
-    ]
+def enviar_email(token, to, subject, html):
+    payload = {
+        "message": {
+            "subject": subject,
+            "body": {"contentType": "HTML", "content": html},
+            "toRecipients": [{"emailAddress": {"address": to}}],
+            "from": {"emailAddress": {"address": SENDER}}
+        },
+        "saveToSentItems": True
+    }
+    api_url = f"https://graph.microsoft.com/v1.0/users/{SENDER}/sendMail"
+    body_bytes = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(api_url, data=body_bytes,
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        method="POST")
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-    except subprocess.TimeoutExpired:
-        print("Timeout no envio de email pelo helper", file=sys.stderr)
-        return 1
-    if r.stdout:
-        sys.stderr.write(r.stdout)
-    if r.stderr:
-        sys.stderr.write(r.stderr)
-    return r.returncode
+        with urllib.request.urlopen(req) as r:
+            print(f"✅ Email enviado para {to} ({r.status})")
+    except urllib.error.HTTPError as e:
+        print(f"❌ Erro {e.code}: {e.read().decode()}", file=sys.stderr)
+        sys.exit(1)
 
 def dentro_da_janela_programada(agora):
     if agora.weekday() != DIA_ENVIO_SEMANA:
@@ -236,84 +197,35 @@ def registrar_envio_semana(agora, destinatario):
         }, ensure_ascii=False, indent=2))
 
 
-def montar_resumo_para_flavia(cards, agora):
-    """Resumo executivo curto para a Flávia (texto, não HTML)."""
-    if not cards:
-        return f"📋 Licitações ({agora.strftime('%d/%m/%Y')}): 0 em aberto."
-    linhas = [f"📋 Licitações ({agora.strftime('%d/%m/%Y')}): {len(cards)} em aberto."]
-    urgentes = [c for c in cards if 'HOJE' in (c.get('prazo') or '') or 'AMANHÃ' in (c.get('prazo') or '')]
-    if urgentes:
-        linhas.append(f"\n⚠️ {len(urgentes)} URGENTE(s):")
-        for c in urgentes[:5]:
-            linhas.append(f"  - {c.get('titulo','?')} | {c.get('local','?')} | {c.get('prazo','?')}")
-    linhas.append("\nTop 5 por relevância:")
-    for c in cards[:5]:
-        linhas.append(f"  • {c.get('titulo','?')} | {c.get('orgao','?')} | {c.get('valor','?')} | {c.get('prazo','?')}")
-    return "\n".join(linhas)
-
-
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--to", default=DESTINATARIO_PADRAO, help="Destinatário do email")
-    p.add_argument("--force", action="store_true",
-                   help="Ignora janela e lock semanal")
-    p.add_argument("--dry-run", action="store_true",
-                   help="Não envia email; mostra preview no stderr")
-    p.add_argument("--skip-email", action="store_true",
-                   help="Só envia payload à Flávia; não tenta email")
+    p.add_argument("--force", action="store_true", help="Ignora trava de agenda e envia mesmo fora da janela semanal")
     args = p.parse_args()
 
     agora = datetime.now(BRT)
     if not args.force and not dentro_da_janela_programada(agora):
         print("⏭️ Envio bloqueado: fora da janela semanal permitida (segunda 09:00 BRT).", file=sys.stderr)
-        return 0
+        return
     if not args.force and ja_enviado_na_semana(agora):
         print("⏭️ Envio bloqueado: relatório semanal já enviado nesta semana.", file=sys.stderr)
-        return 0
+        return
 
-    print("📡 Gerando relatório de licitações...", file=sys.stderr)
+    print(f"📡 Gerando relatório de licitações...", file=sys.stderr)
+
+    cfg   = json.load(open(CONFIG_FILE))
+    token = get_token(cfg)
 
     relatorio_txt = gerar_relatorio_txt()
     cards = parsear_cards(relatorio_txt)
+
     print(f"   {len(cards)} licitações encontradas.", file=sys.stderr)
 
     html    = montar_html(cards, agora)
     subject = f"📋 Licitações Construção Civil — {agora.strftime('%d/%m/%Y')} ({len(cards)} em aberto)"
-    resumo  = montar_resumo_para_flavia(cards, agora)
 
-    payload = {
-        "source": "licitacoes_email.py",
-        "kind": "relatorio_semanal_licitacoes",
-        "project": None,
-        "company": "PCS",
-        "domain": "licitacoes_publicas",
-        "urgency": "high" if any('HOJE' in (c.get('prazo') or '') or 'AMANHÃ' in (c.get('prazo') or '') for c in cards) else "normal",
-        "scheduled_at": agora.isoformat(),
-        "totals": {"licitacoes_abertas": len(cards)},
-        "body": resumo,
-        "external_action": {
-            "kind": "email",
-            "policy": "pre_authorized_routine",
-            "to": args.to,
-            "from": SENDER,
-            "subject": subject,
-            "dry_run": args.dry_run,
-            "skipped": args.skip_email,
-        },
-    }
-    rc_flavia = send_to_flavia(payload)
-
-    if args.skip_email:
-        return rc_flavia
-
-    corpo_email = html_to_plain(html)
-    rc_email = enviar_email_pre_autorizado(corpo_email, subject, args.to, args.dry_run)
-
-    if rc_email == 0 and not args.dry_run:
-        registrar_envio_semana(agora, args.to)
-
-    return max(rc_flavia, rc_email)
-
+    enviar_email(token, args.to, subject, html)
+    registrar_envio_semana(agora, args.to)
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
