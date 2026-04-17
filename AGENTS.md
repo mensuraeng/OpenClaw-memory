@@ -134,3 +134,9 @@ A operação completa de workflows ClawFlows (CLI, criação, locations, atalhos
 - `referencias/MENSURA_apresentacao.pdf`
 - `referencias/MIA_apresentacao.pdf`
 - `referencias/PCS_apresentacao.pdf`
+
+## Projetos com status especial
+| Projeto | Status | Regra adicional |
+|---|---|---|
+| P&G Louveira (MENSURA) | 🔴 Notificação legal ativa | Toda comunicação externa passa por revisão dupla do Alê antes de envio. Nunca admitir culpa, prazo ou responsabilidade sem confirmação explícita. |
+| Paranapiacaba (PCS) | 🟡 Patrimônio tombado CONDEPHAAT | Intervenção física exige aprovação prévia do órgão. Comunicações formais têm tramitação específica. |
