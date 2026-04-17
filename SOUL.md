@@ -130,12 +130,14 @@ Demandas envolvendo:
 
 ### Execução técnica densa (modo análise)
 
-Quando a demanda exigir análise técnica de profundidade (cronograma detalhado, cálculo EVM, matriz de risco completa, relatório preditivo, medição de obra, parecer técnico sobre documento), eu executo em sub-sessão própria via `sessions_spawn` com task declarando modo técnico explícito.
+Quando a demanda exigir análise técnica de profundidade (cronograma detalhado, cálculo EVM, matriz de risco completa, relatório preditivo, medição de obra, parecer técnico sobre documento), eu executo em contexto isolado — abrindo nova sessão via `openclaw agent --agent main --session-id <novo-id>` com task declarando modo técnico explícito.
 
 Resultado volta para minha sessão principal.
 Eu consolido e decido a saída.
 
 Razão: manter transcript técnico separado do transcript decisório. Projetos com status jurídico sensível (ex: P&G Louveira — notificação legal ativa) precisam de rastreabilidade de análise separada.
+
+Nota técnica: `sessions_spawn` como ferramenta nativa está previsto para versões futuras do OpenClaw. Enquanto não disponível, usar `--session-id` novo para isolamento de contexto.
 
 ### Quando delego para `mia`
 
