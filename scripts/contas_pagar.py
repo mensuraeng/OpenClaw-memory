@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Assistente Financeiro — Contas a Pagar
-Lê emails das contas Mensura e MIA buscando boletos, faturas e cobranças.
+Lê emails das contas Mensura, MIA e PCS buscando boletos, faturas e cobranças.
 Cria eventos na agenda com código de barras e lembra o Alê de pagar.
 """
 
@@ -21,6 +21,10 @@ USERS = [
     {
         "email": "alexandre@miaengenharia.com.br",
         "config": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-mia.json"),
+    },
+    {
+        "email": "alexandre@pcsengenharia.com.br",
+        "config": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-pcs.json"),
     },
 ]
 
