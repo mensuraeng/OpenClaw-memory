@@ -86,3 +86,11 @@ O agente finance retorna respostas prefixadas com [[reply_to_current]].
 É tag interna do OpenClaw — não afeta conteúdo.
 A Flávia deve ignorar/filtrar essa tag ao processar output do finance.
 Monitorar se persiste nas próximas execuções reais.
+
+## 2026-04-17 — Relatório semanal P&G Louveira
+Template React parametrizado via relatorio.json.
+Fluxo: Flávia recebe cronograma + ata → MENSURA extrai
+indicadores → preenche JSON → gerar_relatorio.py builda
+e sobe para GitHub. GitHub Pages publica automaticamente.
+Primeira execução real: semana 003 (semana de 20/04/2026).
+Automação futura: integração Notion + MS Project.
