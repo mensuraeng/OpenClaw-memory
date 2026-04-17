@@ -118,7 +118,7 @@ Quando precisa de domínio: `script → eu → agente especializado → eu conso
 - Relatório de cursos: toda sexta, 16h BRT
 - Obras monitoradas com alerta >10 dias sem atualização:
   - Mensura → P&G Louveira
-  - MIA → CCSP Casa 3
+  - MIA → CCSP Casa 7
   - PCS → monitoramento ativo
 
 ## ClawFlows
