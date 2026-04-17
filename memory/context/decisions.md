@@ -94,3 +94,9 @@ indicadores → preenche JSON → gerar_relatorio.py builda
 e sobe para GitHub. GitHub Pages publica automaticamente.
 Primeira execução real: semana 003 (semana de 20/04/2026).
 Automação futura: integração Notion + MS Project.
+
+## 2026-04-17 — Migração GitHub Pages → Cloudflare Pages (P&G Louveira)
+Deploy ativo: https://relatorios.mensuraengenharia.com.br/
+Fallback: https://p-g---louveira.pages.dev/
+GitHub Actions desativada (deploy.yml.disabled).
+Próximo: replicar para MIA CCSP Casa 7 em relatorios.miaengenharia.com.br

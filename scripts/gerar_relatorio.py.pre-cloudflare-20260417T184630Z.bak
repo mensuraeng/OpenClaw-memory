@@ -9,12 +9,9 @@ Fluxo:
 3. Copia dist/ para openclaw-context/relatorios/<dominio>/<obra>/
    <YYYY-MM-DD_semana-NNN_<obra>>/
 4. git add + commit + push no repo openclaw-context.
-5. Verifica se o deploy público está respondendo (HEAD na URL).
-   O deploy é gerenciado por Cloudflare Pages (domínio custom
-   relatorios.<empresa>.com.br ou fallback *.pages.dev); o push
-   no repo fonte aciona o build automático do CF Pages.
+5. Verifica se GitHub Pages está respondendo (HEAD na URL).
 6. Notifica a Flávia via send_to_flavia com payload incluindo
-   github_url (snapshot versionado) + relatorio_url (deploy público).
+   github_url + github_pages_url.
 
 Flags:
   --obra <nome>      obrigatório (ex.: pg-louveira)
@@ -47,9 +44,7 @@ OBRAS = {
         "dominio": "mensura",
         "repo_dir": os.path.join(KNOWLEDGE, "P-G---Louveira"),
         "data_file": "src/data/relatorio.json",
-        "relatorio_url": "https://relatorios.mensuraengenharia.com.br/",
-        "relatorio_url_fallback": "https://p-g---louveira.pages.dev/",
-        "deploy_provider": "cloudflare-pages",
+        "pages_url": "https://mensuraeng.github.io/P-G---Louveira/",
         "github_repo": "mensuraeng/P-G---Louveira",
     },
 }
@@ -157,8 +152,8 @@ def git_publish(commit_msg: str, dry_run: bool) -> int:
         return 1
 
 
-def check_deploy(url: str, dry_run: bool) -> str:
-    """HEAD no URL do deploy público. Retorna 'ativo' | 'inativo' | 'desconhecido'."""
+def check_pages(url: str, dry_run: bool) -> str:
+    """Retorna 'ativo' | 'inativo' | 'desconhecido'."""
     if dry_run:
         log(f"[dry-run] HEAD em {url} (pulado)")
         return "desconhecido"
@@ -166,18 +161,18 @@ def check_deploy(url: str, dry_run: bool) -> str:
         req = urllib.request.Request(url, method="HEAD")
         with urllib.request.urlopen(req, timeout=10) as resp:
             if 200 <= resp.status < 400:
-                log(f"deploy ativo: {url} (status {resp.status})")
+                log(f"GitHub Pages ativo: {url} (status {resp.status})")
                 return "ativo"
-            log(f"deploy respondeu {resp.status} em {url}")
+            log(f"GitHub Pages respondeu {resp.status} em {url}")
             return "inativo"
     except urllib.error.HTTPError as e:
         if e.code == 404:
-            log(f"deploy 404 em {url} — provavelmente não está ativo")
+            log(f"GitHub Pages 404 em {url} — provavelmente não está ativo")
             return "inativo"
-        log(f"deploy HTTP {e.code} em {url}")
+        log(f"GitHub Pages HTTP {e.code} em {url}")
         return "inativo"
     except (urllib.error.URLError, OSError) as e:
-        log(f"deploy inacessível em {url}: {e}")
+        log(f"GitHub Pages inacessível em {url}: {e}")
         return "desconhecido"
 
 
@@ -198,9 +193,7 @@ def main() -> int:
     cfg = OBRAS[args.obra]
     repo_dir = cfg["repo_dir"]
     dominio = cfg["dominio"]
-    relatorio_url = cfg["relatorio_url"]
-    relatorio_url_fallback = cfg.get("relatorio_url_fallback")
-    deploy_provider = cfg.get("deploy_provider", "unknown")
+    pages_url = cfg["pages_url"]
     github_repo = cfg["github_repo"]
 
     log(f"=== gerar_relatorio.py iniciado para obra={args.obra} dominio={dominio} ===")
@@ -243,9 +236,10 @@ def main() -> int:
     if rc != 0:
         return rc
 
-    deploy_status = check_deploy(relatorio_url, args.dry_run)
+    pages_status = check_pages(pages_url, args.dry_run)
 
     rel_path = f"relatorios/{dominio}/{args.obra}/{folder_name}"
+    github_url = f"https://github.com/{github_repo}/tree/main"
     github_context_url = f"https://github.com/mensuraeng/openclaw-context/tree/main/{rel_path}"
 
     if args.skip_flavia:
@@ -262,15 +256,13 @@ def main() -> int:
         "data": data_iso,
         "github_path": rel_path,
         "github_url": github_context_url,
-        "relatorio_url": relatorio_url,
-        "relatorio_url_fallback": relatorio_url_fallback,
-        "deploy_provider": deploy_provider,
-        "deploy_status": deploy_status,
+        "github_pages_url": pages_url,
+        "github_pages_status": pages_status,
         "scheduled_at": datetime.now().isoformat(),
         "body": (
-            f"Relatório semana {semana} de {args.obra} ({dominio}) publicado.\n"
+            f"Relatório semana {semana} de {args.obra} ({dominio}) publicado no GitHub.\n"
             f"Snapshot versionado: {github_context_url}\n"
-            f"Deploy ({deploy_provider}, status={deploy_status}): {relatorio_url}"
+            f"Visualização interativa (GitHub Pages, status={pages_status}): {pages_url}"
         ),
     }
 
