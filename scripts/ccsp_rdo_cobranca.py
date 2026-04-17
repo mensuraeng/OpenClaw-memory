@@ -1,20 +1,49 @@
 #!/usr/bin/env python3
 """
-CCSP Casa 7 — Cobrança RDO às 16h30 BRT (19h30 UTC)
-Roda seg-sex
-Envia Telegram para o Alê + e-mail direto ao Victor (cc Alexandre e André)
+CCSP Casa 7 — Cobrança RDO seg-sex 16:30 BRT (cron 30 19 * * 1-5).
+
+Dois fluxos pós-FASE 5:
+
+1. Telegram para o Alê → REMOVIDO. Vira payload entregue à Flávia
+   via send_to_flavia.py. Ela consolida e decide o que fazer com a
+   visibilidade interna (mostrar no DM, escrever em log, alertar etc.).
+
+2. Email para o Victor → MANTIDO automático, mas via helper canônico
+   msgraph_email.py em vez de chamar a Graph API direto. Esta rotina
+   é classificada como "envio pré-autorizado" pela operação CCSP/MIA:
+   - destinatário fixo (victor.evangelista@miaengenharia.com.br)
+   - cc fixo (alexandre@, andre@miaengenharia.com.br)
+   - cadência fixa (seg-sex 16:30 BRT)
+   - corpo gerado por template estável (gerar_mensagem_rdo)
+   A Flávia recebe o payload em paralelo e pode interromper a rotina
+   se identificar problema (interrupção entra em vigor no próximo dia útil).
+
+Flag --dry-run: gera payload e mostra email no stdout sem enviar.
 """
 
-import sys, os, json, requests
+import argparse
+import os
+import subprocess
+import sys
 from datetime import datetime, timezone, timedelta
 
-BRT = timezone(timedelta(hours=-3))
-hoje = datetime.now(BRT)
-dia_str = hoje.strftime("%d/%m/%Y")
-DIAS = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"]
-dia_nome = DIAS[hoje.weekday()]
+# permite import do helper send_to_flavia.py do mesmo diretório
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from send_to_flavia import send_to_flavia  # noqa: E402
 
-def gerar_mensagem_rdo():
+BRT = timezone(timedelta(hours=-3))
+
+EMAIL_TO = "victor.evangelista@miaengenharia.com.br"
+EMAIL_CC = ["alexandre@miaengenharia.com.br", "andre@miaengenharia.com.br"]
+EMAIL_USER = "flavia@mensuraengenharia.com.br"
+EMAIL_ACCOUNT = "mensura"  # usa ~/.openclaw/workspace/config/ms-graph.json
+
+HELPER_EMAIL = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "msgraph_email.py"
+)
+
+
+def gerar_mensagem_rdo(dia_str: str) -> str:
     return f"""⏰ *CCSP Casa 7 — Cobrança RDO | {dia_str}*
 
 Victor, o RDO de hoje ({dia_str}) ainda não foi enviado ou precisa ser conferido.
@@ -30,90 +59,88 @@ Enviar antes de sair da obra.
 
 _Flávia | MIA Engenharia 🟢_"""
 
-def enviar_telegram(mensagem):
-    cfg_path = os.path.expanduser("~/.openclaw/openclaw.json")
-    with open(cfg_path) as f:
-        cfg = json.load(f)
-    
-    telegram_token = cfg.get("channels", {}).get("telegram", {}).get("botToken")
-    
-    if not telegram_token:
-        print("Token Telegram não encontrado", file=sys.stderr)
-        return False
-    
-    texto = f"Cobrança RDO — encaminhar ao Victor:\n\n{mensagem}"
-    
-    r = requests.post(
-        f"https://api.telegram.org/bot{telegram_token}/sendMessage",
-        json={"chat_id": "1067279351", "text": texto, "parse_mode": "Markdown"},
-        timeout=30
-    )
-    
-    if r.status_code == 200:
-        print(f"[{dia_str}] Cobrança RDO enviada com sucesso")
-        return True
-    else:
-        print(f"Erro Telegram: {r.status_code} {r.text}", file=sys.stderr)
-        return False
 
-def enviar_email_rdo(mensagem_texto):
-    cfg_path = os.path.expanduser("~/.openclaw/workspace/config/ms-graph.json")
-    with open(cfg_path) as f:
-        cfg = json.load(f)
+def to_plain_email(markdown_text: str) -> str:
+    """Remove marcações leves de markdown para o corpo do email."""
+    return markdown_text.replace("*", "").replace("_", "")
 
-    token_resp = requests.post(
-        f"https://login.microsoftonline.com/{cfg['tenantId']}/oauth2/v2.0/token",
-        data={'grant_type': 'client_credentials', 'client_id': cfg['clientId'],
-              'client_secret': cfg['clientSecret'], 'scope': 'https://graph.microsoft.com/.default'}
-    )
-    token = token_resp.json()['access_token']
 
-    linhas = mensagem_texto.replace("*", "").split("\n")
-    html_linhas = []
-    for linha in linhas:
-        linha = linha.strip()
-        if linha.startswith("✅"):
-            html_linhas.append(f"<li>{linha}</li>")
-        elif linha == "":
-            html_linhas.append("<br>")
-        else:
-            html_linhas.append(f"<p style='margin:4px 0'>{linha}</p>")
-    html_body = "\n".join(html_linhas)
+def enviar_email_pre_autorizado(corpo: str, subject: str, dry_run: bool) -> int:
+    """Chama msgraph_email.py como helper canônico de envio."""
+    if dry_run:
+        print("--- [DRY RUN] Email NÃO enviado ---", file=sys.stderr)
+        print(f"to:      {EMAIL_TO}", file=sys.stderr)
+        print(f"cc:      {', '.join(EMAIL_CC)}", file=sys.stderr)
+        print(f"user:    {EMAIL_USER}", file=sys.stderr)
+        print(f"subject: {subject}", file=sys.stderr)
+        print("--- corpo ---", file=sys.stderr)
+        print(corpo, file=sys.stderr)
+        print("--- fim ---", file=sys.stderr)
+        return 0
+    cmd = [
+        "python3", HELPER_EMAIL, "send",
+        "--account", EMAIL_ACCOUNT,
+        "--user", EMAIL_USER,
+        "--to", EMAIL_TO,
+        "--subject", subject,
+        "--body", corpo,
+    ]
+    for c in EMAIL_CC:
+        cmd += ["--cc", c]
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        print("Timeout no envio de email pelo helper", file=sys.stderr)
+        return 1
+    if r.stdout:
+        sys.stderr.write(r.stdout)  # log do helper para stderr (stdout = resposta Flávia)
+    if r.stderr:
+        sys.stderr.write(r.stderr)
+    return r.returncode
 
-    email_body = {
-        "message": {
-            "subject": f"CCSP Casa 7 — RDO Pendente | {dia_str}",
-            "body": {
-                "contentType": "HTML",
-                "content": f"""<div style="font-family:Arial,sans-serif;font-size:14px;color:#1a1a1a;max-width:600px">
-{html_body}
-</div>"""
-            },
-            "toRecipients": [
-                {"emailAddress": {"address": "victor.evangelista@miaengenharia.com.br"}}
-            ],
-            "ccRecipients": [
-                {"emailAddress": {"address": "alexandre@miaengenharia.com.br"}},
-                {"emailAddress": {"address": "andre@miaengenharia.com.br"}}
-            ]
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Gera payload e mostra email no stderr; não envia")
+    parser.add_argument("--skip-email", action="store_true",
+                        help="Só envia payload para Flávia; não tenta email")
+    args = parser.parse_args()
+
+    hoje = datetime.now(BRT)
+    dia_str = hoje.strftime("%d/%m/%Y")
+    msg_markdown = gerar_mensagem_rdo(dia_str)
+
+    payload = {
+        "source": "ccsp_rdo_cobranca.py",
+        "kind": "cobranca_rdo_diaria",
+        "project": "CCSP Casa 7",
+        "company": "MIA",
+        "urgency": "normal",
+        "scheduled_at": hoje.isoformat(),
+        "body": msg_markdown,
+        "external_action": {
+            "kind": "email",
+            "policy": "pre_authorized_routine",
+            "to": EMAIL_TO,
+            "cc": EMAIL_CC,
+            "from": EMAIL_USER,
+            "subject_template": "CCSP Casa 7 — RDO Pendente | {dia}",
+            "dry_run": args.dry_run,
+            "skipped": args.skip_email,
         },
-        "saveToSentItems": True
     }
+    rc_flavia = send_to_flavia(payload)
 
-    resp = requests.post(
-        "https://graph.microsoft.com/v1.0/users/flavia@mensuraengenharia.com.br/sendMail",
-        json=email_body,
-        headers={'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
-    )
-    if resp.status_code in (200, 202):
-        print(f"[{dia_str}] E-mail RDO enviado ao Victor")
-        return True
-    else:
-        print(f"Erro e-mail: {resp.status_code} {resp.text[:200]}", file=sys.stderr)
-        return False
+    if args.skip_email:
+        return rc_flavia
+
+    subject = f"CCSP Casa 7 — RDO Pendente | {dia_str}"
+    corpo_email = to_plain_email(msg_markdown)
+    rc_email = enviar_email_pre_autorizado(corpo_email, subject, args.dry_run)
+
+    return max(rc_flavia, rc_email)
 
 
 if __name__ == "__main__":
-    msg = gerar_mensagem_rdo()
-    enviar_telegram(msg)
-    enviar_email_rdo(msg)
+    sys.exit(main())
