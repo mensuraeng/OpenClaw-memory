@@ -1,40 +1,17 @@
 #!/usr/bin/env python3
 """
-Monitor Semanal — Flávia
-Roda toda segunda-feira às 8h BRT (cron 0 11 * * 1).
-
-Monitora:
-  - cronogramas .mpp das obras ativas (P&G Louveira / Mensura, CCSP / MIA)
-  - emails não lidos com palavras-chave de alerta (últimas 48h)
-  - agenda da semana (próximos 7 dias) por conta
-
-Pós-FASE 5: NÃO fala mais com Telegram. Função send_telegram removida
-(antes era código morto desde 16/04 - script estava silencioso há 1 semana).
-Gera o relatório consolidado e entrega como payload à Flávia, que decide
-a saída final (mostrar no DM, alertar, delegar para mensura/mia se algum
-domínio exigir profundidade).
-
-Urgência calculada:
-  high   se há alerta em P&G Louveira (projeto crítico - notificação legal)
-         ou cronograma sem atualização há >10 dias
-  normal se há ≥1 alerta de qualquer tipo
-  low    se nenhum alerta
-
-Flags:
-  --skip-flavia    imprime relatório no stdout; não entrega à Flávia
-  --print          alias retrocompat
+Monitor Semanal — James COO
+Roda toda segunda-feira às 8h (Brasília = 11h UTC)
+Monitora: emails urgentes, calendário da semana, relatórios pendentes
 """
 
-import argparse
 import json
-import os
-import sys
 import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta, timezone
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from send_to_flavia import send_to_flavia  # noqa: E402
+CHAT_ID = "1067279351"
+CONFIG_FILE = "/root/.openclaw/openclaw.json"
 
 # Obras ativas monitoradas — arquivo .mpp mais recente
 OBRAS_ATIVAS = [
@@ -153,6 +130,23 @@ def check_emails_relatorios(token, user):
                 alertas.append(f"  📋 {m.get('subject','')} | De: {sender}")
     return alertas
 
+def send_telegram(text):
+    with open(CONFIG_FILE) as f:
+        d = json.load(f)
+    bot_token = d["channels"]["telegram"]["botToken"]
+    
+    max_len = 4000
+    chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
+    for chunk in chunks:
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        data = urllib.parse.urlencode({"chat_id": CHAT_ID, "text": chunk}).encode()
+        req = urllib.request.Request(url, data=data, method="POST")
+        try:
+            with urllib.request.urlopen(req) as r:
+                pass
+        except Exception as e:
+            print(f"Erro telegram: {e}")
+
 def check_cronogramas():
     """Monitora arquivos .mpp das obras ativas"""
     alertas = []
@@ -197,128 +191,75 @@ def check_cronogramas():
             ok.append(f"✅ {obra['empresa']} | {obra['nome']}: atualizado há {days_ago} dia(s) ({modified})")
     return alertas, ok
 
-def coletar_dados():
-    """Coleta tudo e retorna dados estruturados + relatório textual + sumário."""
+def run():
     today = datetime.now().strftime("%d/%m/%Y")
     dia_semana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"][datetime.now().weekday()]
-
+    
     report_lines = [
         f"🔍 MONITOR SEMANAL — {dia_semana}, {today}",
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-        "",
-        "📁 CRONOGRAMAS DE OBRA",
-        "",
+        ""
     ]
+    
+    total_alertas = 0
 
+    # Monitoramento de cronogramas
+    report_lines.append("📁 CRONOGRAMAS DE OBRA")
+    report_lines.append("")
     crono_alertas, crono_ok = check_cronogramas()
     for item in crono_ok:
         report_lines.append(f"  {item}")
     for item in crono_alertas:
         report_lines.append(f"  {item}")
+        total_alertas += 1
     report_lines.append("")
     report_lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     report_lines.append("")
-
-    emails_por_conta = {}
-    eventos_por_conta = {}
-    erros_por_conta = {}
-    total_emails_alerta = 0
 
     for conta in CONTAS:
         try:
             token = get_token(conta["config"])
             report_lines.append(f"🏢 {conta['label'].upper()} ({conta['user']})")
             report_lines.append("")
-
+            
+            # Emails urgentes
             alertas_email = check_emails_urgentes(token, conta["user"], conta["label"])
-            emails_por_conta[conta["label"]] = alertas_email
-            total_emails_alerta += len(alertas_email)
             if alertas_email:
                 report_lines.append(f"⚠️ Emails com palavras de alerta ({len(alertas_email)}):")
                 report_lines.extend(alertas_email[:5])
+                total_alertas += len(alertas_email)
             else:
                 report_lines.append("✅ Sem emails urgentes não lidos")
+            
             report_lines.append("")
-
+            
+            # Calendário da semana
             eventos = check_calendario_semana(token, conta["user"], conta["label"])
-            eventos_por_conta[conta["label"]] = eventos
             if eventos:
                 report_lines.append(f"📅 Agenda da semana ({len(eventos)} eventos):")
                 report_lines.extend(eventos[:5])
             else:
                 report_lines.append("📅 Sem eventos esta semana")
-
+            
             report_lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             report_lines.append("")
-
+            
         except Exception as e:
-            erros_por_conta[conta["label"]] = str(e)
             report_lines.append(f"❌ Erro ao verificar {conta['label']}: {e}")
             report_lines.append("")
-
-    total_alertas = len(crono_alertas) + total_emails_alerta
+    
+    # Resumo
     if total_alertas > 0:
         report_lines.append(f"🚨 ATENÇÃO: {total_alertas} item(s) precisam de sua atenção")
     else:
         report_lines.append("✅ Semana sem alertas críticos detectados")
+    
     report_lines.append("")
-
+    report_lines.append("🤝 James — monitoramento ativo")
+    
     report = "\n".join(report_lines)
-
-    # Cálculo de urgency
-    pg_critico = any("P&G" in a or "Louveira" in a for a in crono_alertas)
-    crono_muito_atrasado = any("OBRA ENCERRADA" in a or "ATRASO" in a for a in crono_alertas)
-    if pg_critico or crono_muito_atrasado:
-        urgency = "high"
-    elif total_alertas > 0:
-        urgency = "normal"
-    else:
-        urgency = "low"
-
-    summary = {
-        "cronogramas": {
-            "ok": len(crono_ok),
-            "alertas": len(crono_alertas),
-            "alertas_lista": crono_alertas,
-        },
-        "emails_alerta_total": total_emails_alerta,
-        "emails_por_conta": {k: len(v) for k, v in emails_por_conta.items()},
-        "eventos_por_conta": {k: len(v) for k, v in eventos_por_conta.items()},
-        "erros_por_conta": erros_por_conta,
-        "total_alertas": total_alertas,
-        "pg_louveira_critico": pg_critico,
-    }
-    return report, summary, urgency
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--skip-flavia", action="store_true",
-                        help="Imprime relatório no stdout; não entrega à Flávia")
-    parser.add_argument("--print", action="store_true",
-                        help="Alias retrocompat para --skip-flavia")
-    args = parser.parse_args()
-    skip_flavia = args.skip_flavia or args.print
-
-    report, summary, urgency = coletar_dados()
-
-    if skip_flavia:
-        print(report)
-        return 0
-
-    payload = {
-        "source": "monitor_semanal.py",
-        "kind": "monitor_semanal_consolidado",
-        "project": None,
-        "company": None,
-        "domain": "monitoramento_executivo",
-        "urgency": urgency,
-        "scheduled_at": datetime.now().isoformat(),
-        "summary": summary,
-        "body": report,
-    }
-    return send_to_flavia(payload)
-
+    print(report)
+    print("Envio direto desativado temporariamente")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    run()
