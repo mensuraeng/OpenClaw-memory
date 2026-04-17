@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 const Office3D = dynamic(
   () => import("@/components/Office3D/Office3D"),
@@ -14,19 +14,19 @@ const Office3D = dynamic(
   }
 );
 
-const AGENTS = [
-  { id: "main",        name: "Flavia",         color: "#ff6b35" },
-  { id: "rh",          name: "RH",             color: "#8B5CF6" },
-  { id: "marketing",   name: "Marketing",      color: "#EC4899" },
-  { id: "producao",    name: "Producao",       color: "#F59E0B" },
-  { id: "finance",     name: "Finance",        color: "#10B981" },
-  { id: "mia",         name: "Mia",            color: "#3B82F6" },
-  { id: "mensura",     name: "Mensura",        color: "#EF4444" },
-  { id: "autopilot",   name: "Autopilot",      color: "#6B7280" },
-  { id: "juridico",    name: "Juridico",       color: "#6366F1" },
-  { id: "bi",          name: "BI Dados",       color: "#06B6D4" },
-  { id: "suprimentos", name: "Suprimentos",    color: "#D97706" },
-  { id: "pcs",         name: "PCS",            color: "#7C3AED" },
+interface AgentOption {
+  id: string;
+  name: string;
+  color: string;
+}
+
+const FALLBACK_AGENTS: AgentOption[] = [
+  { id: "main", name: "Flavia", color: "#ff6b35" },
+  { id: "finance", name: "Finance", color: "#10B981" },
+  { id: "mia", name: "Mia", color: "#3B82F6" },
+  { id: "mensura", name: "Mensura", color: "#EF4444" },
+  { id: "pcs", name: "PCS", color: "#7C3AED" },
+  { id: "croncheap", name: "Croncheap", color: "#6B7280" },
 ];
 
 interface Job {
@@ -40,6 +40,7 @@ interface Job {
 }
 
 export default function OfficePage() {
+  const [agents, setAgents] = useState<AgentOption[]>(FALLBACK_AGENTS);
   const [agentId, setAgentId] = useState("main");
   const [message, setMessage] = useState("");
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -47,7 +48,33 @@ export default function OfficePage() {
   const [showCompose, setShowCompose] = useState(false);
   const pollRefs = useRef<Record<string, ReturnType<typeof setInterval>>>({});
 
-  const selectedAgent = AGENTS.find((a) => a.id === agentId) ?? AGENTS[0];
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/agents")
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled || !data?.agents) return;
+        const active = (data.agents as Array<{ id: string; name: string; color?: string }>)
+          .filter((agent) => ["main", "finance", "mia", "mensura", "pcs", "croncheap"].includes(agent.id))
+          .map((agent) => ({
+            id: agent.id,
+            name: agent.name,
+            color: agent.color || FALLBACK_AGENTS.find((a) => a.id === agent.id)?.color || "#666666",
+          }));
+
+        if (active.length > 0) {
+          setAgents(active);
+          setAgentId((current) => active.some((a) => a.id === current) ? current : active[0].id);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const selectedAgent = agents.find((a) => a.id === agentId) ?? agents[0] ?? FALLBACK_AGENTS[0];
 
   const pollJob = useCallback((jobId: string) => {
     const iv = setInterval(async () => {
@@ -158,7 +185,7 @@ export default function OfficePage() {
                 onChange={(e) => setAgentId(e.target.value)}
                 className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                {AGENTS.map((a) => (
+                {agents.map((a) => (
                   <option key={a.id} value={a.id}>{a.name}</option>
                 ))}
               </select>
