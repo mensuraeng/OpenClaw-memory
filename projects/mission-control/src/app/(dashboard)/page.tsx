@@ -21,9 +21,13 @@ import {
   Zap,
   Server,
   Terminal,
+  AlertTriangle,
+  ArrowUpRight,
+  Landmark,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { buildAnalyticsInsights, buildOperationalAlerts, summarizePayablesRisk, type AnalyticsInsight, type OperationalAlert } from "@/lib/executive-alerts";
 
 interface Stats {
   total: number;
@@ -144,6 +148,9 @@ export default function DashboardPage() {
 
   const rankedCompanies = [...companies].sort((a, b) => getCompanyAttentionScore(b) - getCompanyAttentionScore(a));
   const topCompany = rankedCompanies[0];
+  const operationalAlerts: OperationalAlert[] = buildOperationalAlerts();
+  const analyticsInsights: AnalyticsInsight[] = buildAnalyticsInsights();
+  const payablesRisk = summarizePayablesRisk();
 
   useEffect(() => {
     Promise.all([
@@ -338,6 +345,58 @@ export default function DashboardPage() {
         <ExecutiveExceptionsCard executive={executive} />
       </div>
 
+      <div className="mb-6 grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="xl:col-span-2 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: '1px solid #ef444440' }}>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <div className="text-xs font-semibold mb-2" style={{ color: '#ef4444' }}>RADAR EXECUTIVO IMEDIATO</div>
+              <div className="text-2xl font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>O que merece atenção agora</div>
+            </div>
+            <AlertTriangle className="w-5 h-5" style={{ color: '#ef4444' }} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {operationalAlerts.map((item) => {
+              const color = item.severidade === 'critico' ? '#ef4444' : item.severidade === 'atencao' ? '#f59e0b' : '#60a5fa';
+              return (
+                <div key={item.id} className="rounded-lg p-4" style={{ backgroundColor: `${color}10`, border: `1px solid ${color}30` }}>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-[10px] px-2 py-1 rounded-full" style={{ backgroundColor: `${color}20`, color, border: `1px solid ${color}30` }}>{item.categoria}</span>
+                    <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{item.empresa}</span>
+                  </div>
+                  <div className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>{item.titulo}</div>
+                  <div className="text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>{item.detalhe}</div>
+                  <div className="flex items-center justify-between gap-3 text-[11px]" style={{ color: 'var(--text-muted)' }}>
+                    <span>{item.prazoLabel || item.origem}</span>
+                    <span style={{ color }}>{item.acao}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <div className="text-xs font-semibold mb-2" style={{ color: 'var(--accent)' }}>PRESSÃO FINANCEIRA</div>
+              <div className="text-xl font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>Contas e triagem</div>
+            </div>
+            <Landmark className="w-5 h-5" style={{ color: 'var(--accent)' }} />
+          </div>
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <div className="rounded-lg p-3" style={{ backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border)' }}>
+              <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Pendentes</div>
+              <div className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{payablesRisk.pendentes}</div>
+            </div>
+            <div className="rounded-lg p-3" style={{ backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border)' }}>
+              <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Valor conhecido</div>
+              <div className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>R$ {payablesRisk.valorConhecido.toFixed(2)}</div>
+            </div>
+          </div>
+          <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{payablesRisk.leitura}</div>
+        </div>
+      </div>
+
       {topCompany && (
         <div className="mb-6 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: `1px solid ${topCompany.statusGeral === 'critico' ? '#ef444440' : topCompany.statusGeral === 'atencao' ? '#f59e0b40' : '#22c55e40'}` }}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -413,13 +472,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mb-6 rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
-        <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
-          <h2 className="text-base font-semibold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-            Sinais explícitos de exceção
-          </h2>
-        </div>
-        <div className="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="mb-6 grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="xl:col-span-2 rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
+          <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+            <h2 className="text-base font-semibold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
+              Sinais explícitos de exceção
+            </h2>
+          </div>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
           {attention.length > 0 ? attention.map((item, index) => {
             const color = item.severidade === 'critico' ? '#ef4444' : '#f59e0b';
             return (
@@ -443,6 +503,35 @@ export default function DashboardPage() {
           }) : (
             <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Nenhum sinal explícito destacado agora.</div>
           )}
+          </div>
+        </div>
+
+        <div className="rounded-xl overflow-hidden" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
+          <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border)' }}>
+            <h2 className="text-base font-semibold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
+              Leitura web da semana
+            </h2>
+            <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+          </div>
+          <div className="p-4 space-y-3">
+            {analyticsInsights.map((item) => (
+              <div key={item.empresa} className="rounded-lg p-3" style={{ backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border)' }}>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="font-semibold" style={{ color: 'var(--text-primary)' }}>{item.empresa}</div>
+                  <span className="text-[10px] px-2 py-1 rounded-full" style={{ backgroundColor: item.bouncePct >= 60 ? '#ef444420' : '#22c55e20', color: item.bouncePct >= 60 ? '#ef4444' : '#22c55e', border: `1px solid ${item.bouncePct >= 60 ? '#ef444430' : '#22c55e30'}` }}>
+                    Bounce {item.bouncePct.toFixed(1)}%
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center mb-2">
+                  <div><div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Sessões</div><div className="font-bold" style={{ color: 'var(--text-primary)' }}>{item.sessoes}</div></div>
+                  <div><div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Usuários</div><div className="font-bold" style={{ color: 'var(--text-primary)' }}>{item.usuarios}</div></div>
+                  <div><div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Novos</div><div className="font-bold" style={{ color: 'var(--text-primary)' }}>{item.novos}</div></div>
+                </div>
+                <div className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{item.leitura}</div>
+                <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Origem: {item.principalOrigem} • Página: {item.paginaTop}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
