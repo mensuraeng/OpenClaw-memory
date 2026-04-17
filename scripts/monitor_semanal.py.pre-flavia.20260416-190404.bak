@@ -259,7 +259,7 @@ def run():
     
     report = "\n".join(report_lines)
     print(report)
-    print("Envio direto desativado temporariamente")
+    send_telegram(report)
 
 if __name__ == "__main__":
     run()

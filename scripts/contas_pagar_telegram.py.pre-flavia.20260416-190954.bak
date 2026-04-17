@@ -120,9 +120,9 @@ if __name__ == "__main__":
             message_thread_id=13
         )
         if result and result.get("ok"):
-            print("Envio direto desativado temporariamente")
+            print("✅ Relatório enviado com sucesso!")
         else:
-            print("Envio direto desativado temporariamente")
+            print(f"❌ Erro ao enviar: {result}", file=sys.stderr)
     except Exception as e:
         print(f"❌ Erro: {e}", file=sys.stderr)
         sys.exit(1)

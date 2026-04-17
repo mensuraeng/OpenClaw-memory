@@ -47,6 +47,9 @@ Skills transversais devem viver no workspace principal como biblioteca compartil
 ### Main pode delegar por subagent aos agentes especializados com política explícita (2026-04-16)
 O agente `main` deve poder delegar a agentes especializados por subagent com `allowAgents` explícito, `requireAgentId=true`, limites de spawn controlados e validação real de runtime. Delegação declarada sem capacidade prática validada não conta como arquitetura funcionando.
 
+### Topologia de agentes deve ser validada no config/runtime atual antes de qualquer resposta estrutural (2026-04-16)
+Antes de responder sobre delegação, organograma, parque de agentes ou capacidade operacional, validar primeiro o estado real no config/runtime atual. Allowlist histórica, memória antiga ou IDs legados não valem como prova de topologia vigente.
+
 ## Operação recorrente
 
 ### Horário protegido para notificações (2026-04-01)

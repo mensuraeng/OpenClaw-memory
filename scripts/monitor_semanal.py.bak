@@ -8,6 +8,7 @@ Monitora: emails urgentes, calendário da semana, relatórios pendentes
 import json
 import urllib.request
 import urllib.parse
+import subprocess
 from datetime import datetime, timedelta, timezone
 
 CHAT_ID = "1067279351"
@@ -112,7 +113,7 @@ def check_calendario_semana(token, user, label):
         start = e.get("start", {}).get("dateTime", "")[:16].replace("T", " ")
         loc = e.get("location", {}).get("displayName", "")
         loc_str = f" | 📍 {loc}" if loc else ""
-        events.append(f"  📌 {start}{loc_str}\n     {e.get('subject','')}")
+        events.append(f"  📌 {start}{loc_str} | {e.get('subject','')}")
     return events
 
 def check_emails_relatorios(token, user):
@@ -130,7 +131,19 @@ def check_emails_relatorios(token, user):
                 alertas.append(f"  📋 {m.get('subject','')} | De: {sender}")
     return alertas
 
-def send_telegram(text):
+import subprocess
+import json
+
+payload = {
+    "tipo": "monitor_semanal",
+    "conteudo": text
+}
+
+subprocess.run(
+    ["python3", "/root/.openclaw/workspace/scripts/send_to_flavia.py"],
+    input=json.dumps(payload),
+    text=True
+):
     with open(CONFIG_FILE) as f:
         d = json.load(f)
     bot_token = d["channels"]["telegram"]["botToken"]
@@ -257,9 +270,20 @@ def run():
     report_lines.append("")
     report_lines.append("🤝 James — monitoramento ativo")
     
-    report = "\n".join(report_lines)
+        report = "\n".join(report_lines)
     print(report)
-    print("Envio direto desativado temporariamente")
+
+    payload = {
+        "tipo": "monitor_semanal",
+        "conteudo": report,
+    }
+
+    subprocess.run(
+        ["python3", "/root/.openclaw/workspace/scripts/send_to_flavia.py"],
+        input=json.dumps(payload, ensure_ascii=False),
+        text=True,
+        check=False,
+    )
 
 if __name__ == "__main__":
     run()

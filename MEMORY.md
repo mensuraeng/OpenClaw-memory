@@ -29,10 +29,9 @@ Serve para responder rápido:
 
 ### Pendências críticas
 - Instagram App ID + Secret
-- OpenAI API key / quota válida para Whisper + embeddings
 - Confirmar SSH key antes de hardening
-- Corrigir cadeia real de fallback de modelos
-- Revisar falha de calendário da conta Mensura quando houver janela para isso
+- Revalidar cadeia real de fallback de modelos além do microteste de agentes
+- Revisar falha histórica de calendário da conta Mensura e confirmar saneamento definitivo
 - Aguardar aprovação do app institucional do LinkedIn para páginas
 
 ### Integrações ativas
@@ -45,8 +44,8 @@ Serve para responder rápido:
 - VPS ✅
 
 ### Riscos ou atenção
-- `memory_search()` está indisponível por quota insuficiente de embeddings
-- A cadeia de fallback configurada não está saudável na prática, por quota da OpenAI e auth ausente na Anthropic
+- `memory_search()` voltou a responder neste ciclo, mas precisa seguir observada após mudanças de auth/quota para evitar regressão silenciosa
+- A cadeia de fallback alternativa ainda não está comprovada além dos microtestes de runtime dos agentes
 - Parte do contexto de longo prazo existe, mas ainda precisa de consolidação contínua por tema
 - Há risco de espalhamento de contexto em notas diárias se não houver promoção periódica para arquivos temáticos
 - Custo real das últimas 24h e 7d ainda está muito acima da meta e foi dominado por `gpt-5.4` antes da troca de política

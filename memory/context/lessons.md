@@ -51,6 +51,9 @@ Quando cada agente roda em workspace próprio, não dá para assumir que toda sk
 ### Delegação para agente especializado só vale depois de teste real (2026-04-16)
 Não basta o desenho existir no papel. Se `main` disser que vai coordenar e delegar para marketing, jurídico ou outro agente, isso precisa estar validado com spawn real e política efetiva. Arquitetura sem prova operacional ainda é premissa.
 
+### Allowlist ou memória antiga não provam topologia atual (2026-04-16)
+Quando houver dúvida sobre quais agentes realmente existem e operam no desenho atual, conferir o config/runtime vigente antes de afirmar estrutura. IDs históricos em allowlist e memória de sessões anteriores podem sobreviver à mudança e induzir diagnóstico errado.
+
 ### Segundo cérebro só funciona se inbox e consolidação forem separados (2026-04-14)
 Se o mesmo espaço tentar ser captura bruta e memória final ao mesmo tempo, o sistema vira acúmulo desorganizado. A arquitetura precisa separar claramente o que entra rápido durante o dia do que é consolidado à noite como memória institucional de longo prazo.
 

@@ -80,3 +80,16 @@ Fazer a operação existir com método, memória e previsibilidade, e não só p
 - filha: Mia
 - kitesurf faz parte da identidade dele
 - disciplina física e performance são centrais na forma como ele vive e decide
+
+## Padrões psicológicos e de liderança observáveis
+
+- Perfil cognitivo dominante: hiper-analítico, estratégico, com pensamento sistêmico, alta abstração e forte tendência a estruturar problemas em modelos e frameworks.
+- Motor principal: busca de precisão, controle, previsibilidade e redução de risco, mais do que status ou validação social.
+- Padrão executivo: padrão técnico muito alto, forte conscienciosidade, baixa tolerância à mediocridade e preferência por verdade útil acima de conforto emocional.
+- Forma de liderança: lidera por exemplo, estrutura, critério e expectativa elevada, não por sociabilidade ou carisma expansivo.
+- Extroversão funcional: fala quando há substância, busca respeito técnico e pode ser percebido como frio por equipes menos maduras.
+- Risco recorrente: sofisticar, estruturar e centralizar demais antes de consolidar o essencial; tende a delegar execução antes de delegar critério.
+- Ponto cego relacional: sem tradução emocional, sua clareza pode ser percebida como ameaça e não como aprendizado.
+- Pressão interna: tende a carregar responsabilidade em excesso, com autocrítica alta, inquietação produtiva e baixa prática de pedir cuidado ou dividir peso emocional.
+- O próximo salto não é elevar padrão, e sim ganhar leveza, sucessores cognitivos e delegação real de decisão sem perda de excelência.
+- Linguagem preferida para esse tipo de leitura: direta, técnica, sem adulação, sem autoajuda e baseada em padrões observáveis.

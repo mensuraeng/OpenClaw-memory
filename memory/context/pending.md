@@ -6,10 +6,9 @@ _Atualizado em 2026-04-16_
 
 ## Críticas
 
-- [ ] **OpenAI API key / quota válida para embeddings** — `memory_search()` segue indisponível por `insufficient_quota`, comprometendo memória semântica e parte dos fluxos de Whisper/OCR.
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
-- [ ] **Corrigir cadeia real de fallback de modelos** — hoje `openai/gpt-4o-mini` falha por quota e `anthropic/claude-sonnet-4-6` falha por auth; fallback configurado ainda não está operacionalmente confiável.
+- [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
 
 ## Aguardando Alê
 
@@ -24,7 +23,7 @@ _Atualizado em 2026-04-16_
 - [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
 - [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
 - [ ] **Estruturar grupos do cofre** — consolidar grupos padrão: Email, APIs, Social, Infra, Financeiro.
-- [ ] **Revisar falha do calendário Mensura** — investigar erro `ErrorInvalidUser` na consulta da conta quando houver janela.
+- [ ] **Revisar falha histórica do calendário Mensura** — houve erro `ErrorInvalidUser` em ciclo anterior; confirmar se foi definitivamente sanado ou se ainda reaparece em alguma rota/conta.
 - [ ] **Validar e operacionalizar o segundo cérebro no GitHub** — fortalecer captura automática, promoção de memória e deduplicação entre agentes.
 - [ ] **Mapear captura automática por estação/agente** — decidir quais eventos, arquivos e registros entram no inbox bruto sem exigir processo manual do time.
 - [ ] **Definir política de consolidação noturna** — critérios de promoção, deduplicação, vínculo entre itens relacionados e descarte de ruído.

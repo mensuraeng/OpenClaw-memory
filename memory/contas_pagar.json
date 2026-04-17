@@ -182,6 +182,34 @@
       "codigo_barras": null,
       "status": "pendente",
       "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVHlnFkAAA="
+    },
+    {
+      "id": "alexandre@mensuraengenharia.com.br_AAMkADAwZDk2Mjk2",
+      "email_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAEMAAD_2b2i-O-CQ7g2VaW8BTq6AAVJDdDSAAA=",
+      "conta": "alexandre@mensuraengenharia.com.br",
+      "assunto": "Sua Fatura Digital Claro chegou",
+      "descricao": "Sua Fatura Digital Claro chegou",
+      "remetente": "faturadigital@minhaclaro.com.br",
+      "recebido": "2026-04-16",
+      "vencimento": "25/04/2026",
+      "valor": null,
+      "codigo_barras": "846600000000999001622029604250030003005137077946",
+      "status": "pendente",
+      "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVJDpHWAAA="
+    },
+    {
+      "id": "alexandre@miaengenharia.com.br_AAMkADA5ZGRjMjEx",
+      "email_id": "AAMkADA5ZGRjMjExLWU4MDQtNDkyNi1hZGI0LTc1N2NiYjlhNTFmNQBGAAAAAADD1eYX3FzUSLHLJjJMLP18BwDVJ-X561luSbyAZS6PXzMWAAAAAAEMAADVJ-X561luSbyAZS6PXzMWAAYNLPgQAAA=",
+      "conta": "alexandre@miaengenharia.com.br",
+      "assunto": "Boleto - GF Condomínios - 1185 0 032 ((Conferir Beneficiário))",
+      "descricao": "Boleto - GF Condomínios - 1185 0 032 ((Conferir Beneficiário))",
+      "remetente": "gf.boletos@gmail.com",
+      "recebido": "2026-04-14",
+      "vencimento": "20/04/2026",
+      "valor": null,
+      "codigo_barras": "34191.09008 63798.001002 07644.050002 3 14220000086788",
+      "status": "pendente",
+      "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVJDpHXAAA="
     }
   ],
   "pagos": []
