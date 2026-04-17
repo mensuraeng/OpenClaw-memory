@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
 """
-CCSP Casa 7 — Relatório Semanal (toda segunda, 8h BRT / 11h UTC)
-Avisa o Alê que o relatório semanal está pronto para ser atualizado.
+CCSP Casa 7 — Relatório Semanal (toda segunda, 8h BRT / 11h UTC).
+
+Gera o payload de alerta semanal pedindo 3 inputs ao Alê e entrega
+à Flávia, que decide a saída final (consolidar e responder direto,
+delegar para `mia`, ou agendar a comunicação).
+
+Não fala diretamente com Telegram nem email. A regra é:
+    script → gera payload → Flávia consolida → saída final
 """
 
-import sys, os, json, requests
+import os
+import sys
 from datetime import datetime, timezone, timedelta
 
-BRT = timezone(timedelta(hours=-3))
-hoje = datetime.now(BRT)
-semana_str = hoje.strftime("%d/%m/%Y")
+# Permite importar send_to_flavia.py do mesmo diretório, mesmo
+# quando este script roda via `cd workspace && python3 scripts/...`
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from send_to_flavia import send_to_flavia  # noqa: E402
 
-def gerar_alerta():
+BRT = timezone(timedelta(hours=-3))
+
+
+def gerar_corpo(semana_str: str) -> str:
     return f"""📊 *CCSP Casa 7 — Atualização Semanal | {semana_str}*
 
 Alê, preciso de 3 inputs para fechar o relatório desta semana:
@@ -27,34 +38,23 @@ Alê, preciso de 3 inputs para fechar o relatório desta semana:
 *3. Ocorrências novas*
   → Algum imprevisto, não conformidade ou desvio não registrado?
 
-Com isso gero: relatório interno, relatório TOOLS, look ahead, alertas e histórico atualizado.
+Com isso gero: relatório interno, relatório TOOLS, look ahead, alertas e histórico atualizado."""
 
-_Flávia | MIA Engenharia 🟢_"""
 
-def enviar_telegram(mensagem):
-    cfg_path = os.path.expanduser("~/.openclaw/openclaw.json")
-    with open(cfg_path) as f:
-        cfg = json.load(f)
-    
-    telegram_token = cfg.get("channels", {}).get("telegram", {}).get("botToken")
-    
-    if not telegram_token:
-        print("Token Telegram não encontrado", file=sys.stderr)
-        return False
-    
-    r = requests.post(
-        f"https://api.telegram.org/bot{telegram_token}/sendMessage",
-        json={"chat_id": "1067279351", "text": mensagem, "parse_mode": "Markdown"},
-        timeout=30
-    )
-    
-    if r.status_code == 200:
-        print(f"[{semana_str}] Alerta semanal CCSP enviado")
-        return True
-    else:
-        print(f"Erro: {r.status_code} {r.text}", file=sys.stderr)
-        return False
+def main() -> int:
+    hoje = datetime.now(BRT)
+    semana_str = hoje.strftime("%d/%m/%Y")
+    payload = {
+        "source": "ccsp_relatorio_semanal.py",
+        "kind": "alerta_semanal_inputs_pendentes",
+        "project": "CCSP Casa 7",
+        "company": "MIA",
+        "urgency": "normal",
+        "scheduled_at": hoje.isoformat(),
+        "body": gerar_corpo(semana_str),
+    }
+    return send_to_flavia(payload)
+
 
 if __name__ == "__main__":
-    msg = gerar_alerta()
-    enviar_telegram(msg)
+    sys.exit(main())
