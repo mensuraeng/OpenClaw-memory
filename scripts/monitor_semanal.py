@@ -66,6 +66,11 @@ CONTAS = [
         "label": "MIA",
         "user": "alexandre@miaengenharia.com.br",
         "config": "/root/.openclaw/workspace/config/ms-graph-mia.json"
+    },
+    {
+        "label": "PCS",
+        "user": "alexandre@pcsengenharia.com.br",
+        "config": "/root/.openclaw/workspace/config/ms-graph-pcs.json"
     }
 ]
 
