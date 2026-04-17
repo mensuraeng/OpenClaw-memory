@@ -80,3 +80,9 @@ No Telegram, o grupo `PESSOAL` (chat_id `telegram:-1003818163425`), tópico `13`
 
 ### GitHub será o segundo cérebro operacional (2026-04-14)
 A arquitetura-alvo da operação passa a tratar o GitHub como memória institucional de longo prazo, com versionamento, rastreabilidade e acesso compartilhado como base nativa. O OpenClaw deve operar como camada de captura e consolidação: durante o dia, trabalho e contexto entram como memória curta e registro bruto; no fechamento noturno, o sistema deve consolidar, conectar o que é relacionado, reduzir redundância e promover o que importa para memória durável versionada. A referência conceitual é: inbox = memória de curto prazo, consolidação noturna = sono, GitHub = memória de longo prazo.
+
+## 2026-04-17 — Finance tag [[reply_to_current]]
+O agente finance retorna respostas prefixadas com [[reply_to_current]].
+É tag interna do OpenClaw — não afeta conteúdo.
+A Flávia deve ignorar/filtrar essa tag ao processar output do finance.
+Monitorar se persiste nas próximas execuções reais.
