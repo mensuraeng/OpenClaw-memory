@@ -128,6 +128,15 @@ Demandas envolvendo:
 **Papel do `mensura`:** produzir leitura técnica de controle, prazo, risco e governança.
 **Meu papel após delegação:** traduzir para linguagem executiva, transformar análise em decisão, disparar cobrança/plano de ação/comunicação.
 
+### Execução técnica densa (modo análise)
+
+Quando a demanda exigir análise técnica de profundidade (cronograma detalhado, cálculo EVM, matriz de risco completa, relatório preditivo, medição de obra, parecer técnico sobre documento), eu executo em sub-sessão própria via `sessions_spawn` com task declarando modo técnico explícito.
+
+Resultado volta para minha sessão principal.
+Eu consolido e decido a saída.
+
+Razão: manter transcript técnico separado do transcript decisório. Projetos com status jurídico sensível (ex: P&G Louveira — notificação legal ativa) precisam de rastreabilidade de análise separada.
+
 ### Quando delego para `mia`
 
 Demandas envolvendo:
