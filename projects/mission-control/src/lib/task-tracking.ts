@@ -74,6 +74,9 @@ export type TaskEventType =
   | 'stale_detected'
   | 'orphan_detected'
   | 'session_observed'
+  | 'session_finished'
+  | 'auto_closed'
+  | 'escalated'
   | 'note';
 
 export interface TaskEvent {
@@ -270,6 +273,27 @@ export function failTaskExecution(taskId: string, agentId: string, reason: strin
   return task;
 }
 
+export function retryTaskExecution(taskId: string, agentId: string, reason: string) {
+  const task = getTaskExecution(taskId);
+  if (!task) throw new Error(`Task not found: ${taskId}`);
+  if (task.attempt >= task.maxAttempts) {
+    appendTaskEvent({ taskId, agentId, type: 'escalated', message: `Sem retry restante: ${reason}` });
+    return blockTaskExecution(taskId, agentId, `Escalada necessária: ${reason}`);
+  }
+
+  appendTaskEvent({ taskId, agentId, type: 'retry_scheduled', message: `Retry agendado: ${reason}` });
+  const updated = updateTaskExecution(taskId, {
+    status: 'queued',
+    attempt: task.attempt + 1,
+    blockingReason: null,
+    failureReason: null,
+    finishedAt: null,
+    metadata: { ...(task.metadata || {}), retryReason: reason },
+  });
+  appendTaskEvent({ taskId, agentId, type: 'retry_started', message: 'Task retornou para fila para nova tentativa' });
+  return updated;
+}
+
 export function completeTaskExecution(taskId: string, agentId: string, message?: string) {
   const task = updateTaskExecution(taskId, {
     status: 'completed_unvalidated',
@@ -380,38 +404,74 @@ export function reconcileTasksWithSessions(sessionKeys: string[]) {
   const updates: TaskExecution[] = [];
 
   for (const task of tasks) {
-    if (!isTaskOpen(task)) continue;
-
     const observedSession = task.childSessionKey || task.sessionKey;
     if (!observedSession) continue;
 
     if (sessionSet.has(observedSession)) {
-      appendTaskEvent({
-        taskId: task.taskId,
-        agentId: task.targetAgent,
-        type: 'session_observed',
-        message: 'Sessão observada como ativa na reconciliação',
-        payload: { sessionKey: observedSession },
-      });
-      updates.push(updateTaskExecution(task.taskId, { metadata: { ...(task.metadata || {}), lastObservedSessionAt: now.toISOString() } }));
+      if (isTaskOpen(task)) {
+        appendTaskEvent({
+          taskId: task.taskId,
+          agentId: task.targetAgent,
+          type: 'session_observed',
+          message: 'Sessão observada como ativa na reconciliação',
+          payload: { sessionKey: observedSession },
+        });
+        updates.push(updateTaskExecution(task.taskId, { metadata: { ...(task.metadata || {}), lastObservedSessionAt: now.toISOString(), orphaned: false } }));
+      }
       continue;
     }
 
+    if (!isTaskOpen(task)) continue;
+
     const ageMinutes = (now.getTime() - new Date(task.updatedAt).getTime()) / 60000;
-    if (ageMinutes >= Math.max(task.staleAfterMinutes ?? 30, 15)) {
-      const nextStatus = task.status === 'queued' ? 'blocked' : task.status;
-      updates.push(updateTaskExecution(task.taskId, {
-        status: nextStatus,
-        blockingReason: `Sessão não encontrada na reconciliação (${observedSession})`,
-        metadata: { ...(task.metadata || {}), orphaned: true, orphanedAt: now.toISOString() },
-      }));
+    const lastObservedSessionAt = task.metadata?.lastObservedSessionAt ? new Date(String(task.metadata.lastObservedSessionAt)).getTime() : null;
+    const wasObservedBefore = Boolean(lastObservedSessionAt);
+    const staleThreshold = Math.max(task.staleAfterMinutes ?? 30, 15);
+
+    if (wasObservedBefore && ageMinutes >= 1) {
+      appendTaskEvent({
+        taskId: task.taskId,
+        agentId: task.targetAgent,
+        type: 'session_finished',
+        message: `Sessão ${observedSession} não aparece mais, tratando como encerrada`,
+        payload: { sessionKey: observedSession },
+      });
+
+      if (task.validationRequired) {
+        updates.push(completeTaskExecution(task.taskId, task.targetAgent, 'Sessão encerrada automaticamente, aguardando validação'));
+      } else {
+        const finishedAt = new Date().toISOString();
+        updates.push(updateTaskExecution(task.taskId, {
+          status: 'completed_validated',
+          validatedAt: finishedAt,
+          validatedBy: 'system',
+          finishedAt,
+        }));
+        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'auto_closed', message: 'Task fechada automaticamente após encerramento da sessão' });
+      }
+      continue;
+    }
+
+    if (ageMinutes >= staleThreshold) {
+      const retryable = task.attempt < task.maxAttempts;
       appendTaskEvent({
         taskId: task.taskId,
         agentId: task.targetAgent,
         type: 'orphan_detected',
         message: `Task órfã detectada: sessão ${observedSession} não encontrada`,
-        payload: { sessionKey: observedSession },
+        payload: { sessionKey: observedSession, retryable },
       });
+
+      if (retryable) {
+        updates.push(retryTaskExecution(task.taskId, 'system', `Sessão ${observedSession} desapareceu antes de conclusão observada`));
+      } else {
+        updates.push(updateTaskExecution(task.taskId, {
+          status: 'blocked',
+          blockingReason: `Sessão não encontrada na reconciliação (${observedSession})`,
+          metadata: { ...(task.metadata || {}), orphaned: true, orphanedAt: now.toISOString() },
+        }));
+        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'escalated', message: 'Task órfã sem retries restantes, escalada para revisão humana' });
+      }
     }
   }
 
@@ -427,7 +487,8 @@ export function getTaskAttention() {
     stale: tasks.filter((task) => isTaskStale(task, now)).slice(0, 10),
     blocked: tasks.filter((task) => task.status === 'blocked' || task.status === 'waiting_input').slice(0, 10),
     unvalidated: tasks.filter((task) => task.status === 'completed_unvalidated').slice(0, 10),
-    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned)).slice(0, 10),
+    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned) || task.blockingReason?.includes('Sessão não encontrada na reconciliação')).slice(0, 10),
+    retryQueue: tasks.filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason)).slice(0, 10),
   };
 }
 
@@ -457,7 +518,8 @@ export function getTaskMetrics() {
     failed: tasks.filter((task) => task.status === 'failed').length,
     slaBreached: tasks.filter((task) => isTaskSlaBreached(task, now)).length,
     stale: tasks.filter((task) => isTaskStale(task, now)).length,
-    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned)).length,
+    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned) || task.blockingReason?.includes('Sessão não encontrada na reconciliação')).length,
+    retrying: tasks.filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason)).length,
     byAgent,
   };
 }

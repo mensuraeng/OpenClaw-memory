@@ -48,6 +48,8 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ tas
             <div><strong>SLA:</strong> {task.slaMinutes ? `${task.slaMinutes} min` : '—'}</div>
             <div><strong>Due at:</strong> {task.dueAt ? new Date(task.dueAt).toLocaleString('pt-BR') : '—'}</div>
             <div><strong>Janela de stale:</strong> {task.staleAfterMinutes ? `${task.staleAfterMinutes} min` : '—'}</div>
+            <div><strong>Última sessão observada:</strong> {typeof task.metadata?.lastObservedSessionAt === 'string' ? new Date(task.metadata.lastObservedSessionAt).toLocaleString('pt-BR') : '—'}</div>
+            <div><strong>Motivo do retry:</strong> {typeof task.metadata?.retryReason === 'string' ? task.metadata.retryReason : '—'}</div>
             {task.blockingReason && <div className="md:col-span-2"><strong>Bloqueio:</strong> {task.blockingReason}</div>}
             {task.failureReason && <div className="md:col-span-2"><strong>Falha:</strong> {task.failureReason}</div>}
           </div>
