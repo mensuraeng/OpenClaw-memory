@@ -39,8 +39,15 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ tas
             <div><strong>Risco:</strong> {task.riskLevel}</div>
             <div><strong>Tentativa:</strong> {task.attempt}/{task.maxAttempts}</div>
             <div><strong>Validação obrigatória:</strong> {task.validationRequired ? 'sim' : 'não'}</div>
+            <div><strong>Parent task:</strong> {task.parentTaskId || '—'}</div>
+            <div><strong>Root task:</strong> {task.rootTaskId}</div>
+            <div><strong>Session:</strong> {task.sessionKey || '—'}</div>
+            <div><strong>Child session:</strong> {task.childSessionKey || '—'}</div>
             <div><strong>Criada em:</strong> {new Date(task.createdAt).toLocaleString('pt-BR')}</div>
             <div><strong>Atualizada em:</strong> {new Date(task.updatedAt).toLocaleString('pt-BR')}</div>
+            <div><strong>SLA:</strong> {task.slaMinutes ? `${task.slaMinutes} min` : '—'}</div>
+            <div><strong>Due at:</strong> {task.dueAt ? new Date(task.dueAt).toLocaleString('pt-BR') : '—'}</div>
+            <div><strong>Janela de stale:</strong> {task.staleAfterMinutes ? `${task.staleAfterMinutes} min` : '—'}</div>
             {task.blockingReason && <div className="md:col-span-2"><strong>Bloqueio:</strong> {task.blockingReason}</div>}
             {task.failureReason && <div className="md:col-span-2"><strong>Falha:</strong> {task.failureReason}</div>}
           </div>

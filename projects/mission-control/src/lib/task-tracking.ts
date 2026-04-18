@@ -28,6 +28,7 @@ export interface TaskExecution {
   parentTaskId?: string | null;
   rootTaskId: string;
   sessionKey?: string | null;
+  childSessionKey?: string | null;
   sourceAgent: string;
   targetAgent: string;
   executionType: TaskExecutionType;
@@ -45,6 +46,8 @@ export interface TaskExecution {
   updatedAt: string;
   finishedAt?: string | null;
   slaMinutes?: number | null;
+  dueAt?: string | null;
+  staleAfterMinutes?: number | null;
   validationRequired: boolean;
   validatedAt?: string | null;
   validatedBy?: string | null;
@@ -67,6 +70,8 @@ export type TaskEventType =
   | 'completed_unvalidated'
   | 'validated'
   | 'cancelled'
+  | 'sla_breached'
+  | 'stale_detected'
   | 'note';
 
 export interface TaskEvent {
@@ -129,6 +134,7 @@ export function createTaskExecution(input: {
   parentTaskId?: string | null;
   rootTaskId?: string;
   sessionKey?: string | null;
+  childSessionKey?: string | null;
   sourceAgent: string;
   targetAgent: string;
   executionType: TaskExecutionType;
@@ -139,6 +145,7 @@ export function createTaskExecution(input: {
   successCriteria?: string | null;
   riskLevel?: TaskExecution['riskLevel'];
   slaMinutes?: number | null;
+  staleAfterMinutes?: number | null;
   validationRequired?: boolean;
   handoffDepth?: number;
   tags?: string[];
@@ -146,11 +153,13 @@ export function createTaskExecution(input: {
 }) {
   const now = new Date().toISOString();
   const taskId = randomUUID();
+  const dueAt = input.slaMinutes ? new Date(Date.now() + input.slaMinutes * 60_000).toISOString() : null;
   const task: TaskExecution = {
     taskId,
     parentTaskId: input.parentTaskId ?? null,
     rootTaskId: input.rootTaskId ?? taskId,
     sessionKey: input.sessionKey ?? null,
+    childSessionKey: input.childSessionKey ?? null,
     sourceAgent: input.sourceAgent,
     targetAgent: input.targetAgent,
     executionType: input.executionType,
@@ -166,6 +175,8 @@ export function createTaskExecution(input: {
     createdAt: now,
     updatedAt: now,
     slaMinutes: input.slaMinutes ?? null,
+    dueAt,
+    staleAfterMinutes: input.staleAfterMinutes ?? 30,
     validationRequired: input.validationRequired ?? true,
     handoffDepth: input.handoffDepth ?? 0,
     tags: input.tags ?? [],
@@ -266,27 +277,106 @@ export function getTaskTree(taskId: string) {
   return tasks.filter((task) => task.rootTaskId === root.rootTaskId).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
+export function isTaskOpen(task: TaskExecution) {
+  return ['queued', 'running', 'waiting_input', 'blocked'].includes(task.status);
+}
+
+export function isTaskSlaBreached(task: TaskExecution, now = new Date()) {
+  return Boolean(task.dueAt && isTaskOpen(task) && new Date(task.dueAt).getTime() < now.getTime());
+}
+
+export function isTaskStale(task: TaskExecution, now = new Date()) {
+  if (!isTaskOpen(task)) return false;
+  const staleAfter = task.staleAfterMinutes ?? 30;
+  const updatedAt = new Date(task.updatedAt).getTime();
+  return now.getTime() - updatedAt > staleAfter * 60_000;
+}
+
+export function delegateTaskExecution(input: {
+  parentTaskId: string;
+  sourceAgent: string;
+  targetAgent: string;
+  title: string;
+  objective: string;
+  childSessionKey?: string | null;
+  inputSummary?: string | null;
+  expectedOutput?: string | null;
+  successCriteria?: string | null;
+  riskLevel?: TaskExecution['riskLevel'];
+  slaMinutes?: number | null;
+  staleAfterMinutes?: number | null;
+  metadata?: Record<string, unknown>;
+}) {
+  const parent = getTaskExecution(input.parentTaskId);
+  if (!parent) {
+    throw new Error(`Parent task not found: ${input.parentTaskId}`);
+  }
+
+  const child = createTaskExecution({
+    parentTaskId: parent.taskId,
+    rootTaskId: parent.rootTaskId,
+    sessionKey: parent.sessionKey ?? null,
+    childSessionKey: input.childSessionKey ?? null,
+    sourceAgent: input.sourceAgent,
+    targetAgent: input.targetAgent,
+    executionType: 'delegation',
+    title: input.title,
+    objective: input.objective,
+    inputSummary: input.inputSummary ?? null,
+    expectedOutput: input.expectedOutput ?? null,
+    successCriteria: input.successCriteria ?? null,
+    riskLevel: input.riskLevel ?? parent.riskLevel,
+    slaMinutes: input.slaMinutes ?? parent.slaMinutes ?? null,
+    staleAfterMinutes: input.staleAfterMinutes ?? parent.staleAfterMinutes ?? 30,
+    validationRequired: true,
+    handoffDepth: (parent.handoffDepth ?? 0) + 1,
+    metadata: input.metadata ?? {},
+  });
+
+  appendTaskEvent({
+    taskId: parent.taskId,
+    agentId: input.sourceAgent,
+    type: 'delegated',
+    message: `Delegado para ${input.targetAgent}: ${input.title}`,
+    payload: { childTaskId: child.taskId },
+  });
+
+  appendTaskEvent({
+    taskId: child.taskId,
+    agentId: input.sourceAgent,
+    type: 'delegated',
+    message: `Recebida delegação de ${input.sourceAgent}`,
+    payload: { parentTaskId: parent.taskId },
+  });
+
+  return child;
+}
+
 export function getTaskMetrics() {
   const tasks = listTaskExecutions();
-  const openStatuses: TaskExecutionStatus[] = ['queued', 'running', 'waiting_input', 'blocked'];
-  const byAgent: Record<string, { open: number; blocked: number; validated: number; failed: number }> = {};
+  const now = new Date();
+  const byAgent: Record<string, { open: number; blocked: number; validated: number; failed: number; slaBreached: number; stale: number }> = {};
 
   for (const task of tasks) {
     if (!byAgent[task.targetAgent]) {
-      byAgent[task.targetAgent] = { open: 0, blocked: 0, validated: 0, failed: 0 };
+      byAgent[task.targetAgent] = { open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 };
     }
-    if (openStatuses.includes(task.status)) byAgent[task.targetAgent].open += 1;
+    if (isTaskOpen(task)) byAgent[task.targetAgent].open += 1;
     if (task.status === 'blocked' || task.status === 'waiting_input') byAgent[task.targetAgent].blocked += 1;
     if (task.status === 'completed_validated') byAgent[task.targetAgent].validated += 1;
     if (task.status === 'failed') byAgent[task.targetAgent].failed += 1;
+    if (isTaskSlaBreached(task, now)) byAgent[task.targetAgent].slaBreached += 1;
+    if (isTaskStale(task, now)) byAgent[task.targetAgent].stale += 1;
   }
 
   return {
     total: tasks.length,
-    open: tasks.filter((task) => openStatuses.includes(task.status)).length,
+    open: tasks.filter((task) => isTaskOpen(task)).length,
     blocked: tasks.filter((task) => task.status === 'blocked' || task.status === 'waiting_input').length,
     validated: tasks.filter((task) => task.status === 'completed_validated').length,
     failed: tasks.filter((task) => task.status === 'failed').length,
+    slaBreached: tasks.filter((task) => isTaskSlaBreached(task, now)).length,
+    stale: tasks.filter((task) => isTaskStale(task, now)).length,
     byAgent,
   };
 }

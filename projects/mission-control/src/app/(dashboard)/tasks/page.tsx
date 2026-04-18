@@ -26,6 +26,8 @@ interface TaskExecution {
   attempt: number;
   createdAt: string;
   updatedAt: string;
+  dueAt?: string | null;
+  staleAfterMinutes?: number | null;
   blockingReason?: string | null;
 }
 
@@ -35,6 +37,8 @@ interface TaskMetrics {
   blocked: number;
   validated: number;
   failed: number;
+  slaBreached: number;
+  stale: number;
 }
 
 function statusMeta(status: TaskStatus) {
@@ -60,16 +64,26 @@ function statusMeta(status: TaskStatus) {
   }
 }
 
+function isSlaBreached(task: TaskExecution) {
+  return Boolean(task.dueAt && ["queued", "running", "waiting_input", "blocked"].includes(task.status) && new Date(task.dueAt).getTime() < Date.now());
+}
+
+function isStale(task: TaskExecution) {
+  if (!["queued", "running", "waiting_input", "blocked"].includes(task.status)) return false;
+  const staleAfter = task.staleAfterMinutes ?? 30;
+  return Date.now() - new Date(task.updatedAt).getTime() > staleAfter * 60 * 1000;
+}
+
 export default function TasksPage() {
   const [tasks, setTasks] = useState<TaskExecution[]>([]);
-  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0 });
+  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 });
 
   useEffect(() => {
     fetch("/api/tasks")
       .then((r) => r.json())
       .then((data) => {
         setTasks(data.tasks || []);
-        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0 });
+        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 });
       })
       .catch(console.error);
   }, []);
@@ -88,11 +102,13 @@ export default function TasksPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
         {[
           ["Total", metrics.total],
           ["Abertas", metrics.open],
           ["Bloqueadas", metrics.blocked],
+          ["SLA vencido", metrics.slaBreached],
+          ["Paradas", metrics.stale],
           ["Validadas", metrics.validated],
           ["Falhas", metrics.failed],
         ].map(([label, value]) => (
@@ -103,18 +119,51 @@ export default function TasksPage() {
         ))}
       </div>
 
-      {blockedOrWaiting.length > 0 && (
-        <div className="rounded-2xl border p-4" style={{ borderColor: "rgba(249,115,22,0.35)", background: "rgba(249,115,22,0.08)" }}>
-          <div className="flex items-center gap-2 mb-3" style={{ color: "#f97316" }}>
-            <AlertTriangle size={18} />
-            <h2 className="font-semibold">Bloqueios e espera de input</h2>
+      {(blockedOrWaiting.length > 0 || tasks.some(isSlaBreached) || tasks.some(isStale)) && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="rounded-2xl border p-4" style={{ borderColor: "rgba(249,115,22,0.35)", background: "rgba(249,115,22,0.08)" }}>
+            <div className="flex items-center gap-2 mb-3" style={{ color: "#f97316" }}>
+              <AlertTriangle size={18} />
+              <h2 className="font-semibold">Bloqueios e espera de input</h2>
+            </div>
+            <div className="space-y-2">
+              {blockedOrWaiting.slice(0, 5).map((task) => (
+                <div key={task.taskId} className="text-sm" style={{ color: "var(--text-primary)" }}>
+                  <strong>{task.title}</strong> · {task.targetAgent} · {task.blockingReason || "Sem motivo registrado"}
+                </div>
+              ))}
+              {blockedOrWaiting.length === 0 && <div className="text-sm" style={{ color: "var(--text-secondary)" }}>Nenhum bloqueio ativo.</div>}
+            </div>
           </div>
-          <div className="space-y-2">
-            {blockedOrWaiting.slice(0, 5).map((task) => (
-              <div key={task.taskId} className="text-sm" style={{ color: "var(--text-primary)" }}>
-                <strong>{task.title}</strong> · {task.targetAgent} · {task.blockingReason || "Sem motivo registrado"}
-              </div>
-            ))}
+
+          <div className="rounded-2xl border p-4" style={{ borderColor: "rgba(239,68,68,0.35)", background: "rgba(239,68,68,0.08)" }}>
+            <div className="flex items-center gap-2 mb-3" style={{ color: "#ef4444" }}>
+              <XCircle size={18} />
+              <h2 className="font-semibold">SLA vencido</h2>
+            </div>
+            <div className="space-y-2">
+              {tasks.filter(isSlaBreached).slice(0, 5).map((task) => (
+                <div key={task.taskId} className="text-sm" style={{ color: "var(--text-primary)" }}>
+                  <strong>{task.title}</strong> · {task.targetAgent}
+                </div>
+              ))}
+              {tasks.filter(isSlaBreached).length === 0 && <div className="text-sm" style={{ color: "var(--text-secondary)" }}>Nenhuma tarefa com SLA estourado.</div>}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border p-4" style={{ borderColor: "rgba(245,158,11,0.35)", background: "rgba(245,158,11,0.08)" }}>
+            <div className="flex items-center gap-2 mb-3" style={{ color: "#f59e0b" }}>
+              <PauseCircle size={18} />
+              <h2 className="font-semibold">Tarefas paradas</h2>
+            </div>
+            <div className="space-y-2">
+              {tasks.filter(isStale).slice(0, 5).map((task) => (
+                <div key={task.taskId} className="text-sm" style={{ color: "var(--text-primary)" }}>
+                  <strong>{task.title}</strong> · {task.targetAgent}
+                </div>
+              ))}
+              {tasks.filter(isStale).length === 0 && <div className="text-sm" style={{ color: "var(--text-secondary)" }}>Nenhuma tarefa parada além da janela.</div>}
+            </div>
           </div>
         </div>
       )}
@@ -136,12 +185,14 @@ export default function TasksPage() {
                 <Link key={task.taskId} href={`/tasks/${task.taskId}`} className="block p-4 hover:bg-white/5 transition-colors">
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full" style={{ background: `${meta.color}1A`, color: meta.color }}>
                           <Icon size={14} /> {meta.label}
                         </span>
                         <span className="text-xs uppercase" style={{ color: "var(--text-secondary)" }}>{task.executionType}</span>
                         <span className="text-xs uppercase" style={{ color: "var(--text-secondary)" }}>risco {task.riskLevel}</span>
+                        {isSlaBreached(task) && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>SLA vencido</span>}
+                        {isStale(task) && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b' }}>Parada</span>}
                       </div>
                       <div className="font-semibold" style={{ color: "var(--text-primary)" }}>{task.title}</div>
                       <div className="text-sm" style={{ color: "var(--text-secondary)" }}>{task.objective}</div>
