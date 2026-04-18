@@ -19,7 +19,7 @@ MAX_BODY = 500
 
 CATEGORY_HINTS = {
     "decision": ["decisão", "decid", "aprovado", "definido", "fica definido", "regra", "diretriz", "principio", "princípio", "padrão"],
-    "pending": ["pendência", "pendente", "falta", "aguard", "precisa", "bloque", "prazo", "waiting_input"],
+    "pending": ["pendência", "pendente", "falta", "aguard", "precisa", "bloque", "prazo", "waiting_input", "sem resposta", "sem retorno", "risco", "travado"],
     "lesson": ["lição", "aprend", "erro", "não repetir", "falha", "correção", "insight"],
     "project": ["obra", "projeto", "cliente", "cronograma", "ccsp", "pcs", "mia", "mensura", "publicação", "publicacao"],
 }
@@ -81,11 +81,21 @@ def summarize(payload: dict) -> str:
     body = re.sub(r"\s+", " ", body)
     if len(body) > MAX_BODY:
         body = body[: MAX_BODY - 3].rstrip() + "..."
+    meta = payload.get("meta") or {}
+    confidence = "observado" if str(payload.get("source") or "") not in {"manual", "unknown"} else "registrado"
     bits = [f"- [{payload.get('day', '?')}] {title}"]
     if body:
         bits.append(f"  {body}")
+    if meta:
+        meta_items = []
+        for key in ["taskId", "agentId", "status", "owner", "nextStep", "sourceType"]:
+            value = meta.get(key)
+            if value:
+                meta_items.append(f"{key}={value}")
+        if meta_items:
+            bits.append(f"  Contexto: {' | '.join(meta_items)}")
     bits.append(
-        f"  Fonte: agente={payload.get('agent','?')} | tipo={payload.get('type','?')} | origem={payload.get('source','?')}"
+        f"  Fonte: agente={payload.get('agent','?')} | tipo={payload.get('type','?')} | origem={payload.get('source','?')} | confiança={confidence}"
     )
     return "\n".join(bits)
 
