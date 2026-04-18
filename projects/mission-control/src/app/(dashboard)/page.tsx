@@ -152,7 +152,7 @@ export default function DashboardPage() {
   const [companies, setCompanies] = useState<CompanySummary[]>([]);
   const [executive, setExecutive] = useState<ExecutiveMemorySummary>({ pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
   const [attention, setAttention] = useState<ExecutiveAttentionItem[]>([]);
-  const [taskAttention, setTaskAttention] = useState<{ slaBreached: TaskAttentionItem[]; stale: TaskAttentionItem[]; blocked: TaskAttentionItem[]; unvalidated: TaskAttentionItem[] }>({ slaBreached: [], stale: [], blocked: [], unvalidated: [] });
+  const [taskAttention, setTaskAttention] = useState<{ slaBreached: TaskAttentionItem[]; stale: TaskAttentionItem[]; blocked: TaskAttentionItem[]; unvalidated: TaskAttentionItem[]; orphaned: TaskAttentionItem[] }>({ slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [] });
 
   const rankedCompanies = [...companies].sort((a, b) => getCompanyAttentionScore(b) - getCompanyAttentionScore(a));
   const topCompany = rankedCompanies[0];
@@ -177,7 +177,7 @@ export default function DashboardPage() {
       setCompanies(agentsData.companies || []);
       setExecutive(agentsData.executive || { pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
       setAttention(agentsData.attention || []);
-      setTaskAttention(taskAttentionData || { slaBreached: [], stale: [], blocked: [], unvalidated: [] });
+      setTaskAttention(taskAttentionData || { slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [] });
     }).catch(console.error);
   }, []);
 
@@ -407,7 +407,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {(taskAttention.slaBreached.length > 0 || taskAttention.stale.length > 0 || taskAttention.blocked.length > 0 || taskAttention.unvalidated.length > 0) && (
+      {(taskAttention.slaBreached.length > 0 || taskAttention.stale.length > 0 || taskAttention.blocked.length > 0 || taskAttention.unvalidated.length > 0 || taskAttention.orphaned.length > 0) && (
         <div className="mb-6 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: '1px solid #f59e0b40' }}>
           <div className="flex items-center justify-between gap-3 mb-4">
             <div>
@@ -416,12 +416,13 @@ export default function DashboardPage() {
             </div>
             <Link href="/tasks" className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Abrir tasks →</Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {[
               { label: 'SLA vencido', items: taskAttention.slaBreached, color: '#ef4444' },
               { label: 'Paradas', items: taskAttention.stale, color: '#f59e0b' },
               { label: 'Bloqueadas', items: taskAttention.blocked, color: '#f97316' },
               { label: 'Sem validação', items: taskAttention.unvalidated, color: '#a855f7' },
+              { label: 'Órfãs', items: taskAttention.orphaned, color: '#dc2626' },
             ].map((group) => (
               <div key={group.label} className="rounded-lg p-4" style={{ backgroundColor: `${group.color}10`, border: `1px solid ${group.color}30` }}>
                 <div className="text-xs font-semibold mb-3" style={{ color: group.color }}>{group.label}</div>

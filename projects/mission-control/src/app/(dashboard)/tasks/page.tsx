@@ -39,6 +39,7 @@ interface TaskMetrics {
   failed: number;
   slaBreached: number;
   stale: number;
+  orphaned: number;
 }
 
 function statusMeta(status: TaskStatus) {
@@ -76,14 +77,14 @@ function isStale(task: TaskExecution) {
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<TaskExecution[]>([]);
-  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 });
+  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0 });
 
   useEffect(() => {
     fetch("/api/tasks")
       .then((r) => r.json())
       .then((data) => {
         setTasks(data.tasks || []);
-        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 });
+        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0 });
       })
       .catch(console.error);
   }, []);
@@ -102,7 +103,7 @@ export default function TasksPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
         {[
           ["Total", metrics.total],
           ["Abertas", metrics.open],
@@ -110,6 +111,7 @@ export default function TasksPage() {
           ["SLA vencido", metrics.slaBreached],
           ["Paradas", metrics.stale],
           ["Validadas", metrics.validated],
+          ["Órfãs", metrics.orphaned],
           ["Falhas", metrics.failed],
         ].map(([label, value]) => (
           <div key={String(label)} className="rounded-2xl border p-4" style={{ borderColor: "var(--border-subtle)", background: "var(--surface-elevated)" }}>
@@ -193,6 +195,7 @@ export default function TasksPage() {
                         <span className="text-xs uppercase" style={{ color: "var(--text-secondary)" }}>risco {task.riskLevel}</span>
                         {isSlaBreached(task) && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>SLA vencido</span>}
                         {isStale(task) && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b' }}>Parada</span>}
+                        {task.blockingReason?.includes('Sessão não encontrada na reconciliação') && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>Órfã</span>}
                       </div>
                       <div className="font-semibold" style={{ color: "var(--text-primary)" }}>{task.title}</div>
                       <div className="text-sm" style={{ color: "var(--text-secondary)" }}>{task.objective}</div>

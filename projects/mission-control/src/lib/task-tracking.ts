@@ -72,6 +72,8 @@ export type TaskEventType =
   | 'cancelled'
   | 'sla_breached'
   | 'stale_detected'
+  | 'orphan_detected'
+  | 'session_observed'
   | 'note';
 
 export interface TaskEvent {
@@ -371,6 +373,51 @@ export function delegateTaskExecution(input: {
   return child;
 }
 
+export function reconcileTasksWithSessions(sessionKeys: string[]) {
+  const tasks = listTaskExecutions();
+  const sessionSet = new Set(sessionKeys);
+  const now = new Date();
+  const updates: TaskExecution[] = [];
+
+  for (const task of tasks) {
+    if (!isTaskOpen(task)) continue;
+
+    const observedSession = task.childSessionKey || task.sessionKey;
+    if (!observedSession) continue;
+
+    if (sessionSet.has(observedSession)) {
+      appendTaskEvent({
+        taskId: task.taskId,
+        agentId: task.targetAgent,
+        type: 'session_observed',
+        message: 'Sessão observada como ativa na reconciliação',
+        payload: { sessionKey: observedSession },
+      });
+      updates.push(updateTaskExecution(task.taskId, { metadata: { ...(task.metadata || {}), lastObservedSessionAt: now.toISOString() } }));
+      continue;
+    }
+
+    const ageMinutes = (now.getTime() - new Date(task.updatedAt).getTime()) / 60000;
+    if (ageMinutes >= Math.max(task.staleAfterMinutes ?? 30, 15)) {
+      const nextStatus = task.status === 'queued' ? 'blocked' : task.status;
+      updates.push(updateTaskExecution(task.taskId, {
+        status: nextStatus,
+        blockingReason: `Sessão não encontrada na reconciliação (${observedSession})`,
+        metadata: { ...(task.metadata || {}), orphaned: true, orphanedAt: now.toISOString() },
+      }));
+      appendTaskEvent({
+        taskId: task.taskId,
+        agentId: task.targetAgent,
+        type: 'orphan_detected',
+        message: `Task órfã detectada: sessão ${observedSession} não encontrada`,
+        payload: { sessionKey: observedSession },
+      });
+    }
+  }
+
+  return updates;
+}
+
 export function getTaskAttention() {
   const tasks = listTaskExecutions();
   const now = new Date();
@@ -380,6 +427,7 @@ export function getTaskAttention() {
     stale: tasks.filter((task) => isTaskStale(task, now)).slice(0, 10),
     blocked: tasks.filter((task) => task.status === 'blocked' || task.status === 'waiting_input').slice(0, 10),
     unvalidated: tasks.filter((task) => task.status === 'completed_unvalidated').slice(0, 10),
+    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned)).slice(0, 10),
   };
 }
 
@@ -390,7 +438,7 @@ export function getTaskMetrics() {
 
   for (const task of tasks) {
     if (!byAgent[task.targetAgent]) {
-      byAgent[task.targetAgent] = { open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0 };
+      byAgent[task.targetAgent] = { open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0 } as any;
     }
     if (isTaskOpen(task)) byAgent[task.targetAgent].open += 1;
     if (task.status === 'blocked' || task.status === 'waiting_input') byAgent[task.targetAgent].blocked += 1;
@@ -398,6 +446,7 @@ export function getTaskMetrics() {
     if (task.status === 'failed') byAgent[task.targetAgent].failed += 1;
     if (isTaskSlaBreached(task, now)) byAgent[task.targetAgent].slaBreached += 1;
     if (isTaskStale(task, now)) byAgent[task.targetAgent].stale += 1;
+    if (task.metadata?.orphaned) (byAgent[task.targetAgent] as any).orphaned += 1;
   }
 
   return {
@@ -408,6 +457,7 @@ export function getTaskMetrics() {
     failed: tasks.filter((task) => task.status === 'failed').length,
     slaBreached: tasks.filter((task) => isTaskSlaBreached(task, now)).length,
     stale: tasks.filter((task) => isTaskStale(task, now)).length,
+    orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned)).length,
     byAgent,
   };
 }
