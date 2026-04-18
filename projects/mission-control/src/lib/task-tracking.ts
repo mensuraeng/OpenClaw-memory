@@ -382,13 +382,28 @@ export async function reconcileTaskEvidence() {
       const parsed = lines.map((line) => {
         try { return JSON.parse(line); } catch { return null; }
       }).filter(Boolean) as Array<Record<string, unknown>>;
-      const hasAssistantText = parsed.some((msg) => msg.role === 'assistant' && JSON.stringify(msg.content || '').length > 20);
-      if (hasAssistantText) {
-        completeTaskExecution(task.taskId, 'system', 'Fechada por evidência mínima de transcript da sessão');
-        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'auto_closed', message: 'Task fechada por evidência mínima do transcript' });
-        results.push({ taskId: task.taskId, status: 'validated', detail: 'Transcript contém resposta do assistant' });
+      const assistantTexts = parsed
+        .filter((msg) => msg.role === 'assistant')
+        .map((msg) => {
+          const content = msg.content;
+          if (typeof content === 'string') return content.trim();
+          if (Array.isArray(content)) {
+            return content
+              .filter((part) => part && typeof part === 'object' && (part as Record<string, unknown>).type === 'text')
+              .map((part) => String((part as Record<string, unknown>).text || ''))
+              .join(' ')
+              .trim();
+          }
+          return '';
+        })
+        .filter(Boolean);
+      const usefulResponse = assistantTexts.find((text) => text.length >= 40 && text !== 'NO_REPLY' && text !== 'HEARTBEAT_OK');
+      if (usefulResponse) {
+        completeTaskExecution(task.taskId, 'system', 'Fechada por evidência útil de transcript da sessão');
+        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'auto_closed', message: 'Task fechada por evidência útil do transcript' });
+        results.push({ taskId: task.taskId, status: 'validated', detail: 'Transcript contém resposta útil do assistant' });
       } else {
-        results.push({ taskId: task.taskId, status: 'pending', detail: 'Ainda sem evidência mínima de resposta' });
+        results.push({ taskId: task.taskId, status: 'pending', detail: 'Ainda sem evidência útil de resposta' });
       }
     } catch (error) {
       results.push({ taskId: task.taskId, status: 'pending', detail: String(error) });

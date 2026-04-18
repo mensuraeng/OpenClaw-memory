@@ -1,28 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { createTaskExecution, executeRetryQueue, getTaskMetrics, listTaskExecutions, reconcileTaskEvidence, reconcileTasksWithSessions } from '@/lib/task-tracking';
-
-const execAsync = promisify(exec);
+import { createTaskExecution, getTaskMetrics, listTaskExecutions } from '@/lib/task-tracking';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const agent = searchParams.get('agent');
-
-    try {
-      const { stdout } = await execAsync('openclaw sessions list --json 2>/dev/null', { timeout: 10000 });
-      const parsed = JSON.parse(stdout || '[]');
-      const sessions = Array.isArray(parsed) ? parsed : (parsed.sessions || []);
-      const sessionKeys = sessions
-        .map((session: any) => session.sessionKey || session.key)
-        .filter(Boolean);
-      reconcileTasksWithSessions(sessionKeys);
-      await reconcileTaskEvidence();
-    } catch (error) {
-      console.warn('Task reconciliation skipped:', error);
-    }
 
     let tasks = listTaskExecutions();
     if (status && status !== 'all') {
