@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, UTC
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +41,30 @@ def count_events(path: Path) -> int:
     return total
 
 
+def run_promotion(day: str) -> dict:
+    script = ROOT / "scripts" / "promote_institutional_memory.py"
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script), day],
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+    except subprocess.TimeoutExpired:
+        return {"status": "timeout"}
+
+    output = (result.stdout or "").strip().splitlines()
+    payload = output[-1] if output else "{}"
+    try:
+        data = json.loads(payload)
+    except json.JSONDecodeError:
+        data = {"status": "invalid", "raw": payload}
+    data["returncode"] = result.returncode
+    if result.stderr:
+        data["stderr"] = result.stderr.strip()[:500]
+    return data
+
+
 def consolidate_for_day(day: str) -> int:
     day_dir = INBOX / day
     if not day_dir.exists():
@@ -74,6 +99,8 @@ def consolidate_for_day(day: str) -> int:
         rows.append(f"- {agent}: eventos={events_count}, notas={'sim' if notes else 'não'}, resumo={summary_path.name}")
 
     master_summary = out_dir / "summary.md"
+    promotion = run_promotion(day)
+
     payload = [
         f"# Consolidação noturna — {day}",
         "",
@@ -83,12 +110,18 @@ def consolidate_for_day(day: str) -> int:
         "",
         *rows,
         "",
+        "## Promoção institucional",
+        "",
+        f"- status: {promotion.get('status', 'desconhecido')}",
+        f"- promovido: {json.dumps(promotion.get('promoted', {}), ensure_ascii=False)}",
+        f"- contagem classificada: {json.dumps(promotion.get('counts', {}), ensure_ascii=False)}",
+        "",
         "## Próximo passo",
         "",
-        "Revisar os resumos por agente e promover decisões, lições, pendências e contexto de projeto para a memória institucional compartilhada.",
+        "Revisar exceções, ajustar classificações ruins e consolidar apenas o que merecer permanência institucional.",
     ]
     master_summary.write_text("\n".join(payload).rstrip() + "\n", encoding="utf-8")
-    print(json.dumps({"day": day, "processed_agents": len(AGENTS), "agents_with_material": promoted, "summary": str(master_summary)}))
+    print(json.dumps({"day": day, "processed_agents": len(AGENTS), "agents_with_material": promoted, "summary": str(master_summary), "promotion": promotion}, ensure_ascii=False))
     return 0
 
 
