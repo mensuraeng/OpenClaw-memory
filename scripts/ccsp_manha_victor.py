@@ -2,6 +2,7 @@
 """
 CCSP Casa 7 — Mensagem matinal para Victor Evangelista
 Roda seg-sex às 8h BRT (11h UTC).
+Exceção operacional desta semana: primeira cobrança no sábado às 10h BRT.
 
 Pós-FASE 5:
 1. Telegram para o Alê → REMOVIDO. Vira payload entregue à Flávia
@@ -27,6 +28,9 @@ BRT = timezone(timedelta(hours=-3))
 hoje = datetime.now(BRT)
 dia_semana = hoje.weekday()  # 0=seg, 4=sex
 dia_str = hoje.strftime("%d/%m/%Y")
+
+SATURDAY_ONE_OFF_DATE = "2026-04-18"
+SATURDAY_ONE_OFF_HOUR = 10
 
 EMAIL_TO = "victor.evangelista@miaengenharia.com.br"
 EMAIL_CC = ["alexandre@miaengenharia.com.br", "andre@miaengenharia.com.br"]
@@ -338,6 +342,15 @@ def enviar_email_pre_autorizado(corpo: str, subject: str, dry_run: bool) -> int:
     return r.returncode
 
 
+def dentro_da_janela_permitida() -> bool:
+    hoje_iso = hoje.strftime("%Y-%m-%d")
+    if dia_semana <= 4:
+        return True
+    if hoje_iso == SATURDAY_ONE_OFF_DATE and hoje.hour >= SATURDAY_ONE_OFF_HOUR:
+        return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true",
@@ -345,6 +358,10 @@ def main() -> int:
     parser.add_argument("--skip-email", action="store_true",
                         help="Só envia payload para Flávia; não tenta email")
     args = parser.parse_args()
+
+    if not dentro_da_janela_permitida():
+        print("Fora da janela permitida para envio desta rotina.", file=sys.stderr)
+        return 0
 
     msg_markdown = gerar_mensagem()
 
