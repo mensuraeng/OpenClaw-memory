@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { createTaskExecution, executeRetryQueue, getTaskMetrics, listTaskExecutions, reconcileTasksWithSessions } from '@/lib/task-tracking';
+import { createTaskExecution, executeRetryQueue, getTaskMetrics, listTaskExecutions, reconcileTaskEvidence, reconcileTasksWithSessions } from '@/lib/task-tracking';
 
 const execAsync = promisify(exec);
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
         .map((session: any) => session.sessionKey || session.key)
         .filter(Boolean);
       reconcileTasksWithSessions(sessionKeys);
-      await executeRetryQueue();
+      await reconcileTaskEvidence();
     } catch (error) {
       console.warn('Task reconciliation skipped:', error);
     }

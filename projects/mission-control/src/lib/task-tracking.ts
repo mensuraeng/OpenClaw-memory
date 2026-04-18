@@ -5,10 +5,11 @@ import { promisify } from 'util';
 import { randomUUID } from 'crypto';
 
 const execAsync = promisify(exec);
-
 const TASKS_DIR = path.join(process.cwd(), 'runtime', 'tasks');
 const EXECUTIONS_PATH = path.join(TASKS_DIR, 'task-executions.jsonl');
 const EVENTS_PATH = path.join(TASKS_DIR, 'task-events.jsonl');
+const RETRY_RUNNER_LOCK = path.join(TASKS_DIR, 'retry-runner.lock');
+
 
 export type TaskExecutionStatus =
   | 'queued'
@@ -309,28 +310,88 @@ export function retryTaskExecution(taskId: string, agentId: string, reason: stri
 }
 
 export async function executeRetryQueue() {
-  const tasks = listTaskExecutions().filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason) && typeof task.metadata?.jobMessage === 'string');
-  const results: Array<{ taskId: string; status: 'restarted' | 'skipped' | 'failed'; detail: string }> = [];
+  ensureStore();
+  try {
+    const lockFd = fs.openSync(RETRY_RUNNER_LOCK, 'wx');
+    fs.writeFileSync(lockFd, String(Date.now()));
+    fs.closeSync(lockFd);
+  } catch {
+    return [];
+  }
 
-  for (const task of tasks) {
-    const policy = getRetryPolicy(task);
-    if (!policy.allowAutoRetry) {
-      results.push({ taskId: task.taskId, status: 'skipped', detail: 'Política não permite retry automático' });
+  try {
+    const tasks = listTaskExecutions().filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason) && typeof task.metadata?.jobMessage === 'string');
+    const results: Array<{ taskId: string; status: 'restarted' | 'skipped' | 'failed'; detail: string }> = [];
+
+    for (const task of tasks) {
+      const policy = getRetryPolicy(task);
+      if (!policy.allowAutoRetry) {
+        results.push({ taskId: task.taskId, status: 'skipped', detail: 'Política não permite retry automático' });
+        continue;
+      }
+
+      try {
+        const sessionKey = `retry:${task.taskId}:attempt-${task.attempt}`;
+        const agentId = task.targetAgent;
+        const message = String(task.metadata?.jobMessage || task.objective);
+        startTaskExecution(task.taskId, 'system');
+        attachSessionToTask(task.taskId, { sessionKey, childSessionKey: sessionKey }, 'system');
+        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'retry_started', message: `Retry real disparado para ${agentId}` });
+        exec(`OPENCLAW_SESSION_KEY='${sessionKey}' openclaw agent --agent '${agentId}' -m ${JSON.stringify(message)} >/tmp/mc-retry-${task.taskId}.log 2>&1 &`);
+        results.push({ taskId: task.taskId, status: 'restarted', detail: `Retry real disparado para ${agentId}` });
+      } catch (error) {
+        failTaskExecution(task.taskId, 'system', `Falha ao disparar retry real: ${String(error)}`);
+        results.push({ taskId: task.taskId, status: 'failed', detail: String(error) });
+      }
+    }
+
+    return results;
+  } finally {
+    try { fs.unlinkSync(RETRY_RUNNER_LOCK); } catch {}
+  }
+}
+
+export async function reconcileTaskEvidence() {
+  const openTasks = listTaskExecutions().filter((task) => isTaskOpen(task) && typeof (task.childSessionKey || task.sessionKey) === 'string');
+  const results: Array<{ taskId: string; status: 'validated' | 'not_found' | 'pending'; detail: string }> = [];
+
+  for (const task of openTasks) {
+    const sessionKey = String(task.childSessionKey || task.sessionKey || '');
+    const sessionId = sessionKey.split(':').pop();
+    if (!sessionId) {
+      results.push({ taskId: task.taskId, status: 'not_found', detail: 'sessionId ausente' });
       continue;
     }
 
     try {
-      const sessionKey = `retry:${task.taskId}:attempt-${task.attempt}`;
       const agentId = task.targetAgent;
-      const message = String(task.metadata?.jobMessage || task.objective);
-      startTaskExecution(task.taskId, 'system');
-      attachSessionToTask(task.taskId, { sessionKey, childSessionKey: sessionKey }, 'system');
-      appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'retry_started', message: `Retry real disparado para ${agentId}` });
-      exec(`OPENCLAW_SESSION_KEY='${sessionKey}' openclaw agent --agent '${agentId}' -m ${JSON.stringify(message)} >/tmp/mc-retry-${task.taskId}.log 2>&1 &`);
-      results.push({ taskId: task.taskId, status: 'restarted', detail: `Retry real disparado para ${agentId}` });
+      const sessionsDir = path.join(process.env.OPENCLAW_DIR || '/root/.openclaw', 'agents', agentId, 'sessions');
+      const filePath = path.join(sessionsDir, `${sessionId}.jsonl`);
+      if (!fs.existsSync(filePath)) {
+        results.push({ taskId: task.taskId, status: 'not_found', detail: `Sessão ${sessionId} não encontrada` });
+        continue;
+      }
+
+      const content = fs.readFileSync(filePath, 'utf-8').trim();
+      if (!content) {
+        results.push({ taskId: task.taskId, status: 'pending', detail: 'Sessão ainda sem conteúdo' });
+        continue;
+      }
+
+      const lines = content.split('\n').filter(Boolean);
+      const parsed = lines.map((line) => {
+        try { return JSON.parse(line); } catch { return null; }
+      }).filter(Boolean) as Array<Record<string, unknown>>;
+      const hasAssistantText = parsed.some((msg) => msg.role === 'assistant' && JSON.stringify(msg.content || '').length > 20);
+      if (hasAssistantText) {
+        completeTaskExecution(task.taskId, 'system', 'Fechada por evidência mínima de transcript da sessão');
+        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'auto_closed', message: 'Task fechada por evidência mínima do transcript' });
+        results.push({ taskId: task.taskId, status: 'validated', detail: 'Transcript contém resposta do assistant' });
+      } else {
+        results.push({ taskId: task.taskId, status: 'pending', detail: 'Ainda sem evidência mínima de resposta' });
+      }
     } catch (error) {
-      failTaskExecution(task.taskId, 'system', `Falha ao disparar retry real: ${String(error)}`);
-      results.push({ taskId: task.taskId, status: 'failed', detail: String(error) });
+      results.push({ taskId: task.taskId, status: 'pending', detail: String(error) });
     }
   }
 
