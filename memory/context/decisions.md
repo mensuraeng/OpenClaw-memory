@@ -6,6 +6,9 @@ _Atualizado em 2026-04-13_
 
 ## Operação
 
+### Princípio de padrão 10/10 para tudo que importa (2026-04-18)
+Como princípio permanente, tudo que a Flávia estruturar, operar, entregar, automatizar ou institucionalizar deve buscar patamar 10/10. Não aceitar solução morna, meia-boca ou "boa o bastante" como padrão final. Quando algo estiver abaixo disso, tratar como estágio transitório com plano explícito para elevar o nível.
+
 ### Ações externas sempre exigem confirmação (2026-04-01)
 Enviar email, mensagem, post em rede social, apagar arquivo, alterar configuração crítica ou agir fora do ambiente controlado exige confirmação do Alê.
 
