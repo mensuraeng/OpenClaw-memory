@@ -1,6 +1,6 @@
 # MEMORY.md — Painel de Continuidade da Flávia
 
-_Última atualização: 2026-04-16_
+_Última atualização: 2026-04-17_
 
 ## O que este arquivo é
 
@@ -31,6 +31,7 @@ Serve para responder rápido:
 - Instagram App ID + Secret
 - Confirmar SSH key antes de hardening
 - Revalidar cadeia real de fallback de modelos além do microteste de agentes
+- Corrigir o roteamento do domínio de relatórios da MIA para servir páginas estáticas extras sem cair no fallback da SPA principal
 - Revisar falha histórica de calendário da conta Mensura e confirmar saneamento definitivo
 - Aguardar aprovação do app institucional do LinkedIn para páginas
 
@@ -46,6 +47,7 @@ Serve para responder rápido:
 ### Riscos ou atenção
 - `memory_search()` voltou a responder neste ciclo, mas precisa seguir observada após mudanças de auth/quota para evitar regressão silenciosa
 - A cadeia de fallback alternativa ainda não está comprovada além dos microtestes de runtime dos agentes
+- O site `mia-ccsp-casa-7.pages.dev` já serve o checklist estático correto, mas o domínio `relatorios.miaengenharia.com.br` ainda pode devolver a SPA principal por causa do Worker/roteador
 - Parte do contexto de longo prazo existe, mas ainda precisa de consolidação contínua por tema
 - Há risco de espalhamento de contexto em notas diárias se não houver promoção periódica para arquivos temáticos
 - Custo real das últimas 24h e 7d ainda está muito acima da meta e foi dominado por `gpt-5.4` antes da troca de política

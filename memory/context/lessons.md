@@ -2,7 +2,7 @@
 
 > Erros recorrentes, armadilhas e padrões úteis da operação.
 
-_Atualizado em 2026-04-13_
+_Atualizado em 2026-04-17_
 
 ## Permanentes
 
@@ -56,6 +56,24 @@ Quando houver dúvida sobre quais agentes realmente existem e operam no desenho 
 
 ### Segundo cérebro só funciona se inbox e consolidação forem separados (2026-04-14)
 Se o mesmo espaço tentar ser captura bruta e memória final ao mesmo tempo, o sistema vira acúmulo desorganizado. A arquitetura precisa separar claramente o que entra rápido durante o dia do que é consolidado à noite como memória institucional de longo prazo.
+
+### Relatório publicado precisa ser corrigido na fonte, não no artefato gerado (2026-04-17)
+Quando um site estático for publicado por build, correções em `dist/` ou no HTML servido localmente não bastam. O ajuste precisa ir no arquivo-fonte versionado, depois `build`, `commit`, `push` e checagem do domínio público.
+
+### Atualização de relatório executivo exige substituir bloco antigo, não empilhar seção nova (2026-04-17)
+Se uma deliberação nova substitui a leitura anterior, o correto é remover a seção velha e promover a nova para o lugar dela. Criar uma seção extra com a versão atualizada gera duplicidade, confusão visual e leitura errada do cliente.
+
+### Deliberação validada em ata deve entrar com status final, não como pendência herdada (2026-04-17)
+Quando a ata já fecha um item como definido ou concluído, o relatório e as cobranças futuras precisam refletir esse status final. Não carregar automaticamente a redação antiga de urgência ou pendência para a próxima versão.
+
+### Rotina datada precisa ser validada pela data-alvo, não pelo dia corrente (2026-04-17)
+Em scripts de cobrança ou alinhamento diário, um `dry-run` no dia atual só prova o bloco daquela data. Para validar mensagens futuras, a rotina precisa aceitar data-alvo explícita ou outro mecanismo equivalente; senão a validação fica enganosa.
+
+### Publicação só conta quando o domínio público reflete a revisão pedida (2026-04-17)
+`Build ok` e `push ok` não bastam para declarar entrega publicada. É obrigatório checar o bundle/título/conteúdo no domínio público e separar claramente: repositório atualizado, deploy em propagação e site efetivamente servido.
+
+### Pages direto e domínio roteado podem divergir mesmo com status 200 (2026-04-17)
+Quando houver Worker ou roteador na frente de um site estático, validar separadamente o `*.pages.dev` e o domínio customizado. Um `200` no domínio final não prova que o conteúdo certo está sendo servido; o roteador pode estar devolvendo o fallback da SPA principal.
 
 ## Temporárias
 

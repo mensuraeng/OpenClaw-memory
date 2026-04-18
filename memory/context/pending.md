@@ -2,13 +2,14 @@
 
 > Itens aguardando input, acesso, decisão ou saneamento operacional.
 
-_Atualizado em 2026-04-16_
+_Atualizado em 2026-04-17_
 
 ## Críticas
 
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
 - [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
+- [ ] **Corrigir roteamento do domínio de relatórios MIA** — `relatorios.miaengenharia.com.br/ccsp-casa-7/*` ainda cai no fallback da SPA principal em vez de servir páginas estáticas extras como o checklist.
 
 ## Aguardando Alê
 
@@ -29,6 +30,7 @@ _Atualizado em 2026-04-16_
 - [ ] **Definir política de consolidação noturna** — critérios de promoção, deduplicação, vínculo entre itens relacionados e descarte de ruído.
 - [ ] **Padronizar catálogo de skills do ecossistema** — inventário oficial, classificação compartilhada vs específica e convenção para futuras instalações.
 - [ ] **Corrigir warnings estruturais do Mission Control** — migrar `middleware` para `proxy` e mover `themeColor` para `viewport` nas rotas afetadas.
+- [ ] **Incorporar checklist cliente na página principal da Casa 7** — manter como próximo passo depois de estabilizar a rota/domínio do checklist.
 
 ## Aguardando terceiros
 
