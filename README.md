@@ -33,6 +33,8 @@ Memória operacional distribuída para times de agentes usando GitHub como memó
 - `scripts/nightly_consolidate.py` → consolidação noturna + promoção institucional
 - `scripts/promote_institutional_memory.py` → classificação e promoção institucional
 - `scripts/executive_memory_query.py` → consulta executiva inicial sobre a memória institucional
+- `scripts/executive_memory_brief.py` → briefing executivo textual da memória institucional
+- `scripts/import_mission_control_events.py` → importa eventos relevantes do Mission Control para o second brain
 
 ## Status
 

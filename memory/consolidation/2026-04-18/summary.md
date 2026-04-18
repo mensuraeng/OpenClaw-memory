@@ -1,10 +1,10 @@
 # Consolidação noturna — 2026-04-18
 
-Gerado em 2026-04-18 14:32 UTC.
+Gerado em 2026-04-18 14:36 UTC.
 
 ## Agentes processados
 
-- main: eventos=1, notas=sim, resumo=main-summary.md
+- main: eventos=2, notas=sim, resumo=main-summary.md
 - mensura: eventos=0, notas=não, resumo=mensura-summary.md
 - mia: eventos=0, notas=não, resumo=mia-summary.md
 - pcs: eventos=0, notas=não, resumo=pcs-summary.md
@@ -13,8 +13,8 @@ Gerado em 2026-04-18 14:32 UTC.
 ## Promoção institucional
 
 - status: ok
-- promovido: {"project": 1}
-- contagem classificada: {"project": 1}
+- promovido: {"decision": 1}
+- contagem classificada: {"decision": 2}
 
 ## Próximo passo
 

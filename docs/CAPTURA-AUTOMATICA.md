@@ -10,7 +10,7 @@ O MVP grava em dois destinos por agente:
 - `notes.md` para leitura humana rápida
 - `events.jsonl` para estrutura e processamento futuro
 
-## Script
+## Script base
 
 ```bash
 python3 scripts/capture_event.py \
@@ -21,6 +21,28 @@ python3 scripts/capture_event.py \
   --source cron \
   --meta '{"job":"cobranca-rdo"}'
 ```
+
+## Captura automática de alto sinal
+
+```bash
+python3 scripts/capture_openclaw_event.py \
+  --agent main \
+  --event-type decision_made \
+  --title "Regra operacional formalizada" \
+  --body "A operação passa a seguir patamar 10/10 como princípio." \
+  --source telegram \
+  --meta '{"priority":"high"}'
+```
+
+Eventos de baixo sinal são ignorados por padrão.
+
+## Importação de eventos do Mission Control
+
+```bash
+python3 scripts/import_mission_control_events.py
+```
+
+Esse importador transforma eventos relevantes do runtime do Mission Control em memória institucional futura.
 
 ## Tipos sugeridos
 

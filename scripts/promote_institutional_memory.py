@@ -18,10 +18,10 @@ AGENTS = ["main", "mensura", "mia", "pcs", "finance"]
 MAX_BODY = 500
 
 CATEGORY_HINTS = {
-    "decision": ["decisão", "decid", "aprovado", "definido", "fica definido", "regra", "diretriz"],
-    "pending": ["pendência", "pendente", "falta", "aguard", "precisa", "bloque", "prazo"],
+    "decision": ["decisão", "decid", "aprovado", "definido", "fica definido", "regra", "diretriz", "principio", "princípio", "padrão"],
+    "pending": ["pendência", "pendente", "falta", "aguard", "precisa", "bloque", "prazo", "waiting_input"],
     "lesson": ["lição", "aprend", "erro", "não repetir", "falha", "correção", "insight"],
-    "project": ["obra", "projeto", "cliente", "cronograma", "ccsp", "pcs", "mia", "mensura"],
+    "project": ["obra", "projeto", "cliente", "cronograma", "ccsp", "pcs", "mia", "mensura", "publicação", "publicacao"],
 }
 CATEGORY_FILES = {
     "decision": "decisions.md",
@@ -55,9 +55,20 @@ def normalize(text: str) -> str:
 
 
 def classify(payload: dict) -> str:
-    hay = " ".join(
-        str(payload.get(k, "")) for k in ("type", "title", "body")
-    ).lower()
+    event_type = str(payload.get("type") or "").lower()
+    title = str(payload.get("title") or "").lower()
+    body = str(payload.get("body") or "").lower()
+    hay = f"{event_type} {title} {body}"
+
+    if event_type in {"decision", "decision_made"}:
+        return "decision"
+    if event_type in {"pending", "task_failed", "delegation_failed", "critical_alert"}:
+        return "pending"
+    if event_type in {"lesson"}:
+        return "lesson"
+    if event_type in {"project_update", "publication_done", "task_completed", "delegation_completed", "email_sent"}:
+        return "project"
+
     for category, hints in CATEGORY_HINTS.items():
         if any(hint in hay for hint in hints):
             return category
