@@ -86,6 +86,13 @@ interface ExecutiveAttentionItem {
   timestamp?: string;
 }
 
+interface TaskAttentionItem {
+  taskId: string;
+  title: string;
+  targetAgent: string;
+  status: string;
+}
+
 function getCompanyStatusWeight(status: CompanySummary["statusGeral"]) {
   if (status === "critico") return 3;
   if (status === "atencao") return 2;
@@ -145,6 +152,7 @@ export default function DashboardPage() {
   const [companies, setCompanies] = useState<CompanySummary[]>([]);
   const [executive, setExecutive] = useState<ExecutiveMemorySummary>({ pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
   const [attention, setAttention] = useState<ExecutiveAttentionItem[]>([]);
+  const [taskAttention, setTaskAttention] = useState<{ slaBreached: TaskAttentionItem[]; stale: TaskAttentionItem[]; blocked: TaskAttentionItem[]; unvalidated: TaskAttentionItem[] }>({ slaBreached: [], stale: [], blocked: [], unvalidated: [] });
 
   const rankedCompanies = [...companies].sort((a, b) => getCompanyAttentionScore(b) - getCompanyAttentionScore(a));
   const topCompany = rankedCompanies[0];
@@ -156,7 +164,8 @@ export default function DashboardPage() {
     Promise.all([
       fetch("/api/activities/stats").then(r => r.json()),
       fetch("/api/agents").then(r => r.json()),
-    ]).then(([actStats, agentsData]) => {
+      fetch("/api/tasks/attention").then(r => r.json()),
+    ]).then(([actStats, agentsData, taskAttentionData]) => {
       setStats({
         total: actStats.total || 0,
         today: actStats.today || 0,
@@ -168,6 +177,7 @@ export default function DashboardPage() {
       setCompanies(agentsData.companies || []);
       setExecutive(agentsData.executive || { pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
       setAttention(agentsData.attention || []);
+      setTaskAttention(taskAttentionData || { slaBreached: [], stale: [], blocked: [], unvalidated: [] });
     }).catch(console.error);
   }, []);
 
@@ -396,6 +406,39 @@ export default function DashboardPage() {
           <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{payablesRisk.leitura}</div>
         </div>
       </div>
+
+      {(taskAttention.slaBreached.length > 0 || taskAttention.stale.length > 0 || taskAttention.blocked.length > 0 || taskAttention.unvalidated.length > 0) && (
+        <div className="mb-6 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: '1px solid #f59e0b40' }}>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <div className="text-xs font-semibold mb-2" style={{ color: '#f59e0b' }}>EXCEÇÕES DE TASK TRACKING</div>
+              <div className="text-2xl font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>Delegações que merecem atenção</div>
+            </div>
+            <Link href="/tasks" className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Abrir tasks →</Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            {[
+              { label: 'SLA vencido', items: taskAttention.slaBreached, color: '#ef4444' },
+              { label: 'Paradas', items: taskAttention.stale, color: '#f59e0b' },
+              { label: 'Bloqueadas', items: taskAttention.blocked, color: '#f97316' },
+              { label: 'Sem validação', items: taskAttention.unvalidated, color: '#a855f7' },
+            ].map((group) => (
+              <div key={group.label} className="rounded-lg p-4" style={{ backgroundColor: `${group.color}10`, border: `1px solid ${group.color}30` }}>
+                <div className="text-xs font-semibold mb-3" style={{ color: group.color }}>{group.label}</div>
+                <div className="space-y-2">
+                  {group.items.slice(0, 4).map((item) => (
+                    <Link key={item.taskId} href={`/tasks/${item.taskId}`} className="block text-sm" style={{ color: 'var(--text-primary)' }}>
+                      <strong>{item.title}</strong>
+                      <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{item.targetAgent} · {item.status}</div>
+                    </Link>
+                  ))}
+                  {group.items.length === 0 && <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Nenhuma agora.</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {topCompany && (
         <div className="mb-6 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: `1px solid ${topCompany.statusGeral === 'critico' ? '#ef444440' : topCompany.statusGeral === 'atencao' ? '#f59e0b40' : '#22c55e40'}` }}>

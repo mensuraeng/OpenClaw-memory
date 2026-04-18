@@ -121,6 +121,10 @@ export function listTaskExecutions() {
   return readJsonl<TaskExecution>(EXECUTIONS_PATH).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
+export function findTaskByMetadata(key: string, value: string) {
+  return listTaskExecutions().find((task) => String(task.metadata?.[key] ?? '') === value) ?? null;
+}
+
 export function listTaskEvents(taskId?: string) {
   const rows = readJsonl<TaskEvent>(EVENTS_PATH).sort((a, b) => a.timestamp.localeCompare(b.timestamp));
   return taskId ? rows.filter((row) => row.taskId === taskId) : rows;
@@ -232,6 +236,21 @@ export function startTaskExecution(taskId: string, agentId: string) {
   const now = new Date().toISOString();
   const task = updateTaskExecution(taskId, { status: 'running', startedAt: now });
   appendTaskEvent({ taskId, agentId, type: 'started', message: 'Execução iniciada' });
+  return task;
+}
+
+export function attachSessionToTask(taskId: string, patch: { sessionKey?: string | null; childSessionKey?: string | null }, agentId = 'main') {
+  const task = updateTaskExecution(taskId, {
+    sessionKey: patch.sessionKey ?? undefined,
+    childSessionKey: patch.childSessionKey ?? undefined,
+  });
+  appendTaskEvent({
+    taskId,
+    agentId,
+    type: 'note',
+    message: 'Sessão vinculada à task',
+    payload: patch,
+  });
   return task;
 }
 
@@ -350,6 +369,18 @@ export function delegateTaskExecution(input: {
   });
 
   return child;
+}
+
+export function getTaskAttention() {
+  const tasks = listTaskExecutions();
+  const now = new Date();
+
+  return {
+    slaBreached: tasks.filter((task) => isTaskSlaBreached(task, now)).slice(0, 10),
+    stale: tasks.filter((task) => isTaskStale(task, now)).slice(0, 10),
+    blocked: tasks.filter((task) => task.status === 'blocked' || task.status === 'waiting_input').slice(0, 10),
+    unvalidated: tasks.filter((task) => task.status === 'completed_unvalidated').slice(0, 10),
+  };
 }
 
 export function getTaskMetrics() {

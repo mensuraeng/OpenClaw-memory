@@ -3,6 +3,7 @@ import { spawn } from "child_process";
 import { readFileSync, existsSync, appendFileSync, writeFileSync, mkdirSync } from "fs";
 import {
   appendTaskEvent,
+  attachSessionToTask,
   completeTaskExecution,
   createTaskExecution,
   failTaskExecution,
@@ -45,10 +46,13 @@ export async function POST(request: NextRequest) {
     writeFileSync(logFile, "");
     startTaskExecution(task.taskId, "main");
 
+    const childSessionKey = `office:${jobId}`;
+    attachSessionToTask(task.taskId, { sessionKey: `office:${jobId}`, childSessionKey }, "main");
+
     const child = spawn("openclaw", ["agent", "--agent", agentId, "-m", message], {
       detached: true,
       stdio: ["ignore", "pipe", "pipe"],
-      env: { ...process.env },
+      env: { ...process.env, OPENCLAW_SESSION_KEY: childSessionKey },
     });
 
     child.stdout.on("data", (d: Buffer) => { try { appendFileSync(logFile, d.toString()); } catch {} });
