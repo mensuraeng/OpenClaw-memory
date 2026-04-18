@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 import { randomUUID } from 'crypto';
+
+const execAsync = promisify(exec);
 
 const TASKS_DIR = path.join(process.cwd(), 'runtime', 'tasks');
 const EXECUTIONS_PATH = path.join(TASKS_DIR, 'task-executions.jsonl');
@@ -273,10 +277,20 @@ export function failTaskExecution(taskId: string, agentId: string, reason: strin
   return task;
 }
 
+export function getRetryPolicy(task: TaskExecution) {
+  const baseMaxAttempts = task.riskLevel === 'critical' ? 1 : task.riskLevel === 'high' ? 2 : 3;
+  const allowAutoRetry = !['critical'].includes(task.riskLevel) && task.executionType !== 'watchdog';
+  return {
+    allowAutoRetry,
+    maxAttempts: Math.min(task.maxAttempts || baseMaxAttempts, baseMaxAttempts),
+  };
+}
+
 export function retryTaskExecution(taskId: string, agentId: string, reason: string) {
   const task = getTaskExecution(taskId);
   if (!task) throw new Error(`Task not found: ${taskId}`);
-  if (task.attempt >= task.maxAttempts) {
+  const policy = getRetryPolicy(task);
+  if (!policy.allowAutoRetry || task.attempt >= policy.maxAttempts) {
     appendTaskEvent({ taskId, agentId, type: 'escalated', message: `Sem retry restante: ${reason}` });
     return blockTaskExecution(taskId, agentId, `Escalada necessária: ${reason}`);
   }
@@ -288,10 +302,39 @@ export function retryTaskExecution(taskId: string, agentId: string, reason: stri
     blockingReason: null,
     failureReason: null,
     finishedAt: null,
-    metadata: { ...(task.metadata || {}), retryReason: reason },
+    metadata: { ...(task.metadata || {}), retryReason: reason, retryRequestedAt: new Date().toISOString() },
   });
   appendTaskEvent({ taskId, agentId, type: 'retry_started', message: 'Task retornou para fila para nova tentativa' });
   return updated;
+}
+
+export async function executeRetryQueue() {
+  const tasks = listTaskExecutions().filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason) && typeof task.metadata?.jobMessage === 'string');
+  const results: Array<{ taskId: string; status: 'restarted' | 'skipped' | 'failed'; detail: string }> = [];
+
+  for (const task of tasks) {
+    const policy = getRetryPolicy(task);
+    if (!policy.allowAutoRetry) {
+      results.push({ taskId: task.taskId, status: 'skipped', detail: 'Política não permite retry automático' });
+      continue;
+    }
+
+    try {
+      const sessionKey = `retry:${task.taskId}:attempt-${task.attempt}`;
+      const agentId = task.targetAgent;
+      const message = String(task.metadata?.jobMessage || task.objective);
+      startTaskExecution(task.taskId, 'system');
+      attachSessionToTask(task.taskId, { sessionKey, childSessionKey: sessionKey }, 'system');
+      appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'retry_started', message: `Retry real disparado para ${agentId}` });
+      exec(`OPENCLAW_SESSION_KEY='${sessionKey}' openclaw agent --agent '${agentId}' -m ${JSON.stringify(message)} >/tmp/mc-retry-${task.taskId}.log 2>&1 &`);
+      results.push({ taskId: task.taskId, status: 'restarted', detail: `Retry real disparado para ${agentId}` });
+    } catch (error) {
+      failTaskExecution(task.taskId, 'system', `Falha ao disparar retry real: ${String(error)}`);
+      results.push({ taskId: task.taskId, status: 'failed', detail: String(error) });
+    }
+  }
+
+  return results;
 }
 
 export function completeTaskExecution(taskId: string, agentId: string, message?: string) {

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       slaMinutes: 20,
       staleAfterMinutes: 10,
       validationRequired: true,
-      metadata: { channel: "office", jobId },
+      metadata: { channel: "office", jobId, jobMessage: message.trim() },
     });
 
     writeFileSync(statusFile, JSON.stringify({ status: "running", taskId: task.taskId }));

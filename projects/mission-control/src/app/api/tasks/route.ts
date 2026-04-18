@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { createTaskExecution, getTaskMetrics, listTaskExecutions, reconcileTasksWithSessions } from '@/lib/task-tracking';
+import { createTaskExecution, executeRetryQueue, getTaskMetrics, listTaskExecutions, reconcileTasksWithSessions } from '@/lib/task-tracking';
 
 const execAsync = promisify(exec);
 
@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
         .map((session: any) => session.sessionKey || session.key)
         .filter(Boolean);
       reconcileTasksWithSessions(sessionKeys);
+      await executeRetryQueue();
     } catch (error) {
       console.warn('Task reconciliation skipped:', error);
     }
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       rootTaskId: body.rootTaskId || undefined,
       handoffDepth: body.handoffDepth || 0,
       tags: Array.isArray(body.tags) ? body.tags : [],
-      metadata: body.metadata || {},
+      metadata: { ...(body.metadata || {}), jobMessage: body.message || body.objective || body.title || '' },
     });
 
     return NextResponse.json({ task }, { status: 201 });
