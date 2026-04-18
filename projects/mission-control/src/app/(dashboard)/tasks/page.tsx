@@ -41,6 +41,8 @@ interface TaskMetrics {
   stale: number;
   orphaned: number;
   retrying: number;
+  criticalEscalations: number;
+  highRiskOpen: number;
 }
 
 function statusMeta(status: TaskStatus) {
@@ -78,14 +80,14 @@ function isStale(task: TaskExecution) {
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<TaskExecution[]>([]);
-  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0 });
+  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });
 
   useEffect(() => {
     fetch("/api/tasks")
       .then((r) => r.json())
       .then((data) => {
         setTasks(data.tasks || []);
-        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0 });
+        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });
       })
       .catch(console.error);
   }, []);
@@ -104,7 +106,7 @@ export default function TasksPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-9 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-11 gap-4">
         {[
           ["Total", metrics.total],
           ["Abertas", metrics.open],
@@ -115,6 +117,8 @@ export default function TasksPage() {
           ["Órfãs", metrics.orphaned],
           ["Retry", metrics.retrying],
           ["Falhas", metrics.failed],
+          ["Críticas", metrics.criticalEscalations],
+          ["High risk", metrics.highRiskOpen],
         ].map(([label, value]) => (
           <div key={String(label)} className="rounded-2xl border p-4" style={{ borderColor: "var(--border-subtle)", background: "var(--surface-elevated)" }}>
             <div className="text-xs uppercase tracking-wide" style={{ color: "var(--text-secondary)" }}>{label}</div>

@@ -10,6 +10,7 @@ const EXECUTIONS_PATH = path.join(TASKS_DIR, 'task-executions.jsonl');
 const EVENTS_PATH = path.join(TASKS_DIR, 'task-events.jsonl');
 const RETRY_RUNNER_LOCK = path.join(TASKS_DIR, 'retry-runner.lock');
 
+const STOP_WORDS = new Set(['a', 'o', 'e', 'de', 'da', 'do', 'das', 'dos', 'para', 'por', 'com', 'sem', 'uma', 'um', 'no', 'na', 'em']);
 
 export type TaskExecutionStatus =
   | 'queued'
@@ -351,6 +352,29 @@ export async function executeRetryQueue() {
   }
 }
 
+function normalizeTokens(text: string) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 4 && !STOP_WORDS.has(token));
+}
+
+function scoreTaskObjectiveAlignment(task: TaskExecution, response: string) {
+  const objectiveTokens = Array.from(new Set(normalizeTokens(`${task.title} ${task.objective} ${task.successCriteria || ''} ${task.expectedOutput || ''}`)));
+  if (objectiveTokens.length === 0) {
+    return { matchedTokens: [] as string[], score: 0 };
+  }
+
+  const responseSet = new Set(normalizeTokens(response));
+  const matchedTokens = objectiveTokens.filter((token) => responseSet.has(token));
+  const score = matchedTokens.length / objectiveTokens.length;
+  return { matchedTokens, score };
+}
+
 export async function reconcileTaskEvidence() {
   const openTasks = listTaskExecutions().filter((task) => isTaskOpen(task) && typeof (task.childSessionKey || task.sessionKey) === 'string');
   const results: Array<{ taskId: string; status: 'validated' | 'not_found' | 'pending'; detail: string }> = [];
@@ -399,9 +423,29 @@ export async function reconcileTaskEvidence() {
         .filter(Boolean);
       const usefulResponse = assistantTexts.find((text) => text.length >= 40 && text !== 'NO_REPLY' && text !== 'HEARTBEAT_OK');
       if (usefulResponse) {
-        completeTaskExecution(task.taskId, 'system', 'Fechada por evidência útil de transcript da sessão');
-        appendTaskEvent({ taskId: task.taskId, agentId: 'system', type: 'auto_closed', message: 'Task fechada por evidência útil do transcript' });
-        results.push({ taskId: task.taskId, status: 'validated', detail: 'Transcript contém resposta útil do assistant' });
+        const alignment = scoreTaskObjectiveAlignment(task, usefulResponse);
+        const meetsAlignment = alignment.score >= 0.18 || alignment.matchedTokens.length >= 2;
+
+        if (meetsAlignment) {
+          completeTaskExecution(task.taskId, 'system', 'Fechada por evidência útil e aderente ao objetivo da sessão');
+          appendTaskEvent({
+            taskId: task.taskId,
+            agentId: 'system',
+            type: 'auto_closed',
+            message: 'Task fechada por evidência útil com aderência mínima ao objetivo',
+            payload: { alignmentScore: alignment.score, matchedTokens: alignment.matchedTokens.slice(0, 8) },
+          });
+          results.push({ taskId: task.taskId, status: 'validated', detail: `Transcript contém resposta útil com aderência mínima (${alignment.matchedTokens.slice(0, 5).join(', ') || 'sem tokens'})` });
+        } else {
+          appendTaskEvent({
+            taskId: task.taskId,
+            agentId: 'system',
+            type: 'note',
+            message: 'Resposta útil encontrada, mas sem aderência mínima ao objetivo',
+            payload: { alignmentScore: alignment.score, matchedTokens: alignment.matchedTokens.slice(0, 8) },
+          });
+          results.push({ taskId: task.taskId, status: 'pending', detail: 'Resposta útil existe, mas não aderiu minimamente ao objetivo' });
+        }
       } else {
         results.push({ taskId: task.taskId, status: 'pending', detail: 'Ainda sem evidência útil de resposta' });
       }
