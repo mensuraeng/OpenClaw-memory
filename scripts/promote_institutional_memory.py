@@ -79,14 +79,36 @@ def summarize(payload: dict) -> str:
     return "\n".join(bits)
 
 
+def token_signature(text: str) -> set[str]:
+    return {token for token in re.findall(r"[a-z0-9à-ÿ]+", normalize(text)) if len(token) >= 4}
+
+
+def is_semantic_duplicate(entry: str, existing_blocks: list[str]) -> bool:
+    entry_sig = token_signature(entry)
+    if not entry_sig:
+        return False
+    for block in existing_blocks:
+        other_sig = token_signature(block)
+        if not other_sig:
+            continue
+        overlap = len(entry_sig & other_sig)
+        base = min(len(entry_sig), len(other_sig))
+        if base and (overlap / base) >= 0.75:
+            return True
+    return False
+
+
 def append_unique(path: Path, entries: list[str]) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)
     existing = path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
     existing_norm = normalize(existing)
+    existing_blocks = [block.strip() for block in re.split(r"\n\s*\n", existing) if block.strip()]
     new_items = []
     for entry in entries:
         head = normalize(entry.splitlines()[0])
         if head and head in existing_norm:
+            continue
+        if is_semantic_duplicate(entry, existing_blocks + new_items):
             continue
         new_items.append(entry)
     if not new_items:
