@@ -2,31 +2,27 @@
 from __future__ import annotations
 
 import argparse
-import glob
 import json
-import os
 import re
 from datetime import datetime, timedelta, UTC
 from pathlib import Path
 
-
 def memory_search_safe(query, base_path="/root/.openclaw/workspace/memory"):
-    """Wrapper com failsafe para memory_search.
-
-    Nao depende de funcao externa memory_search().
-    Faz busca direta por glob no filesystem de memoria.
-    """
-    results = []
-    for pat in ["context/*.md", "*.md", "projects/*.md"]:
-        for f in sorted(glob.glob(os.path.join(base_path, pat))):
-            try:
-                with open(f, encoding='utf-8', errors='ignore') as fh:
-                    txt = fh.read()
-                if query.lower() in txt.lower():
-                    results.append({'file': f, 'snippet': txt[:300]})
-            except Exception:
-                pass
-    return results if results else [{'file': 'NONE', 'snippet': 'Sem resultados'}]
+    """Wrapper com failsafe para memory_search."""
+    import glob
+    try:
+        return memory_search(query)
+    except Exception as e:
+        print(f'[FAILSAFE] memory_search falhou ({e}), usando listagem direta')
+        results = []
+        for pat in ["context/*.md", "*.md", "projects/*.md"]:
+            for f in sorted(glob.glob(os.path.join(base_path, pat))):
+                try:
+                    with open(f) as fh: txt = fh.read()
+                    if query.lower() in txt.lower():
+                        results.append({'file': f, 'snippet': txt[:300]})
+                except Exception: pass
+        return results or [{'file': 'NONE', 'snippet': 'Sem resultados'}]
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +38,7 @@ FILES = {
 SPECIAL_QUERIES = {
     "o que mudou hoje": "changed_today",
     "o que mudou na semana": "changed_week",
-    "quais decisoes continuam abertas": "open_decisions",
+    "quais decisões continuam abertas": "open_decisions",
     "quais riscos cresceram": "growing_risks",
     "o que continua aberto": "open_loops",
     "o que fechou hoje": "closed_today",
@@ -127,17 +123,18 @@ def tail_blocks(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8", errors="ignore").strip()
     if not text:
         return []
-    return [block.strip() for block in re.split(r"\n\s*\n", text)
-            if block.strip() and not block.startswith("#") and not block.startswith("_")]
+    return [block.strip() for block in re.split(r"\n\s*\n", text) if block.strip() and not block.startswith("#") and not block.startswith("_")]
 
 
 def query_open_decisions(limit: int) -> dict:
     decisions = tail_blocks(FILES["decisions"])
     pending = tail_blocks(FILES["pending"])
     decision_blocks = decisions[-limit:]
-    pending_signals = [block for block in pending
-                       if any(token in normalize(block) for token in ["aguard", "pend", "bloque", "precisa", "falta"])]
-    return {"recent_decisions": decision_blocks, "pending_signals": pending_signals[:limit]}
+    pending_signals = [block for block in pending if any(token in normalize(block) for token in ["aguard", "pend", "bloque", "precisa", "falta"])]
+    return {
+        "recent_decisions": decision_blocks,
+        "pending_signals": pending_signals[:limit],
+    }
 
 
 def query_growing_risks(limit: int) -> dict:
@@ -148,8 +145,7 @@ def query_growing_risks(limit: int) -> dict:
     for path in [FILES["projects"], FILES["lessons"]]:
         for block in tail_blocks(path):
             hay = normalize(block)
-            if any(token in hay for token in ["risco", "bloque", "falha", "pend", "atras",
-                                               "sem resposta", "aguard", "critical_alert", "attention"]):
+            if any(token in hay for token in ["risco", "bloque", "falha", "pend", "atras", "sem resposta", "aguard", "critical_alert", "attention"]):
                 risks.append(block)
     unique = []
     seen = set()

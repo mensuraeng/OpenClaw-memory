@@ -16,7 +16,7 @@ DAILY     = os.path.join(WORKSPACE, f'memory/{TODAY_STR}.md')
 
 def read_file(path):
     try:
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, 'r') as f:
             return f.read()
     except FileNotFoundError:
         return ''
@@ -44,32 +44,23 @@ def extract_last_decisions(content, n=5):
     return decisions[-n:]
 
 def extract_daily_highlights(content):
-    """Extrai destaques do arquivo diario.
-
-    FIX: remove marcador de lista (- ou *) do inicio de cada linha
-    antes de retornar, evitando duplo marcador quando build_estado_atual()
-    adiciona '- ' na frente.
-    """
     highlights = []
     for line in content.split('\n'):
         s = line.strip()
         if re.search(r'entrega|alerta|concluido|urgente|\u2705|\u26a0', s, re.IGNORECASE):
             if s and len(s) > 10:
-                # Remove marcador de lista do inicio (ex: "- texto" -> "texto")
-                s_clean = re.sub(r'^[-*]\s+', '', s).strip()
-                if s_clean and len(s_clean) > 10:
-                    highlights.append(s_clean[:120])
+                highlights.append(s[:120])
     return highlights[:5]
 
 def build_estado_atual():
     p_content = read_file(PENDING)
     d_content = read_file(DECISIONS)
     daily_c   = read_file(DAILY)
-
+    
     open_items  = extract_pending_open(p_content)
     active_decs = extract_last_decisions(d_content)
     highlights  = extract_daily_highlights(daily_c)
-
+    
     block = f'## Estado Atual\n_Atualizado automaticamente em {TODAY_STR} pelo update_memory_panel.py_\n\n'
     block += f'### Pendencias Abertas ({len(open_items)} itens)\n'
     block += ('\n'.join(open_items) if open_items else '_Nenhuma pendencia aberta_') + '\n'
@@ -77,7 +68,7 @@ def build_estado_atual():
     block += ('\n'.join(f'- {d}' for d in active_decs) if active_decs else '_Sem decisoes ativas recentes_') + '\n'
     block += f'\n### Destaques de Hoje ({TODAY_STR})\n'
     block += ('\n'.join(f'- {h}' for h in highlights) if highlights else '_Sem destaques registrados hoje_') + '\n'
-
+    
     return block, len(open_items), len(active_decs)
 
 def update_memory_md():
@@ -85,18 +76,18 @@ def update_memory_md():
     if not content:
         print(f'ERRO: {MEMORY_MD} nao encontrado')
         return
-
+    
     new_block, n_pending, n_decisions = build_estado_atual()
-
+    
     if '## Estado Atual' in content:
         pattern = r'## Estado Atual.*?(?=\n## |\Z)'
         new_content = re.sub(pattern, new_block.rstrip(), content, flags=re.DOTALL)
     else:
         new_content = content.rstrip() + '\n\n' + new_block
-
-    with open(MEMORY_MD, 'w', encoding='utf-8') as f:
+    
+    with open(MEMORY_MD, 'w') as f:
         f.write(new_content)
-
+    
     print(f'MEMORY.md atualizado: {n_pending} pendencias, {n_decisions} decisoes ativas')
 
 if __name__ == '__main__':
