@@ -29,6 +29,15 @@ _Atualizado em 2026-04-17_
 - Pendência real → `memory/context/pending.md`
 - O que não está escrito não existe
 
+### Estrutura de arquivos em memory/
+- `memory/YYYY-MM-DD.md` — nota diária (arquivo plano, um por dia, append entre sessões)
+- `memory/context/*.md` — arquivos temáticos: decisions.md, pending.md, lessons.md, people.md, risks.md, etc.
+- `memory/projects/[nome-projeto].md` — estado por projeto ativo
+- `memory/archive/` — sessões arquivadas
+- `memory/feedback/` — registro de aprovações/rejeições do Alê
+- `memory/context/credentials.md` — mapa de credenciais e integrações
+
+
 ## Autonomia e Limites
 
 **Posso fazer sem pedir:**
@@ -70,7 +79,7 @@ _Atualizado em 2026-04-17_
 
 - Antes de mudança estrutural, rodar `scripts/backup_before_change.sh <rotulo>` e conferir `ROLLBACK.md`
 - Mudança estrutural = config OpenClaw, cron, auth, scripts compartilhados, memória operacional central
-- Antes de repetir sugestão já discutida, consultar `memory/feedback/*.json`
+- Antes de repetir sugestão já discutida, consultar `memory/feedback/`
 - Quando o Alê aprovar/rejeitar explicitamente, registrar em `memory/feedback/`
 - Não fazer retry cego em automação com side effect externo ambíguo
 

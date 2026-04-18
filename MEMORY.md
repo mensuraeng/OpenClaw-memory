@@ -13,47 +13,29 @@ Serve para responder rápido:
 - onde fica cada contexto relevante
 
 ## Estado Atual
+_Atualizado automaticamente em 2026-04-18 pelo update_memory_panel.py_
 
-### Frentes ativas
-- **Setup OpenClaw + Flávia** — em andamento
-- **Automações Microsoft Graph** — ativas para Mensura, MIA e Flávia
-- **Grupo Telegram MENSURA** — ativo como canal operacional do agente da MENSURA
-- **Grupo Telegram PCS** — ativo como canal operacional do agente da PCS
-- **Monitor semanal** — ativo, segunda 8h BRT
-- **Relatório de cursos** — ativo, sexta 16h BRT
-- **Monitoramento de cronogramas** — ativo para P&G Louveira e CCSP Casa 3
-- **PCS Engenharia** — posicionamento, narrativa institucional e estrutura comercial em evolução
-- **Mission Control 10/10** — em evolução funcional, com foco em sinais operacionais, decisões e drill-down útil
-- **OpenClaw Memory / GitHub segundo cérebro** — MVP implantado, em fase de fortalecimento de captura e consolidação
-- **Sistema imunológico do OpenClaw** — watchdog de cron, guardrail de custo, backup estrutural e rollback documentado ativos
+### Pendencias Abertas (10 itens)
+- [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
+- [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
+- [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
+- [ ] **Corrigir roteamento do domínio de relatórios MIA** — `relatorios.miaengenharia.com.br/ccsp-casa-7/*` ainda cai no fallback da SPA principal em vez de servir páginas estáticas extras como o checklist.
+- [ ] **Instagram integration** — criar app no Meta Developer e fornecer App ID + Secret.
+- [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
+- [ ] **Decidir política final das skills** — padronizar o que fica compartilhado no workspace principal e o que deve morar por agente/workspace específico.
+- [ ] **Avaliar triagem operacional da inbox PCS** — a integração Graph da PCS foi habilitada, mas vale decidir se e como tratar automaticamente emails como `ENC: INSTALAÇÃO ELÉTRICA` com marca de urgência.
+- [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
+- [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
 
-### Pendências críticas
-- Instagram App ID + Secret
-- Confirmar SSH key antes de hardening
-- Revalidar cadeia real de fallback de modelos além do microteste de agentes
-- Corrigir o roteamento do domínio de relatórios da MIA para servir páginas estáticas extras sem cair no fallback da SPA principal
-- Revisar falha histórica de calendário da conta Mensura e confirmar saneamento definitivo
-- Aguardar aprovação do app institucional do LinkedIn para páginas
+### Ultimas Decisoes Ativas
+- PCS adota identidade visual oficial enviada pelo Alê (2026-04-13)
+- Grupo `MENSURA Engenharia` vira canal do agente da MENSURA (2026-04-13)
+- Grupo `PCS Engenharia` vira canal do agente da PCS (2026-04-13)
+- Tópico `AGENTE FINANCEIRO` é roteado para o agente `finance` (2026-04-13)
+- GitHub será o segundo cérebro operacional (2026-04-14)
 
-### Integrações ativas
-- Email Mensura ✅
-- Email MIA ✅
-- Email Flávia ✅
-- Calendário ✅
-- SharePoint ✅
-- Telegram ✅
-- VPS ✅
-
-### Riscos ou atenção
-- `memory_search()` voltou a responder neste ciclo, mas precisa seguir observada após mudanças de auth/quota para evitar regressão silenciosa
-- A cadeia de fallback alternativa ainda não está comprovada além dos microtestes de runtime dos agentes
-- O site `mia-ccsp-casa-7.pages.dev` já serve o checklist estático correto, mas o domínio `relatorios.miaengenharia.com.br` ainda pode devolver a SPA principal por causa do Worker/roteador
-- Parte do contexto de longo prazo existe, mas ainda precisa de consolidação contínua por tema
-- Há risco de espalhamento de contexto em notas diárias se não houver promoção periódica para arquivos temáticos
-- Custo real das últimas 24h e 7d ainda está muito acima da meta e foi dominado por `gpt-5.4` antes da troca de política
-- `skills/capability-evolver-src` segue como risco crítico até quarentena ou remoção
-- `gateway.controlUi.allowInsecureAuth=true` segue aberto e precisa ser desativado quando houver janela segura
-
+### Destaques de Hoje (2026-04-18)
+- Não foram identificados e-mails urgentes não lidos nas caixas verificadas; o que apareceu foi majoritariamente marketing
 ## Onde está cada coisa
 
 ### Contexto estrutural
