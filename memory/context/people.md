@@ -95,3 +95,15 @@ _Atualizado em 2026-04-01_
   - stage em `/home/claude/[skill-name]/`
   - empacotar com `python zipfile`
   - entregar em `/mnt/user-data/outputs/`
+
+## Fornecedores / Plataformas / Admins Externos
+
+| Nome | Papel | Status | Notas |
+|------|-------|--------|-------|
+| Philippe | Admin / Stakeholder — Sienge ERP | Pendente resposta | Responsável pelo acesso ao Sienge ERP; aguardando retorno para liberação de credenciais |
+
+## Integrações e Apps Criados
+
+| Plataforma | App / Recurso | ID / Handle | Status |
+|------------|--------------|-------------|--------|
+| Meta for Developers | OpenClaw Social | App ID: 2035227107389784 | Criado — configuração em andamento |
