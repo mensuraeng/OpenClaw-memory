@@ -128,3 +128,14 @@ def consolidate_for_day(day: str) -> int:
 if __name__ == "__main__":
     day = sys.argv[1] if len(sys.argv) > 1 else datetime.now().strftime("%Y-%m-%d")
     raise SystemExit(consolidate_for_day(day))
+
+# --- update_memory_panel: atualizar Estado Atual do MEMORY.md ---
+try:
+    import subprocess
+    result = subprocess.run(
+        ['python3', '/root/.openclaw/workspace/projects/openclaw-memory/scripts/update_memory_panel.py'],
+        capture_output=True, text=True, timeout=30
+    )
+    print('[nightly] update_memory_panel:', result.stdout.strip() or result.stderr.strip())
+except Exception as e:
+    print('[nightly] update_memory_panel falhou (nao bloqueante):', e)

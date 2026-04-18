@@ -7,6 +7,24 @@ import re
 from datetime import datetime, timedelta, UTC
 from pathlib import Path
 
+def memory_search_safe(query, base_path="/root/.openclaw/workspace/memory"):
+    """Wrapper com failsafe para memory_search."""
+    import glob
+    try:
+        return memory_search(query)
+    except Exception as e:
+        print(f'[FAILSAFE] memory_search falhou ({e}), usando listagem direta')
+        results = []
+        for pat in ["context/*.md", "*.md", "projects/*.md"]:
+            for f in sorted(glob.glob(os.path.join(base_path, pat))):
+                try:
+                    with open(f) as fh: txt = fh.read()
+                    if query.lower() in txt.lower():
+                        results.append({'file': f, 'snippet': txt[:300]})
+                except Exception: pass
+        return results or [{'file': 'NONE', 'snippet': 'Sem resultados'}]
+
+
 ROOT = Path(__file__).resolve().parents[1]
 INSTITUTIONAL = ROOT / "memory" / "institutional"
 INBOX = ROOT / "memory" / "inbox"
