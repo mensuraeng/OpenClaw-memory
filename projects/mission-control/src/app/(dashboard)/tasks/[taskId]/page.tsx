@@ -50,6 +50,8 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ tas
             <div><strong>Janela de stale:</strong> {task.staleAfterMinutes ? `${task.staleAfterMinutes} min` : '—'}</div>
             <div><strong>Última sessão observada:</strong> {typeof task.metadata?.lastObservedSessionAt === 'string' ? new Date(task.metadata.lastObservedSessionAt).toLocaleString('pt-BR') : '—'}</div>
             <div><strong>Motivo do retry:</strong> {typeof task.metadata?.retryReason === 'string' ? task.metadata.retryReason : '—'}</div>
+            <div><strong>Mensagem base:</strong> {typeof task.metadata?.jobMessage === 'string' ? task.metadata.jobMessage : '—'}</div>
+            <div><strong>Canal:</strong> {typeof task.metadata?.channel === 'string' ? task.metadata.channel : '—'}</div>
             {task.blockingReason && <div className="md:col-span-2"><strong>Bloqueio:</strong> {task.blockingReason}</div>}
             {task.failureReason && <div className="md:col-span-2"><strong>Falha:</strong> {task.failureReason}</div>}
           </div>

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { executeRetryQueue, reconcileTaskEvidence, reconcileTasksWithSessions } from '@/lib/task-tracking';
+import { appendTaskEvent, executeRetryQueue, getTaskAttention, getTaskMetrics, listTaskExecutions, reconcileTaskEvidence, reconcileTasksWithSessions } from '@/lib/task-tracking';
 
 const execAsync = promisify(exec);
 
@@ -22,12 +22,42 @@ export async function POST() {
     const sessionUpdates = reconcileTasksWithSessions(sessionKeys);
     const evidenceUpdates = await reconcileTaskEvidence();
     const retryUpdates = await executeRetryQueue();
+    const metrics = getTaskMetrics();
+    const attention = getTaskAttention();
+    const criticalTasks = listTaskExecutions().filter((task) => task.riskLevel === 'critical' && (task.status === 'blocked' || task.status === 'failed'));
+
+    for (const task of criticalTasks) {
+      appendTaskEvent({
+        taskId: task.taskId,
+        agentId: 'system',
+        type: 'escalated',
+        message: 'Task crítica exige atenção executiva imediata',
+        payload: { riskLevel: task.riskLevel, status: task.status },
+      });
+    }
+
+    const summary = {
+      totalTasks: metrics.total,
+      openTasks: metrics.open,
+      criticalEscalations: metrics.criticalEscalations,
+      retrying: metrics.retrying,
+      evidenceValidated: evidenceUpdates.filter((item) => item.status === 'validated').length,
+      retriesRestarted: retryUpdates.filter((item) => item.status === 'restarted').length,
+      topAttention: {
+        critical: attention.criticalEscalations.length,
+        blocked: attention.blocked.length,
+        orphaned: attention.orphaned.length,
+      },
+    };
 
     return NextResponse.json({
       ok: true,
+      summary,
       sessionUpdates,
       evidenceUpdates,
       retryUpdates,
+      metrics,
+      attention,
     });
   } catch (error) {
     console.error('Failed to reconcile tasks:', error);

@@ -608,6 +608,8 @@ export function getTaskAttention() {
     unvalidated: tasks.filter((task) => task.status === 'completed_unvalidated').slice(0, 10),
     orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned) || task.blockingReason?.includes('Sessão não encontrada na reconciliação')).slice(0, 10),
     retryQueue: tasks.filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason)).slice(0, 10),
+    criticalEscalations: tasks.filter((task) => task.riskLevel === 'critical' && (task.status === 'blocked' || task.status === 'failed' || isTaskSlaBreached(task, now))).slice(0, 10),
+    highRiskOpen: tasks.filter((task) => ['high', 'critical'].includes(task.riskLevel) && isTaskOpen(task)).slice(0, 10),
   };
 }
 
@@ -639,6 +641,8 @@ export function getTaskMetrics() {
     stale: tasks.filter((task) => isTaskStale(task, now)).length,
     orphaned: tasks.filter((task) => Boolean(task.metadata?.orphaned) || task.blockingReason?.includes('Sessão não encontrada na reconciliação')).length,
     retrying: tasks.filter((task) => task.status === 'queued' && Boolean(task.metadata?.retryReason)).length,
+    criticalEscalations: tasks.filter((task) => task.riskLevel === 'critical' && (task.status === 'blocked' || task.status === 'failed' || isTaskSlaBreached(task, now))).length,
+    highRiskOpen: tasks.filter((task) => ['high', 'critical'].includes(task.riskLevel) && isTaskOpen(task)).length,
     byAgent,
   };
 }
