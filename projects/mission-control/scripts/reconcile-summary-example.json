@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "summary": {
+    "totalTasks": 18,
+    "openTasks": 6,
+    "criticalEscalations": 1,
+    "retrying": 2,
+    "evidenceValidated": 3,
+    "retriesRestarted": 1,
+    "topAttention": {
+      "critical": 1,
+      "blocked": 2,
+      "orphaned": 1
+    }
+  }
+}

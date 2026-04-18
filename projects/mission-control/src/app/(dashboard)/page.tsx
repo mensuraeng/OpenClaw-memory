@@ -93,6 +93,31 @@ interface TaskAttentionItem {
   status: string;
 }
 
+interface TaskAttentionState {
+  slaBreached: TaskAttentionItem[];
+  stale: TaskAttentionItem[];
+  blocked: TaskAttentionItem[];
+  unvalidated: TaskAttentionItem[];
+  orphaned: TaskAttentionItem[];
+  retryQueue: TaskAttentionItem[];
+  criticalEscalations: TaskAttentionItem[];
+  highRiskOpen: TaskAttentionItem[];
+}
+
+interface TaskMetricsState {
+  total: number;
+  open: number;
+  blocked: number;
+  validated: number;
+  failed: number;
+  slaBreached: number;
+  stale: number;
+  orphaned: number;
+  retrying: number;
+  criticalEscalations: number;
+  highRiskOpen: number;
+}
+
 function getCompanyStatusWeight(status: CompanySummary["statusGeral"]) {
   if (status === "critico") return 3;
   if (status === "atencao") return 2;
@@ -152,7 +177,8 @@ export default function DashboardPage() {
   const [companies, setCompanies] = useState<CompanySummary[]>([]);
   const [executive, setExecutive] = useState<ExecutiveMemorySummary>({ pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
   const [attention, setAttention] = useState<ExecutiveAttentionItem[]>([]);
-  const [taskAttention, setTaskAttention] = useState<{ slaBreached: TaskAttentionItem[]; stale: TaskAttentionItem[]; blocked: TaskAttentionItem[]; unvalidated: TaskAttentionItem[]; orphaned: TaskAttentionItem[]; retryQueue: TaskAttentionItem[] }>({ slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [], retryQueue: [] });
+  const [taskAttention, setTaskAttention] = useState<TaskAttentionState>({ slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [], retryQueue: [], criticalEscalations: [], highRiskOpen: [] });
+  const [taskMetrics, setTaskMetrics] = useState<TaskMetricsState>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });
 
   const rankedCompanies = [...companies].sort((a, b) => getCompanyAttentionScore(b) - getCompanyAttentionScore(a));
   const topCompany = rankedCompanies[0];
@@ -165,7 +191,8 @@ export default function DashboardPage() {
       fetch("/api/activities/stats").then(r => r.json()),
       fetch("/api/agents").then(r => r.json()),
       fetch("/api/tasks/attention").then(r => r.json()),
-    ]).then(([actStats, agentsData, taskAttentionData]) => {
+      fetch("/api/tasks/metrics").then(r => r.json()),
+    ]).then(([actStats, agentsData, taskAttentionData, taskMetricsData]) => {
       setStats({
         total: actStats.total || 0,
         today: actStats.today || 0,
@@ -177,7 +204,8 @@ export default function DashboardPage() {
       setCompanies(agentsData.companies || []);
       setExecutive(agentsData.executive || { pendingCritical: [], pendingWaitingAle: [], recentDecisions: [] });
       setAttention(agentsData.attention || []);
-      setTaskAttention(taskAttentionData || { slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [], retryQueue: [] });
+      setTaskAttention(taskAttentionData || { slaBreached: [], stale: [], blocked: [], unvalidated: [], orphaned: [], retryQueue: [], criticalEscalations: [], highRiskOpen: [] });
+      setTaskMetrics(taskMetricsData || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });
     }).catch(console.error);
   }, []);
 
@@ -407,7 +435,16 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {(taskAttention.slaBreached.length > 0 || taskAttention.stale.length > 0 || taskAttention.blocked.length > 0 || taskAttention.unvalidated.length > 0 || taskAttention.orphaned.length > 0 || taskAttention.retryQueue.length > 0) && (
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-6 gap-3">
+        <StatsCard title="Tasks abertas" value={taskMetrics.open} icon={<Activity className="w-5 h-5" />} iconColor="#60a5fa" />
+        <StatsCard title="Críticas" value={taskMetrics.criticalEscalations} icon={<AlertTriangle className="w-5 h-5" />} iconColor="#ef4444" />
+        <StatsCard title="High risk abertas" value={taskMetrics.highRiskOpen} icon={<ArrowUpRight className="w-5 h-5" />} iconColor="#f59e0b" />
+        <StatsCard title="Em retry" value={taskMetrics.retrying} icon={<Zap className="w-5 h-5" />} iconColor="#2563eb" />
+        <StatsCard title="Órfãs" value={taskMetrics.orphaned} icon={<XCircle className="w-5 h-5" />} iconColor="#dc2626" />
+        <StatsCard title="Bloqueadas" value={taskMetrics.blocked} icon={<Server className="w-5 h-5" />} iconColor="#f97316" />
+      </div>
+
+      {(taskAttention.slaBreached.length > 0 || taskAttention.stale.length > 0 || taskAttention.blocked.length > 0 || taskAttention.unvalidated.length > 0 || taskAttention.orphaned.length > 0 || taskAttention.retryQueue.length > 0 || taskAttention.criticalEscalations.length > 0 || taskAttention.highRiskOpen.length > 0) && (
         <div className="mb-6 rounded-xl p-5" style={{ backgroundColor: 'var(--card)', border: '1px solid #f59e0b40' }}>
           <div className="flex items-center justify-between gap-3 mb-4">
             <div>
@@ -416,7 +453,7 @@ export default function DashboardPage() {
             </div>
             <Link href="/tasks" className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Abrir tasks →</Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-8 gap-3">
             {[
               { label: 'SLA vencido', items: taskAttention.slaBreached, color: '#ef4444' },
               { label: 'Paradas', items: taskAttention.stale, color: '#f59e0b' },
@@ -424,6 +461,8 @@ export default function DashboardPage() {
               { label: 'Sem validação', items: taskAttention.unvalidated, color: '#a855f7' },
               { label: 'Órfãs', items: taskAttention.orphaned, color: '#dc2626' },
               { label: 'Em retry', items: taskAttention.retryQueue, color: '#2563eb' },
+              { label: 'Críticas', items: taskAttention.criticalEscalations, color: '#b91c1c' },
+              { label: 'High risk', items: taskAttention.highRiskOpen, color: '#d97706' },
             ].map((group) => (
               <div key={group.label} className="rounded-lg p-4" style={{ backgroundColor: `${group.color}10`, border: `1px solid ${group.color}30` }}>
                 <div className="text-xs font-semibold mb-3" style={{ color: group.color }}>{group.label}</div>
