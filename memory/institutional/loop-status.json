@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-04-18 22:15 UTC",
+  "generatedAt": "2026-04-18 23:06 UTC",
   "dayScope": "all",
   "totalLoops": 4,
   "statusCounts": {
     "unknown": 1,
     "noted": 1,
-    "blocked": 2
+    "in_progress": 1,
+    "blocked": 1
   },
   "loops": {
     "title:bootstrap de captura": {
@@ -19,7 +20,8 @@
         "status": "unknown",
         "owner": "main",
         "nextStep": null,
-        "family": null
+        "family": null,
+        "validationOnly": false
       },
       "history": [
         {
@@ -32,7 +34,8 @@
           "status": "unknown",
           "owner": "main",
           "nextStep": null,
-          "family": null
+          "family": null,
+          "validationOnly": false
         }
       ],
       "transitions": [
@@ -56,7 +59,8 @@
         "status": "noted",
         "owner": "main",
         "nextStep": null,
-        "family": null
+        "family": null,
+        "validationOnly": false
       },
       "history": [
         {
@@ -69,7 +73,8 @@
           "status": "noted",
           "owner": "main",
           "nextStep": null,
-          "family": null
+          "family": null,
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 14:36 UTC",
@@ -81,7 +86,8 @@
           "status": "noted",
           "owner": "main",
           "nextStep": null,
-          "family": null
+          "family": null,
+          "validationOnly": false
         }
       ],
       "transitions": [
@@ -96,16 +102,17 @@
     },
     "program:openclaw-memory": {
       "current": {
-        "timestamp": "2026-04-18 22:15 UTC",
+        "timestamp": "2026-04-18 22:13 UTC",
         "day": "2026-04-18",
         "agent": "main",
-        "type": "critical_alert",
-        "title": "OpenClaw Memory | loop closure implantado",
+        "type": "project_update",
+        "title": "OpenClaw Memory | transição por evidência ativada",
         "source": "internal",
-        "status": "blocked",
+        "status": "in_progress",
         "owner": "main",
-        "nextStep": "corrigir inconsistência de reabertura",
-        "family": "program:openclaw-memory"
+        "nextStep": "testar reabertura do mesmo loop após novo bloqueio",
+        "family": "program:openclaw-memory",
+        "validationOnly": false
       },
       "history": [
         {
@@ -118,7 +125,8 @@
           "status": "in_progress",
           "owner": "main",
           "nextStep": "ampliar captura automática e reduzir duplicatas históricas",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 21:26 UTC",
@@ -130,7 +138,8 @@
           "status": "noted",
           "owner": "main",
           "nextStep": "aumentar captura real e fechamento de loop",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 21:37 UTC",
@@ -142,7 +151,8 @@
           "status": "in_progress",
           "owner": "main",
           "nextStep": "mapear task-executions reais quando o runtime estiver presente",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 22:10 UTC",
@@ -154,7 +164,8 @@
           "status": "in_progress",
           "owner": "main",
           "nextStep": "ligar atualizações do mesmo item e detectar encerramento real",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": true
         },
         {
           "timestamp": "2026-04-18 22:12 UTC",
@@ -166,7 +177,8 @@
           "status": "in_progress",
           "owner": "main",
           "nextStep": "refinar transições closed/open por evidência real",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 22:13 UTC",
@@ -178,7 +190,8 @@
           "status": "closed",
           "owner": "main",
           "nextStep": "refinar reabertura por evidência",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": true
         },
         {
           "timestamp": "2026-04-18 22:13 UTC",
@@ -190,7 +203,8 @@
           "status": "in_progress",
           "owner": "main",
           "nextStep": "testar reabertura do mesmo loop após novo bloqueio",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": false
         },
         {
           "timestamp": "2026-04-18 22:15 UTC",
@@ -202,7 +216,21 @@
           "status": "blocked",
           "owner": "main",
           "nextStep": "corrigir inconsistência de reabertura",
-          "family": "program:openclaw-memory"
+          "family": "program:openclaw-memory",
+          "validationOnly": true
+        },
+        {
+          "timestamp": "2026-04-18 22:15 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "decision_made",
+          "title": "OpenClaw Memory | fechamento completo do loop implantado",
+          "source": "internal",
+          "status": "noted",
+          "owner": "main",
+          "nextStep": "reduzir reabertura artificial por updates de implementação",
+          "family": "program:openclaw-memory",
+          "validationOnly": true
         }
       ],
       "transitions": [
@@ -247,7 +275,8 @@
         "status": "blocked",
         "owner": "main",
         "nextStep": null,
-        "family": "program:mission-control"
+        "family": "program:mission-control",
+        "validationOnly": false
       },
       "history": [
         {
@@ -260,7 +289,8 @@
           "status": "blocked",
           "owner": "main",
           "nextStep": null,
-          "family": "program:mission-control"
+          "family": "program:mission-control",
+          "validationOnly": false
         }
       ],
       "transitions": [

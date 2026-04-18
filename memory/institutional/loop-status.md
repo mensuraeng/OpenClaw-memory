@@ -1,14 +1,14 @@
 # Loop status institucional
 
-_Gerado em 2026-04-18 22:15 UTC_
+_Gerado em 2026-04-18 23:06 UTC_
 
 - escopo: all
 - total de loops: 4
-- contagem por status: {"unknown": 1, "noted": 1, "blocked": 2}
+- contagem por status: {"unknown": 1, "noted": 1, "in_progress": 1, "blocked": 1}
 
 ## Loops ativos
 
-- program:openclaw-memory | status=blocked | título=OpenClaw Memory | loop closure implantado | owner=main | última transição=in_progress→blocked
+- program:openclaw-memory | status=in_progress | título=OpenClaw Memory | transição por evidência ativada | owner=main | última transição=in_progress→blocked
 - program:mission-control | status=blocked | título=Mission Control | resumo executivo de reconciliação | owner=main | última transição=∅→blocked
 
 ## Loops fechados / anotados

@@ -28,6 +28,8 @@ STATUS_BY_TYPE = {
     "decision_made": "noted",
 }
 
+NON_OPERATIONAL_REOPEN_SOURCES = {"internal", "setup"}
+
 INFORMATIVE_STATUSES = {"noted", "unknown"}
 OPERATIONAL_STATUSES = {"blocked", "open", "in_progress", "closed"}
 
@@ -127,17 +129,33 @@ def infer_loop_key(payload: dict) -> str:
 
 def summarize(payload: dict) -> dict:
     meta = payload.get("meta") or {}
+    body = str(payload.get("body") or "")
+    title = str(payload.get("title") or "")
+    text = normalize(f"{title} {body}")
+    validation_only = False
+    if str(payload.get("source") or "") in NON_OPERATIONAL_REOPEN_SOURCES:
+        validation_markers = [
+            "inconsistência",
+            "reabertura",
+            "teste",
+            "valid",
+            "simulad",
+            "implantado",
+        ]
+        if any(marker in text for marker in validation_markers):
+            validation_only = True
     return {
         "timestamp": payload.get("timestamp"),
         "day": payload.get("day"),
         "agent": payload.get("agent"),
         "type": payload.get("type"),
-        "title": payload.get("title"),
+        "title": title,
         "source": payload.get("source"),
         "status": infer_status(payload),
         "owner": meta.get("owner") or meta.get("agentId") or payload.get("agent"),
         "nextStep": meta.get("nextStep"),
         "family": infer_family(payload),
+        "validationOnly": validation_only,
     }
 
 
@@ -162,16 +180,24 @@ def choose_current(existing: dict | None, candidate: dict) -> dict:
     candidate_status = candidate.get("status") or "unknown"
     existing_ts = str(existing.get("timestamp") or "")
     candidate_ts = str(candidate.get("timestamp") or "")
+    candidate_validation_only = bool(candidate.get("validationOnly"))
+
+    if candidate_validation_only and existing_status in OPERATIONAL_STATUSES:
+        return existing
 
     if existing_status in OPERATIONAL_STATUSES and candidate_status in INFORMATIVE_STATUSES:
-        return existing if existing_ts >= candidate_ts or True else candidate
+        return existing
     if existing_status in INFORMATIVE_STATUSES and candidate_status in OPERATIONAL_STATUSES:
         return candidate
 
     if candidate_status in CLOSE_TRIGGERS and existing_status in {"blocked", "open", "in_progress"}:
         return candidate
+
     if existing_status == "closed" and candidate_status in REOPEN_TRIGGERS:
+        if candidate_validation_only:
+            return existing
         return candidate
+
     if existing_status == "closed" and candidate_status in PROGRESS_TRIGGERS:
         return candidate
     if existing_status in REOPEN_TRIGGERS and candidate_status in PROGRESS_TRIGGERS:
@@ -184,6 +210,8 @@ def choose_current(existing: dict | None, candidate: dict) -> dict:
             return candidate
 
     if STATUS_PRIORITY.get(candidate_status, 0) > STATUS_PRIORITY.get(existing_status, 0):
+        if existing_status == "closed" and candidate_status in REOPEN_TRIGGERS and candidate_validation_only:
+            return existing
         return candidate
     if STATUS_PRIORITY.get(candidate_status, 0) == STATUS_PRIORITY.get(existing_status, 0):
         if candidate_ts >= existing_ts:
