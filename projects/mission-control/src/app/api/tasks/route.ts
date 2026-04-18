@@ -1,66 +1,55 @@
-import { NextRequest, NextResponse } from "next/server";
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import path from "path";
+import { NextRequest, NextResponse } from 'next/server';
+import { createTaskExecution, getTaskMetrics, listTaskExecutions } from '@/lib/task-tracking';
 
-const DB_PATH = path.join(process.cwd(), "data", "tasks.json");
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const agent = searchParams.get('agent');
 
-function readDB() {
-  if (!existsSync(DB_PATH)) {
-    const init = { tasks: [], nextId: 1 };
-    writeFileSync(DB_PATH, JSON.stringify(init, null, 2));
-    return init;
+    let tasks = listTaskExecutions();
+    if (status && status !== 'all') {
+      tasks = tasks.filter((task) => task.status === status);
+    }
+    if (agent && agent !== 'all') {
+      tasks = tasks.filter((task) => task.targetAgent === agent || task.sourceAgent === agent);
+    }
+
+    return NextResponse.json({
+      tasks,
+      metrics: getTaskMetrics(),
+    });
+  } catch (error) {
+    console.error('Failed to list tasks:', error);
+    return NextResponse.json({ error: 'Failed to list tasks' }, { status: 500 });
   }
-  return JSON.parse(readFileSync(DB_PATH, "utf-8"));
 }
 
-function writeDB(data: any) {
-  writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
-}
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const task = createTaskExecution({
+      sourceAgent: body.sourceAgent || 'main',
+      targetAgent: body.targetAgent || 'main',
+      executionType: body.executionType || 'direct',
+      title: body.title || 'Nova tarefa',
+      objective: body.objective || body.title || 'Sem objetivo informado',
+      inputSummary: body.inputSummary || null,
+      expectedOutput: body.expectedOutput || null,
+      successCriteria: body.successCriteria || null,
+      riskLevel: body.riskLevel || 'medium',
+      slaMinutes: body.slaMinutes || null,
+      validationRequired: body.validationRequired ?? true,
+      parentTaskId: body.parentTaskId || null,
+      rootTaskId: body.rootTaskId || undefined,
+      handoffDepth: body.handoffDepth || 0,
+      tags: Array.isArray(body.tags) ? body.tags : [],
+      metadata: body.metadata || {},
+    });
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const company = searchParams.get("company");
-  const db = readDB();
-  const filtered = company && company !== "all"
-    ? db.tasks.filter((t: any) => t.company === company)
-    : db.tasks;
-  return NextResponse.json({ ok: true, tasks: filtered });
-}
-
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const db = readDB();
-  const task = {
-    id: db.nextId++,
-    title: body.title || "Nova tarefa",
-    description: body.description || "",
-    company: body.company || "mensura",
-    agent: body.agent || "main",
-    status: body.status || "todo",
-    priority: body.priority || "medium",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  db.tasks.push(task);
-  writeDB(db);
-  return NextResponse.json({ ok: true, task });
-}
-
-export async function PUT(req: NextRequest) {
-  const body = await req.json();
-  const db = readDB();
-  const idx = db.tasks.findIndex((t: any) => t.id === body.id);
-  if (idx === -1) return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
-  db.tasks[idx] = { ...db.tasks[idx], ...body, updatedAt: new Date().toISOString() };
-  writeDB(db);
-  return NextResponse.json({ ok: true, task: db.tasks[idx] });
-}
-
-export async function DELETE(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const id = Number(searchParams.get("id"));
-  const db = readDB();
-  db.tasks = db.tasks.filter((t: any) => t.id !== id);
-  writeDB(db);
-  return NextResponse.json({ ok: true });
+    return NextResponse.json({ task }, { status: 201 });
+  } catch (error) {
+    console.error('Failed to create task:', error);
+    return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
+  }
 }

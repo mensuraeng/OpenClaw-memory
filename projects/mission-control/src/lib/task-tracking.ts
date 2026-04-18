@@ -1,0 +1,292 @@
+import fs from 'fs';
+import path from 'path';
+import { randomUUID } from 'crypto';
+
+const TASKS_DIR = path.join(process.cwd(), 'runtime', 'tasks');
+const EXECUTIONS_PATH = path.join(TASKS_DIR, 'task-executions.jsonl');
+const EVENTS_PATH = path.join(TASKS_DIR, 'task-events.jsonl');
+
+export type TaskExecutionStatus =
+  | 'queued'
+  | 'running'
+  | 'waiting_input'
+  | 'blocked'
+  | 'failed'
+  | 'completed_unvalidated'
+  | 'completed_validated'
+  | 'cancelled';
+
+export type TaskExecutionType =
+  | 'direct'
+  | 'delegation'
+  | 'pipeline'
+  | 'collaboration'
+  | 'watchdog';
+
+export interface TaskExecution {
+  taskId: string;
+  parentTaskId?: string | null;
+  rootTaskId: string;
+  sessionKey?: string | null;
+  sourceAgent: string;
+  targetAgent: string;
+  executionType: TaskExecutionType;
+  title: string;
+  objective: string;
+  inputSummary?: string | null;
+  expectedOutput?: string | null;
+  successCriteria?: string | null;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  status: TaskExecutionStatus;
+  attempt: number;
+  maxAttempts: number;
+  createdAt: string;
+  startedAt?: string | null;
+  updatedAt: string;
+  finishedAt?: string | null;
+  slaMinutes?: number | null;
+  validationRequired: boolean;
+  validatedAt?: string | null;
+  validatedBy?: string | null;
+  blockingReason?: string | null;
+  failureReason?: string | null;
+  handoffDepth: number;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}
+
+export type TaskEventType =
+  | 'created'
+  | 'started'
+  | 'delegated'
+  | 'retry_scheduled'
+  | 'retry_started'
+  | 'waiting_input'
+  | 'blocked'
+  | 'failed'
+  | 'completed_unvalidated'
+  | 'validated'
+  | 'cancelled'
+  | 'note';
+
+export interface TaskEvent {
+  eventId: string;
+  taskId: string;
+  timestamp: string;
+  agentId: string;
+  type: TaskEventType;
+  message: string;
+  payload?: Record<string, unknown>;
+}
+
+function ensureStore() {
+  if (!fs.existsSync(TASKS_DIR)) {
+    fs.mkdirSync(TASKS_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(EXECUTIONS_PATH)) {
+    fs.writeFileSync(EXECUTIONS_PATH, '', 'utf-8');
+  }
+  if (!fs.existsSync(EVENTS_PATH)) {
+    fs.writeFileSync(EVENTS_PATH, '', 'utf-8');
+  }
+}
+
+function readJsonl<T>(filePath: string): T[] {
+  ensureStore();
+  const raw = fs.readFileSync(filePath, 'utf-8').trim();
+  if (!raw) return [];
+  return raw
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as T);
+}
+
+function appendJsonl<T>(filePath: string, row: T) {
+  ensureStore();
+  fs.appendFileSync(filePath, `${JSON.stringify(row)}\n`, 'utf-8');
+}
+
+function overwriteExecutions(rows: TaskExecution[]) {
+  ensureStore();
+  const content = rows.map((row) => JSON.stringify(row)).join('\n');
+  fs.writeFileSync(EXECUTIONS_PATH, content ? `${content}\n` : '', 'utf-8');
+}
+
+export function listTaskExecutions() {
+  return readJsonl<TaskExecution>(EXECUTIONS_PATH).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+export function listTaskEvents(taskId?: string) {
+  const rows = readJsonl<TaskEvent>(EVENTS_PATH).sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  return taskId ? rows.filter((row) => row.taskId === taskId) : rows;
+}
+
+export function getTaskExecution(taskId: string) {
+  return listTaskExecutions().find((row) => row.taskId === taskId) ?? null;
+}
+
+export function createTaskExecution(input: {
+  parentTaskId?: string | null;
+  rootTaskId?: string;
+  sessionKey?: string | null;
+  sourceAgent: string;
+  targetAgent: string;
+  executionType: TaskExecutionType;
+  title: string;
+  objective: string;
+  inputSummary?: string | null;
+  expectedOutput?: string | null;
+  successCriteria?: string | null;
+  riskLevel?: TaskExecution['riskLevel'];
+  slaMinutes?: number | null;
+  validationRequired?: boolean;
+  handoffDepth?: number;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}) {
+  const now = new Date().toISOString();
+  const taskId = randomUUID();
+  const task: TaskExecution = {
+    taskId,
+    parentTaskId: input.parentTaskId ?? null,
+    rootTaskId: input.rootTaskId ?? taskId,
+    sessionKey: input.sessionKey ?? null,
+    sourceAgent: input.sourceAgent,
+    targetAgent: input.targetAgent,
+    executionType: input.executionType,
+    title: input.title,
+    objective: input.objective,
+    inputSummary: input.inputSummary ?? null,
+    expectedOutput: input.expectedOutput ?? null,
+    successCriteria: input.successCriteria ?? null,
+    riskLevel: input.riskLevel ?? 'medium',
+    status: 'queued',
+    attempt: 1,
+    maxAttempts: 2,
+    createdAt: now,
+    updatedAt: now,
+    slaMinutes: input.slaMinutes ?? null,
+    validationRequired: input.validationRequired ?? true,
+    handoffDepth: input.handoffDepth ?? 0,
+    tags: input.tags ?? [],
+    metadata: input.metadata ?? {},
+  };
+  appendJsonl(EXECUTIONS_PATH, task);
+  appendTaskEvent({
+    taskId,
+    agentId: input.sourceAgent,
+    type: 'created',
+    message: `Tarefa criada: ${input.title}`,
+    payload: { targetAgent: input.targetAgent, executionType: input.executionType },
+  });
+  return task;
+}
+
+export function appendTaskEvent(input: {
+  taskId: string;
+  agentId: string;
+  type: TaskEventType;
+  message: string;
+  payload?: Record<string, unknown>;
+}) {
+  const event: TaskEvent = {
+    eventId: randomUUID(),
+    taskId: input.taskId,
+    timestamp: new Date().toISOString(),
+    agentId: input.agentId,
+    type: input.type,
+    message: input.message,
+    payload: input.payload,
+  };
+  appendJsonl(EVENTS_PATH, event);
+  return event;
+}
+
+export function updateTaskExecution(taskId: string, patch: Partial<TaskExecution>) {
+  const rows = listTaskExecutions();
+  const index = rows.findIndex((row) => row.taskId === taskId);
+  if (index === -1) {
+    throw new Error(`Task not found: ${taskId}`);
+  }
+  rows[index] = {
+    ...rows[index],
+    ...patch,
+    updatedAt: new Date().toISOString(),
+  };
+  overwriteExecutions(rows);
+  return rows[index];
+}
+
+export function startTaskExecution(taskId: string, agentId: string) {
+  const now = new Date().toISOString();
+  const task = updateTaskExecution(taskId, { status: 'running', startedAt: now });
+  appendTaskEvent({ taskId, agentId, type: 'started', message: 'Execução iniciada' });
+  return task;
+}
+
+export function blockTaskExecution(taskId: string, agentId: string, reason: string, waitingInput = false) {
+  const status: TaskExecutionStatus = waitingInput ? 'waiting_input' : 'blocked';
+  const eventType: TaskEventType = waitingInput ? 'waiting_input' : 'blocked';
+  const task = updateTaskExecution(taskId, { status, blockingReason: reason });
+  appendTaskEvent({ taskId, agentId, type: eventType, message: reason });
+  return task;
+}
+
+export function failTaskExecution(taskId: string, agentId: string, reason: string) {
+  const task = updateTaskExecution(taskId, { status: 'failed', failureReason: reason, finishedAt: new Date().toISOString() });
+  appendTaskEvent({ taskId, agentId, type: 'failed', message: reason });
+  return task;
+}
+
+export function completeTaskExecution(taskId: string, agentId: string, message?: string) {
+  const task = updateTaskExecution(taskId, {
+    status: 'completed_unvalidated',
+    finishedAt: new Date().toISOString(),
+  });
+  appendTaskEvent({ taskId, agentId, type: 'completed_unvalidated', message: message ?? 'Execução concluída, aguardando validação' });
+  return task;
+}
+
+export function validateTaskExecution(taskId: string, agentId: string) {
+  const now = new Date().toISOString();
+  const task = updateTaskExecution(taskId, {
+    status: 'completed_validated',
+    validatedAt: now,
+    validatedBy: agentId,
+    finishedAt: now,
+  });
+  appendTaskEvent({ taskId, agentId, type: 'validated', message: 'Execução validada' });
+  return task;
+}
+
+export function getTaskTree(taskId: string) {
+  const tasks = listTaskExecutions();
+  const root = tasks.find((task) => task.taskId === taskId || task.rootTaskId === taskId);
+  if (!root) return [];
+  return tasks.filter((task) => task.rootTaskId === root.rootTaskId).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export function getTaskMetrics() {
+  const tasks = listTaskExecutions();
+  const openStatuses: TaskExecutionStatus[] = ['queued', 'running', 'waiting_input', 'blocked'];
+  const byAgent: Record<string, { open: number; blocked: number; validated: number; failed: number }> = {};
+
+  for (const task of tasks) {
+    if (!byAgent[task.targetAgent]) {
+      byAgent[task.targetAgent] = { open: 0, blocked: 0, validated: 0, failed: 0 };
+    }
+    if (openStatuses.includes(task.status)) byAgent[task.targetAgent].open += 1;
+    if (task.status === 'blocked' || task.status === 'waiting_input') byAgent[task.targetAgent].blocked += 1;
+    if (task.status === 'completed_validated') byAgent[task.targetAgent].validated += 1;
+    if (task.status === 'failed') byAgent[task.targetAgent].failed += 1;
+  }
+
+  return {
+    total: tasks.length,
+    open: tasks.filter((task) => openStatuses.includes(task.status)).length,
+    blocked: tasks.filter((task) => task.status === 'blocked' || task.status === 'waiting_input').length,
+    validated: tasks.filter((task) => task.status === 'completed_validated').length,
+    failed: tasks.filter((task) => task.status === 'failed').length,
+    byAgent,
+  };
+}

@@ -27,6 +27,7 @@ import {
   SquareTerminal,
   History,
   Globe,
+  CheckSquare,
 } from "lucide-react";
 import { getAgentDisplayName } from "@/config/branding";
 
@@ -42,6 +43,7 @@ const navItems = [
   { href: "/social", label: "Redes Sociais", icon: Globe },
   { href: "/workflows", label: "Workflows", icon: Workflow },
   { href: "/activity", label: "Atividade", icon: Activity },
+  { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/memory", label: "Memória", icon: Brain },
   { href: "/files", label: "Arquivos", icon: FolderOpen },
   { href: "/cron", label: "Cron Jobs", icon: Timer },

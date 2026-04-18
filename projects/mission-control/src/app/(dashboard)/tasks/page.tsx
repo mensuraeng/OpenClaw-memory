@@ -1,0 +1,163 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { AlertTriangle, CheckCircle2, Clock3, PauseCircle, PlayCircle, XCircle } from "lucide-react";
+
+type TaskStatus =
+  | "queued"
+  | "running"
+  | "waiting_input"
+  | "blocked"
+  | "failed"
+  | "completed_unvalidated"
+  | "completed_validated"
+  | "cancelled";
+
+interface TaskExecution {
+  taskId: string;
+  title: string;
+  objective: string;
+  sourceAgent: string;
+  targetAgent: string;
+  executionType: string;
+  status: TaskStatus;
+  riskLevel: "low" | "medium" | "high" | "critical";
+  attempt: number;
+  createdAt: string;
+  updatedAt: string;
+  blockingReason?: string | null;
+}
+
+interface TaskMetrics {
+  total: number;
+  open: number;
+  blocked: number;
+  validated: number;
+  failed: number;
+}
+
+function statusMeta(status: TaskStatus) {
+  switch (status) {
+    case "queued":
+      return { label: "Na fila", color: "#94a3b8", icon: Clock3 };
+    case "running":
+      return { label: "Rodando", color: "#3b82f6", icon: PlayCircle };
+    case "waiting_input":
+      return { label: "Aguardando input", color: "#f59e0b", icon: PauseCircle };
+    case "blocked":
+      return { label: "Bloqueada", color: "#f97316", icon: AlertTriangle };
+    case "failed":
+      return { label: "Falhou", color: "#ef4444", icon: XCircle };
+    case "completed_unvalidated":
+      return { label: "Concluída sem validação", color: "#a855f7", icon: CheckCircle2 };
+    case "completed_validated":
+      return { label: "Validada", color: "#22c55e", icon: CheckCircle2 };
+    case "cancelled":
+      return { label: "Cancelada", color: "#6b7280", icon: XCircle };
+    default:
+      return { label: status, color: "#94a3b8", icon: Clock3 };
+  }
+}
+
+export default function TasksPage() {
+  const [tasks, setTasks] = useState<TaskExecution[]>([]);
+  const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0 });
+
+  useEffect(() => {
+    fetch("/api/tasks")
+      .then((r) => r.json())
+      .then((data) => {
+        setTasks(data.tasks || []);
+        setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0 });
+      })
+      .catch(console.error);
+  }, []);
+
+  const blockedOrWaiting = useMemo(
+    () => tasks.filter((task) => task.status === "blocked" || task.status === "waiting_input"),
+    [tasks]
+  );
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>Task Tracking</h1>
+        <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          Trilha inicial de tarefas, delegações, bloqueios e validações do sistema multiagente.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {[
+          ["Total", metrics.total],
+          ["Abertas", metrics.open],
+          ["Bloqueadas", metrics.blocked],
+          ["Validadas", metrics.validated],
+          ["Falhas", metrics.failed],
+        ].map(([label, value]) => (
+          <div key={String(label)} className="rounded-2xl border p-4" style={{ borderColor: "var(--border-subtle)", background: "var(--surface-elevated)" }}>
+            <div className="text-xs uppercase tracking-wide" style={{ color: "var(--text-secondary)" }}>{label}</div>
+            <div className="text-3xl font-semibold mt-2" style={{ color: "var(--text-primary)" }}>{value}</div>
+          </div>
+        ))}
+      </div>
+
+      {blockedOrWaiting.length > 0 && (
+        <div className="rounded-2xl border p-4" style={{ borderColor: "rgba(249,115,22,0.35)", background: "rgba(249,115,22,0.08)" }}>
+          <div className="flex items-center gap-2 mb-3" style={{ color: "#f97316" }}>
+            <AlertTriangle size={18} />
+            <h2 className="font-semibold">Bloqueios e espera de input</h2>
+          </div>
+          <div className="space-y-2">
+            {blockedOrWaiting.slice(0, 5).map((task) => (
+              <div key={task.taskId} className="text-sm" style={{ color: "var(--text-primary)" }}>
+                <strong>{task.title}</strong> · {task.targetAgent} · {task.blockingReason || "Sem motivo registrado"}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="rounded-2xl border overflow-hidden" style={{ borderColor: "var(--border-subtle)", background: "var(--surface-elevated)" }}>
+        <div className="px-4 py-3 border-b" style={{ borderColor: "var(--border-subtle)" }}>
+          <h2 className="font-semibold" style={{ color: "var(--text-primary)" }}>Tarefas recentes</h2>
+        </div>
+        <div className="divide-y" style={{ borderColor: "var(--border-subtle)" }}>
+          {tasks.length === 0 ? (
+            <div className="p-6 text-sm" style={{ color: "var(--text-secondary)" }}>
+              Nenhuma tarefa registrada ainda.
+            </div>
+          ) : (
+            tasks.map((task) => {
+              const meta = statusMeta(task.status);
+              const Icon = meta.icon;
+              return (
+                <Link key={task.taskId} href={`/tasks/${task.taskId}`} className="block p-4 hover:bg-white/5 transition-colors">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full" style={{ background: `${meta.color}1A`, color: meta.color }}>
+                          <Icon size={14} /> {meta.label}
+                        </span>
+                        <span className="text-xs uppercase" style={{ color: "var(--text-secondary)" }}>{task.executionType}</span>
+                        <span className="text-xs uppercase" style={{ color: "var(--text-secondary)" }}>risco {task.riskLevel}</span>
+                      </div>
+                      <div className="font-semibold" style={{ color: "var(--text-primary)" }}>{task.title}</div>
+                      <div className="text-sm" style={{ color: "var(--text-secondary)" }}>{task.objective}</div>
+                    </div>
+                    <div className="text-xs md:text-right" style={{ color: "var(--text-secondary)" }}>
+                      <div>{task.sourceAgent} → {task.targetAgent}</div>
+                      <div>Tentativa {task.attempt}</div>
+                      <div>{new Date(task.updatedAt).toLocaleString("pt-BR")}</div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
