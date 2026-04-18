@@ -1,0 +1,6 @@
+{
+  "subdomain": "pcs-subdomain",
+  "username": "api-user",
+  "password": "api-password",
+  "timeoutSeconds": 30
+}
