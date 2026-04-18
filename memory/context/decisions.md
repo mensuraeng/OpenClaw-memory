@@ -12,8 +12,10 @@ Enviar email, mensagem, post em rede social, apagar arquivo, alterar configuraç
 ### Microsoft Graph é o padrão para email e calendário (2026-04-01)
 Microsoft 365 bloqueia auth básica. Email e calendário devem usar Graph API com client credentials flow. Não usar IMAP/SMTP direto como padrão.
 
-### E-mails operacionais devem sair via Microsoft Graph usando a conta da Flávia (2026-04-14)
+### E-mails operacionais devem sair via Microsoft Graph usando a conta da Flávia (2026-04-14, reforçado em 2026-04-18)
 Para envio de e-mails operacionais, usar sempre Microsoft Graph e priorizar a conta `flavia@mensuraengenharia.com.br` como remetente padrão da Flávia. Evitar Himalaya/IMAP/SMTP básico como caminho operacional.
+
+Regra reforçada em 18/04/2026: envio de e-mail externo deve ser sempre pelo remetente da Flávia por padrão. Se o Alê quiser que o envio saia do e-mail dele, isso precisa ser solicitado explicitamente no próprio pedido.
 
 ### KeePassXC é o cofre principal da operação (2026-04-07)
 Credenciais persistentes devem viver no cofre, não espalhadas em memória operacional ou documentação.
