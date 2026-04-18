@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createTaskExecution, getTaskMetrics, listTaskExecutions } from '@/lib/task-tracking';
 
+function compareTasks(a: any, b: any) {
+  const statusWeight = (task: any) => {
+    if (task.riskLevel === 'critical') return 500;
+    if (task.status === 'blocked' || task.status === 'waiting_input') return 400;
+    if (task.riskLevel === 'high') return 300;
+    if (task.status === 'running') return 200;
+    if (task.status === 'queued') return 100;
+    return 0;
+  };
+
+  return statusWeight(b) - statusWeight(a) || b.updatedAt.localeCompare(a.updatedAt);
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -16,7 +29,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      tasks,
+      tasks: tasks.sort(compareTasks),
       metrics: getTaskMetrics(),
     });
   } catch (error) {

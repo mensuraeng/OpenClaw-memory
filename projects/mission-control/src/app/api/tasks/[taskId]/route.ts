@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTaskExecution, getTaskTree } from '@/lib/task-tracking';
+import { getTaskExecution, getTaskTree, listTaskEvents } from '@/lib/task-tracking';
 
 export async function GET(_request: NextRequest, context: { params: Promise<{ taskId: string }> }) {
   try {
@@ -8,7 +8,7 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ ta
     if (!task) {
       return NextResponse.json({ error: 'Task not found' }, { status: 404 });
     }
-    return NextResponse.json({ task, tree: getTaskTree(taskId) });
+    return NextResponse.json({ task, tree: getTaskTree(taskId), recentEvents: listTaskEvents(taskId).slice(-10) });
   } catch (error) {
     console.error('Failed to get task:', error);
     return NextResponse.json({ error: 'Failed to get task' }, { status: 500 });

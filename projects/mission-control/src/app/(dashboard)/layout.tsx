@@ -14,11 +14,12 @@ export default function DashboardLayout({
       
       <main
         style={{
-          marginLeft: "68px", // Width of dock
-          marginTop: "48px", // Height of top bar
-          marginBottom: "32px", // Height of status bar
+          marginLeft: "68px",
+          marginTop: "48px",
+          marginBottom: "32px",
           minHeight: "calc(100vh - 48px - 32px)",
           padding: "24px",
+          maxWidth: "1600px",
         }}
       >
         {children}
