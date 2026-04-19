@@ -1,0 +1,15 @@
+# Jekyll config for OpenClaw Memory GitHub Pages
+# Disable Liquid processing to avoid issues with {{ }} in skill files
+render_with_liquid: false
+
+# Exclude non-documentation directories
+exclude:
+  - tmp/
+  - finance/tmp/
+  - workspace/tmp/
+  - "*.sh"
+  - "*.py"
+  - "*.json"
+  - node_modules/
+  - .openclaw/
+  - "**/.git"
