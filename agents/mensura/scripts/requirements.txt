@@ -1,0 +1,14 @@
+# Pipeline relatorio-preditivo-obras — dependencias fixadas
+# Gerado em: 2026-04-19 | VPS: 76.13.161.249
+# Python: 3.12.3 | Java: OpenJDK 21.0.10
+#
+# ATENCAO: NAO atualize sem testar o pipeline completo.
+# A API do mpxj mudou de net.sf.mpxj (<=12.x) para org.mpxj (>=13.x).
+# Qualquer upgrade pode quebrar extract_schedule.py silenciosamente.
+#
+# Para instalar: pip install -r requirements.txt --break-system-packages
+# Para verificar: python3 verify_env.py
+
+mpxj==16.1.0
+JPype1==1.7.0
+packaging>=23.0
