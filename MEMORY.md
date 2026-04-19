@@ -1,6 +1,6 @@
 # MEMORY.md — Painel de Continuidade da Flávia
 
-_Última atualização: 2026-04-17_
+_Última atualização: 2026-04-19_
 
 ## O que este arquivo é
 
@@ -13,19 +13,19 @@ Serve para responder rápido:
 - onde fica cada contexto relevante
 
 ## Estado Atual
-_Atualizado automaticamente em 2026-04-18 pelo update_memory_panel.py_
+_Atualizado automaticamente em 2026-04-19 pelo update_memory_panel.py_
 
 ### Pendencias Abertas (10 itens)
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
 - [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
 - [ ] **Corrigir roteamento do domínio de relatórios MIA** — `relatorios.miaengenharia.com.br/ccsp-casa-7/*` ainda cai no fallback da SPA principal em vez de servir páginas estáticas extras como o checklist.
-- [ ] **Instagram integration** — criar app no Meta Developer e fornecer App ID + Secret.
+- [ ] **Instagram integration** — confirmar arquitetura final 10/10: conta Instagram Business exata, Facebook Page vinculada, domínio/subdomínio público das páginas legais e objetivo/escopos reais do app antes de live/review.
 - [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
-- [ ] **Decidir política final das skills** — padronizar o que fica compartilhado no workspace principal e o que deve morar por agente/workspace específico.
-- [ ] **Avaliar triagem operacional da inbox PCS** — a integração Graph da PCS foi habilitada, mas vale decidir se e como tratar automaticamente emails como `ENC: INSTALAÇÃO ELÉTRICA` com marca de urgência.
 - [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
 - [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
+- [ ] **Estruturar grupos do cofre** — consolidar grupos padrão: Email, APIs, Social, Infra, Financeiro.
+- [ ] **Revisar falha histórica do calendário Mensura** — houve erro `ErrorInvalidUser` em ciclo anterior; confirmar se foi definitivamente sanado ou se ainda reaparece em alguma rota/conta.
 
 ### Ultimas Decisoes Ativas
 - PCS adota identidade visual oficial enviada pelo Alê (2026-04-13)
@@ -34,8 +34,8 @@ _Atualizado automaticamente em 2026-04-18 pelo update_memory_panel.py_
 - Tópico `AGENTE FINANCEIRO` é roteado para o agente `finance` (2026-04-13)
 - GitHub será o segundo cérebro operacional (2026-04-14)
 
-### Destaques de Hoje (2026-04-18)
-- Não foram identificados e-mails urgentes não lidos nas caixas verificadas; o que apareceu foi majoritariamente marketing
+### Destaques de Hoje (2026-04-19)
+_Sem destaques registrados hoje_
 ## Onde está cada coisa
 
 ### Contexto estrutural

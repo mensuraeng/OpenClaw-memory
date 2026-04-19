@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-from .auth import build_basic_auth_header
+from .auth import AccessToken, fetch_access_token
 from .config import SiengeConfig
 from .errors import SiengeApiError
 from .models import FetchResult
@@ -16,7 +16,7 @@ from .models import FetchResult
 class SiengeClient:
     def __init__(self, config: SiengeConfig):
         self.config = config
-        self.auth_header = build_basic_auth_header(config)
+        self._access_token: AccessToken | None = None
 
     def _request(
         self,
@@ -27,10 +27,10 @@ class SiengeClient:
         retries: int = 3,
     ) -> FetchResult:
         query = f"?{urllib.parse.urlencode(params, doseq=True)}" if params else ""
-        url = f"{self.config.base_url}/{path.lstrip('/')}" + query
+        url = f"{self.config.api_base_url}/{path.lstrip('/')}" + query
         data = json.dumps(body).encode("utf-8") if body else None
         headers = {
-            "Authorization": self.auth_header,
+            "Authorization": self._get_access_token().authorization_header,
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
@@ -51,6 +51,8 @@ class SiengeClient:
                 payload = exc.read().decode("utf-8", errors="ignore")
                 if attempt >= retries or exc.code < 500:
                     raise SiengeApiError(exc.code, f"Erro na API {path}", payload)
+                if exc.code == 401:
+                    self._access_token = None
             except urllib.error.URLError as exc:
                 payload = str(exc.reason)
                 if attempt >= retries:
@@ -59,6 +61,11 @@ class SiengeClient:
             time.sleep(min(attempt * 2, 10))
 
         raise SiengeApiError(0, f"Falha inesperada em {path}")
+
+    def _get_access_token(self) -> AccessToken:
+        if self._access_token is None:
+            self._access_token = fetch_access_token(self.config)
+        return self._access_token
 
     def get(self, path: str, params: dict[str, Any] | None = None) -> FetchResult:
         return self._request("GET", path, params=params)

@@ -75,6 +75,15 @@ Em scripts de cobrança ou alinhamento diário, um `dry-run` no dia atual só pr
 ### Pages direto e domínio roteado podem divergir mesmo com status 200 (2026-04-17)
 Quando houver Worker ou roteador na frente de um site estático, validar separadamente o `*.pages.dev` e o domínio customizado. Um `200` no domínio final não prova que o conteúdo certo está sendo servido; o roteador pode estar devolvendo o fallback da SPA principal.
 
+### Categorizar inbox ruim só acelera erro visual (2026-04-18)
+Antes de ativar categoria Graph em produção, validar a qualidade da classificação em dry-run. Se a lógica ainda joga newsletter, marketing e aviso automático em `operacional` ou `urgente`, aplicar label na mailbox só institucionaliza ruído.
+
+### Organization API do LinkedIn não falha por bug quando falta aprovação, falha por produto (2026-04-19)
+Se os endpoints de organização retornarem `403 ACCESS_DENIED` com token humano válido, isso pode ser bloqueio deliberado da LinkedIn Community Management API e não erro de implementação. Antes de insistir em código, confirmar escopo aprovado e política do produto.
+
+### Token funcional em arquivo de config é incidente, não conveniência (2026-04-19)
+Se um access token com poder de postar em nome do Alê estiver salvo em plaintext no workspace, tratar como risco operacional imediato. Funcionar não valida o desenho; nesse caso, o certo é migrar para variável de ambiente/cofre ou endurecer acesso antes de ampliar automação.
+
 ## Temporárias
 
 ### `openclaw thinking` não existe nesta versão (2026-04-01 | revisar depois de upgrade)

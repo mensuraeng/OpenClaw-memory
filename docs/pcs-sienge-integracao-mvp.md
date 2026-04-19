@@ -213,14 +213,25 @@ integrations/
 
 ## Dependências operacionais ainda necessárias
 
-Para sair do desenho e entrar em execução real, faltam os seguintes insumos:
+Para sair do desenho e entrar em execução real, o quadro agora é este:
 
-1. subdomínio PCS no Sienge
-2. usuário de API
-3. senha ou token de API
-4. confirmação de que a PCS está em ambiente compatível com APIs DC
-5. decisão sobre sistema mestre dos insumos
-6. lista de campos obrigatórios da operação PCS para:
+### Já confirmado
+1. subdomínio PCS no Sienge: `pcsservices`
+2. empresa: `PCS OBRAS E LOCAÇÕES LTDA`
+3. usuário de API existente e ativo: `project`
+4. username de autenticação: `pcsservices-project`
+5. UUID do usuário de API: `b286dd06-dac8-4ed0-83d3-a8c4f514a61a`
+6. UUID interno da empresa: `2c30d0c5-db58-440a-837c-6e61f231b855`
+7. autenticação real: `OAuth2` com `Basic Auth (username:password)` para obtenção do bearer token
+8. endpoint de token: `POST https://pcsservices.sienge.com.br/sienge/oauth/token`
+9. endpoint REST base: `https://pcsservices.sienge.com.br/sienge/api/v1`
+
+### Ainda falta
+1. gerar a senha do usuário `project`
+2. liberar os recursos necessários no usuário de API
+3. confirmar o primeiro endpoint já habilitado para teste real
+4. decisão sobre sistema mestre dos insumos
+5. lista de campos obrigatórios da operação PCS para:
    - insumo
    - solicitação
    - pedido
@@ -238,10 +249,26 @@ A implantação só conta como concluída por fase quando houver:
 
 ## Próximo passo recomendado
 
-Executar a preparação técnica da base de integração no workspace e criar os primeiros módulos do conector Sienge para PCS, começando por:
-- config
-- auth
-- client
-- creditors
-- cost_centers
-- payables
+A base técnica já foi ajustada para o modelo real de auth do Sienge.
+
+Mas a leitura correta agora é esta:
+- o bloqueio principal não é mais descoberta técnica
+- o bloqueio principal é permissão e credencial operacional
+
+Ordem mínima para destravar:
+1. entrar em `#/api-management`
+2. editar o usuário `project`
+3. clicar em `GERAR NOVA SENHA` e copiar na hora
+4. habilitar os recursos da integração, no mínimo:
+   - `creditor-v1`
+   - `cost-center-v1`
+   - `enterprise-v1`
+   - `bulk-data-building-resource-v1`
+   - `purchase-requests-v1`
+   - `purchase-orders-v1`
+   - `purchase-quotations-v1`
+   - `bill-debt-v1`
+   - `accounts-receivable-v1`
+5. confirmar se a PCS vai permanecer no freemium de `100 req/dia` ou subir para plano pago
+
+Sem isso, qualquer integração real fica capada antes de começar.

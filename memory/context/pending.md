@@ -2,7 +2,7 @@
 
 > Itens aguardando input, acesso, decisão ou saneamento operacional.
 
-_Atualizado em 2026-04-17_
+_Atualizado em 2026-04-18_
 
 ## Críticas
 
@@ -13,13 +13,10 @@ _Atualizado em 2026-04-17_
 
 ## Aguardando Alê
 
-- [ ] **Instagram integration** — criar app no Meta Developer e fornecer App ID + Secret.
+- [ ] **Instagram integration** — confirmar arquitetura final 10/10: conta Instagram Business exata, Facebook Page vinculada, domínio/subdomínio público das páginas legais e objetivo/escopos reais do app antes de live/review.
 - [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
-- [ ] **Decidir política final das skills** — padronizar o que fica compartilhado no workspace principal e o que deve morar por agente/workspace específico.
 
 ## Em andamento interno
-
-- [ ] **Avaliar triagem operacional da inbox PCS** — a integração Graph da PCS foi habilitada, mas vale decidir se e como tratar automaticamente emails como `ENC: INSTALAÇÃO ELÉTRICA` com marca de urgência.
 
 - [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
 - [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
@@ -29,12 +26,16 @@ _Atualizado em 2026-04-17_
 - [ ] **Mapear captura automática por estação/agente** — decidir quais eventos, arquivos e registros entram no inbox bruto sem exigir processo manual do time.
 - [ ] **Definir política de consolidação noturna** — critérios de promoção, deduplicação, vínculo entre itens relacionados e descarte de ruído.
 - [ ] **Padronizar catálogo de skills do ecossistema** — inventário oficial, classificação compartilhada vs específica e convenção para futuras instalações.
-- [ ] **Corrigir warnings estruturais do Mission Control** — migrar `middleware` para `proxy` e mover `themeColor` para `viewport` nas rotas afetadas.
 - [ ] **Incorporar checklist cliente na página principal da Casa 7** — manter como próximo passo depois de estabilizar a rota/domínio do checklist.
+- [ ] **Calibrar triagem da inbox PCS antes de live** — categorização Graph foi implementada, mas ainda há falso `operacional`/`urgente`; ajustar ordem das regras, fortalecer `ruído/arquivo` e só então ativar sem dry-run.
 
 ## Aguardando terceiros
 
-- [ ] **LinkedIn Community API** — aprovação do app institucional `OpenClaw - Community API` para destravar Organization APIs e publicação em páginas.
+- [ ] **LinkedIn Community API** — aprovação do app institucional `OpenClaw - Community API` para destravar `rw_organization_admin`, Organization APIs e publicação em páginas.
+
+## Segurança / saneamento
+
+- [ ] **Remover token LinkedIn em plaintext do workspace** — `config/linkedin-mensura.json` está com access token pessoal ativo em texto aberto; mover para variável de ambiente ou endurecer permissão/acesso antes de ampliar uso por agentes.
 
 ## Regra de manutenção
 

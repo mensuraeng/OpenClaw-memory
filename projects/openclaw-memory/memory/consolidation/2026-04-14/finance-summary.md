@@ -1,6 +1,6 @@
 # finance — consolidação 2026-04-14
 
-Gerado em 2026-04-15 01:33 UTC.
+Gerado em 2026-04-18 14:27 UTC.
 
 - eventos capturados: 0
 - notas presentes: sim

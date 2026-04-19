@@ -149,3 +149,17 @@ A operação completa de workflows ClawFlows (CLI, criação, locations, atalhos
 |---|---|---|
 | P&G Louveira (MENSURA) | 🔴 Notificação legal ativa | Toda comunicação externa passa por revisão dupla do Alê antes de envio. Nunca admitir culpa, prazo ou responsabilidade sem confirmação explícita. |
 | Paranapiacaba (PCS) | 🟡 Patrimônio tombado CONDEPHAAT | Intervenção física exige aprovação prévia do órgão. Comunicações formais têm tramitação específica. |
+
+
+## Skills Path Convention (updated 2026-04-18)
+
+Skills foram migradas para estrutura em camadas. Novos paths:
+
+- Shared (todos os agentes): 
+- WhatsApp: 
+- Core/sistema: 
+- Mensura (fechado): 
+- Finance (fechado): 
+- PCS (fechado): 
+
+Ver documentacao completa: 

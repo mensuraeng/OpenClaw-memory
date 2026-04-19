@@ -16,7 +16,14 @@ class SiengeConfig:
     subdomain: str
     username: str
     password: str
-    base_url: str
+    token_url: str
+    api_base_url: str
+    company_name: str | None = None
+    api_user_name: str | None = None
+    api_user_id: str | None = None
+    company_id: str | None = None
+    timezone: str | None = None
+    auth_type: str = "oauth2_basic_oauth_client_credentials"
     timeout_seconds: int = 30
 
     @classmethod
@@ -38,11 +45,19 @@ class SiengeConfig:
                 "Config inválida. Esperado: subdomain, username, password"
             )
 
-        base_url = data.get("baseUrl") or f"https://api.sienge.com.br/{subdomain}/public/api"
+        token_url = data.get("tokenUrl") or f"https://{subdomain}.sienge.com.br/sienge/oauth/token"
+        api_base_url = data.get("apiBaseUrl") or f"https://{subdomain}.sienge.com.br/sienge/api/v1"
         return cls(
             subdomain=subdomain,
             username=username,
             password=password,
-            base_url=base_url.rstrip("/"),
+            token_url=token_url.rstrip("/"),
+            api_base_url=api_base_url.rstrip("/"),
+            company_name=data.get("companyName"),
+            api_user_name=data.get("apiUserName"),
+            api_user_id=data.get("apiUserId"),
+            company_id=data.get("companyId"),
+            timezone=data.get("timezone"),
+            auth_type=data.get("authType") or "oauth2_basic_oauth_client_credentials",
             timeout_seconds=timeout_seconds,
         )

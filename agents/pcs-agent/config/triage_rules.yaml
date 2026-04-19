@@ -1,0 +1,85 @@
+# PCS Inbox Triage Rules
+# Configuracao de triagem automatica de e-mails PCS — OpenClaw Agent
+# Editar este arquivo para ajustar regras sem alterar o script principal
+
+categories:
+  urgent: PCS_URGENTE
+  pending: PCS_OPERACIONAL
+  archive: PCS_ARQUIVO
+  ignore: PCS_RUIDO
+
+urgent:
+  senders:
+    - condephaat
+    - iphan
+    - prefeitura
+    - tce
+    - tcu
+    - tribunal
+    - ministerio
+    - cartorio
+  subject_keywords:
+    - prazo
+    - impugnacao
+    - recurso
+    - habilitacao
+    - vencimento
+    - notificacao
+    - embargo
+    - multa
+    - intimacao
+    - citacao
+    - autuacao
+    - suspensao
+  body_keywords:
+    - auto de infracao
+    - contrato rescindido
+    - licitacao cancelada
+    - obra embargada
+    - prazo improrrogavel
+  max_days_to_deadline: 5
+
+pending:
+  triggers:
+    - edital
+    - proposta
+    - orcamento
+    - cotacao
+    - follow-up
+    - followup
+    - reuniao agendada
+    - pendencia
+    - aguardando retorno
+    - solicita informacao
+    - prazo de entrega
+  deadline_estimate_days: 5
+
+archive:
+  senders:
+    - sinduscon
+    - crea
+    - comprasnet
+    - receita federal
+    - portal da transparencia
+    - diario oficial
+  subject_patterns:
+    - confirmacao
+    - acuse de recebimento
+    - recibo
+    - newsletter
+    - informativo
+    - boletim
+    - aviso automatico
+    - noreply
+    - no-reply
+  body_patterns:
+    - esta e uma mensagem automatica
+    - nao responda este e-mail
+
+ignore:
+  blocklist: []
+  subject_patterns:
+    - promocao exclusiva
+    - oferta imperdivel
+    - desconto especial
+    - clique aqui

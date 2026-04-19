@@ -1,6 +1,14 @@
 {
-  "subdomain": "pcs-subdomain",
-  "username": "api-user",
-  "password": "api-password",
+  "companyName": "PCS OBRAS E LOCAÇÕES LTDA",
+  "companyId": "2c30d0c5-db58-440a-837c-6e61f231b855",
+  "timezone": "America/Sao_Paulo",
+  "subdomain": "pcsservices",
+  "authType": "oauth2_basic_oauth_client_credentials",
+  "apiUserName": "project",
+  "apiUserId": "b286dd06-dac8-4ed0-83d3-a8c4f514a61a",
+  "username": "pcsservices-project",
+  "password": "COLE_AQUI_A_SENHA_GERADA",
+  "tokenUrl": "https://pcsservices.sienge.com.br/sienge/oauth/token",
+  "apiBaseUrl": "https://pcsservices.sienge.com.br/sienge/api/v1",
   "timeoutSeconds": 30
 }

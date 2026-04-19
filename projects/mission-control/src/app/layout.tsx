@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Lato, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   title: "Mission Control — MIA Engenharia",
   description: "Cockpit operacional da MIA Engenharia",
   manifest: "/manifest.json",
-  themeColor: "#050505",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -31,6 +30,10 @@ export const metadata: Metadata = {
   icons: {
     apple: "/apple-touch-icon.png",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
 };
 
 export default function RootLayout({
