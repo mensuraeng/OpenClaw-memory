@@ -10,6 +10,18 @@ _Atualizado em 2026-04-13_
 _Status: [ATIVA]_
 Como princípio permanente, tudo que a Flávia estruturar, operar, entregar, automatizar ou institucionalizar deve buscar patamar 10/10. Não aceitar solução morna, meia-boca ou "boa o bastante" como padrão final. Quando algo estiver abaixo disso, tratar como estágio transitório com plano explícito para elevar o nível.
 
+### Frentes internas da Flávia entram em loop contínuo até 10/10 (2026-04-19)
+_Status: [ATIVA]_
+Tudo que for claramente de responsabilidade interna da Flávia, sem depender de decisão do Alê nem de terceiro, deve rodar em ciclo contínuo até atingir 10/10 operacional.
+
+Condição de parada:
+- chegou em 10/10 com prova proporcional
+- ou surgiu bloqueio grave que exige opinião, decisão ou autorização do Alê
+
+Regra de comunicação:
+- não interromper o Alê com microstatus
+- só escalar quando houver bloqueio grave, risco real, decisão necessária ou entrega material concluída
+
 ### Ações externas sempre exigem confirmação (2026-04-01)
 _Status: [ATIVA]_
 Enviar email, mensagem, post em rede social, apagar arquivo, alterar configuração crítica ou agir fora do ambiente controlado exige confirmação do Alê.
@@ -76,6 +88,18 @@ Essa regra existe para evitar skill útil enterrada, skill específica poluindo 
 _Status: [ATIVA]_
 O redirect URL autorizado para OAuth do LinkedIn no fluxo do Mission Control deve usar `https://mc.mensuraengenharia.com.br/api/linkedin/callback`. Esse domínio público vira referência oficial do callback e deve ser mantido alinhado no app configurado para o fluxo correspondente.
 
+### PCS usa basic auth como trilha operacional real do Sienge até prova contrária (2026-04-19)
+_Status: [ATIVA]_
+Para a integração PCS ↔ Sienge atualmente validada em runtime, a trilha oficial é `basic auth` contra `https://api.sienge.com.br/pcsservices/public/api/v1`. Não assumir OAuth2 para a PCS sem nova prova operacional específica do tenant.
+
+### Integração Python PCS ↔ Sienge deve respeitar authType real do tenant (2026-04-19)
+_Status: [ATIVA]_
+O cliente Python da PCS deve bifurcar o fluxo de autenticação conforme `authType` configurado. Para `basic`, usar credencial básica diretamente nas chamadas da API; para tenants OAuth, manter `client_credentials`. Não impor um único fluxo a tenants com topologias diferentes.
+
+### Mission Control deve subir via processo único controlado pelo PM2, com restart delay explícito (2026-04-19)
+_Status: [ATIVA]_
+A operação do Mission Control deve evitar processo órfão e restart storm. Subir o app via configuração explícita do PM2, com `next start` direto e `restart_delay` suficiente para liberar porta antes de nova tentativa. Após ajuste estável, persistir com `pm2 save`.
+
 ### Inbox PCS adota triagem leve com janela objetiva de urgência (2026-04-18)
 _Status: [ATIVA]_
 A inbox da PCS opera em Opção 1: triagem leve, com classificação interna entre `urgente`, `operacional` e `ruído`, sem ação externa automática.
@@ -131,6 +155,10 @@ No Telegram, o grupo `PESSOAL` (chat_id `telegram:-1003818163425`), tópico `13`
 ### GitHub será o segundo cérebro operacional (2026-04-14)
 _Status: [ATIVA]_
 A arquitetura-alvo da operação passa a tratar o GitHub como memória institucional de longo prazo, com versionamento, rastreabilidade e acesso compartilhado como base nativa. O OpenClaw deve operar como camada de captura e consolidação: durante o dia, trabalho e contexto entram como memória curta e registro bruto; no fechamento noturno, o sistema deve consolidar, conectar o que é relacionado, reduzir redundância e promover o que importa para memória durável versionada. A referência conceitual é: inbox = memória de curto prazo, consolidação noturna = sono, GitHub = memória de longo prazo.
+
+### Memória documental deve ser separada por empresa e pela frente pessoal do Alê (2026-04-20)
+_Status: [ATIVA]_
+A memória institucional de documentos importantes passa a ter trilhas separadas para `MENSURA`, `MIA`, `PCS` e `pessoal do Alê`, dentro de `memory/projects/`. Sempre que entrar documento importante, como apresentação, cartão CNPJ, ficha cadastral ou equivalente, ele deve ser alocado na memória da entidade correspondente com índice do arquivo-fonte e resumo reutilizável para consulta futura.
 
 ## 2026-04-17 — Finance tag [[reply_to_current]]
 O agente finance retorna respostas prefixadas com [[reply_to_current]].
