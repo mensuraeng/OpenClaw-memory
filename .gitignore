@@ -30,7 +30,9 @@ state/
 # Nested repos handled separately
 /finance/
 /projects/claw3d/
-/knowledge/
+/knowledge/*
+!/knowledge/OpenClaw/
+!/knowledge/OpenClaw/**
 
 # Local databases and transient runtime artifacts
 *.db-wal
