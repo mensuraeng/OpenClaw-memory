@@ -9,7 +9,7 @@ _Atualizado em 2026-04-18_
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
 - [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
-- [ ] **Corrigir roteamento do domínio de relatórios MIA** — `relatorios.miaengenharia.com.br/ccsp-casa-7/*` ainda cai no fallback da SPA principal em vez de servir páginas estáticas extras como o checklist.
+- [x] ~~**Corrigir roteamento do domínio de relatórios MIA**~~ — resolvido em 2026-04-22. Causa raiz: o Worker `mia-relatorios-router` pedia `mia-ccsp-casa-7.pages.dev/relatoriosemanal.html`, mas Pages faz 308 canonical `.html` → sem extensão, e o Worker propagava esse 308 pro cliente, que reescrevia o URL stripando `/ccsp-casa-7/`. Fix: Worker agora chama a URL extensionless (`/relatoriosemanal`, `/checklist`). `relatorios.miaengenharia.com.br/ccsp-casa-7/relatoriosemanal` e `/checklist` servem conteúdo correto (200 OK).
 
 ## Aguardando Alê
 
