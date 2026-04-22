@@ -1,0 +1,106 @@
+{
+  "day": "2026-04-21",
+  "generated_at": "2026-04-22T17:07:09.738244+00:00",
+  "count": 9,
+  "transactions": [
+    {
+      "tx_id": "74b433ad1630eff36e84de9721683a0e",
+      "date": "2026-04-20",
+      "amount": 35000.0,
+      "type": "DEBITO",
+      "description": "Pix enviado para Monteiro Sistemas de Irrigacaotatui Ltda",
+      "category": "transferencias",
+      "fitid": "89ae8f41-9d21-4154-b448-bd69c1b6ae66",
+      "memo": "Pix enviado para Monteiro Sistemas de Irrigacaotatui Ltda",
+      "raw_amount": -35000.0
+    },
+    {
+      "tx_id": "8b92ad4b9dbe774c01d5e0075e68610d",
+      "date": "2026-04-17",
+      "amount": 104423.14,
+      "type": "CREDITO",
+      "description": "Pix recebido de John Harald Orneberg",
+      "category": "receita",
+      "fitid": "d4a81504-b6bc-493b-9c67-01780c8c018e",
+      "memo": "Pix recebido de John Harald Orneberg",
+      "raw_amount": 104423.14
+    },
+    {
+      "tx_id": "538e76d7bdeb9e5105a9a3ad6b9bf1fc",
+      "date": "2026-04-10",
+      "amount": 6875.0,
+      "type": "DEBITO",
+      "description": "Pix enviado para Gouveia e Pacote Consultores Associados Ltda",
+      "category": "transferencias",
+      "fitid": "50dcc3dd-f381-4a50-95a4-aefc8157d209",
+      "memo": "Pix enviado para Gouveia e Pacote Consultores Associados Ltda",
+      "raw_amount": -6875.0
+    },
+    {
+      "tx_id": "9ce93e32c9ce9f6f871f023b218930da",
+      "date": "2026-04-10",
+      "amount": 7290.0,
+      "type": "DEBITO",
+      "description": "Pix enviado para Gouveia e Pacola Consultores Associados Ltda",
+      "category": "transferencias",
+      "fitid": "ce18d1f3-7d29-432b-8966-41f39d02c966",
+      "memo": "Pix enviado para Gouveia e Pacola Consultores Associados Ltda",
+      "raw_amount": -7290.0
+    },
+    {
+      "tx_id": "a4d78092abdf9a8224f4f9b3bc0b12a2",
+      "date": "2026-04-10",
+      "amount": 5000.0,
+      "type": "DEBITO",
+      "description": "Pix enviado para Monteiro Sistemas de Irrigacao Tatui Ltda",
+      "category": "transferencias",
+      "fitid": "b35dbe4f-371a-4763-ba49-61e3022e0326",
+      "memo": "Pix enviado para Monteiro Sistemas de Irrigacao Tatui Ltda",
+      "raw_amount": -5000.0
+    },
+    {
+      "tx_id": "784f2a0916dcc874f7f503dca8175fa2",
+      "date": "2026-04-10",
+      "amount": 10732.97,
+      "type": "CREDITO",
+      "description": "Pix recebido de Alexandre Ribeiro B Aguiar",
+      "category": "receita",
+      "fitid": "21498188-11d8-4d51-83cc-549e89cdfe86",
+      "memo": "Pix recebido de Alexandre Ribeiro B Aguiar",
+      "raw_amount": 10732.97
+    },
+    {
+      "tx_id": "44cf26b472bddf8cad347cb122eb2bd8",
+      "date": "2026-04-07",
+      "amount": 9659.06,
+      "type": "DEBITO",
+      "description": "Pix enviado para Vhmc Oliveira Engenharia Ltda",
+      "category": "transferencias",
+      "fitid": "b79176c5-8a63-4adc-8796-6244eb5e0588",
+      "memo": "Pix enviado para Vhmc Oliveira Engenharia Ltda",
+      "raw_amount": -9659.06
+    },
+    {
+      "tx_id": "0a40e2b927eae1c9057d8c20c04e6838",
+      "date": "2026-04-02",
+      "amount": 1073.91,
+      "type": "DEBITO",
+      "description": "Pagamento para UNIPLOTAGEM E COPIAS LTDA",
+      "category": "outros",
+      "fitid": "32e060a4-8681-4f59-abd1-fa8bbef4a926",
+      "memo": "Pagamento para UNIPLOTAGEM E COPIAS LTDA",
+      "raw_amount": -1073.91
+    },
+    {
+      "tx_id": "cd97177765d543b0554f4ea0c8d77893",
+      "date": "2026-04-02",
+      "amount": 19165.0,
+      "type": "CREDITO",
+      "description": "Pix recebido de Mia Engenharia e Co",
+      "category": "receita",
+      "fitid": "d920e5dc-f5c6-4239-aea2-1ce5ed2ecf5f",
+      "memo": "Pix recebido de Mia Engenharia e Co",
+      "raw_amount": 19165.0
+    }
+  ]
+}
