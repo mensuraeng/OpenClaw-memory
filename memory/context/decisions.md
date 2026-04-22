@@ -179,3 +179,15 @@ Deploy ativo: https://relatorios.mensuraengenharia.com.br/
 Fallback: https://p-g---louveira.pages.dev/
 GitHub Actions desativada (deploy.yml.disabled).
 Próximo: replicar para MIA CCSP Casa 7 em relatorios.miaengenharia.com.br
+
+## 2026-04-22 — Roteamento MIA CCSP Casa 7 consolidado
+Worker `mia-relatorios-router` corrigido para chamar URLs extensionless no
+Pages (evita 308 canonical que antes vazava pro cliente e stripava o prefixo
+`/ccsp-casa-7/`). Rotas públicas funcionando:
+
+- https://relatorios.miaengenharia.com.br/ccsp-casa-7/relatoriosemanal → Rev003
+- https://relatorios.miaengenharia.com.br/ccsp-casa-7/checklist
+
+Padrão adotado: páginas estáticas extras do Casa 7 entram em
+`Mia-CCSP-Casa-7/public/<slug>.html`, Cloudflare Pages faz build, e o Worker
+tem uma linha para cada slug apontando pra URL extensionless no pages.dev.
