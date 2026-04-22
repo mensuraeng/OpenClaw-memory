@@ -191,3 +191,19 @@ Pages (evita 308 canonical que antes vazava pro cliente e stripava o prefixo
 Padrão adotado: páginas estáticas extras do Casa 7 entram em
 `Mia-CCSP-Casa-7/public/<slug>.html`, Cloudflare Pages faz build, e o Worker
 tem uma linha para cada slug apontando pra URL extensionless no pages.dev.
+
+## 2026-04-22 — Convenção de título e preview dos relatórios (MIA)
+Todo relatório publicado sob `relatorios.miaengenharia.com.br/<obra>/<slug>`
+deve ter o `<title>` no padrão `<Projeto> - <Tipo> DD/MM/AAAA` e metadata
+Open Graph + Twitter Card para previews legíveis ao encaminhar.
+
+- CCSP Casa 7 semanal → `CCSP Casa 7 - Relatório semanal DD/MM/AAAA`
+- A data é a **data da revisão/atualização** do relatório (cabeçalho
+  Rev.NNN · DD/MM/AAAA), **não** a data do push no Cloudflare.
+
+Guia operacional completo com template HTML, checklist de publicação e
+anti-checklist: `knowledge/Mia-CCSP-Casa-7/PUBLICATION.md`.
+
+Motivo: ao encaminhar o link no WhatsApp/Telegram/LinkedIn/e-mail, o
+preview puxa `<title>`/`og:title`, e o título-arquivo `CCSP_Casa7_Relatorio_
+TOOLS_RevNNN` ficava ilegível. Mudança pedida pelo Alê em 2026-04-22.
