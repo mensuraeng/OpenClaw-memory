@@ -1,41 +1,51 @@
 # AGENTS.md — Regras Operacionais da Flávia
 
-_Atualizado em 2026-04-17_
+_Atualizado em 2026-04-23_
 
 ## Núcleo Operacional
 
-**Carregar no boot:**
-1. `SOUL.md`
-2. `USER.md`
-3. `IDENTITY.md`
-4. `memory/YYYY-MM-DD.md` (hoje)
+**Fonte de verdade: `/root/2nd-brain/`**
+
+**Carregar no boot (seguir AGENT-MAP.md):**
+1. `/root/2nd-brain/06-agents/flavia/AGENT-MAP.md` — sequência completa de boot
+
+Sequência definida no AGENT-MAP:
+1. Identidade: `/root/2nd-brain/01-identity/` (company, people, mission-values, user)
+2. Contexto: `/root/2nd-brain/02-context/` (pending, decisions, lessons)
+3. Sistema: `/root/2nd-brain/_system/` (SOUL, BOOT, HEARTBEAT)
+4. Agente: `/root/2nd-brain/06-agents/flavia/` (decisions, lessons, pending, etc.)
 
 **Não carregar no boot:**
-- `MEMORY.md`
-- `memory/context/*.md`
-- `memory/projects/*.md`
+- `MEMORY.md` do workspace
+- `memory/context/*.md` do workspace (obsoleto — use 2nd-brain)
+- `memory/projects/*.md` do workspace (obsoleto — use 2nd-brain)
 
-**Regra:** quando precisar de contexto de projeto, decisão, pessoa, preferência ou pendência, buscar primeiro. Ler só o necessário.
+**Regra:** quando precisar de contexto de projeto, decisão, pessoa, preferência ou pendência, buscar primeiro em `/root/2nd-brain/`. Ler só o necessário.
 
 ## Memória
 
 - Sessão = memória de trabalho
-- Workspace = memória institucional compartilhada
-- O que precisa valer depois desta sessão deve ir para arquivo
-- `MEMORY.md` é índice, não depósito de conteúdo
+- 2nd-brain = memória institucional compartilhada (fonte de verdade)
+- O que precisa valer depois desta sessão deve ir para o 2nd-brain
 - Nota diária é rascunho; consolidar depois no arquivo temático certo
-- Lição aprendida → `memory/context/lessons.md`
-- Decisão estável → `memory/context/decisions.md`
-- Pendência real → `memory/context/pending.md`
+- Lição aprendida → `/root/2nd-brain/02-context/lessons.md`
+- Decisão estável → `/root/2nd-brain/02-context/decisions.md`
+- Pendência real → `/root/2nd-brain/02-context/pending.md`
+- Memória de sessão → `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
 - O que não está escrito não existe
 
-### Estrutura de arquivos em memory/
-- `memory/YYYY-MM-DD.md` — nota diária (arquivo plano, um por dia, append entre sessões)
-- `memory/context/*.md` — arquivos temáticos: decisions.md, pending.md, lessons.md, people.md, risks.md, etc.
-- `memory/projects/[nome-projeto].md` — estado por projeto ativo
-- `memory/archive/` — sessões arquivadas
-- `memory/feedback/` — registro de aprovações/rejeições do Alê
-- `memory/context/credentials.md` — mapa de credenciais e integrações
+### Estrutura 2nd-brain
+- `/root/2nd-brain/01-identity/` — empresa, pessoas, missão (mensal)
+- `/root/2nd-brain/02-context/` — pending, decisions, lessons (diário)
+- `/root/2nd-brain/03-knowledge/` — base de conhecimento permanente
+- `/root/2nd-brain/04-projects/` — projetos ativos por empresa
+- `/root/2nd-brain/05-journal/2026/YYYY-MM-DD.md` — diário diário
+- `/root/2nd-brain/06-agents/flavia/` — memória privada deste agente
+- `/root/2nd-brain/_system/` — SOUL, BOOT, HEARTBEAT, ROLLBACK
+
+### Feedback e credenciais
+- Feedback (aprovações/rejeições do Alê): `memory/feedback/` no workspace (mantido localmente)
+- Credenciais: `memory/context/credentials.md` no workspace (nunca vai para GitHub)
 
 
 ## Autonomia e Limites
@@ -79,8 +89,8 @@ _Atualizado em 2026-04-17_
 
 - Antes de mudança estrutural, rodar `scripts/backup_before_change.sh <rotulo>` e conferir `ROLLBACK.md`
 - Mudança estrutural = config OpenClaw, cron, auth, scripts compartilhados, memória operacional central
-- Antes de repetir sugestão já discutida, consultar `memory/feedback/`
-- Quando o Alê aprovar/rejeitar explicitamente, registrar em `memory/feedback/`
+- Antes de repetir sugestão já discutida, consultar `memory/feedback/` (workspace)
+- Quando o Alê aprovar/rejeitar explicitamente, registrar em `memory/feedback/` (workspace)
 - Não fazer retry cego em automação com side effect externo ambíguo
 
 ## Equipe (5 agentes finais)
@@ -138,8 +148,9 @@ A operação completa de workflows ClawFlows (CLI, criação, locations, atalhos
 
 ## Referências
 
-- `SOUL.md` · `USER.md` · `IDENTITY.md` · `MEMORY.md` · `HEARTBEAT.md`
-- `CLAWFLOWS.md` (operação de workflows ClawFlows — leitura sob demanda)
+- `/root/2nd-brain/06-agents/flavia/AGENT-MAP.md` — boot completo e guia de operação
+- `/root/2nd-brain/_system/SOUL.md` · `/root/2nd-brain/01-identity/user.md` · `/root/2nd-brain/_system/HEARTBEAT.md`
+- `CLAWFLOWS.md` (operação de workflows ClawFlows — leitura sob demanda, no workspace)
 - `referencias/MENSURA_apresentacao.pdf`
 - `referencias/MIA_apresentacao.pdf`
 - `referencias/PCS_apresentacao.pdf`

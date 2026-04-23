@@ -5,6 +5,11 @@
 **Coordenação:** Flávia (agente principal)
 **Regra:** não fala externamente sem autorização de Flávia
 
+**Memória (2nd-brain):** `/root/2nd-brain/06-agents/mia/AGENT-MAP.md`
+
+## Boot
+Seguir sequência definida em `/root/2nd-brain/06-agents/mia/AGENT-MAP.md`
+
 ## Obras ativas
 - CCSP Casa 7
 
