@@ -30,9 +30,10 @@ async function checkUrl(url: string, timeoutMs = 5000): Promise<{ status: 'up' |
   }
 }
 
-async function checkSystemdService(name: string): Promise<ServiceCheck> {
+async function checkSystemdService(name: string, userService = false): Promise<ServiceCheck> {
   try {
-    const { stdout } = await execAsync(`systemctl is-active ${name} 2>/dev/null`);
+    const flag = userService ? '--user ' : '';
+    const { stdout } = await execAsync(`systemctl ${flag}is-active ${name} 2>/dev/null`);
     const active = stdout.trim() === 'active';
     return { name, status: active ? 'up' : 'down', details: stdout.trim() };
   } catch {
@@ -58,8 +59,8 @@ export async function GET() {
 
   // Internal services
   const [missionControl, gateway] = await Promise.all([
-    checkSystemdService('mission-control'),
-    checkSystemdService('openclaw-gateway'),
+    checkPm2Service('mission-control'),
+    checkSystemdService('openclaw-gateway', true),
   ]);
   checks.push({ ...missionControl, name: 'Mission Control' });
   checks.push({ ...gateway, name: 'OpenClaw Gateway' });
@@ -71,15 +72,17 @@ export async function GET() {
 
   // External URLs
   const urlChecks = await Promise.all([
-    checkUrl('https://tenacitas.cazaustre.dev'),
+    checkUrl('https://api.sienge.com.br/pcsservices/public/api/v1', 5000),
     checkUrl('https://api.anthropic.com', 3000),
   ]);
 
+  const siengeCheck = urlChecks[0];
   checks.push({
-    name: 'tenacitas.cazaustre.dev',
-    status: urlChecks[0].status,
-    latency: urlChecks[0].latency,
-    url: 'https://tenacitas.cazaustre.dev',
+    name: 'Sienge API',
+    status: siengeCheck.status === 'up' || (siengeCheck as { httpCode?: number }).httpCode === 401 || (siengeCheck as { httpCode?: number }).httpCode === 400 ? 'up' : siengeCheck.status,
+    latency: siengeCheck.latency,
+    url: 'https://api.sienge.com.br',
+    details: `HTTP ${(siengeCheck as { httpCode?: number }).httpCode ?? 'timeout'}`,
   });
 
   checks.push({
