@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { PointerLockControls } from '@react-three/drei';
+import type { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 
 interface FirstPersonControlsProps {
@@ -11,7 +12,7 @@ interface FirstPersonControlsProps {
 
 export default function FirstPersonControls({ moveSpeed = 5 }: FirstPersonControlsProps) {
   const { camera } = useThree();
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<PointerLockControlsImpl>(null);
   
   const moveState = useRef({
     forward: false,

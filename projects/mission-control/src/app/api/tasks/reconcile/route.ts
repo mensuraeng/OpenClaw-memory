@@ -13,7 +13,7 @@ export async function POST() {
       const parsed = JSON.parse(stdout || '[]');
       const sessions = Array.isArray(parsed) ? parsed : (parsed.sessions || []);
       sessionKeys = sessions
-        .map((session: any) => session.sessionKey || session.key)
+        .map((session: { sessionKey?: string; key?: string }) => session.sessionKey || session.key)
         .filter(Boolean);
     } catch (error) {
       console.warn('Task reconciliation session fetch skipped:', error);
