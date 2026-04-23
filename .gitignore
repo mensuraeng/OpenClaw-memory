@@ -45,3 +45,18 @@ memory/.dreams/
 memory/*openai-key*.md
 memory/integrations/credentials-map.md
 *client_secret*.json
+
+# Claude Code local settings (contém keys/config sensível)
+.claude/
+
+# Python venvs adicionais
+.venv*/
+venv*/
+
+# Arquivos de backup gerados automaticamente
+*.bak_*
+*.bak-*
+*.pre-*
+
+# Media gerada localmente
+media/

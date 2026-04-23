@@ -13,6 +13,12 @@ _Atualizado em 2026-04-20_
   - Status: mapeado
   - Apoios já existentes: `memory/projects/mia/cadastro-base-mia.md`, `memory/projects/mia/ficha-cadastral-mia.md`
 
+- Histórico de comprovantes de pagamento
+  - Fonte: comprovantes/imagens enviados pelo Alê
+  - Status: ativo
+  - Arquivo principal: `memory/projects/mia/comprovantes-pagamento.md`
+  - Observação de uso: base para conciliação futura com romaneio de notas e controle de pago x pendente
+
 ## Regra de atualização
 Ao receber novo documento importante da MIA, adicionar:
 - tipo do documento

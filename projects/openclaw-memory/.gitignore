@@ -1,4 +1,47 @@
-*.log
-.DS_Store
+# Secrets and credentials
+config/*.json
+credentials/
+.openclaw/
+.clawhub/
+
+# Python envs and caches
+venv/
+docling-env/
 __pycache__/
 *.pyc
+.pytest_cache/
+
+# Temp and generated artifacts
+tmp/
+docling-output/
+reports/
+logs/
+whatsapp_qr.png
+*.eml
+
+# OS/editor noise
+.DS_Store
+.vscode/
+.idea/
+
+# Local state that should not go to GitHub
+state/
+
+# Nested repos handled separately
+/finance/
+/projects/claw3d/
+/knowledge/*
+!/knowledge/OpenClaw/
+!/knowledge/OpenClaw/**
+
+# Local databases and transient runtime artifacts
+*.db-wal
+*.db-shm
+*.bak-kanban
+
+# Sensitive memory/session artifacts
+memory/sessions/
+memory/.dreams/
+memory/*openai-key*.md
+memory/integrations/credentials-map.md
+*client_secret*.json

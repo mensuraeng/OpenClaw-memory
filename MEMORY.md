@@ -1,6 +1,6 @@
 # MEMORY.md — Painel de Continuidade da Flávia
 
-_Última atualização: 2026-04-19_
+_Última atualização: 2026-04-22_
 
 ## O que este arquivo é
 
@@ -13,29 +13,30 @@ Serve para responder rápido:
 - onde fica cada contexto relevante
 
 ## Estado Atual
-_Atualizado automaticamente em 2026-04-19 pelo update_memory_panel.py_
+_Atualizado manualmente em 2026-04-22 durante saneamento da Memória v2_
 
-### Pendencias Abertas (10 itens)
+### Pendências Abertas (8 frentes executivas)
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
-- [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
-- [ ] **Corrigir roteamento do domínio de relatórios MIA** — `relatorios.miaengenharia.com.br/ccsp-casa-7/*` ainda cai no fallback da SPA principal em vez de servir páginas estáticas extras como o checklist.
-- [ ] **Instagram integration** — confirmar arquitetura final 10/10: conta Instagram Business exata, Facebook Page vinculada, domínio/subdomínio público das páginas legais e objetivo/escopos reais do app antes de live/review.
-- [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
-- [ ] **Migrar lote 1 para cofre** — revisar saneamento posterior dos arquivos que ainda precisam manter compatibilidade operacional.
-- [ ] **Trocar senha mestra do KeePassXC** — substituir a senha atual por uma forte.
-- [ ] **Estruturar grupos do cofre** — consolidar grupos padrão: Email, APIs, Social, Infra, Financeiro.
-- [ ] **Revisar falha histórica do calendário Mensura** — houve erro `ErrorInvalidUser` em ciclo anterior; confirmar se foi definitivamente sanado ou se ainda reaparece em alguma rota/conta.
+- [ ] **Revalidar fallback real além do microteste de agentes** — ainda falta prova operacional específica da cadeia alternativa de modelos.
+- [ ] **Instagram integration** — confirmar arquitetura final 10/10 antes de live/review.
+- [ ] **Reforçar governança da memória operacional** — sincronizar painel, promover conteúdos permanentes e reduzir duplicação entre diário, contexto e projetos.
+- [ ] **Classificar base PCS↔Sienge** — separar obras executáveis, centros de custo administrativos e itens ambíguos.
+- [ ] **Descobrir rota financeira real do Teatro Suzano no Sienge** — obter gastos/títulos/payables da obra `1354` com endpoint válido.
+- [ ] **Aguardar romaneio da MIA para conciliação** — cruzar comprovantes com notas e consolidar `pago`, `pendente`, `parcial` e `ambíguo`.
 
-### Ultimas Decisoes Ativas
-- PCS adota identidade visual oficial enviada pelo Alê (2026-04-13)
-- Grupo `MENSURA Engenharia` vira canal do agente da MENSURA (2026-04-13)
-- Grupo `PCS Engenharia` vira canal do agente da PCS (2026-04-13)
-- Tópico `AGENTE FINANCEIRO` é roteado para o agente `finance` (2026-04-13)
+### Últimas decisões ativas
 - GitHub será o segundo cérebro operacional (2026-04-14)
+- Memória documental deve ser separada por empresa e pela frente pessoal do Alê (2026-04-20)
+- A base PCS↔Sienge deve ter memória operacional como fonte principal, com arquivo documental reduzido a ponte (2026-04-22)
+- Comprovante bancário isolado da MIA deve ficar como histórico bruto, sem atribuição prematura a obra específica (2026-04-22)
+- Claude-Mem entra só como referência de arquitetura; a memória da Flávia evolui por cirurgia de consolidação, não por substituição da base atual (2026-04-22)
 
-### Destaques de Hoje (2026-04-19)
-_Sem destaques registrados hoje_
+### Destaques de Hoje (2026-04-22)
+- Corrigido o roteamento do domínio de relatórios MIA Casa 7; rotas públicas passaram a servir conteúdo correto.
+- Base PCS↔Sienge promovida para memória operacional em `memory/context/pcs-sienge-obras-centros-de-custo.md`.
+- Histórico de comprovantes da MIA iniciado e preservado para conciliação futura.
+- Blueprint inicial da **Memória v2 da Flávia** criado em `memory/context/memoria-v2-flavia.md`.
 ## Onde está cada coisa
 
 ### Contexto estrutural

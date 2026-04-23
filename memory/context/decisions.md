@@ -160,6 +160,22 @@ A arquitetura-alvo da operação passa a tratar o GitHub como memória instituci
 _Status: [ATIVA]_
 A memória institucional de documentos importantes passa a ter trilhas separadas para `MENSURA`, `MIA`, `PCS` e `pessoal do Alê`, dentro de `memory/projects/`. Sempre que entrar documento importante, como apresentação, cartão CNPJ, ficha cadastral ou equivalente, ele deve ser alocado na memória da entidade correspondente com índice do arquivo-fonte e resumo reutilizável para consulta futura.
 
+### A memória da Flávia evolui por cirurgia de consolidação, não por troca de espinha dorsal (2026-04-22)
+_Status: [ATIVA]_
+A arquitetura atual de memória em arquivos permanece como base oficial. A evolução da memória deve priorizar saneamento do painel, promoção disciplinada, separação entre bruto e consolidado, recall progressivo e governança melhor — sem substituir a fonte de verdade atual por ferramenta externa.
+
+### Ferramentas tipo Claude-Mem entram só como referência ou camada auxiliar controlada (2026-04-22)
+_Status: [ATIVA]_
+Claude-Mem e sistemas parecidos podem inspirar captura automática, promoção e recuperação semântica, mas não devem virar memória principal da Flávia sem prova operacional e sem preservar auditabilidade. Se houver piloto, o escopo preferencial é pequeno, com recomendação inicial para o fluxo financeiro da MIA.
+
+### Base PCS↔Sienge usa memória operacional como fonte principal e arquivo documental como ponte (2026-04-22)
+_Status: [ATIVA]_
+A base de obras e centros de custo do Sienge para a PCS fica com fonte principal em `memory/context/pcs-sienge-obras-centros-de-custo.md`. O arquivo em `memory/projects/pcs/obras-e-centros-de-custo-sienge.md` permanece como ponte documental/índice, evitando duplicação.
+
+### Comprovante bancário isolado não autoriza atribuição de gasto à obra (2026-04-22)
+_Status: [ATIVA]_
+Comprovantes da MIA devem ser preservados como histórico bruto de pagamento em `memory/projects/mia/comprovantes-pagamento.md`. Vinculação a obra específica, como Teatro Suzano, só pode ocorrer após conciliação com romaneio, nota fiscal, centro de custo ou lançamento objetivo.
+
 ## 2026-04-17 — Finance tag [[reply_to_current]]
 O agente finance retorna respostas prefixadas com [[reply_to_current]].
 É tag interna do OpenClaw — não afeta conteúdo.
@@ -207,3 +223,28 @@ anti-checklist: `knowledge/Mia-CCSP-Casa-7/PUBLICATION.md`.
 Motivo: ao encaminhar o link no WhatsApp/Telegram/LinkedIn/e-mail, o
 preview puxa `<title>`/`og:title`, e o título-arquivo `CCSP_Casa7_Relatorio_
 TOOLS_RevNNN` ficava ilegível. Mudança pedida pelo Alê em 2026-04-22.
+
+## 2026-04-22 — WhatsApp Business Mensura configurado e operacional
+- Conta `default` vinculada ao número +5511933310858 (WhatsApp Business)
+- `dmPolicy: open` — responde qualquer contato
+- Binding: `whatsapp/default → agente mensura`
+- SOUL.md da Mensura atualizado com protocolo de resposta:
+  1. Sempre busca na memória antes de responder
+  2. Usa Docling para documentos
+  3. Não inventa, não deduz
+  4. Se não tiver informação: avisa o contato "verificando com a equipe" + escala via WhatsApp para Alexandre (+5511985880858)
+
+## 2026-04-22 — Comportamento humanizado do agente Mensura no WhatsApp
+
+Mensura não responde imediatamente — simula tempo de leitura e digitação humana.
+
+Duas camadas configuradas:
+1. `debounceMs: 45000` no gateway — segura 45s antes de acionar o agente (também agrupa mensagens sequenciais)
+2. SOUL.md — instrução explícita de `sleep` proporcional à complexidade:
+   - Saudação/mensagem curta: 40–90s
+   - Pergunta simples: 1–3min
+   - Busca na memória: 3–7min
+   - Documento/questão complexa: 5–12min
+
+Regra: nunca responder em menos de 40 segundos.
+Motivo: resposta imediata denuncia automação e quebra a experiência de atendimento.

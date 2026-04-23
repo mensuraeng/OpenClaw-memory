@@ -92,6 +92,18 @@ O controle de reasoning disponível está no chat via `/reasoning`, não em coma
 ### `reserveTokensFloor` fica em `agents.defaults.compaction` (2026-04-01 | revisar depois de upgrade)
 O path correto atual é `agents.defaults.compaction.reserveTokensFloor`.
 
+### Arquitetura boa sem consolidação disciplinada vira memória frouxa (2026-04-22)
+A estrutura em arquivos já pode sustentar uma memória forte, mas só se painel, contexto temático, projetos e diário forem mantidos com papéis claros. O problema principal não é ausência de estrutura; é drift entre captura, promoção e visão executiva.
+
+### Painel executivo desatualizado destrói confiança na memória (2026-04-22)
+Se `MEMORY.md` divergir de `memory/context/pending.md` e das decisões recentes, ele deixa de orientar e passa a desinformar. O painel precisa ser curto, sincronizado e derivado das fontes temáticas — nunca concorrente delas.
+
+### Pendência executiva não pode disputar espaço com backlog bruto de inbox (2026-04-22)
+Quando `pending.md` mistura tarefas estratégicas, backlog interno e ruído de email, a leitura perde nitidez. O padrão correto é separar visão executiva do backlog bruto e deixar detalhes massivos em trilha própria.
+
+### Ferramenta externa de memória só entra se elevar governança, não só captura (2026-04-22)
+Soluções tipo Claude-Mem são úteis como referência para captura automática, promoção e recall progressivo, mas adotá-las sem desenho claro cria duplicação e caixa-preta. Fonte auditável em arquivo continua sendo a base; camada semântica só faz sentido como apoio.
+
 ## Regra de manutenção
 
 - Promover para `decisions.md` o que deixar de ser só lição e virar regra permanente.

@@ -32,6 +32,7 @@ src/
 - autenticação adaptada para OAuth2 com `Basic Auth + client_credentials`
 - tenant PCS confirmado: `pcsservices`
 - endpoints reais confirmados para token e API REST
+- base manual inicial de obras e centros de custo registrada em `endpoints/obras-e-centros-de-custo.md`
 - ainda falta a senha gerada do usuário de API e a liberação dos recursos certos
 
 ## Configuração esperada

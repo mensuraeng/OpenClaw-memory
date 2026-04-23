@@ -2,14 +2,14 @@
 
 > Itens aguardando input, acesso, decisão ou saneamento operacional.
 
-_Atualizado em 2026-04-18_
+_Atualizado em 2026-04-22_
 
 ## Críticas
 
 - [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
 - [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
 - [ ] **Revalidar fallback real além do microteste de agentes** — o runtime principal dos agentes especializados voltou a responder, mas a cadeia alternativa de modelos ainda precisa de prova operacional específica fora do healthcheck curto.
-- [x] ~~**Corrigir roteamento do domínio de relatórios MIA**~~ — resolvido em 2026-04-22. Causa raiz: o Worker `mia-relatorios-router` pedia `mia-ccsp-casa-7.pages.dev/relatoriosemanal.html`, mas Pages faz 308 canonical `.html` → sem extensão, e o Worker propagava esse 308 pro cliente, que reescrevia o URL stripando `/ccsp-casa-7/`. Fix: Worker agora chama a URL extensionless (`/relatoriosemanal`, `/checklist`). `relatorios.miaengenharia.com.br/ccsp-casa-7/relatoriosemanal` e `/checklist` servem conteúdo correto (200 OK).
+- [ ] **Remover token LinkedIn em plaintext do workspace** — `config/linkedin-mensura.json` está com access token pessoal ativo em texto aberto; mover para variável de ambiente ou endurecer permissão/acesso antes de ampliar uso por agentes.
 
 ## Aguardando Alê
 
@@ -30,188 +30,32 @@ _Atualizado em 2026-04-18_
 - [ ] **Calibrar triagem da inbox PCS antes de live** — categorização Graph foi implementada, mas ainda há falso `operacional`/`urgente`; ajustar ordem das regras, fortalecer `ruído/arquivo` e só então ativar sem dry-run.
 - [ ] **Concluir pairing do WhatsApp no Mission Control** — stack foi estabilizada e o bloqueio remanescente é humano: acessar o dashboard e fazer o QR scan para validar a trilha real.
 - [ ] **Popular memória documental por empresa** — resumir e estruturar os documentos já mapeados de MENSURA, MIA e PCS (`apresentacao.md`, `ficha-cadastral.md`, `dados-institucionais.md`) conforme novos arquivos forem entrando.
+- [ ] **Classificar base PCS↔Sienge** — separar registros em `obra executável`, `centro de custo administrativo` e `ambíguo/validar`.
+- [ ] **Descobrir rota financeira real do Teatro Suzano no Sienge** — mapear endpoint válido para obter gastos/títulos/payables da obra `1354` sem inventar relatório.
+- [ ] **Sincronizar `MEMORY.md` com fontes temáticas** — recalibrar painel executivo para refletir o estado real de `pending.md`, decisões recentes e destaques válidos.
+- [ ] **Promover conteúdos permanentes do diário de 22/04** — mover o que for estável de `memory/2026-04-22.md` para `lessons.md`, `decisions.md` e `pending.md`.
+- [ ] **Aplicar Fase 1 da Memória v2** — saneamento inicial do painel, pendências e promoção do que está preso no diário.
 
 ## Aguardando terceiros
 
 - [ ] **LinkedIn Community API** — aprovação do app institucional `OpenClaw - Community API` para destravar `rw_organization_admin`, Organization APIs e publicação em páginas.
+- [ ] **Romaneio de notas da MIA** — aguardar material para cruzar com comprovantes e consolidar status `pago`, `pendente`, `parcial` e `ambíguo`.
 
-## Segurança / saneamento
+## Inbox / backlog bruto
 
-- [ ] **Remover token LinkedIn em plaintext do workspace** — `config/linkedin-mensura.json` está com access token pessoal ativo em texto aberto; mover para variável de ambiente ou endurecer permissão/acesso antes de ampliar uso por agentes.
+A trilha bruta de inbox foi movida para:
+`memory/projects/setup-openclaw-flavia/inbox-backlog-bruto.md`
+
+Regra:
+- `pending.md` fica só com visão executiva
+- backlog massivo, mal classificado ou ainda não triado vai para a trilha bruta
+- item que exigir ação real sobe depois para `pending.md`
 
 ## Regra de manutenção
 
 - Tirar daqui o que já virou decisão permanente.
 - Tirar daqui o que não é mais real.
 - Se a pendência for de projeto específico, manter o detalhe no arquivo do projeto e deixar aqui só o resumo executivo.
-
-## [PENDENTE] Documentos - 19/04/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-04-19
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 18/04/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-04-18
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 19/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-19
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] ☕ Café Com IA - Bom dia Alexandre! ☕ O Google acabou de liberar o Personal Intelligence para TODOS (e outras 5 bombas)
-- **De:** contact@allessandrasinisgalli.com.au
-- **Recebido:** 2026-03-18
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 18/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-18
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Retirement notice: Migrate to Azure Monitor Agent before 31 March 2026
-- **De:** azure-noreply@microsoft.com
-- **Recebido:** 2026-03-17
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [CRITICA] DECLARAÇÃO DE IRPF-2026 - REGRAS PARA APRESENTAÇÃO - PRAZO VAI ATÉ 29/05/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-17
-- **Prazo:** 29/05/2026
-- **Ação:** A definir
-
-## [PENDENTE] Solicitações de Compra com insumos desautorizados
-- **De:** naoresponder@sistemas.sienge.com.br
-- **Recebido:** 2026-03-16
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 16/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-16
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 14/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-14
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Medição da obra pelo celular? É possível!
-- **De:** marketing@prevision.com.br
-- **Recebido:** 2026-03-13
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] [Atenção] Acompanhar a obra pode ser mais simples
-- **De:** marketing@construmarket.com.br
-- **Recebido:** 2026-03-13
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] ☕ Café Com IA - Bom dia Alexandre!  Yann LeCun vs OpenAI: a guerra de $1 bilhão que vai definir o futuro da IA ☕🧠
-- **De:** contact@allessandrasinisgalli.com.au
-- **Recebido:** 2026-03-13
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 13/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-13
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] +850 downloads: Planilha Linha de Balanço
-- **De:** marketing@prevision.com.br
-- **Recebido:** 2026-03-12
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Documentos - 12/03/2026
-- **De:** confirpdigital@confirp.com
-- **Recebido:** 2026-03-12
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Concretagem sem rastreabilidade é risco estrutural!
-- **De:** marketing@construmarket.com.br
-- **Recebido:** 2026-03-11
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] [AVISO IMPORTANTE] Atenção, a partir de hoje nossos e-mails são @starian.com
-- **De:** relacionamentosienge@softplan.com.br
-- **Recebido:** 2026-03-11
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] ☕ Café Com IA - Bom dia Alexandre!  Meta compra rede social para robôs (e mais)
-- **De:** contact@allessandrasinisgalli.com.au
-- **Recebido:** 2026-03-11
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] 3ª edição: Prevision Day + Sienge Plataforma
-- **De:** marketing@prevision.com.br
-- **Recebido:** 2026-03-10
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] ☕ Café Com IA - Bom dia Alexandre! GPT-5.4 venceu humanos | Excel com ChatGPT | Google criando apps SOZINHO
-- **De:** contact@allessandrasinisgalli.com.au
-- **Recebido:** 2026-03-09
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] [AVISO IMPORTANTE] Atualização sobre nossos canais de e-mail
-- **De:** relacionamentosienge@softplan.com.br
-- **Recebido:** 2026-03-06
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Kit disponível: Planejamento para Orçamento de Obra em 2026
-- **De:** marketing@prevision.com.br
-- **Recebido:** 2026-03-03
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] [Construsummit] Novo lote, mesma vantagem para clientes Sienge
-- **De:** construsummit@softplan.com.br
-- **Recebido:** 2026-03-03
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Medição do MCMV sem papel nem planilha
-- **De:** marketing@prevision.com.br
-- **Recebido:** 2026-03-02
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] ☕ Café Com IA - Bom dia Alexandre! 💣 GUERRA declarada na IA: Governo bane rival da OpenAI e fecha acordo com Pentágono
-- **De:** contact@allessandrasinisgalli.com.au
-- **Recebido:** 2026-03-02
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] 🔓 Diário de Obras Digital liberado para usar agora
-- **De:** marketing@construmarket.com.br
-- **Recebido:** 2026-02-27
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
-
-## [PENDENTE] Isso que diferencia obras que escalam x que apagam incêndio
-- **De:** marketing@construmarket.com.br
-- **Recebido:** 2026-02-27
-- **Prazo:** estimado 24/04/2026
-- **Ação:** A definir
 
 ## [PENDENTE] Documentos - 27/02/2026
 - **De:** confirpdigital@confirp.com
