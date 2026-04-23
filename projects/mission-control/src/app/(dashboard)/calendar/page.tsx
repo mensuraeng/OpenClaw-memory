@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { fetchJson } from '@/lib/fetch';
 import { ChevronLeft, ChevronRight, Calendar, Play, RefreshCw, Clock } from 'lucide-react';
 
 interface CronSchedule {
@@ -84,8 +85,7 @@ export default function CalendarPage() {
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
 
   useEffect(() => {
-    fetch('/api/cron')
-      .then(r => r.json())
+    fetchJson<CronJob[] | { jobs: CronJob[] }>('/api/cron')
       .then(d => setJobs(Array.isArray(d) ? d : (d.jobs || [])))
       .catch(() => setJobs([]))
       .finally(() => setLoading(false));

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchJson } from "@/lib/fetch";
 import { ActivityLineChart } from "@/components/charts/ActivityLineChart";
 import { ActivityPieChart } from "@/components/charts/ActivityPieChart";
 import { HourlyHeatmap } from "@/components/charts/HourlyHeatmap";
@@ -20,8 +21,7 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/analytics")
-      .then((r) => r.json())
+    fetchJson<AnalyticsData>("/api/analytics")
       .then((data) => {
         setData(data);
         setLoading(false);

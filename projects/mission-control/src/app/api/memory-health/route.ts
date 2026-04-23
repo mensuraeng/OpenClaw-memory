@@ -6,7 +6,7 @@ const OPENCLAW_HOME = process.env.OPENCLAW_HOME || `${process.env.HOME}/.opencla
 
 function analyzeMemory() {
   const agents = ["main","mensura","mia","pcs","finance","rh","marketing","producao","juridico","bi","suprimentos","autopilot"];
-  const results: any[] = [];
+  const results: Array<{ agent: string; fileCount: number; totalSizeKB: number; lastUpdated: string | null; staleDays: number; health: string }> = [];
   const now = Date.now();
 
   for (const agent of agents) {

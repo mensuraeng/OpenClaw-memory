@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Eye, Edit3, RefreshCw, Brain } from "lucide-react";
 import { FileTree, FileNode } from "@/components/FileTree";
+import { fetchJson } from "@/lib/fetch";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 
@@ -31,8 +32,7 @@ export default function MemoryPage() {
 
   // Load workspaces
   useEffect(() => {
-    fetch("/api/files/workspaces")
-      .then((res) => res.json())
+    fetchJson<{ workspaces: Workspace[] }>("/api/files/workspaces")
       .then((data) => {
         setWorkspaces(data.workspaces || []);
         if (data.workspaces.length > 0) {

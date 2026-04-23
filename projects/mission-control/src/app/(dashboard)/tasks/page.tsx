@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { fetchJson } from "@/lib/fetch";
 import { AlertTriangle, CheckCircle2, Clock3, PauseCircle, PlayCircle, XCircle } from "lucide-react";
 
 type TaskStatus =
@@ -83,8 +84,7 @@ export default function TasksPage() {
   const [metrics, setMetrics] = useState<TaskMetrics>({ total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });
 
   useEffect(() => {
-    fetch("/api/tasks")
-      .then((r) => r.json())
+    fetchJson<{ tasks: TaskExecution[]; metrics: TaskMetrics }>("/api/tasks")
       .then((data) => {
         setTasks(data.tasks || []);
         setMetrics(data.metrics || { total: 0, open: 0, blocked: 0, validated: 0, failed: 0, slaBreached: 0, stale: 0, orphaned: 0, retrying: 0, criticalEscalations: 0, highRiskOpen: 0 });

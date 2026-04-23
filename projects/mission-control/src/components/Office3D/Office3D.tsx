@@ -8,6 +8,7 @@ import { AGENTS } from './agentsConfig';
 import type { AgentState } from './agentsConfig';
 import AgentDesk from './AgentDesk';
 import Floor from './Floor';
+import { BRANDING } from '@/config/branding';
 import Walls from './Walls';
 import Lights from './Lights';
 import AgentPanel from './AgentPanel';
@@ -123,7 +124,7 @@ export default function Office3D() {
           <span style={{ fontSize: 20 }}>🏗️</span>
           <div>
             <div style={{ color: '#fff', fontSize: 14, fontWeight: 700, letterSpacing: '-0.5px' }}>
-              GRUPO MENSURA — Office Virtual
+              {BRANDING.companyName} — Office Virtual
             </div>
             <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>
               {AGENTS.length} agentes •{' '}
@@ -218,7 +219,7 @@ export default function Office3D() {
                 : '☕ Máquina de Café'}
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, marginBottom: 24 }}>
-              {interactionModal === 'memory' ? 'Arquivos de memória dos agentes MENSURA'
+              {interactionModal === 'memory' ? `Arquivos de memória dos agentes ${BRANDING.companyName}`
                 : interactionModal === 'roadmap' ? 'Próximos marcos e tarefas da equipe'
                 : 'Pausa para café... os agentes agradecem!'}
             </p>

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createTaskExecution, getTaskMetrics, listTaskExecutions } from '@/lib/task-tracking';
 
-function compareTasks(a: any, b: any) {
-  const statusWeight = (task: any) => {
+function compareTasks(a: { status: string; riskLevel?: string; updatedAt: string }, b: { status: string; riskLevel?: string; updatedAt: string }) {
+  const statusWeight = (task: { status: string; riskLevel?: string }) => {
     if (task.riskLevel === 'critical') return 500;
     if (task.status === 'blocked' || task.status === 'waiting_input') return 400;
     if (task.riskLevel === 'high') return 300;

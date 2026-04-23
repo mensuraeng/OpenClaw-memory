@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { fetchJson } from "@/lib/fetch";
 
 const Office3D = dynamic(
   () => import("@/components/Office3D/Office3D"),
@@ -50,11 +51,10 @@ export default function OfficePage() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/agents")
-      .then((r) => r.json())
+    fetchJson<{ agents: Array<{ id: string; name: string; color?: string }> }>("/api/agents")
       .then((data) => {
         if (cancelled || !data?.agents) return;
-        const active = (data.agents as Array<{ id: string; name: string; color?: string }>)
+        const active = data.agents
           .filter((agent) => ["main", "finance", "mia", "mensura", "pcs", "croncheap"].includes(agent.id))
           .map((agent) => ({
             id: agent.id,

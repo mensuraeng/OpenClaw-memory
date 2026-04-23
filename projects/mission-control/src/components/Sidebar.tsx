@@ -29,7 +29,7 @@ import {
   Globe,
   CheckSquare,
 } from "lucide-react";
-import { getAgentDisplayName } from "@/config/branding";
+import { getAgentDisplayName, BRANDING } from "@/config/branding";
 
 const navItems = [
   { href: "/", label: "Painel", icon: LayoutDashboard },
@@ -142,7 +142,7 @@ export function Sidebar() {
             </div>
 
             <div className="mc-brand-copy">
-              <p className="mc-brand-kicker">MIA Engenharia</p>
+              <p className="mc-brand-kicker">{BRANDING.companyName}</p>
               <div className="mc-brand-title">
                 Mission <em>Control</em>
               </div>

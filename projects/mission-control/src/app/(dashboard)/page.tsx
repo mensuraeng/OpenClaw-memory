@@ -28,6 +28,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { buildAnalyticsInsights, buildOperationalAlerts, summarizePayablesRisk, type AnalyticsInsight, type OperationalAlert } from "@/lib/executive-alerts";
+import { BRANDING } from "@/config/branding";
+import { fetchJson } from "@/lib/fetch";
 
 interface Stats {
   total: number;
@@ -188,10 +190,10 @@ export default function DashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/activities/stats").then(r => r.json()),
-      fetch("/api/agents").then(r => r.json()),
-      fetch("/api/tasks/attention").then(r => r.json()),
-      fetch("/api/tasks/metrics").then(r => r.json()),
+      fetchJson<{ total: number; today: number; byStatus: Record<string, number>; byType: Record<string, number> }>("/api/activities/stats"),
+      fetchJson<{ agents: Agent[]; companies: CompanySummary[]; executive: ExecutiveMemorySummary; attention: ExecutiveAttentionItem[] }>("/api/agents"),
+      fetchJson<TaskAttentionState>("/api/tasks/attention"),
+      fetchJson<TaskMetricsState>("/api/tasks/metrics"),
     ]).then(([actStats, agentsData, taskAttentionData, taskMetricsData]) => {
       setStats({
         total: actStats.total || 0,
@@ -224,7 +226,7 @@ export default function DashboardPage() {
           🦞 Mission Control
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-          Visão geral da atividade dos agentes MENSURA
+          Visão geral da atividade dos agentes {BRANDING.companyName}
         </p>
       </div>
 

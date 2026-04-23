@@ -128,7 +128,7 @@ async function listSessions(agentId: string): Promise<NextResponse> {
         };
       })
       .filter(Boolean)
-      .sort((a: any, b: any) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .sort((a, b) => ((b?.updatedAt || 0) - (a?.updatedAt || 0)))
       .slice(0, 50);
 
     return NextResponse.json(parsed);

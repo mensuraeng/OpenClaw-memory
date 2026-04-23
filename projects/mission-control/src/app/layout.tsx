@@ -20,8 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mission Control — MIA Engenharia",
-  description: "Cockpit operacional da MIA Engenharia",
+  title: process.env.NEXT_PUBLIC_APP_TITLE || "Mission Control",
+  description: process.env.NEXT_PUBLIC_AGENT_DESCRIPTION || "Cockpit operacional de agentes IA",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

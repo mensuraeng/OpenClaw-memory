@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { fetchJson } from "@/lib/fetch";
 import {
   Search,
   RefreshCw,
@@ -54,8 +55,7 @@ export default function SkillsPage() {
   const [loadingSkills, setLoadingSkills] = useState<Set<string>>(new Set());
 
   const fetchSkills = useCallback(() => {
-    fetch("/api/skills")
-      .then((res) => res.json())
+    fetchJson<SkillsData>("/api/skills")
       .then(setData)
       .catch(() => setData({ skills: [], total: 0, installed: 0 }));
   }, []);

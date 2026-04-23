@@ -23,6 +23,7 @@ import {
   Coffee,
 } from "lucide-react";
 import { BRANDING, getAgentDisplayName } from "@/config/branding";
+import { fetchJson } from "@/lib/fetch";
 
 interface Stats {
   totalActivities: number;
@@ -62,21 +63,20 @@ export default function AboutPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/activities").then((r) => r.json()),
-      fetch("/api/skills").then((r) => r.json()),
-      fetch("/api/tasks").then((r) => r.json()),
-    ]).then(([activities, skills, tasks]) => {
-      const total = activities.activities?.length || activities.length || 0;
-      const success = (activities.activities || activities).filter(
-        (a: { status: string }) => a.status === "success"
-      ).length;
+      fetchJson<{ activities: { status: string }[]; total: number }>("/api/activities"),
+      fetchJson<{ skills: unknown[]; total: number }>("/api/skills"),
+      fetchJson<{ tasks: unknown[] }>("/api/tasks"),
+    ]).then(([activitiesData, skillsData, tasksData]) => {
+      const activities = activitiesData.activities || [];
+      const total = activities.length;
+      const success = activities.filter((a) => a.status === "success").length;
       setStats({
         totalActivities: total,
         successRate: total > 0 ? Math.round((success / total) * 100) : 100,
-        skillsCount: skills.length || 0,
-        cronJobs: tasks.length || 0,
+        skillsCount: skillsData.total || 0,
+        cronJobs: tasksData.tasks?.length || 0,
       });
-    });
+    }).catch(console.error);
 
     // Calculate uptime from NEXT_PUBLIC_BIRTH_DATE if set
     if (BRANDING.birthDate) {
