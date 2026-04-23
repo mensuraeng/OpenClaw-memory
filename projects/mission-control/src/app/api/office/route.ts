@@ -200,7 +200,7 @@ export async function GET() {
       // Get status from gateway, or fallback to files
       let status = gatewayStatus[agent.id];
       if (!status) {
-        status = getAgentStatusFromFiles(agent.id, agent.workspace);
+        status = getAgentStatusFromFiles(agent.id, agent.workspace ?? "");
       }
 
       // Map freelance -> devclaw for canvas compatibility

@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { buildAnalyticsInsights, buildOperationalAlerts, summarizePayablesRisk, type AnalyticsInsight, type OperationalAlert } from "@/lib/executive-alerts";
+import { buildOperationalAlerts, summarizePayablesRisk, type AnalyticsInsight, type OperationalAlert } from "@/lib/executive-alerts";
 import { BRANDING } from "@/config/branding";
 import { fetchJson } from "@/lib/fetch";
 
@@ -185,10 +185,14 @@ export default function DashboardPage() {
   const rankedCompanies = [...companies].sort((a, b) => getCompanyAttentionScore(b) - getCompanyAttentionScore(a));
   const topCompany = rankedCompanies[0];
   const operationalAlerts: OperationalAlert[] = buildOperationalAlerts();
-  const analyticsInsights: AnalyticsInsight[] = buildAnalyticsInsights();
+  const [analyticsInsights, setAnalyticsInsights] = useState<AnalyticsInsight[]>([]);
   const payablesRisk = summarizePayablesRisk();
 
   useEffect(() => {
+    fetchJson<AnalyticsInsight[]>("/api/ga4")
+      .then((d) => setAnalyticsInsights(Array.isArray(d) ? d : []))
+      .catch(console.error);
+
     Promise.all([
       fetchJson<{ total: number; today: number; byStatus: Record<string, number>; byType: Record<string, number> }>("/api/activities/stats"),
       fetchJson<{ agents: Agent[]; companies: CompanySummary[]; executive: ExecutiveMemorySummary; attention: ExecutiveAttentionItem[] }>("/api/agents"),
