@@ -17,7 +17,13 @@ _Atualizado em 2026-04-20_
   - Fonte: comprovantes/imagens enviados pelo Alê
   - Status: ativo
   - Arquivo principal: `memory/projects/mia/comprovantes-pagamento.md`
-  - Observação de uso: base para conciliação futura com romaneio de notas e controle de pago x pendente
+  - Observação de uso: histórico bruto preservado para conciliação futura
+
+- Conciliação financeira operacional
+  - Fonte: cruzamento entre comprovantes, romaneio e documentos de suporte
+  - Status: ativo
+  - Arquivo principal: `memory/projects/mia/financeiro-conciliacao.md`
+  - Observação de uso: quadro consolidado com status `pago`, `pendente`, `parcial` e `ambíguo`
 
 ## Regra de atualização
 Ao receber novo documento importante da MIA, adicionar:

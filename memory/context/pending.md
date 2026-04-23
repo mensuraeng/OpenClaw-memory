@@ -35,6 +35,7 @@ _Atualizado em 2026-04-22_
 - [ ] **Sincronizar `MEMORY.md` com fontes temáticas** — recalibrar painel executivo para refletir o estado real de `pending.md`, decisões recentes e destaques válidos.
 - [ ] **Promover conteúdos permanentes do diário de 22/04** — mover o que for estável de `memory/2026-04-22.md` para `lessons.md`, `decisions.md` e `pending.md`.
 - [ ] **Aplicar Fase 1 da Memória v2** — saneamento inicial do painel, pendências e promoção do que está preso no diário.
+- [ ] **Consolidar financeiro MIA quando chegar o romaneio** — usar `memory/projects/mia/financeiro-conciliacao.md` para cruzar comprovantes, romaneio e documentos de suporte.
 
 ## Aguardando terceiros
 
