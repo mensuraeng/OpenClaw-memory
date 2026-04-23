@@ -1,0 +1,27 @@
+{
+  "personal": {
+    "owner": "Alexandre Aguiar",
+    "mode": "assisted",
+    "linkedin_member_urn": "PREENCHER"
+  },
+  "pages": [
+    {
+      "brand": "MENSURA",
+      "linkedin_organization_urn": "PREENCHER",
+      "mode": "governed",
+      "owner": "Alexandre Aguiar"
+    },
+    {
+      "brand": "MIA",
+      "linkedin_organization_urn": "PREENCHER",
+      "mode": "governed",
+      "owner": "Alexandre Aguiar"
+    },
+    {
+      "brand": "PCS",
+      "linkedin_organization_urn": "PREENCHER",
+      "mode": "governed",
+      "owner": "Alexandre Aguiar"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Jekyll config for OpenClaw Memory GitHub Pages
+# Excludes directories with Liquid-incompatible syntax ({{ }} in docs/templates)
+exclude:
+  - tmp/
+  - docling-env/
+  - clawflows/
+  - skills/shared/superpowers/
+  - finance/tmp/
+  - "**/.git"
+  - "*.sh"
+  - "*.py"
+

@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-14",
+      "context": "Sugeri usar skill X pra tarefa Y",
+      "decision": "reject",
+      "reason": "Skill não é confiável, prefiro fazer manualmente",
+      "tags": ["skills", "tools"]
+    }
+  ]
+}

@@ -1,0 +1,2995 @@
+[
+  {
+    "path": "1password/SKILL.md",
+    "name": "1password",
+    "type": "script-backed",
+    "score": 90,
+    "rating": "excellent",
+    "lines": 70,
+    "subscores": {
+      "trigger": 35,
+      "execution": 20,
+      "context": 20,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Script-backed skill should show at least one invocation example.",
+        "category": "execution",
+        "penalty": 3
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 29
+    }
+  },
+  {
+    "path": "apple-notes/SKILL.md",
+    "name": "apple-notes",
+    "type": "procedural",
+    "score": 84,
+    "rating": "good",
+    "lines": 77,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 36
+    }
+  },
+  {
+    "path": "apple-reminders/SKILL.md",
+    "name": "apple-reminders",
+    "type": "procedural",
+    "score": 90,
+    "rating": "excellent",
+    "lines": 118,
+    "subscores": {
+      "trigger": 35,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 19
+    }
+  },
+  {
+    "path": "bear-notes/SKILL.md",
+    "name": "bear-notes",
+    "type": "procedural",
+    "score": 80,
+    "rating": "good",
+    "lines": 107,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "blogwatcher/SKILL.md",
+    "name": "blogwatcher",
+    "type": "procedural",
+    "score": 84,
+    "rating": "good",
+    "lines": 69,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 12
+    }
+  },
+  {
+    "path": "blucli/SKILL.md",
+    "name": "blucli",
+    "type": "procedural",
+    "score": 57,
+    "rating": "borderline",
+    "lines": 47,
+    "subscores": {
+      "trigger": 25,
+      "execution": 3,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "bluebubbles/SKILL.md",
+    "name": "bluebubbles",
+    "type": "reference-heavy",
+    "score": 84,
+    "rating": "good",
+    "lines": 131,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 24
+    }
+  },
+  {
+    "path": "camsnap/SKILL.md",
+    "name": "camsnap",
+    "type": "procedural",
+    "score": 77,
+    "rating": "good",
+    "lines": 45,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 8
+    }
+  },
+  {
+    "path": "canvas/SKILL.md",
+    "name": "canvas",
+    "type": "script-backed",
+    "score": 52,
+    "rating": "weak",
+    "lines": 199,
+    "subscores": {
+      "trigger": 1,
+      "execution": 20,
+      "context": 16,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "missing_description",
+        "severity": "critical",
+        "message": "Missing description in frontmatter.",
+        "category": "trigger",
+        "penalty": 12
+      },
+      {
+        "code": "missing_frontmatter",
+        "severity": "critical",
+        "message": "Missing YAML frontmatter.",
+        "category": "trigger",
+        "penalty": 12
+      },
+      {
+        "code": "missing_name",
+        "severity": "critical",
+        "message": "Missing skill name in frontmatter.",
+        "category": "trigger",
+        "penalty": 10
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Script-backed skill should show at least one invocation example.",
+        "category": "execution",
+        "penalty": 3
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 0
+    }
+  },
+  {
+    "path": "clawhub/SKILL.md",
+    "name": "clawhub",
+    "type": "procedural",
+    "score": 77,
+    "rating": "good",
+    "lines": 77,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 47
+    }
+  },
+  {
+    "path": "coding-agent/SKILL.md",
+    "name": "coding-agent",
+    "type": "procedural",
+    "score": 72,
+    "rating": "good",
+    "lines": 316,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 10,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "reference_material_embedded",
+        "severity": "minor",
+        "message": "Detailed reference material may belong in references/.",
+        "category": "context",
+        "penalty": 3
+      },
+      {
+        "code": "skill_too_long",
+        "severity": "minor",
+        "message": "SKILL.md is getting long. Consider moving detail into references/.",
+        "category": "context",
+        "penalty": 3
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 102
+    }
+  },
+  {
+    "path": "discord/SKILL.md",
+    "name": "discord",
+    "type": "procedural",
+    "score": 70,
+    "rating": "good",
+    "lines": 197,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 16,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 8
+    }
+  },
+  {
+    "path": "eightctl/SKILL.md",
+    "name": "eightctl",
+    "type": "procedural",
+    "score": 57,
+    "rating": "borderline",
+    "lines": 50,
+    "subscores": {
+      "trigger": 25,
+      "execution": 3,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 8
+    }
+  },
+  {
+    "path": "gemini/SKILL.md",
+    "name": "gemini",
+    "type": "procedural",
+    "score": 64,
+    "rating": "borderline",
+    "lines": 43,
+    "subscores": {
+      "trigger": 25,
+      "execution": 10,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 10
+    }
+  },
+  {
+    "path": "gh-issues/SKILL.md",
+    "name": "gh-issues",
+    "type": "procedural",
+    "score": 69,
+    "rating": "borderline",
+    "lines": 885,
+    "subscores": {
+      "trigger": 35,
+      "execution": 22,
+      "context": 5,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "skill_too_long",
+        "severity": "major",
+        "message": "SKILL.md is very long and likely needs progressive disclosure.",
+        "category": "context",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "reference_material_embedded",
+        "severity": "minor",
+        "message": "Detailed reference material may belong in references/.",
+        "category": "context",
+        "penalty": 3
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 50
+    }
+  },
+  {
+    "path": "gifgrep/SKILL.md",
+    "name": "gifgrep",
+    "type": "procedural",
+    "score": 84,
+    "rating": "good",
+    "lines": 79,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 12
+    }
+  },
+  {
+    "path": "github/SKILL.md",
+    "name": "github",
+    "type": "procedural",
+    "score": 90,
+    "rating": "excellent",
+    "lines": 163,
+    "subscores": {
+      "trigger": 35,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 67
+    }
+  },
+  {
+    "path": "gog/SKILL.md",
+    "name": "gog",
+    "type": "procedural",
+    "score": 74,
+    "rating": "good",
+    "lines": 116,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 11
+    }
+  },
+  {
+    "path": "goplaces/SKILL.md",
+    "name": "goplaces",
+    "type": "procedural",
+    "score": 76,
+    "rating": "good",
+    "lines": 52,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 28
+    }
+  },
+  {
+    "path": "healthcheck/SKILL.md",
+    "name": "healthcheck",
+    "type": "script-backed",
+    "score": 93,
+    "rating": "excellent",
+    "lines": 245,
+    "subscores": {
+      "trigger": 35,
+      "execution": 27,
+      "context": 16,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Script-backed skill should show at least one invocation example.",
+        "category": "execution",
+        "penalty": 3
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 45
+    }
+  },
+  {
+    "path": "himalaya/SKILL.md",
+    "name": "himalaya",
+    "type": "reference-heavy",
+    "score": 97,
+    "rating": "excellent",
+    "lines": 257,
+    "subscores": {
+      "trigger": 33,
+      "execution": 29,
+      "context": 20,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 33
+    }
+  },
+  {
+    "path": "imsg/SKILL.md",
+    "name": "imsg",
+    "type": "script-backed",
+    "score": 90,
+    "rating": "excellent",
+    "lines": 122,
+    "subscores": {
+      "trigger": 35,
+      "execution": 20,
+      "context": 20,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Script-backed skill should show at least one invocation example.",
+        "category": "execution",
+        "penalty": 3
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 13
+    }
+  },
+  {
+    "path": "mcporter/SKILL.md",
+    "name": "mcporter",
+    "type": "reference-heavy",
+    "score": 91,
+    "rating": "excellent",
+    "lines": 61,
+    "subscores": {
+      "trigger": 33,
+      "execution": 29,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 27
+    }
+  },
+  {
+    "path": "model-usage/SKILL.md",
+    "name": "model-usage",
+    "type": "reference-heavy",
+    "score": 97,
+    "rating": "excellent",
+    "lines": 69,
+    "subscores": {
+      "trigger": 33,
+      "execution": 29,
+      "context": 20,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 50
+    }
+  },
+  {
+    "path": "nano-pdf/SKILL.md",
+    "name": "nano-pdf",
+    "type": "procedural",
+    "score": 64,
+    "rating": "borderline",
+    "lines": 38,
+    "subscores": {
+      "trigger": 25,
+      "execution": 10,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 11
+    }
+  },
+  {
+    "path": "node-connect/SKILL.md",
+    "name": "node-connect",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 142,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 55
+    }
+  },
+  {
+    "path": "notion/SKILL.md",
+    "name": "notion",
+    "type": "procedural",
+    "score": 73,
+    "rating": "good",
+    "lines": 174,
+    "subscores": {
+      "trigger": 25,
+      "execution": 15,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 10
+    }
+  },
+  {
+    "path": "obsidian/SKILL.md",
+    "name": "obsidian",
+    "type": "procedural",
+    "score": 74,
+    "rating": "good",
+    "lines": 81,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 12
+    }
+  },
+  {
+    "path": "openai-whisper/SKILL.md",
+    "name": "openai-whisper",
+    "type": "procedural",
+    "score": 64,
+    "rating": "borderline",
+    "lines": 38,
+    "subscores": {
+      "trigger": 25,
+      "execution": 10,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 11
+    }
+  },
+  {
+    "path": "openai-whisper-api/SKILL.md",
+    "name": "openai-whisper-api",
+    "type": "procedural",
+    "score": 76,
+    "rating": "good",
+    "lines": 62,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 8
+    }
+  },
+  {
+    "path": "openhue/SKILL.md",
+    "name": "openhue",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 112,
+    "subscores": {
+      "trigger": 27,
+      "execution": 15,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 10
+    }
+  },
+  {
+    "path": "oracle/SKILL.md",
+    "name": "oracle",
+    "type": "procedural",
+    "score": 80,
+    "rating": "good",
+    "lines": 125,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 16
+    }
+  },
+  {
+    "path": "ordercli/SKILL.md",
+    "name": "ordercli",
+    "type": "procedural",
+    "score": 76,
+    "rating": "good",
+    "lines": 78,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 13
+    }
+  },
+  {
+    "path": "peekaboo/SKILL.md",
+    "name": "peekaboo",
+    "type": "procedural",
+    "score": 80,
+    "rating": "good",
+    "lines": 190,
+    "subscores": {
+      "trigger": 25,
+      "execution": 26,
+      "context": 16,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 8,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "sag/SKILL.md",
+    "name": "sag",
+    "type": "procedural",
+    "score": 74,
+    "rating": "good",
+    "lines": 87,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "session-logs/SKILL.md",
+    "name": "session-logs",
+    "type": "reference-heavy",
+    "score": 84,
+    "rating": "good",
+    "lines": 151,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 12
+    }
+  },
+  {
+    "path": "sherpa-onnx-tts/SKILL.md",
+    "name": "sherpa-onnx-tts",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 109,
+    "subscores": {
+      "trigger": 25,
+      "execution": 15,
+      "context": 20,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 10
+    }
+  },
+  {
+    "path": "skill-creator/SKILL.md",
+    "name": "skill-creator",
+    "type": "reference-heavy",
+    "score": 88,
+    "rating": "excellent",
+    "lines": 372,
+    "subscores": {
+      "trigger": 35,
+      "execution": 27,
+      "context": 17,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "skill_too_long",
+        "severity": "minor",
+        "message": "SKILL.md is getting long. Consider moving detail into references/.",
+        "category": "context",
+        "penalty": 3
+      },
+      {
+        "code": "workflow_too_vague",
+        "severity": "minor",
+        "message": "Body contains vague wording.",
+        "category": "execution",
+        "penalty": 2
+      },
+      {
+        "code": "examples_thin",
+        "severity": "info",
+        "message": "A reference-heavy skill would benefit from one concrete usage example.",
+        "category": "execution",
+        "penalty": 1
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 83
+    }
+  },
+  {
+    "path": "slack/SKILL.md",
+    "name": "slack",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 144,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 26
+    }
+  },
+  {
+    "path": "songsee/SKILL.md",
+    "name": "songsee",
+    "type": "procedural",
+    "score": 76,
+    "rating": "good",
+    "lines": 49,
+    "subscores": {
+      "trigger": 25,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 12
+    }
+  },
+  {
+    "path": "sonoscli/SKILL.md",
+    "name": "sonoscli",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 65,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 8
+    }
+  },
+  {
+    "path": "spotify-player/SKILL.md",
+    "name": "spotify-player",
+    "type": "procedural",
+    "score": 77,
+    "rating": "good",
+    "lines": 64,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "summarize/SKILL.md",
+    "name": "summarize",
+    "type": "procedural",
+    "score": 84,
+    "rating": "good",
+    "lines": 87,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 18
+    }
+  },
+  {
+    "path": "taskflow/SKILL.md",
+    "name": "taskflow",
+    "type": "procedural",
+    "score": 82,
+    "rating": "good",
+    "lines": 149,
+    "subscores": {
+      "trigger": 33,
+      "execution": 22,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 60
+    }
+  },
+  {
+    "path": "taskflow-inbox-triage/SKILL.md",
+    "name": "taskflow-inbox-triage",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 119,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 33
+    }
+  },
+  {
+    "path": "things-mac/SKILL.md",
+    "name": "things-mac",
+    "type": "procedural",
+    "score": 75,
+    "rating": "good",
+    "lines": 86,
+    "subscores": {
+      "trigger": 33,
+      "execution": 15,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 47
+    }
+  },
+  {
+    "path": "tmux/SKILL.md",
+    "name": "tmux",
+    "type": "procedural",
+    "score": 82,
+    "rating": "good",
+    "lines": 170,
+    "subscores": {
+      "trigger": 27,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 14
+    }
+  },
+  {
+    "path": "trello/SKILL.md",
+    "name": "trello",
+    "type": "procedural",
+    "score": 73,
+    "rating": "good",
+    "lines": 108,
+    "subscores": {
+      "trigger": 25,
+      "execution": 15,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 11
+    }
+  },
+  {
+    "path": "video-frames/SKILL.md",
+    "name": "video-frames",
+    "type": "procedural",
+    "score": 57,
+    "rating": "borderline",
+    "lines": 46,
+    "subscores": {
+      "trigger": 25,
+      "execution": 3,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "missing_actionability",
+        "severity": "critical",
+        "message": "Procedural skill lacks enough actionable guidance.",
+        "category": "execution",
+        "penalty": 12
+      },
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "voice-call/SKILL.md",
+    "name": "voice-call",
+    "type": "procedural",
+    "score": 69,
+    "rating": "borderline",
+    "lines": 45,
+    "subscores": {
+      "trigger": 25,
+      "execution": 15,
+      "context": 20,
+      "reliability": 9
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "unclear_output",
+        "severity": "major",
+        "message": "Skill does not make the expected output clear.",
+        "category": "execution",
+        "penalty": 7
+      },
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "scope_ambiguity",
+        "severity": "minor",
+        "message": "Skill boundaries are not explicit.",
+        "category": "trigger",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 9
+    }
+  },
+  {
+    "path": "wacli/SKILL.md",
+    "name": "wacli",
+    "type": "procedural",
+    "score": 84,
+    "rating": "good",
+    "lines": 72,
+    "subscores": {
+      "trigger": 35,
+      "execution": 22,
+      "context": 20,
+      "reliability": 7
+    },
+    "findings": [
+      {
+        "code": "hidden_dependencies",
+        "severity": "major",
+        "message": "Skill mentions external dependencies but does not surface them clearly.",
+        "category": "reliability",
+        "penalty": 6
+      },
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 20
+    }
+  },
+  {
+    "path": "weather/SKILL.md",
+    "name": "weather",
+    "type": "procedural",
+    "score": 90,
+    "rating": "excellent",
+    "lines": 129,
+    "subscores": {
+      "trigger": 35,
+      "execution": 22,
+      "context": 20,
+      "reliability": 13
+    },
+    "findings": [
+      {
+        "code": "edge_cases_thin",
+        "severity": "minor",
+        "message": "Procedural skill should mention likely edge cases.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Procedural skill should include at least one concrete example.",
+        "category": "execution",
+        "penalty": 4
+      },
+      {
+        "code": "evals_recommended",
+        "severity": "minor",
+        "message": "High-risk or reusable skill would benefit from evals.",
+        "category": "reliability",
+        "penalty": 2
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 39
+    }
+  },
+  {
+    "path": "xurl/SKILL.md",
+    "name": "xurl",
+    "type": "script-backed",
+    "score": 79,
+    "rating": "good",
+    "lines": 461,
+    "subscores": {
+      "trigger": 27,
+      "execution": 27,
+      "context": 10,
+      "reliability": 15
+    },
+    "findings": [
+      {
+        "code": "weak_trigger_cues",
+        "severity": "major",
+        "message": "Description lacks clear activation cues.",
+        "category": "trigger",
+        "penalty": 8
+      },
+      {
+        "code": "missing_progressive_disclosure",
+        "severity": "minor",
+        "message": "Large skill does not use references/ or scripts/.",
+        "category": "context",
+        "penalty": 4
+      },
+      {
+        "code": "examples_thin",
+        "severity": "minor",
+        "message": "Script-backed skill should show at least one invocation example.",
+        "category": "execution",
+        "penalty": 3
+      },
+      {
+        "code": "reference_material_embedded",
+        "severity": "minor",
+        "message": "Detailed reference material may belong in references/.",
+        "category": "context",
+        "penalty": 3
+      },
+      {
+        "code": "skill_too_long",
+        "severity": "minor",
+        "message": "SKILL.md is getting long. Consider moving detail into references/.",
+        "category": "context",
+        "penalty": 3
+      }
+    ],
+    "broken_refs": [],
+    "metrics": {
+      "examples": 0,
+      "edge_cases": 0,
+      "description_words": 40
+    }
+  }
+]

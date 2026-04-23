@@ -1,0 +1,13 @@
+{
+  "target": "organization",
+  "brand": "MENSURA",
+  "author_urn": "urn:li:organization:PREENCHER",
+  "visibility": "PUBLIC",
+  "content": {
+    "text": "Texto do post aqui"
+  },
+  "approval": {
+    "required": true,
+    "approved_by": "Alexandre"
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-04-18 23:06 UTC",
+  "dayScope": "all",
+  "totalLoops": 4,
+  "statusCounts": {
+    "unknown": 1,
+    "noted": 1,
+    "in_progress": 1,
+    "blocked": 1
+  },
+  "loops": {
+    "title:bootstrap de captura": {
+      "current": {
+        "timestamp": "2026-04-15 01:40 UTC",
+        "day": "2026-04-14",
+        "agent": "main",
+        "type": "system",
+        "title": "Bootstrap de captura",
+        "source": "setup",
+        "status": "unknown",
+        "owner": "main",
+        "nextStep": null,
+        "family": null,
+        "validationOnly": false
+      },
+      "history": [
+        {
+          "timestamp": "2026-04-15 01:40 UTC",
+          "day": "2026-04-14",
+          "agent": "main",
+          "type": "system",
+          "title": "Bootstrap de captura",
+          "source": "setup",
+          "status": "unknown",
+          "owner": "main",
+          "nextStep": null,
+          "family": null,
+          "validationOnly": false
+        }
+      ],
+      "transitions": [
+        {
+          "timestamp": "2026-04-15 01:40 UTC",
+          "from": null,
+          "to": "unknown",
+          "title": "Bootstrap de captura",
+          "kind": "informative"
+        }
+      ]
+    },
+    "title:princípio 10 10 formalizado": {
+      "current": {
+        "timestamp": "2026-04-18 14:36 UTC",
+        "day": "2026-04-18",
+        "agent": "main",
+        "type": "decision_made",
+        "title": "Princípio 10/10 formalizado",
+        "source": "telegram",
+        "status": "noted",
+        "owner": "main",
+        "nextStep": null,
+        "family": null,
+        "validationOnly": false
+      },
+      "history": [
+        {
+          "timestamp": "2026-04-18 14:32 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "decision_made",
+          "title": "Princípio 10/10 formalizado",
+          "source": "telegram",
+          "status": "noted",
+          "owner": "main",
+          "nextStep": null,
+          "family": null,
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 14:36 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "decision_made",
+          "title": "Princípio 10/10 formalizado",
+          "source": "telegram",
+          "status": "noted",
+          "owner": "main",
+          "nextStep": null,
+          "family": null,
+          "validationOnly": false
+        }
+      ],
+      "transitions": [
+        {
+          "timestamp": "2026-04-18 14:32 UTC",
+          "from": null,
+          "to": "noted",
+          "title": "Princípio 10/10 formalizado",
+          "kind": "informative"
+        }
+      ]
+    },
+    "program:openclaw-memory": {
+      "current": {
+        "timestamp": "2026-04-18 22:13 UTC",
+        "day": "2026-04-18",
+        "agent": "main",
+        "type": "project_update",
+        "title": "OpenClaw Memory | transição por evidência ativada",
+        "source": "internal",
+        "status": "in_progress",
+        "owner": "main",
+        "nextStep": "testar reabertura do mesmo loop após novo bloqueio",
+        "family": "program:openclaw-memory",
+        "validationOnly": false
+      },
+      "history": [
+        {
+          "timestamp": "2026-04-18 21:20 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "project_update",
+          "title": "OpenClaw Memory | consulta executiva fortalecida",
+          "source": "internal",
+          "status": "in_progress",
+          "owner": "main",
+          "nextStep": "ampliar captura automática e reduzir duplicatas históricas",
+          "family": "program:openclaw-memory",
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 21:26 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "decision_made",
+          "title": "OpenClaw Memory | roadmap 10/10 formalizado",
+          "source": "internal",
+          "status": "noted",
+          "owner": "main",
+          "nextStep": "aumentar captura real e fechamento de loop",
+          "family": "program:openclaw-memory",
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 21:37 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "project_update",
+          "title": "OpenClaw Memory | ingestão do Mission Control endurecida",
+          "source": "internal",
+          "status": "in_progress",
+          "owner": "main",
+          "nextStep": "mapear task-executions reais quando o runtime estiver presente",
+          "family": "program:openclaw-memory",
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 22:10 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "project_update",
+          "title": "OpenClaw Memory | loop closure implantado",
+          "source": "internal",
+          "status": "in_progress",
+          "owner": "main",
+          "nextStep": "ligar atualizações do mesmo item e detectar encerramento real",
+          "family": "program:openclaw-memory",
+          "validationOnly": true
+        },
+        {
+          "timestamp": "2026-04-18 22:12 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "project_update",
+          "title": "OpenClaw Memory | reconciliação de identidade fortalecida",
+          "source": "internal",
+          "status": "in_progress",
+          "owner": "main",
+          "nextStep": "refinar transições closed/open por evidência real",
+          "family": "program:openclaw-memory",
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 22:13 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "task_completed",
+          "title": "OpenClaw Memory | loop closure implantado",
+          "source": "internal",
+          "status": "closed",
+          "owner": "main",
+          "nextStep": "refinar reabertura por evidência",
+          "family": "program:openclaw-memory",
+          "validationOnly": true
+        },
+        {
+          "timestamp": "2026-04-18 22:13 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "project_update",
+          "title": "OpenClaw Memory | transição por evidência ativada",
+          "source": "internal",
+          "status": "in_progress",
+          "owner": "main",
+          "nextStep": "testar reabertura do mesmo loop após novo bloqueio",
+          "family": "program:openclaw-memory",
+          "validationOnly": false
+        },
+        {
+          "timestamp": "2026-04-18 22:15 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "critical_alert",
+          "title": "OpenClaw Memory | loop closure implantado",
+          "source": "internal",
+          "status": "blocked",
+          "owner": "main",
+          "nextStep": "corrigir inconsistência de reabertura",
+          "family": "program:openclaw-memory",
+          "validationOnly": true
+        },
+        {
+          "timestamp": "2026-04-18 22:15 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "decision_made",
+          "title": "OpenClaw Memory | fechamento completo do loop implantado",
+          "source": "internal",
+          "status": "noted",
+          "owner": "main",
+          "nextStep": "reduzir reabertura artificial por updates de implementação",
+          "family": "program:openclaw-memory",
+          "validationOnly": true
+        }
+      ],
+      "transitions": [
+        {
+          "timestamp": "2026-04-18 21:20 UTC",
+          "from": null,
+          "to": "in_progress",
+          "title": "OpenClaw Memory | consulta executiva fortalecida",
+          "kind": "operational"
+        },
+        {
+          "timestamp": "2026-04-18 22:13 UTC",
+          "from": "in_progress",
+          "to": "closed",
+          "title": "OpenClaw Memory | loop closure implantado",
+          "kind": "operational"
+        },
+        {
+          "timestamp": "2026-04-18 22:13 UTC",
+          "from": "closed",
+          "to": "in_progress",
+          "title": "OpenClaw Memory | transição por evidência ativada",
+          "kind": "operational"
+        },
+        {
+          "timestamp": "2026-04-18 22:15 UTC",
+          "from": "in_progress",
+          "to": "blocked",
+          "title": "OpenClaw Memory | loop closure implantado",
+          "kind": "operational"
+        }
+      ]
+    },
+    "program:mission-control": {
+      "current": {
+        "timestamp": "2026-04-18 21:37 UTC",
+        "day": "2026-04-18",
+        "agent": "main",
+        "type": "critical_alert",
+        "title": "Mission Control | resumo executivo de reconciliação",
+        "source": "mission-control",
+        "status": "blocked",
+        "owner": "main",
+        "nextStep": null,
+        "family": "program:mission-control",
+        "validationOnly": false
+      },
+      "history": [
+        {
+          "timestamp": "2026-04-18 21:37 UTC",
+          "day": "2026-04-18",
+          "agent": "main",
+          "type": "critical_alert",
+          "title": "Mission Control | resumo executivo de reconciliação",
+          "source": "mission-control",
+          "status": "blocked",
+          "owner": "main",
+          "nextStep": null,
+          "family": "program:mission-control",
+          "validationOnly": false
+        }
+      ],
+      "transitions": [
+        {
+          "timestamp": "2026-04-18 21:37 UTC",
+          "from": null,
+          "to": "blocked",
+          "title": "Mission Control | resumo executivo de reconciliação",
+          "kind": "operational"
+        }
+      ]
+    }
+  }
+}

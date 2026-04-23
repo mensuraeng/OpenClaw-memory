@@ -1,0 +1,20 @@
+{
+  "createdAt": "2026-04-16T11:52:55.982Z",
+  "archiveRoot": "2026-04-16T11-52-55.982Z-openclaw-backup",
+  "archivePath": "/root/openclaw-backups/2026-04-16T11-52-55.982Z-openclaw-backup.tar.gz",
+  "dryRun": false,
+  "includeWorkspace": false,
+  "onlyConfig": false,
+  "verified": true,
+  "assets": [
+    {
+      "kind": "state",
+      "sourcePath": "/root/.openclaw",
+      "displayPath": "~/.openclaw",
+      "archivePath": "2026-04-16T11-52-55.982Z-openclaw-backup/payload/posix/root/.openclaw"
+    }
+  ],
+  "skipped": [],
+  "label": "destravar-agentes-especializados",
+  "workspaceGitCommit": "847b28611419914b6d67f52b1ac909ece9bbcc9c"
+}

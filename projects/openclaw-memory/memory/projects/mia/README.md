@@ -1,0 +1,29 @@
+# MIA Engenharia
+
+_Atualizado em 2026-04-20_
+
+## Objetivo
+Memória documental institucional da MIA para consultas futuras.
+
+## O que deve entrar aqui
+- apresentações institucionais
+- cartão CNPJ
+- ficha cadastral
+- dados institucionais recorrentes
+- documentos-base de cadastro, onboarding, banco e fornecedor
+- outros documentos importantes e duráveis da empresa
+
+## Estrutura recomendada
+- `apresentacao.md` → resumo executivo da apresentação institucional
+- `ficha-cadastral.md` → base reutilizável de cadastro
+- `documentos-index.md` → índice dos documentos-fonte e anexos
+- `dados-institucionais.md` → identificação, contatos, CNPJ, endereços, CNAEs e responsáveis
+
+## Documentos-fonte já identificados
+- `referencias/MIA_apresentacao.pdf`
+- `referencias/mia/MIA_Engenharia_Ficha_Cadastral_2026-04-16.pdf`
+- `memory/projects/mia/cadastro-base-mia.md`
+- `memory/projects/mia/ficha-cadastral-mia.md`
+
+## Regra operacional
+Sempre que entrar documento importante da MIA, registrar aqui o resumo estruturado e apontar a fonte original para consulta futura.

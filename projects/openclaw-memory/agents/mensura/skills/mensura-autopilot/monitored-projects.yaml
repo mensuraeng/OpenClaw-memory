@@ -1,0 +1,45 @@
+projects:
+  - id: mensura-ccsp-casa7
+    company: MENSURA
+    project_name: CCSP Casa7
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
+  - id: mensura-pg-louveira
+    company: MENSURA
+    project_name: P&G Louveira
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
+  - id: mensura-paranapiacaba
+    company: MENSURA
+    project_name: Paranapiacaba
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []
+
+  - id: mensura-paranapiacaba-paralelelepipedo
+    company: MENSURA
+    project_name: Paranapiacaba - Paralelepípedo
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: medium
+    source_notes: []
+
+  - id: mensura-teatro-suzano
+    company: MENSURA
+    project_name: Teatro Suzano
+    status: active
+    silence_warning_days: 5
+    silence_critical_days: 10
+    report_priority: high
+    source_notes: []

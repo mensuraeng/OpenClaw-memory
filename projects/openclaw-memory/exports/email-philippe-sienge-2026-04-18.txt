@@ -1,0 +1,38 @@
+Philippe, boa tarde.
+
+Identificamos o bloqueio que está impedindo a evolução da integração da PCS com o Sienge.
+
+Hoje, no ambiente de administração do Sienge ID, meu usuário aparece na organização PCS SERVICES apenas com o perfil de "Usuário padrão". Com esse perfil, os controles de administração da organização ficam bloqueados e eu não consigo avançar na criação da aplicação OAuth necessária para a integração.
+
+Resumo objetivo do problema:
+- o tenant da PCS está configurado para autenticação via Sienge ID
+- o provedor de identidade local está desabilitado
+- por isso, o fluxo antigo via endpoint local do tenant não se aplica aqui
+- a integração correta agora depende da criação de uma aplicação OAuth no ambiente administrativo do Sienge ID
+- essa criação está bloqueada porque meu usuário não está com permissão administrativa efetiva na organização PCS SERVICES
+
+Para destravar, preciso de uma destas duas soluções:
+1. elevar meu perfil na organização PCS SERVICES de "Usuário padrão" para "Administrador"
+2. ou, alternativamente, que um administrador atual da organização faça a criação da aplicação OAuth e nos envie os dados gerados
+
+Os acessos/permissões necessários são estes:
+- permissão para editar a organização PCS SERVICES no admin.sienge.com.br
+- permissão para acessar a gestão de usuários/perfis da organização
+- permissão para criar e gerenciar aplicações OAuth da organização
+
+Se for possível seguir pela criação da aplicação, o que precisamos receber ao final é:
+- client_id
+- client_secret
+- token endpoint
+- scopes/permissões da aplicação
+
+A aplicação precisa ser do tipo client_credentials (machine-to-machine), para viabilizar a integração sistêmica da PCS com a API do Sienge.
+
+Se preferir, a liberação mais simples neste momento é ajustar meu perfil para Administrador, porque assim conseguimos concluir os testes e seguir direto para a validação dos endpoints de negócio.
+
+Fico no aguardo para destravarmos isso o quanto antes.
+
+Atenciosamente,
+
+Alexandre Ribeiro de Barros Aguiar
+PCS Engenharia

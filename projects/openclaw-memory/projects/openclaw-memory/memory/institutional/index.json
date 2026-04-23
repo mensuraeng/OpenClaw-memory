@@ -1,0 +1,15 @@
+{
+  "lastRunAt": "2026-04-19 01:00 UTC",
+  "lastDay": "2026-04-18",
+  "sourceInbox": "/root/.openclaw/workspace/projects/openclaw-memory/memory/inbox/2026-04-18",
+  "counts": {
+    "decision": 4,
+    "project": 6,
+    "pending": 2
+  },
+  "promoted": {
+    "decision": 0,
+    "project": 0,
+    "pending": 0
+  }
+}

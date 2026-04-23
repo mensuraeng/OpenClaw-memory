@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euo pipefail
+
+PROMPT="$1"
+TIMEOUT="${2:-120}"
+
+set +e
+timeout "$TIMEOUT" /root/.local/bin/claude \
+  --permission-mode plan \
+  --output-format json \
+  -p "$PROMPT" 2>/dev/null
+exit_code=$?
+set -e
+
+if [ "$exit_code" -eq 124 ]; then
+  echo '{"error": "timeout", "message": "Claude Code excedeu o tempo limite"}'
+fi
+exit "$exit_code"
