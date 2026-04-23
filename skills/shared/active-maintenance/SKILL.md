@@ -13,20 +13,20 @@ Verificar periodicamente:
 - uso de disco
 - arquivos temporários acumulados
 - sessões e artefatos soltos em lugares errados
-- integridade básica da estrutura `memory/`
+- integridade básica da estrutura do `2nd-brain` e dos diretórios locais do workspace
 - presença de credenciais em texto onde não deveriam estar
 
 ### 2. Higiene da memória
 Revisar:
-- arquivos soltos no topo de `memory/`
-- desalinhamentos com `MEMORY.md`
-- duplicação óbvia entre `memory/context/`, `memory/projects/`, `memory/sessions/` e `memory/YYYY-MM-DD.md`
+- arquivos soltos fora da estrutura oficial do `2nd-brain`
+- desalinhamentos entre ponte local e fonte de verdade
+- duplicação óbvia entre `2nd-brain`, memória legada do workspace e artefatos locais
 
 ### 3. Limpeza segura
 Pode:
 - mover arquivos para pastas corretas
-- registrar pendências estruturais em `memory/context/pending.md`
-- registrar lições em `memory/context/lessons.md`
+- registrar pendências estruturais em `/root/2nd-brain/02-context/pending.md`
+- registrar lições em `/root/2nd-brain/02-context/lessons.md`
 
 Não pode:
 - apagar conteúdo importante sem confirmação
@@ -41,7 +41,7 @@ Não pode:
 - checar arquivos grandes ou desnecessários no workspace
 
 ### Revisão da memória
-- `MEMORY.md` continua compatível com a árvore real?
+- a ponte local (`MEMORY.md`) continua compatível com o `2nd-brain`?
 - existem arquivos soltos fora do padrão?
 - existem segredos em texto fora do cofre?
 

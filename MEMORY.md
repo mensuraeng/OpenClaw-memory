@@ -1,78 +1,64 @@
-# MEMORY.md — Painel de Continuidade da Flávia
+# MEMORY.md — Ponte local para o 2nd-brain
 
-_Última atualização: 2026-04-22_
+_Atualizado em 2026-04-23_
 
-## O que este arquivo é
+## Função deste arquivo
 
-Este arquivo é o painel executivo de continuidade da operação.
-Não é arquivo de detalhe, não é diário, não é depósito.
-Serve para responder rápido:
-- o que está ativo
-- o que está travado
-- o que está faltando
-- onde fica cada contexto relevante
+Este arquivo não é mais a fonte primária de memória operacional da Flávia.
+Ele existe como **ponte local**, para orientar humanos e automações legadas durante a transição.
 
-## Estado Atual
-_Atualizado manualmente em 2026-04-22 durante saneamento da Memória v2_
+## Fonte de verdade atual
 
-### Pendências Abertas (8 frentes executivas)
-- [ ] **Confirmar SSH key do VPS** — pré-requisito antes de endurecer SSH com `PermitRootLogin prohibit-password`.
-- [ ] **Limpar segredos expostos após migração** — revisar memória, configs e documentação para remover texto sensível sem quebrar integrações.
-- [ ] **Revalidar fallback real além do microteste de agentes** — ainda falta prova operacional específica da cadeia alternativa de modelos.
-- [ ] **Instagram integration** — confirmar arquitetura final 10/10 antes de live/review.
-- [ ] **Reforçar governança da memória operacional** — sincronizar painel, promover conteúdos permanentes e reduzir duplicação entre diário, contexto e projetos.
-- [ ] **Classificar base PCS↔Sienge** — separar obras executáveis, centros de custo administrativos e itens ambíguos.
-- [ ] **Descobrir rota financeira real do Teatro Suzano no Sienge** — obter gastos/títulos/payables da obra `1354` com endpoint válido.
-- [ ] **Aguardar romaneio da MIA para conciliação** — cruzar comprovantes com notas e consolidar `pago`, `pendente`, `parcial` e `ambíguo`.
+Toda memória institucional e operacional durável passa a viver em:
+- `/root/2nd-brain/01-identity/`
+- `/root/2nd-brain/02-context/`
+- `/root/2nd-brain/03-knowledge/`
+- `/root/2nd-brain/04-projects/`
+- `/root/2nd-brain/05-journal/`
+- `/root/2nd-brain/06-agents/flavia/`
+- `/root/2nd-brain/_system/`
 
-### Últimas decisões ativas
-- GitHub será o segundo cérebro operacional (2026-04-14)
-- Memória documental deve ser separada por empresa e pela frente pessoal do Alê (2026-04-20)
-- A base PCS↔Sienge deve ter memória operacional como fonte principal, com arquivo documental reduzido a ponte (2026-04-22)
-- Comprovante bancário isolado da MIA deve ficar como histórico bruto, sem atribuição prematura a obra específica (2026-04-22)
-- Claude-Mem entra só como referência de arquitetura; a memória da Flávia evolui por cirurgia de consolidação, não por substituição da base atual (2026-04-22)
+## Regras operacionais
 
-### Destaques de Hoje (2026-04-22)
-- Corrigido o roteamento do domínio de relatórios MIA Casa 7; rotas públicas passaram a servir conteúdo correto.
-- Base PCS↔Sienge promovida para memória operacional em `memory/context/pcs-sienge-obras-centros-de-custo.md`.
-- Histórico de comprovantes da MIA iniciado e preservado para conciliação futura.
-- Blueprint inicial da **Memória v2 da Flávia** criado em `memory/context/memoria-v2-flavia.md`.
-## Onde está cada coisa
+- Antes de responder sobre pessoas, preferências, decisões, pendências, projetos ou histórico, buscar primeiro no `2nd-brain`
+- `MEMORY.md` do workspace não deve mais competir com `pending.md`, `decisions.md` e `lessons.md` do `2nd-brain`
+- `memory/context/*.md` e `memory/projects/*.md` do workspace são legados, exceto quando servirem como material local ainda não migrado ou armazenamento não versionável no `2nd-brain`
+- Credenciais locais continuam fora do `2nd-brain`, em caminhos locais do workspace quando necessário
 
-### Contexto estrutural
-- `memory/context/business-context.md` → contexto consolidado das empresas
-- `memory/context/decisions.md` → decisões permanentes
-- `memory/context/lessons.md` → lições aprendidas e erros recorrentes
-- `memory/context/pending.md` → pendências aguardando ação ou input
-- `memory/context/people.md` → pessoas e relações importantes
-- `memory/context/pcs-engenharia.md` → memória dedicada da PCS
+## Onde procurar agora
 
-### Projetos
-- `memory/projects/setup-openclaw-flavia.md` → setup da operação Flávia
-- `memory/projects/automacoes-msgraph.md` → email, calendário e SharePoint
-- `memory/projects/grupo-telegram-mensura.md` → protocolo operacional do grupo da MENSURA no Telegram
-- `memory/projects/grupo-telegram-pcs.md` → protocolo operacional do grupo da PCS no Telegram
-- `memory/projects/monitor-semanal.md` → rotina semanal de monitoramento
-- `memory/projects/relatorio-cursos.md` → relatório semanal de cursos
-- `memory/projects/pcs-comercial-posicionamento.md` → posicionamento comercial da PCS
+### Identidade e contexto executivo
+- `/root/2nd-brain/06-agents/flavia/AGENT-MAP.md`
+- `/root/2nd-brain/01-identity/company.md`
+- `/root/2nd-brain/01-identity/people.md`
+- `/root/2nd-brain/01-identity/mission-values.md`
+- `/root/2nd-brain/01-identity/user.md`
+- `/root/2nd-brain/02-context/pending.md`
+- `/root/2nd-brain/02-context/decisions.md`
+- `/root/2nd-brain/02-context/lessons.md`
+- `/root/2nd-brain/_system/SOUL.md`
+- `/root/2nd-brain/_system/BOOT.md`
+- `/root/2nd-brain/_system/HEARTBEAT.md`
 
-### Conteúdo e apoio
-- `memory/content/ideas.md` → ideias de conteúdo
-- `memory/content/drafts/` → rascunhos em andamento
-- `memory/integrations/telegram-map.md` → mapa de chats, grupos e tópicos
-- `memory/integrations/credentials-map.md` → mapa de credenciais
-- `memory/sessions/` → histórico bruto de sessões
-- `memory/YYYY-MM-DD.md` → rascunho diário
+### Memória específica da Flávia
+- `/root/2nd-brain/06-agents/flavia/pending.md`
+- `/root/2nd-brain/06-agents/flavia/decisions.md`
+- `/root/2nd-brain/06-agents/flavia/lessons.md`
+- `/root/2nd-brain/06-agents/flavia/urgent_notifications.md`
+- `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
 
-## Regras de uso
+### Exceções locais no workspace
+- `memory/feedback/` → feedback do Alê
+- `memory/context/credentials.md` → credenciais locais não commitáveis
+- `scripts/`, `agents/`, `finance/`, `projects/` → código, integrações, testes e operação técnica
 
-- Antes de abrir arquivos grandes, buscar o tema e ler só o necessário
-- Se algo importa além da sessão atual, registrar no arquivo temático certo
-- Não duplicar conteúdo detalhado aqui
-- Atualizar este painel quando mudar estado, prioridade, risco ou localização de contexto
-- Se um projeto deixar de ser relevante, tirar do estado atual e manter só no arquivo temático
+## Estado da migração
 
-## Próxima melhoria recomendada
+- Fonte de verdade: migrada para `2nd-brain`
+- Boot operacional: deve seguir `AGENT-MAP.md`
+- Heartbeat: deve consultar e promover contexto no `2nd-brain`
+- Workspace: mantido como camada técnica/local
 
-- Consolidar pendências e decisões espalhadas das notas diárias para os arquivos de contexto
-- Resolver a chave de OpenAI para reativar embeddings, `memory_search()` e fluxos de Whisper
+## Próxima regra simples
+
+Se algo precisa continuar existindo amanhã, gravar no `2nd-brain`.

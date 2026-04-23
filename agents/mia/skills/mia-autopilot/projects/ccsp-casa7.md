@@ -8,7 +8,7 @@
 
 ## Última atualização relevante
 - data: 2026-04-07
-- origem: `memory/projects/ccsp-casa7.md` e rotina operacional de mensagem matinal
+- origem: contexto legado em `memory/projects/ccsp-casa7.md` + rotina operacional de mensagem matinal; ao consolidar, priorizar o 2nd-brain como fonte canônica
 - resumo factual: existe histórico de acompanhamento estruturado da obra e rotina operacional dedicada, indicando monitoramento ativo e recorrente.
 
 ## Prazo

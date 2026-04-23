@@ -34,10 +34,11 @@ Transformar a PCS em uma frente mais coerente, defensável e padronizada em:
 
 ## Fontes principais
 
-- `memory/context/pcs-engenharia.md`
-- `memory/projects/pcs-comercial-posicionamento.md`
-- `USER.md`
-- `SOUL.md`
+- `/root/2nd-brain/04-projects/pcs/`
+- `/root/2nd-brain/03-knowledge/`
+- `/root/2nd-brain/01-identity/user.md`
+- `/root/2nd-brain/_system/SOUL.md`
+- arquivos locais do workspace só quando forem técnicos ou ainda não migrados
 
 ## Regra de decisão
 

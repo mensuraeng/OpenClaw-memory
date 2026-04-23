@@ -195,3 +195,21 @@ Regra:
 - **Recebido:** 2026-03-17
 - **Prazo:** 29/05/2026
 - **Ação:** A definir
+
+## [PENDENTE] Documentos - 23/04/2026
+- **De:** confirpdigital@confirp.com
+- **Recebido:** 2026-04-23
+- **Prazo:** estimado 28/04/2026
+- **Ação:** A definir
+
+## [PENDENTE] ENC: Diretrizes adicionais - CPA
+- **De:** dyonisiojpf@spobras.sp.gov.br
+- **Recebido:** 2026-04-22
+- **Prazo:** estimado 28/04/2026
+- **Ação:** A definir
+
+## [CRITICA] DECLARAÇÃO DE IRPF-2026 - REGRAS PARA APRESENTAÇÃO - PRAZO VAI ATÉ 29/05/2026
+- **De:** confirpdigital@confirp.com
+- **Recebido:** 2026-03-17
+- **Prazo:** 29/05/2026
+- **Ação:** A definir

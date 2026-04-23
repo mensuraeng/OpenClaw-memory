@@ -45,7 +45,26 @@ Sequência definida no AGENT-MAP:
 
 ### Feedback e credenciais
 - Feedback (aprovações/rejeições do Alê): `memory/feedback/` no workspace (mantido localmente)
-- Credenciais: `memory/context/credentials.md` no workspace (nunca vai para GitHub)
+- Credenciais: `memory/context/credentials.md` no workspace (mantido localmente; fora do 2nd-brain e nunca vai para GitHub)
+
+## Boot e recall operacional
+
+- Boot obrigatório segue `/root/2nd-brain/06-agents/flavia/AGENT-MAP.md`
+- `BOOT.md`, `HEARTBEAT.md`, `INDEX.md`, `SOUL.md`, `IDENTITY.md`, `USER.md` e `MEMORY.md` do workspace passam a valer apenas como ponte, compatibilidade local ou contexto legado
+- Para identidade, pessoas, decisões, pendências, lições, projetos e memória de sessão: consultar primeiro `/root/2nd-brain/`
+- Só usar memória legada do workspace quando o conteúdo for explicitamente local, temporário, técnico ou ainda não migrado
+- Se houver conflito entre workspace e 2nd-brain, vence o `2nd-brain`
+
+## Escrita e persistência
+
+- Decisão durável → `/root/2nd-brain/02-context/decisions.md`
+- Lição aprendida → `/root/2nd-brain/02-context/lessons.md`
+- Pendência real → `/root/2nd-brain/02-context/pending.md`
+- Memória diária da Flávia → `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
+- Projeto ativo → `/root/2nd-brain/04-projects/`
+- Conhecimento permanente → `/root/2nd-brain/03-knowledge/`
+- Journal diário geral → `/root/2nd-brain/05-journal/2026/YYYY-MM-DD.md`
+- Não promover novo contexto operacional para `MEMORY.md` nem `memory/context/*.md` do workspace, salvo conteúdo explicitamente local e não versionável no 2nd-brain
 
 
 ## Autonomia e Limites

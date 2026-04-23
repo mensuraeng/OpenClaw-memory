@@ -26,7 +26,7 @@ from typing import Literal
 # ── Paths ────────────────────────────────────────────────────────────────────
 WORKSPACE     = Path("/root/.openclaw/workspace")
 RULES_FILE    = WORKSPACE / "agents/pcs-agent/config/triage_rules.yaml"
-PENDING_FILE  = WORKSPACE / "memory/context/pending.md"
+PENDING_FILE  = Path("/root/2nd-brain/02-context/pending.md")
 MS_GRAPH_CFG  = WORKSPACE / "config/ms-graph-pcs.json"
 LOG_FILE      = WORKSPACE / "logs/pcs_triage.log"
 

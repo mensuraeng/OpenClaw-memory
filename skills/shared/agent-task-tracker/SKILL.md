@@ -13,27 +13,27 @@ Dar continuidade entre sessões, resets e compactions, registrando:
 ## Fonte oficial
 
 Arquivo principal:
-- `memory/context/pending.md`
+- `/root/2nd-brain/02-context/pending.md`
 
 Arquivo complementar de sessão/dia:
-- `memory/YYYY-MM-DD.md`
+- `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
 
 ## Regra central
 
 **Não criar `memory/tasks.md`.**
 
 Acompanhar tarefas usando:
-- `memory/context/pending.md` para estado durável
-- `memory/YYYY-MM-DD.md` para progresso do dia
+- `/root/2nd-brain/02-context/pending.md` para estado durável
+- `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` para progresso do dia
 
 ## Quando atualizar
 
 ### 1. Nova tarefa recebida
-- Se for tarefa que sobrevive à conversa atual, registrar em `memory/context/pending.md`
-- Se for tarefa curta do dia, registrar em `memory/YYYY-MM-DD.md` em `## Prioridades do Dia` ou `## Notas Operacionais`
+- Se for tarefa que sobrevive à conversa atual, registrar em `/root/2nd-brain/02-context/pending.md`
+- Se for tarefa curta do dia, registrar em `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` em `## Prioridades do Dia` ou `## Notas Operacionais`
 
 ### 2. Processo em background iniciado
-Registrar em `memory/YYYY-MM-DD.md`:
+Registrar em `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`:
 - session id
 - comando
 - servidor/contexto
@@ -41,20 +41,20 @@ Registrar em `memory/YYYY-MM-DD.md`:
 
 ### 3. Progresso relevante
 Atualizar:
-- `memory/YYYY-MM-DD.md` com andamento do dia
-- `memory/context/pending.md` se mudou status estrutural
+- `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` com andamento do dia
+- `/root/2nd-brain/02-context/pending.md` se mudou status estrutural
 
 ### 4. Conclusão
-- remover ou marcar como resolvido em `memory/context/pending.md`
-- registrar entrega em `memory/YYYY-MM-DD.md` em `## Entregas do Dia`
+- remover ou marcar como resolvido em `/root/2nd-brain/02-context/pending.md`
+- registrar entrega em `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` em `## Entregas do Dia`
 
 ### 5. Falha ou bloqueio
-- registrar em `memory/context/pending.md`
+- registrar em `/root/2nd-brain/02-context/pending.md`
 - descrever bloqueio e dependência
 
 ## Estrutura recomendada
 
-### Em `memory/context/pending.md`
+### Em `/root/2nd-brain/02-context/pending.md`
 ```markdown
 ## Em andamento interno
 - [ ] tarefa durável
@@ -66,7 +66,7 @@ Atualizar:
 - [ ] dependência externa
 ```
 
-### Em `memory/YYYY-MM-DD.md`
+### Em `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
 ```markdown
 ## Prioridades do Dia
 - [ ] tarefa
@@ -81,8 +81,8 @@ Atualizar:
 ## Regras
 
 - Nunca duplicar lista inteira de tarefas em múltiplos arquivos
-- `pending.md` guarda estado durável
-- `YYYY-MM-DD.md` guarda contexto diário
+- `pending.md` do `2nd-brain` guarda estado durável
+- `YYYY-MM-DD.md` da Flávia no `2nd-brain` guarda contexto diário
 - Se a tarefa deixou de ser relevante estruturalmente, não manter em `pending.md`
 - Clareza operacional > log detalhado
 

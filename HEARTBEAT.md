@@ -1,9 +1,10 @@
 # HEARTBEAT — Mensura, MIA Engenharia & PCS Engenharia
-## Versão 2.0 | Ritmo Operacional Inteligente
+## Versão 2.1 | Ritmo Operacional Inteligente
 
 ## FILOSOFIA
 > Não monitorar tudo. Monitorar o que mata e o que multiplica.
 > Silêncio inteligente > relatório inútil.
+> 2nd-brain é a memória operacional oficial.
 
 ## CICLOS DIÁRIOS (Seg-Sex)
 
@@ -16,6 +17,7 @@ Checar:
 - agenda de amanhã
 - alertas de projeto com marco hoje ou amanhã
 - clima/condições que afetem obras em andamento
+- contexto ativo em `/root/2nd-brain/02-context/`
 
 Formato esperado:
 
@@ -120,12 +122,12 @@ SCORE DA SEMANA: X/10 → O que avançou → O que travou e por quê → Decisã
 Objetivo: manter contexto útil, limpo e recuperável.
 
 Executar:
-- revisar `memory/context/pending.md`
+- revisar `/root/2nd-brain/02-context/pending.md`
 - limpar itens resolvidos
-- consolidar nota diária
-- promover decisões para `memory/context/decisions.md`
-- promover lições para `memory/context/lessons.md`
-- atualizar `MEMORY.md` se mudar estado, risco, prioridade ou localização de contexto
+- consolidar nota diária em `/root/2nd-brain/06-agents/flavia/memory/`
+- promover decisões para `/root/2nd-brain/02-context/decisions.md`
+- promover lições para `/root/2nd-brain/02-context/lessons.md`
+- atualizar a memória específica do agente se mudar estado, risco, prioridade ou localização de contexto
 
 Regra de saída:
 - silêncio por padrão

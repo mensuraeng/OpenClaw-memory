@@ -5,17 +5,17 @@ Skill para planejamento diário e acompanhamento de execução, adaptado ao padr
 ## Objetivo
 
 Organizar o dia operacional do Alê com base em:
-- pendências ativas em `memory/context/pending.md`
-- decisões relevantes em `memory/context/decisions.md`
-- lições e padrões em `memory/context/lessons.md`
-- projetos ativos em `memory/projects/`
-- memória diária em `memory/YYYY-MM-DD.md`
-- capturas de sessão em `memory/sessions/`
+- pendências ativas em `/root/2nd-brain/02-context/pending.md`
+- decisões relevantes em `/root/2nd-brain/02-context/decisions.md`
+- lições e padrões em `/root/2nd-brain/02-context/lessons.md`
+- projetos ativos em `/root/2nd-brain/04-projects/`
+- memória diária da Flávia em `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md`
+- capturas de sessão e legado local apenas quando forem necessárias
 
 ## Regras do skill
 
 ### `/plan today`
-Gerar ou atualizar `memory/YYYY-MM-DD.md` com estrutura diária operacional:
+Gerar ou atualizar `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` com estrutura diária operacional:
 
 ```markdown
 # YYYY-MM-DD
@@ -38,10 +38,10 @@ Gerar ou atualizar `memory/YYYY-MM-DD.md` com estrutura diária operacional:
 ```
 
 Fontes obrigatórias:
-- `memory/context/pending.md`
-- `memory/context/decisions.md`
-- `memory/projects/*.md` relevantes
-- último `memory/YYYY-MM-DD.md` existente, quando útil
+- `/root/2nd-brain/02-context/pending.md`
+- `/root/2nd-brain/02-context/decisions.md`
+- `/root/2nd-brain/04-projects/` relevantes
+- último `/root/2nd-brain/06-agents/flavia/memory/YYYY-MM-DD.md` existente, quando útil
 
 ### `/plan review`
 Revisar o dia atual e resumir:
@@ -68,31 +68,29 @@ Carregar itens pendentes relevantes do dia anterior para o dia atual, sem duplic
 ## Estrutura de memória compatível
 
 ```text
-memory/
-  YYYY-MM-DD.md
-  context/
+/root/2nd-brain/
+  01-identity/
+  02-context/
     decisions.md
     lessons.md
     pending.md
-    business-context.md
-    people.md
-  projects/
-    *.md
-  sessions/
-    *.md
-  feedback/
-    *.json
-  integrations/
-    *.md
-  content/
-    ...
+  03-knowledge/
+  04-projects/
+  05-journal/2026/
+  06-agents/flavia/memory/YYYY-MM-DD.md
+
+/root/.openclaw/workspace/
+  memory/feedback/
+  memory/context/credentials.md
+  scripts/
+  agents/
 ```
 
 ## Restrições
 
 - Nunca criar `projects.json`
-- Nunca escrever fora do padrão acima
-- Não duplicar conteúdo que já foi consolidado em `context/` ou `projects/`
+- Nunca tratar `memory/context/` ou `memory/projects/` do workspace como memória canônica
+- Não duplicar conteúdo que já foi consolidado no `2nd-brain`
 - Priorizar clareza operacional, não template bonito
 
 ## Fit operacional
