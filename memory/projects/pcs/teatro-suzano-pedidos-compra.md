@@ -1,0 +1,75 @@
+# Teatro Suzano — Pedidos de Compra (Sienge)
+
+_Atualizado em 2026-04-23_
+
+## Identificação da obra
+- **Nome**: TEATRO MUNICÍPIO DE SUZANO
+- **ID no Sienge**: 1354
+- **Empresa**: PCS OBRAS E LOCAÇÕES LTDA
+
+## Resumo financeiro (via pedidos de compra)
+
+> ⚠️ Fonte: `/purchase-orders` — módulo financeiro (`bill-debt-v1`) ainda não habilitado no usuário de API.
+
+| Categoria | Valor |
+|---|---:|
+| Total pedidos | R$ 37.026,17 |
+| Entregues (FULLY_DELIVERED) | R$ 16.576,17 |
+| Pendentes | R$ 20.450,00 |
+
+## Pedidos pendentes a liquidar
+
+| PC | Data | Fornecedor | Valor |
+|---|---|---|---:|
+| 890 | 2026-04-17 | ABD DISTRIBUIDORA DE FERRO, AÇO E ALUMINIO LTDA | R$ 20.000,00 |
+| 829 | 2026-03-12 | TRANSPORTE TRANSCACAMBA EIRELI | R$ 450,00 |
+
+## Por fornecedor (ordenado por valor)
+
+| Fornecedor | Total | Pedidos | Pendente |
+|---|---:|---:|---:|
+| ABD DISTRIBUIDORA DE FERRO, AÇO E ALUMINIO LTDA | R$ 20.000,00 | 1 | R$ 20.000,00 |
+| TRANSPORTE TRANSCACAMBA EIRELI | R$ 4.050,00 | 3 | R$ 450,00 |
+| LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 4.008,09 | 5 | R$ 0,00 |
+| DMM ASSESSORIA EMPRESARIAL LTDA | R$ 2.370,00 | 1 | R$ 0,00 |
+| FORMA PRONTA E MADEIRAS ABC LTDA | R$ 1.979,62 | 2 | R$ 0,00 |
+| 7 OLIVEIRAS COMERCIO LTDA | R$ 1.810,50 | 2 | R$ 0,00 |
+| GLOBAL EXPRESS SOCIEDADE EMPRESARIA LTDA | R$ 1.100,00 | 1 | R$ 0,00 |
+| FORTPLAST COMERCIO DE PLASTICOS BORRACHAS E EPIS LTDA | R$ 580,00 | 1 | R$ 0,00 |
+| SUPRICORP SUPRIMENTOS LTDA | R$ 578,46 | 1 | R$ 0,00 |
+| SANTIL COMERCIAL ELETRICA LTDA | R$ 549,50 | 1 | R$ 0,00 |
+
+## Histórico de pedidos (todos)
+
+| PC | Data | Fornecedor | Valor | Status |
+|---|---|---|---:|---|
+| 533 | 2025-10-14 | SOFTPLAN PLANEJAMENTO E SISTEMAS LTDA | R$ 0,00 | PENDING |
+| 538 | 2025-10-15 | SOFTPLAN PLANEJAMENTO E SISTEMAS LTDA | R$ 0,00 | PENDING |
+| 792 | 2026-02-25 | DMM ASSESSORIA EMPRESARIAL LTDA | R$ 2.370,00 | FULLY_DELIVERED |
+| 796 | 2026-02-27 | FORMA PRONTA E MADEIRAS ABC LTDA | R$ 1.198,12 | FULLY_DELIVERED |
+| 801 | 2026-03-03 | 7 OLIVEIRAS COMERCIO LTDA | R$ 746,50 | FULLY_DELIVERED |
+| 802 | 2026-03-03 | SUPRICORP SUPRIMENTOS LTDA | R$ 578,46 | FULLY_DELIVERED |
+| 803 | 2026-03-03 | LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 1.170,00 | FULLY_DELIVERED |
+| 810 | 2026-03-04 | GLOBAL EXPRESS SOCIEDADE EMPRESARIA LTDA | R$ 1.100,00 | FULLY_DELIVERED |
+| 812 | 2026-03-05 | LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 413,00 | FULLY_DELIVERED |
+| 816 | 2026-03-05 | SANTIL COMERCIAL ELETRICA LTDA | R$ 549,50 | FULLY_DELIVERED |
+| 824 | 2026-03-10 | FORTPLAST COMERCIO DE PLASTICOS BORRACHAS E EPIS LTDA | R$ 580,00 | FULLY_DELIVERED |
+| 829 | 2026-03-12 | TRANSPORTE TRANSCACAMBA EIRELI | R$ 450,00 | PENDING |
+| 830 | 2026-03-13 | LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 140,01 | FULLY_DELIVERED |
+| 832 | 2026-03-16 | LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 1.335,00 | FULLY_DELIVERED |
+| 836 | 2026-03-17 | 7 OLIVEIRAS COMERCIO LTDA | R$ 1.064,00 | FULLY_DELIVERED |
+| 837 | 2026-03-18 | TRANSPORTE TRANSCACAMBA EIRELI | R$ 1.350,00 | FULLY_DELIVERED |
+| 850 | 2026-03-25 | TRANSPORTE TRANSCACAMBA EIRELI | R$ 2.250,00 | FULLY_DELIVERED |
+| 854 | 2026-03-30 | FORMA PRONTA E MADEIRAS ABC LTDA | R$ 781,50 | FULLY_DELIVERED |
+| 879 | 2026-04-14 | LOCKMAIS LOCADORA DE EQUIPAMENTOS LTDA | R$ 950,08 | FULLY_DELIVERED |
+| 890 | 2026-04-17 | ABD DISTRIBUIDORA DE FERRO, AÇO E ALUMINIO LTDA | R$ 20.000,00 | PENDING |
+
+## Bloqueio operacional — módulo financeiro
+
+Endpoint `/bill-debts` e variações: 404 definitivo.
+Causa: recurso `bill-debt-v1` não habilitado no usuário de API `pcsservices-project`.
+
+**Para destravar:** acessar painel Sienge → Gerenciamento de API → editar usuário `project` → habilitar `bill-debt-v1` e `accounts-receivable-v1`.
+
+## Dados extraídos em
+2026-04-23 via endpoint `/purchase-orders?buildingId=1354`
