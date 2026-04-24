@@ -33,6 +33,7 @@ PHANTOM_AGENTS = _pb_cfg["agents"]
 STAGE_LABELS = {
     "appointmentscheduled": "Lead identificado",
     "qualifiedtobuy":       "Abordagem enviada",
+    "1347867818":           "Conexão aceita",
     "presentationscheduled":"Resposta recebida",
     "decisionmakerboughtin":"Reunião agendada",
     "contractsent":         "Diagnóstico em andamento",
