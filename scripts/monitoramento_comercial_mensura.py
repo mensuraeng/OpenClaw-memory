@@ -106,14 +106,18 @@ def coleta_hubspot():
     deals = deals_r.get("results", [])
     por_estagio = {}
     parados = 0
-    sete_dias_atras = int((hoje - timedelta(days=7)).timestamp() * 1000)
+    sete_dias_atras = hoje - timedelta(days=7)
     for d in deals:
         stage = d["properties"].get("dealstage", "unknown")
         por_estagio[stage] = por_estagio.get(stage, 0) + 1
-        modified = d["properties"].get("hs_lastmodifieddate")
-        if modified and int(modified) < sete_dias_atras:
-            if stage not in ("closedwon", "closedlost"):
-                parados += 1
+        modified_str = d["properties"].get("hs_lastmodifieddate")
+        if modified_str and stage not in ("closedwon", "closedlost"):
+            try:
+                modified_dt = datetime.fromisoformat(modified_str.replace("Z", "+00:00"))
+                if modified_dt < sete_dias_atras:
+                    parados += 1
+            except (ValueError, TypeError):
+                pass
 
     # Empresas
     empresas_total = hs_search("companies").get("total", 0)
@@ -135,21 +139,64 @@ def coleta_phantombuster():
         output = r.get("output", "")
         status = r.get("status", "unknown")
 
-        # Extrair métricas do output de texto
         convites_enviados = len(re.findall(r'[Ss]ent.*?invitation|invitation.*?sent', output))
         convites_aceitos  = len(re.findall(r'accepted|conectou', output, re.I))
+
+        # Taxa de aceite acumulada via contagem no HubSpot
+        taxa_aceite = None
+        if nome == "linkedin_outreach":
+            total_abordagens = hs_search("deals", filters=[
+                {"propertyName": "dealstage", "operator": "IN",
+                 "value": ["qualifiedtobuy", "1347867818", "presentationscheduled",
+                           "decisionmakerboughtin", "contractsent", "1347046829",
+                           "1347046830", "closedwon"]}
+            ]).get("total", 0)
+            conexoes = hs_search("deals", filters=[
+                {"propertyName": "dealstage", "operator": "IN",
+                 "value": ["1347867818", "presentationscheduled", "decisionmakerboughtin",
+                           "contractsent", "1347046829", "1347046830", "closedwon"]}
+            ]).get("total", 0)
+            if total_abordagens > 0:
+                taxa_aceite = round(conexoes / total_abordagens * 100, 1)
 
         resultado[nome] = {
             "status": status,
             "nb_launches": pb_get("/agents/fetch", {"id": agent_id}).get("nbLaunches", 0),
             "convites_enviados_sessao": convites_enviados,
             "convites_aceitos_sessao": convites_aceitos,
+            "taxa_aceite_pct": taxa_aceite,
             "ultima_execucao": r.get("mostRecentEndedAt", "—"),
         }
     return resultado
 
+
+# ── Leads quentes e follow-ups urgentes ──────────────────────────────────────
+def coleta_leads_quentes():
+    brt = timezone(timedelta(hours=-3))
+    dois_dias_atras = int((datetime.now(brt) - timedelta(days=2)).timestamp() * 1000)
+
+    # Top 3 contatos mais recentemente ativos
+    r = hs_search("contacts", limit=3,
+                  properties=["firstname", "lastname", "company", "hs_lastcontactdate",
+                               "jobtitle"])
+    leads = []
+    for c in r.get("results", []):
+        p = c["properties"]
+        nome = f"{p.get('firstname', '')} {p.get('lastname', '')}".strip()
+        if nome:
+            leads.append(f"{nome} ({p.get('company', '?')}) — {p.get('jobtitle', '')}".strip(" —"))
+
+    # Deals em "Resposta recebida" parados há 2+ dias
+    r2 = hs_search("deals", filters=[
+        {"propertyName": "dealstage", "operator": "EQ", "value": "presentationscheduled"},
+        {"propertyName": "hs_lastmodifieddate", "operator": "LTE", "value": str(dois_dias_atras)},
+    ], limit=10, properties=["dealname", "hs_lastmodifieddate"])
+    urgentes = [d["properties"].get("dealname", "?") for d in r2.get("results", [])]
+
+    return leads, urgentes
+
 # ── Gerar relatório ───────────────────────────────────────────────────────────
-def gerar_relatorio(hs, pb):
+def gerar_relatorio(hs, pb, leads_quentes, urgentes):
     brt = timezone(timedelta(hours=-3))
     hoje = datetime.now(brt).strftime("%d/%m/%Y")
 
@@ -164,15 +211,24 @@ def gerar_relatorio(hs, pb):
             pipeline_lines.append(f"  {label}: *{count}*")
     pipeline_str = "\n".join(pipeline_lines) if pipeline_lines else "  (pipeline vazio — deals serão criados conforme Phantombuster avança)"
 
-    # Diagnóstico automático
+    # Taxa de aceite
+    taxa = outreach.get("taxa_aceite_pct")
+    taxa_str = f"{taxa}%" if taxa is not None else "—"
+
+    # Leads quentes
+    quentes_str = "\n".join(f"  • {l}" for l in leads_quentes) if leads_quentes else "  (sem atividade recente)"
+
+    # Alertas
     alertas = []
+    if urgentes:
+        for d in urgentes:
+            alertas.append(f"🔥 URGENTE: *{d}* — Resposta recebida há 2d+ sem follow-up")
     if hs["leads_parados_7d"] > 0:
-        alertas.append(f"⚠️ {hs['leads_parados_7d']} deals sem atividade há 7+ dias — cobrar próxima ação")
+        alertas.append(f"⚠️ {hs['leads_parados_7d']} deals sem atividade há 7+ dias")
     if hs["deals_total"] == 0:
         alertas.append("ℹ️ Pipeline vazio — aguardando primeiros aceites do Outreach")
     if outreach.get("nb_launches", 0) < 1:
         alertas.append("⚠️ LinkedIn Outreach sem execuções — verificar se está ativo")
-
     alertas_str = "\n".join(alertas) if alertas else "✅ Nenhum alerta crítico"
 
     relatorio = f"""📊 *RELATÓRIO DIÁRIO — MÁQUINA COMERCIAL MENSURA*
@@ -188,15 +244,18 @@ Leads parados (7d+): *{hs['leads_parados_7d']}*
 {pipeline_str}
 
 *3. PHANTOMBUSTER*
-LinkedIn Outreach: `{outreach.get('status', '—')}` | {outreach.get('nb_launches', 0)} execuções
+LinkedIn Outreach: `{outreach.get('status', '—')}` | {outreach.get('nb_launches', 0)} execuções | taxa aceite: *{taxa_str}*
 HubSpot Sender: `{sender.get('status', '—')}` | {sender.get('nb_launches', 0)} execuções
 
-*4. ALERTAS*
+*4. LEADS QUENTES (últimos ativos)*
+{quentes_str}
+
+*5. ALERTAS*
 {alertas_str}
 
-*5. AÇÃO PRIORITÁRIA HOJE*
+*6. AÇÃO PRIORITÁRIA HOJE*
 • Verificar no LinkedIn quem aceitou o convite → responder usando protocolo Cenário A/B
-• Deals em "Resposta recebida" → ligar hoje (usar roteiro de qualificação 20 min)
+• Deals em "Resposta recebida" → ligar hoje (roteiro qualificação 20 min)
 • Atualizar estágio no HubSpot após cada interação
 
 _Gerado automaticamente pelo OpenClaw — {datetime.now(brt).strftime('%H:%M')} BRT_"""
@@ -209,8 +268,10 @@ def main():
     hs = coleta_hubspot()
     print("Coletando Phantombuster...")
     pb = coleta_phantombuster()
+    print("Coletando leads quentes e follow-ups urgentes...")
+    leads_quentes, urgentes = coleta_leads_quentes()
     print("Gerando relatório...")
-    relatorio = gerar_relatorio(hs, pb)
+    relatorio = gerar_relatorio(hs, pb, leads_quentes, urgentes)
     print(relatorio)
     print("\nEnviando no Telegram...")
     telegram_send(relatorio)
