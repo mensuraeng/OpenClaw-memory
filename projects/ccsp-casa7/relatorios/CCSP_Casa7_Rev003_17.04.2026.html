@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCSP_Casa7_Relatorio_TOOLS_Rev003</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --graphite: #1c1c1c;
+      --graphite-mid: #2e2e2e;
+      --champagne: #c9a96e;
+      --champagne-light: #e8d5b0;
+      --champagne-pale: #f5ede0;
+      --cream: #faf8f4;
+      --white: #ffffff;
+      --gray-100: #f4f4f2;
+      --gray-200: #e8e8e4;
+      --gray-300: #d0d0ca;
+      --gray-500: #8a8a84;
+      --gray-700: #4a4a46;
+      --green: #1a5c32;
+      --amber: #a06010;
+      --red: #8b2020;
+      --green-light: #e8f4ec;
+      --amber-light: #fdf3e3;
+      --red-light: #fdf0f0;
+      --shadow: 0 12px 32px rgba(10,10,10,0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--graphite);
+      line-height: 1.55;
+      padding: 32px 20px 48px;
+    }
+    .page { max-width: 1360px; margin: 0 auto; }
+
+    .section-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px; font-weight: 300;
+      color: var(--champagne-light); line-height: 1; min-width: 48px;
+    }
+    .section-head { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 22px; }
+    .section-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px; font-weight: 500; color: var(--black); margin-bottom: 4px;
+    }
+    .section-head p { color: var(--gray-700); font-size: 14px; }
+    .label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--champagne); font-weight: 600; }
+
+    .doc-shell { background: var(--white); border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
+
+    .header {
+      background: var(--black); color: var(--white);
+      padding: 42px 48px 34px; position: relative;
+    }
+    .header::after {
+      content: ''; display: block; height: 1px; margin-top: 26px;
+      background: linear-gradient(90deg, rgba(201,169,110,0), rgba(201,169,110,1), rgba(201,169,110,0));
+    }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+    .mia-logo { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; letter-spacing: 8px; }
+    .mia-sub { font-size: 9px; letter-spacing: 4px; color: var(--champagne); margin-top: 4px; text-transform: uppercase; }
+    .doc-type { margin-top: 18px; font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 500; }
+    .doc-ref { margin-top: 10px; color: var(--champagne-light); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+    .project-title { margin-top: 18px; font-size: 16px; color: var(--gray-300); }
+    .header-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-top: 8px; }
+    .pill {
+      border: 1px solid rgba(255,255,255,0.14); color: var(--white);
+      border-radius: 999px; padding: 8px 14px; font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.04);
+    }
+    .pill.alert { border-color: rgba(139,32,32,0.4); background: rgba(139,32,32,0.18); color: #f1c1c1; }
+    .pill.ok { border-color: rgba(26,92,50,0.5); background: rgba(26,92,50,0.18); color: #a0ddb0; }
+
+    .content { padding: 34px 34px 0; }
+
+    .tech-bar {
+      background: var(--graphite); color: var(--white); border-radius: 20px;
+      padding: 20px 22px; display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 16px; margin-bottom: 26px;
+    }
+    .tech-item .k { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--champagne-light); margin-bottom: 6px; }
+    .tech-item .v { font-size: 15px; font-weight: 500; }
+
+    .alert-banner {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: #1a0808; border-left: 4px solid var(--red);
+      border-radius: 18px; padding: 18px 20px; margin-bottom: 32px;
+    }
+    .alert-icon {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(139,32,32,0.22); color: #ffdddd; font-weight: 600; flex-shrink: 0;
+    }
+    .alert-banner h3 { color: #f5c7c7; font-size: 16px; margin-bottom: 4px; }
+    .alert-banner p { color: #dcc8c8; font-size: 14px; }
+
+    section { margin-bottom: 36px; }
+
+    .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+    .kpi-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-top: 4px solid var(--champagne); border-radius: 18px;
+      padding: 18px; box-shadow: 0 8px 22px rgba(10,10,10,0.04);
+    }
+    .kpi-card.green { border-top-color: var(--green); }
+    .kpi-card.amber { border-top-color: var(--amber); }
+    .kpi-card.red   { border-top-color: var(--red); }
+    .kpi-card .tt { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
+    .kpi-card .vv { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 500; line-height: 1; }
+    .kpi-card .ss { font-size: 13px; color: var(--gray-700); margin-top: 8px; }
+
+    .table-wrap { border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; background: var(--white); }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray-500); background: var(--gray-100); padding: 14px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    td { padding: 14px; border-bottom: 1px solid var(--gray-200); vertical-align: top; font-size: 13px; }
+    tr:last-child td { border-bottom: none; }
+    .group-row td {
+      background: var(--gray-100); font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: var(--graphite); font-weight: 500;
+    }
+    .progress { width: 120px; height: 8px; background: var(--gray-200); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+    .fill { height: 100%; border-radius: 999px; }
+    .fill.green { background: var(--green); }
+    .fill.amber { background: var(--amber); }
+    .fill.red   { background: var(--red); }
+    .fill.gray  { background: var(--gray-500); }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px; padding: 6px 10px; font-size: 9px;
+      letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+    }
+    .b-green { background: var(--green-light); color: var(--green); }
+    .b-amber { background: var(--amber-light); color: var(--amber); }
+    .b-red   { background: var(--red-light); color: var(--red); }
+    .b-gray  { background: var(--gray-100); color: var(--gray-700); }
+    .b-black { background: var(--graphite); color: var(--champagne-light); }
+    .b-stake { background: var(--gray-100); color: var(--gray-700); }
+
+    .env-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .env-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: 18px; padding: 18px; box-shadow: 0 8px 22px rgba(10,10,10,0.04);
+    }
+    .env-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+    .env-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--black); }
+    .env-sub { font-size: 12px; color: var(--gray-500); }
+    .mini-progress { height: 7px; background: var(--gray-200); border-radius: 999px; overflow: hidden; margin: 12px 0 14px; }
+    .item-list { list-style: none; display: grid; gap: 8px; }
+    .item-list li { font-size: 13px; color: var(--gray-700); display: flex; gap: 8px; align-items: flex-start; }
+    .bullet { min-width: 18px; }
+
+    .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .action-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-left: 5px solid var(--champagne); border-radius: 18px;
+      padding: 18px; display: flex; gap: 14px;
+      box-shadow: 0 8px 22px rgba(10,10,10,0.04);
+    }
+    .action-card.red   { border-left-color: var(--red); }
+    .action-card.amber { border-left-color: var(--amber); }
+    .action-card.green { border-left-color: var(--green); }
+    .action-no {
+      font-family: 'Cormorant Garamond', serif; font-size: 42px;
+      font-weight: 300; color: var(--champagne-light); line-height: 1; min-width: 48px;
+    }
+    .action-card h4 { font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 6px; }
+    .action-card p  { font-size: 13px; color: var(--gray-700); margin-bottom: 12px; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { font-size: 10px; padding: 4px 10px; border-radius: 999px; }
+    .tag.resp { background: var(--gray-100); color: var(--gray-700); }
+    .tag.date { background: var(--champagne-pale); color: var(--amber); }
+    .tag.prio { background: var(--red-light); color: var(--red); }
+    .tag.prio-m { background: var(--amber-light); color: var(--amber); }
+
+    /* ATA */
+    .ata-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--gray-100); border-radius: 18px 18px 0 0;
+      padding: 18px 20px; gap: 16px; border-bottom: 1px solid var(--gray-200);
+    }
+    .ata-strip .k { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--champagne); margin-bottom: 4px; }
+    .ata-strip .v { font-size: 14px; font-weight: 500; }
+    .ata-box { border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; background: var(--white); }
+    .ata-body { padding: 22px; display: grid; gap: 24px; }
+    .topic { border-left: 3px solid var(--gray-200); padding-left: 18px; }
+    .topic-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; }
+    .topic-no {
+      font-family: 'Cormorant Garamond', serif; font-size: 28px;
+      font-weight: 300; color: var(--champagne-light); line-height: 1; min-width: 32px;
+    }
+    .topic-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--black); }
+    .topic-desc { font-size: 13px; color: var(--gray-700); margin-top: 4px; }
+    .decision-box {
+      background: var(--champagne-pale); border-left: 3px solid var(--champagne);
+      border-radius: 0 12px 12px 0; padding: 12px 14px; margin-top: 10px; font-size: 13px;
+    }
+    .decision-box .tt { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--champagne); margin-bottom: 4px; font-weight: 600; }
+    .action-box {
+      background: var(--red-light); border-left: 3px solid var(--red);
+      border-radius: 0 12px 12px 0; padding: 12px 14px; margin-top: 8px; font-size: 13px;
+    }
+    .action-box .tt { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 4px; font-weight: 600; }
+
+    /* DELIBERAÇÕES */
+    .dark-panel { background: var(--graphite); border-radius: 18px; overflow: hidden; }
+    .dark-panel .head { padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .dark-panel .head .sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--champagne); margin-bottom: 4px; }
+    .dark-panel .head h3 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--white); }
+    .confirm-list { list-style: none; }
+    .confirm-list li {
+      display: grid; grid-template-columns: 34px 1fr auto;
+      gap: 14px; align-items: center; padding: 14px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; color: rgba(255,255,255,0.8);
+    }
+    .confirm-list li:last-child { border-bottom: none; }
+    .ci {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; flex-shrink: 0;
+    }
+    .ci.red   { background: rgba(139,32,32,0.4); color: #ffaaaa; }
+    .ci.amb   { background: rgba(160,96,16,0.4); color: #ffd080; }
+    .ci.open  { border: 1px solid rgba(201,169,110,0.4); color: var(--champagne); }
+    .ci.green { background: rgba(26,92,50,0.4); color: #88ddaa; }
+    .confirm-text { line-height: 1.5; }
+    .confirm-meta { font-size: 11px; color: var(--champagne); text-align: right; white-space: nowrap; }
+
+    .footer {
+      background: var(--black); color: var(--white); padding: 20px 34px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 16px; margin-top: 34px;
+    }
+    .footer div:nth-child(2) { text-align: center; color: var(--champagne-light); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .footer div:last-child { text-align: right; color: var(--champagne-light); }
+
+    @media (max-width: 1100px) {
+      .tech-bar, .kpi-strip, .env-grid, .action-grid, .ata-strip { grid-template-columns: 1fr 1fr; }
+      .footer { grid-template-columns: 1fr; text-align: center; }
+      .footer div:last-child, .footer div:nth-child(2) { text-align: center; }
+    }
+    @media (max-width: 760px) {
+      .tech-bar, .kpi-strip, .env-grid, .action-grid, .ata-strip { grid-template-columns: 1fr; }
+      .content { padding: 24px 18px 0; }
+      .header { padding: 28px 22px; }
+      .footer { padding: 20px 18px; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 980px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="doc-shell">
+
+      <!-- HEADER -->
+      <header class="header">
+        <div class="header-top">
+          <div>
+            <div class="mia-logo">MIA</div>
+            <div class="mia-sub">ENGENHARIA · SÃO PAULO</div>
+            <div class="doc-type">Relatório de Visita &amp; Ata de Reunião</div>
+            <div class="doc-ref">CCSP-C7 · Rev.003 · 17/04/2026</div>
+            <div class="project-title">Casa 7 — CCSP · Atualização executiva consolidada da semana 13–17/04/2026</div>
+          </div>
+          <div class="header-pills">
+            <div class="pill">Semana 4 / 9 · Dia 26 / 43</div>
+            <div class="pill ok">+14pp vs semana anterior</div>
+            <div class="pill alert">Pintura — Caminho Crítico</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <!-- FICHA TÉCNICA -->
+        <div class="tech-bar">
+          <div class="tech-item"><div class="k">Data da Visita</div><div class="v">17/04/2026</div></div>
+          <div class="tech-item"><div class="k">Engenheiro de Campo</div><div class="v">Victor Evangelista</div></div>
+          <div class="tech-item"><div class="k">Prazo Contratual</div><div class="v">22/05/2026</div></div>
+          <div class="tech-item"><div class="k">Dias Úteis Restantes</div><div class="v">26 dias</div></div>
+          <div class="tech-item"><div class="k">Avanço Global Atual</div><div class="v">46%</div></div>
+          <div class="tech-item"><div class="k">Baseline Esperado</div><div class="v">45,8% ✓</div></div>
+        </div>
+
+        <!-- ALERTA -->
+        <div class="alert-banner">
+          <div class="alert-icon">!</div>
+          <div>
+            <h3>Pintura — entrada obrigatória até 27/04 · repintura geral no caminho crítico</h3>
+            <p>Orçamento de R$200k definido, aprovação TOOLS pendente. Mobilização prevista para 21–24/04. A repintura geral interna e externa (27/04–15/05) está no caminho crítico — qualquer atraso neste pacote compromete diretamente a entrega de 22/05/2026. Adicionalmente: suíte das crianças com suspeita de umidade e pergolado com problema de infiltração emergem como novos aditivos a formalizar.</p>
+          </div>
+        </div>
+
+        <!-- SEÇÃO 1 — CRONOGRAMA -->
+        <section>
+          <div class="section-head">
+            <div class="section-number">01</div>
+            <div>
+              <div class="label">Status do Cronograma</div>
+              <h2>Cronograma Executivo</h2>
+              <p>Leitura consolidada do avanço físico por onda de execução. Avanço global de 46% está aderente ao baseline de 45,8%. Evolução significativa na 2ª onda nesta semana (+43pp).</p>
+            </div>
+          </div>
+
+          <div class="kpi-strip">
+            <div class="kpi-card green">
+              <div class="tt">Avanço Global</div>
+              <div class="vv">46%</div>
+              <div class="ss">Baseline: 45,8% · Aderente ✓</div>
+            </div>
+            <div class="kpi-card green">
+              <div class="tt">1ª Onda — Área Íntima</div>
+              <div class="vv">80%</div>
+              <div class="ss">Civil concluído · prazo revisto até 24/04</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="tt">2ª Onda — Social/Serviço</div>
+              <div class="vv">63%</div>
+              <div class="ss">+43pp vs semana anterior · em execução</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="tt">3ª Onda — Externo</div>
+              <div class="vv">25%</div>
+              <div class="ss">+11pp · drenagem e rodapé concluídos</div>
+            </div>
+            <div class="kpi-card red">
+              <div class="tt">Pendentes a Contratar</div>
+              <div class="vv">15%</div>
+              <div class="ss">Pintura, limpeza, miniguia, batedor</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Frente / Atividade</th>
+                  <th>Responsável</th>
+                  <th>Início</th>
+                  <th>Término</th>
+                  <th>Progresso</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group-row"><td colspan="7">Serviços Iniciais</td></tr>
+                <tr>
+                  <td>5</td><td>Serviços Iniciais</td>
+                  <td><span class="badge b-black">MIA Engenharia</span></td>
+                  <td>23/03/26</td><td>31/03/26</td>
+                  <td><div class="progress"><div class="fill green" style="width:100%"></div></div>100%</td>
+                  <td><span class="badge b-green">Concluído</span></td>
+                </tr>
+
+                <tr class="group-row"><td colspan="7">1ª Onda — Área Íntima (prazo revisto até 24/04)</td></tr>
+                <tr>
+                  <td>8</td><td><strong>1ª Onda</strong></td>
+                  <td><span class="badge b-black">MIA Engenharia</span></td>
+                  <td>02/04/26</td><td>24/04/26</td>
+                  <td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td>
+                  <td><span class="badge b-green">No prazo</span></td>
+                </tr>
+                <tr><td>9</td><td>Suíte 3 + Banho 03 (Casal)</td><td><span class="badge b-black">MIA Engenharia</span></td><td>02/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-green">Quase concluído</span></td></tr>
+                <tr><td>13</td><td>Suíte 2 + Banho 02 (Hóspede)</td><td><span class="badge b-black">MIA Engenharia</span></td><td>02/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-green">Quase concluído</span></td></tr>
+                <tr><td>17</td><td>Suíte 1 + Banho 01 (Crianças)</td><td><span class="badge b-black">MIA Engenharia</span></td><td>02/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-amber">Inspeção umidade pendente</span></td></tr>
+                <tr><td>21</td><td>Circulação Íntima</td><td><span class="badge b-black">MIA Engenharia</span></td><td>02/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-green">Quase concluído</span></td></tr>
+
+                <tr class="group-row"><td colspan="7">2ª Onda — Social / Serviço</td></tr>
+                <tr>
+                  <td>23</td><td><strong>2ª Onda</strong></td>
+                  <td><span class="badge b-black">MIA Engenharia</span></td>
+                  <td>02/04/26</td><td>06/05/26</td>
+                  <td><div class="progress"><div class="fill amber" style="width:63%"></div></div>63%</td>
+                  <td><span class="badge b-amber">Em andamento</span></td>
+                </tr>
+                <tr><td>24</td><td>Dormitório 4</td><td><span class="badge b-black">MIA Engenharia</span></td><td>10/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-green">Quase concluído</span></td></tr>
+                <tr><td>26</td><td>Banho 4</td><td><span class="badge b-black">MIA Engenharia</span></td><td>10/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-amber">Bloqueado: pedra ralo</span></td></tr>
+                <tr><td>28</td><td>Cozinha</td><td><span class="badge b-black">MIA Engenharia</span></td><td>10/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill amber" style="width:60%"></div></div>60%</td><td><span class="badge b-amber">Em andamento</span></td></tr>
+                <tr><td>30</td><td>Sala de Jantar</td><td><span class="badge b-black">MIA Engenharia</span></td><td>02/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill green" style="width:80%"></div></div>80%</td><td><span class="badge b-green">Falta pintura</span></td></tr>
+                <tr><td>32</td><td>Sala de Estar / Circulação</td><td><span class="badge b-black">MIA Engenharia</span></td><td>10/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill amber" style="width:60%"></div></div>60%</td><td><span class="badge b-amber">Em andamento</span></td></tr>
+                <tr><td>34</td><td>Área de Serviço</td><td><span class="badge b-black">MIA Engenharia</span></td><td>10/04/26</td><td>06/05/26</td><td><div class="progress"><div class="fill amber" style="width:30%"></div></div>30%</td><td><span class="badge b-amber">Aguarda Armani Lux</span></td></tr>
+
+                <tr class="group-row"><td colspan="7">3ª Onda — Demais Itens / Externo</td></tr>
+                <tr>
+                  <td>36</td><td><strong>3ª Onda</strong></td>
+                  <td><span class="badge b-black">MIA Engenharia</span></td>
+                  <td>26/03/26</td><td>18/05/26</td>
+                  <td><div class="progress"><div class="fill amber" style="width:25%"></div></div>25%</td>
+                  <td><span class="badge b-amber">Em andamento</span></td>
+                </tr>
+                <tr><td>37</td><td>Área Técnica</td><td><span class="badge b-black">MIA Engenharia</span></td><td>26/03/26</td><td>18/05/26</td><td><div class="progress"><div class="fill amber" style="width:31%"></div></div>31%</td><td><span class="badge b-amber">Em andamento</span></td></tr>
+                <tr><td>39</td><td>Pergolado</td><td><span class="badge b-black">MIA Engenharia</span></td><td>15/04/26</td><td>08/05/26</td><td><div class="progress"><div class="fill amber" style="width:50%"></div></div>50%</td><td><span class="badge b-red">Impermeabilização urgente</span></td></tr>
+                <tr><td>41</td><td>Área Externa</td><td><span class="badge b-black">MIA Engenharia</span></td><td>26/03/26</td><td>18/05/26</td><td><div class="progress"><div class="fill amber" style="width:34%"></div></div>34%</td><td><span class="badge b-amber">Em andamento</span></td></tr>
+                <tr><td>47</td><td>Recomposição Baldrame</td><td><span class="badge b-black">MIA Engenharia</span></td><td>08/04/26</td><td>09/04/26</td><td><div class="progress"><div class="fill green" style="width:100%"></div></div>100%</td><td><span class="badge b-green">Concluído</span></td></tr>
+                <tr><td>48</td><td>Impermeabilização Rodapé Externo</td><td><span class="badge b-black">MIA Engenharia</span></td><td>13/04/26</td><td>14/04/26</td><td><div class="progress"><div class="fill green" style="width:100%"></div></div>100%</td><td><span class="badge b-green">Concluído</span></td></tr>
+                <tr><td>49</td><td>Revestimento Argamassado Rodapé</td><td><span class="badge b-black">MIA Engenharia</span></td><td>15/04/26</td><td>22/04/26</td><td><div class="progress"><div class="fill amber" style="width:50%"></div></div>50%</td><td><span class="badge b-amber">Em andamento</span></td></tr>
+                <tr><td>50</td><td>Drenagem Execução</td><td><span class="badge b-stake">Drenagem</span></td><td>06/04/26</td><td>10/04/26</td><td><div class="progress"><div class="fill green" style="width:100%"></div></div>100%</td><td><span class="badge b-green">Concluído</span></td></tr>
+
+                <tr class="group-row"><td colspan="7">Pendentes a Contratar — Caminho Crítico</td></tr>
+                <tr><td>60</td><td><strong>Pendentes a Contratar</strong></td><td><span class="badge b-black">MIA Engenharia</span> + <span class="badge b-stake">Terceiros</span></td><td>07/04/26</td><td>08/05/26</td><td><div class="progress"><div class="fill red" style="width:15%"></div></div>15%</td><td><span class="badge b-red">Crítico</span></td></tr>
+                <tr><td>72</td><td>Exaustores Mecânicos</td><td><span class="badge b-black">MIA Engenharia</span> + <span class="badge b-stake">Tools</span></td><td>07/04/26</td><td>08/05/26</td><td><div class="progress"><div class="fill amber" style="width:39%"></div></div>39%</td><td><span class="badge b-amber">Aguardando definição</span></td></tr>
+                <tr><td>77</td><td><strong>Pintura — Mobilização</strong></td><td><span class="badge b-black">MIA Engenharia</span> + <span class="badge b-stake">Tools</span></td><td>15/04/26</td><td>24/04/26</td><td><div class="progress"><div class="fill gray" style="width:0%"></div></div>0%</td><td><span class="badge b-red">Caminho crítico</span></td></tr>
+                <tr><td>85</td><td>Repintura Geral Interna + Externa</td><td><span class="badge b-black">MIA Engenharia</span></td><td>27/04/26</td><td>15/05/26</td><td><div class="progress"><div class="fill gray" style="width:0%"></div></div>0%</td><td><span class="badge b-red">Crítico</span></td></tr>
+                <tr><td>81</td><td>Limpeza Geral</td><td><span class="badge b-black">MIA Engenharia</span> + <span class="badge b-stake">Tools</span></td><td>16/04/26</td><td>15/05/26</td><td><div class="progress"><div class="fill gray" style="width:0%"></div></div>0%</td><td><span class="badge b-amber">Cotando</span></td></tr>
+                <tr><td>91</td><td>Comissionamento</td><td><span class="badge b-black">MIA Engenharia</span></td><td>18/05/26</td><td>22/05/26</td><td><div class="progress"><div class="fill gray" style="width:0%"></div></div>0%</td><td><span class="badge b-gray">Planejado</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 2 — AMBIENTES -->
+        <section>
+          <div class="section-head">
+            <div class="section-number">02</div>
+            <div>
+              <div class="label">Status por Ambiente</div>
+              <h2>Leitura por Frente Executiva</h2>
+              <p>Classificação dos itens por ambiente com distinção entre concluído, pendência MIA, bloqueio por terceiro e urgência de prazo.</p>
+            </div>
+          </div>
+
+          <div class="env-grid">
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Suíte 3 + Banho</div><div class="env-sub">43 itens · 80% · Casal</div></div>
+                <span class="badge b-green">80%</span>
+              </div>
+              <div class="mini-progress"><div class="fill green" style="width:80%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Civil e elétrica concluídos — 1ª onda encerrada.</span></li>
+                <li><span class="bullet">🟢</span><span>Impermeabilização, mureta e abertura do armário executados.</span></li>
+                <li><span class="bullet">🟡</span><span>Acabamentos elétricos chegaram incorretos — em troca.</span></li>
+                <li><span class="bullet">🟡</span><span>Prateleira de chuveiro e acabamento ao redor da porta a concluir.</span></li>
+                <li><span class="bullet">⚪️</span><span>Armário novo: BRB em orçamento. Posicionamento revestimento: aguarda TUS.</span></li>
+                <li><span class="bullet">⚪️</span><span>Luminárias: definição TUS pendente.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Suítes 1 e 2</div><div class="env-sub">59 itens · 80% · Hóspede + Crianças</div></div>
+                <span class="badge b-green">80%</span>
+              </div>
+              <div class="mini-progress"><div class="fill green" style="width:80%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Civil e elétrica concluídos em todas as suítes.</span></li>
+                <li><span class="bullet">🟡</span><span>Acabamentos elétricos brancos aguardam peças corretas.</span></li>
+                <li><span class="bullet">🔴</span><span>Suíte das Crianças: inspecionar umidade na parede — possível impermeabilização de piso/rodapé. Registrar formalmente como aditivo antes de executar.</span></li>
+                <li><span class="bullet">⚪️</span><span>Luminárias da circulação íntima: cobrar fornecedor na quarta.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Dormitório 4 + Banho 4</div><div class="env-sub">32 itens · 80% · Avanço +60pp</div></div>
+                <span class="badge b-green">80%</span>
+              </div>
+              <div class="mini-progress"><div class="fill green" style="width:80%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Armário pronto. Janelas sendo finalizadas.</span></li>
+                <li><span class="bullet">🟡</span><span>Luminária e acabamentos elétricos brancos pendentes.</span></li>
+                <li><span class="bullet">🔴</span><span>Banho 4: pedra do ralo é o único bloqueador para conclusão na sexta. Se chegar na quarta, conclui.</span></li>
+                <li><span class="bullet">⚪️</span><span>Pintura incluída no escopo geral da mobilização.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Cozinha</div><div class="env-sub">22 itens · 60% · Avanço +40pp</div></div>
+                <span class="badge b-amber">60%</span>
+              </div>
+              <div class="mini-progress"><div class="fill amber" style="width:60%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Filtro de água, saída d'água e tecla instalados.</span></li>
+                <li><span class="bullet">🔴</span><span>Escadas: instalar cantoneiras de proteção — cliente cobra constantemente.</span></li>
+                <li><span class="bullet">🟡</span><span>Lava-louça: ajuste paralelo com bancada. Cabos expostos: espelho cego pendente.</span></li>
+                <li><span class="bullet">🟡</span><span>Pintura do piso da escada (lixamento + verniz) inclusa no orçamento de pintura.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Sala de Jantar</div><div class="env-sub">22 itens · 80% · Falta pintura</div></div>
+                <span class="badge b-green">80%</span>
+              </div>
+              <div class="mini-progress"><div class="fill green" style="width:80%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>AC instalado e alinhado. Laudo disponível para envio.</span></li>
+                <li><span class="bullet">🟢</span><span>Conclusão prevista para sexta-feira (exceto película).</span></li>
+                <li><span class="bullet">⚪️</span><span>Película: cliente optou por não instalar agora. Instalador agendado para 29/04.</span></li>
+                <li><span class="bullet">🟡</span><span>Laudo OVê: enviar ao cliente na segunda-feira.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Sala de Estar</div><div class="env-sub">5 itens · 60%</div></div>
+                <span class="badge b-amber">60%</span>
+              </div>
+              <div class="mini-progress"><div class="fill amber" style="width:60%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Peça da porta obtida — entrega domingo.</span></li>
+                <li><span class="bullet">🟡</span><span>Marcenaria BRB: previsão de conclusão sexta-feira.</span></li>
+                <li><span class="bullet">⚪️</span><span>Caixa de som: cobrada, sem resposta.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Área de Serviço</div><div class="env-sub">27 itens · 30% · Aguarda Armani</div></div>
+                <span class="badge b-amber">30%</span>
+              </div>
+              <div class="mini-progress"><div class="fill amber" style="width:30%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟡</span><span>Rodapé pendente. Limpeza do quadro elétrico pendente.</span></li>
+                <li><span class="bullet">⚪️</span><span>Pedra: depende de aprovação e entrega da Armani Lux (ligar quarta).</span></li>
+                <li><span class="bullet">⚪️</span><span>Pedra em cima da base: aguarda entrega.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Pergolado</div><div class="env-sub">11 itens · 50% · Infiltração identificada</div></div>
+                <span class="badge b-red">Risco</span>
+              </div>
+              <div class="mini-progress"><div class="fill amber" style="width:50%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>4 de 11 itens concluídos.</span></li>
+                <li><span class="bullet">🔴</span><span>Problema identificado: água sob manta causando mofo na parede. Solução definida: desmontar telhado, impermeabilizar laje, contrapiso com caimento, abrir ralo e canalizar tubo.</span></li>
+                <li><span class="bullet">🟡</span><span>Montanha acionado para orçar desmonte — cobrar na quarta.</span></li>
+                <li><span class="bullet">🟡</span><span>3 itens de pintura e acabamentos elétricos ainda pendentes.</span></li>
+              </ul>
+            </div>
+
+            <div class="env-card">
+              <div class="env-top">
+                <div><div class="env-title">Área Externa + Garagem</div><div class="env-sub">36 itens · Início 27/04</div></div>
+                <span class="badge b-amber">Atenção</span>
+              </div>
+              <div class="mini-progress"><div class="fill amber" style="width:34%"></div></div>
+              <ul class="item-list">
+                <li><span class="bullet">🟢</span><span>Drenagem concluída. Baldrame concluído. Impermeabilização rodapé concluída.</span></li>
+                <li><span class="bullet">🟡</span><span>Revestimento argamassado em andamento (50%). Escavação 40cm + seixo iniciada.</span></li>
+                <li><span class="bullet">⚪️</span><span>Pedras: Enéas acionado para acesso lateral — orçamento obtido. Enviar ao cliente.</span></li>
+                <li><span class="bullet">⚪️</span><span>Armani Lux: confirmar entrega da pedra da mureta na quarta.</span></li>
+                <li><span class="bullet">🔴</span><span>36 itens da área externa ainda não iniciados — início programado para 27/04.</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SEÇÃO 3 — PLANO DE AÇÃO -->
+        <section>
+          <div class="section-head">
+            <div class="section-number">03</div>
+            <div>
+              <div class="label">Plano de Ação Semanal</div>
+              <h2>Foco Operacional da Semana</h2>
+              <p>Ações estruturadas com responsável, prazo e prioridade para semana de 20–24/04/2026.</p>
+            </div>
+          </div>
+
+          <div class="action-grid">
+
+            <div class="action-card red">
+              <div class="action-no">01</div>
+              <div>
+                <h4>Enviar orçamento de pintura ao cliente e travar aprovação TOOLS</h4>
+                <p>Orçamento de R$200k precisa ser apresentado ao cliente na segunda-feira com duas opções: manter fornecedor atual ou abrir cotações adicionais. Aprovação TOOLS deve ser obtida até quarta 22/04 para garantir mobilização até 27/04. Este é o item de maior risco ao prazo de entrega.</p>
+                <div class="tags"><span class="tag resp">Resp: Alê + Victor</span><span class="tag date">Prazo: Seg 20/04</span><span class="tag prio">Crítico</span></div>
+              </div>
+            </div>
+
+            <div class="action-card red">
+              <div class="action-no">02</div>
+              <div>
+                <h4>RDOs diários até 17h — obrigatório a partir de segunda</h4>
+                <p>Cliente acompanha andamento diariamente e questiona qualidade e prazo. O RDO é a ferramenta de proteção contratual da MIA. Cadência: envio diário até 17h, sem exceção. Alinhamento confirmado com Victor e Felipe.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor + Felipe</span><span class="tag date">A partir Seg 20/04</span><span class="tag prio">Urgente</span></div>
+              </div>
+            </div>
+
+            <div class="action-card red">
+              <div class="action-no">03</div>
+              <div>
+                <h4>Instalar cantoneiras nas escadas — urgente</h4>
+                <p>Cliente cobra constantemente este item. Não há justificativa técnica para atraso. Resolver imediatamente para eliminar o ruído junto ao cliente.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor</span><span class="tag date">Prazo: imediato</span><span class="tag prio">Alta</span></div>
+              </div>
+            </div>
+
+            <div class="action-card amber">
+              <div class="action-no">04</div>
+              <div>
+                <h4>Formalizar itens fora do escopo — reunião sexta 15h</h4>
+                <p>Levantar e registrar todos os itens executados além do escopo original: suíte das crianças (umidade), pergolado (impermeabilização), escavação externa, toalheiros, demais NCs. Objetivo: justificar custo e prazo formalmente. Reunião sexta a partir das 15h.</p>
+                <div class="tags"><span class="tag resp">Resp: Alê + Victor</span><span class="tag date">Sex 24/04 · 15h</span><span class="tag prio">Alta</span></div>
+              </div>
+            </div>
+
+            <div class="action-card amber">
+              <div class="action-no">05</div>
+              <div>
+                <h4>Cobrar TOOLS: exaustor mecânico e luminárias da circulação</h4>
+                <p>Mapa do exaustor enviado em 07/04 — aguarda definição de acabamento há 10 dias. Marcar posição com fita durex e foto no iPad para visualização. Luminárias da circulação íntima: cobrar fornecedor na quarta.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor</span><span class="tag date">Qua 22/04</span><span class="tag prio">Alta</span></div>
+              </div>
+            </div>
+
+            <div class="action-card amber">
+              <div class="action-no">06</div>
+              <div>
+                <h4>Pergolado: cobrar orçamento de Montanha</h4>
+                <p>Montanha acionado durante a visita para orçar desmonte do telhado + impermeabilização da laje. Cobrar retorno na quarta. Registrar como item fora do escopo para fins de aditivo.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor → Montanha</span><span class="tag date">Qua 22/04</span><span class="tag prio-m">Média</span></div>
+              </div>
+            </div>
+
+            <div class="action-card amber">
+              <div class="action-no">07</div>
+              <div>
+                <h4>Armani Lux: confirmar entrega da pedra + iniciar cotações de limpeza</h4>
+                <p>Ligar para Armani Lux na quarta para confirmar prazo de entrega da pedra da área de serviço. Paralelamente, iniciar cotações de empresas de limpeza especializada — processo não tem sequenciamento como pintura e pode ser acelerado com equipe.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor</span><span class="tag date">Qua 22/04</span><span class="tag prio-m">Média</span></div>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-no">08</div>
+              <div>
+                <h4>Enviar laudo OVê + orçamento acesso lateral + mapa de forro</h4>
+                <p>Segunda-feira: enviar laudo da película OVê ao cliente com nota informando instalador em 29/04. Orçamento acesso lateral com pedra cacão (Enéas): já obtido, enviar ao cliente. Mapa de forro: enviar único orçamento disponível via WhatsApp.</p>
+                <div class="tags"><span class="tag resp">Resp: Alê + Victor</span><span class="tag date">Seg/Qua 20–22/04</span></div>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-no">09</div>
+              <div>
+                <h4>Agendar visita de Rafael (TOOLS) ao canteiro</h4>
+                <p>Visita presencial do representante TOOLS para alinhamento do estado da obra, desbloqueio de aprovações pendentes e formalização de pendências TUS como itens fora da responsabilidade MIA.</p>
+                <div class="tags"><span class="tag resp">Resp: Alê → Rafael</span><span class="tag date">Semana 20/04</span></div>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <div class="action-no">10</div>
+              <div>
+                <h4>Laudo elétrico + relatório semanal com fotos dos ambientes</h4>
+                <p>Solicitar laudo ao eletricista com número de CREA, mesmo sem assinatura formal — objetivo é apoiar o cliente, não proteger a MIA. Relatório semanal com fotos de todos os ambientes limpos e organizados — compromisso de entrega toda sexta-feira.</p>
+                <div class="tags"><span class="tag resp">Resp: Victor + Felipe</span><span class="tag date">Sex 24/04</span></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SEÇÃO 4 — ATA -->
+        <section>
+          <div class="section-head">
+            <div class="section-number">04</div>
+            <div>
+              <div class="label">Ata de Reunião</div>
+              <h2>Registro Formal das Deliberações</h2>
+              <p>Tópicos discutidos, decisões formalizadas e ações comprometidas na visita de 17/04/2026.</p>
+            </div>
+          </div>
+
+          <div class="ata-box">
+            <div class="ata-strip">
+              <div><div class="k">Data</div><div class="v">17 de Abril de 2026</div></div>
+              <div><div class="k">Local</div><div class="v">Canteiro — Casa 7, SP</div></div>
+              <div><div class="k">Participantes</div><div class="v">Victor · Alê · Felipe · Montanha (ext.)</div></div>
+              <div><div class="k">Próxima Reunião</div><div class="v">Sex 24/04 · a partir das 15h</div></div>
+            </div>
+            <div class="ata-body">
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">1</div>
+                  <div>
+                    <div class="topic-title">Encerramento da 1ª Onda e metas da semana</div>
+                    <span class="badge b-amber">Atenção ao prazo</span>
+                    <div class="topic-desc">A 1ª onda está em 80% com prazo estendido até 24/04. Foi explicitamente pontuado que houve escorregamento nas duas semanas anteriores e que as Suítes 2 e 3 devem ser concluídas (exceto pintura) até sexta-feira sem nova falha. Pendências TUS e de terceiros devem ser registradas formalmente na quarta para proteção contratual da MIA.</div>
+                  </div>
+                </div>
+                <div class="decision-box"><div class="tt">Decisão</div>Suíte 3 e Suíte 2: conclusão do checklist (exceto pintura) até 24/04 é compromisso irrevogável. Todas as pendências de TUS/terceiros registradas formalmente na quarta-feira.</div>
+                <div class="action-box"><div class="tt">Ação</div>Victor: registrar pendências na quarta. Alê: acionar TUS formalmente sobre itens bloqueadores como exposição documentada.</div>
+              </div>
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">2</div>
+                  <div>
+                    <div class="topic-title">Pintura — Risco Crítico ao Caminho de Entrega</div>
+                    <span class="badge b-red">Crítico</span>
+                    <div class="topic-desc">Orçamento levantado em R$200.000. Mobilização prevista para 21–24/04, com entrada obrigatória até 27/04. A repintura geral interna e externa (27/04–15/05) está no caminho crítico e não pode ser acelerada com mais mão de obra — exige processo executivo sequencial. Três semanas restantes são avaliadas como insuficientes sem mobilização imediata.</div>
+                  </div>
+                </div>
+                <div class="decision-box"><div class="tt">Decisão</div>Enviar orçamento ao cliente na segunda-feira com duas opções: manter fornecedor atual ou abrir concorrência. Aprovação TOOLS deve ser obtida até quarta 22/04.</div>
+                <div class="action-box"><div class="tt">Ação</div>Alê: enviar orçamento segunda e pressionar decisão até quarta. Victor: confirmar disponibilidade do fornecedor para entrada até 27/04.</div>
+              </div>
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">3</div>
+                  <div>
+                    <div class="topic-title">Pergolado — Diagnóstico de Infiltração sob Manta</div>
+                    <span class="badge b-red">Novo risco</span>
+                    <div class="topic-desc">Identificado problema de infiltração: água sob a manta drena para ralo existente na laje, causando mofo na parede. Quantidade pequena, porém suficiente para umidade contínua. Solução técnica definida: desmontar telhado (Montanha), impermeabilizar laje, contrapiso com caimento correto, abrir ralo e canalizar tubo até jardim. Item claramente fora do escopo original — registrar como aditivo.</div>
+                  </div>
+                </div>
+                <div class="decision-box"><div class="tt">Decisão</div>Montanha acionado durante a visita para orçamento. Executar desmonte + impermeabilização conjuntamente. Registrar como aditivo de prazo e custo.</div>
+                <div class="action-box"><div class="tt">Ação</div>Victor: cobrar orçamento de Montanha até quarta 22/04. Incluir na relação de itens fora do escopo da reunião de sexta.</div>
+              </div>
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">4</div>
+                  <div>
+                    <div class="topic-title">Suíte das Crianças — Suspeita de Umidade</div>
+                    <span class="badge b-amber">Aditivo</span>
+                    <div class="topic-desc">Felipe reportou suspeita de umidade na parede do quarto das crianças. Recomendação técnica: inspecionar, possivelmente impermeabilizar um trecho do piso e rodapé, com retirada prévia do rodapé para análise. Item fora do escopo original. Nenhuma execução antes do registro formal e aprovação do cliente.</div>
+                  </div>
+                </div>
+                <div class="decision-box"><div class="tt">Decisão</div>Registrar formalmente com André antes de qualquer execução. Este item não conta para o prazo contratual MIA.</div>
+                <div class="action-box"><div class="tt">Ação</div>Alê: alinhar com André para registro formal. Victor: aguardar aprovação documentada. Item incluído na relação de fora do escopo — sexta 24/04.</div>
+              </div>
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">5</div>
+                  <div>
+                    <div class="topic-title">Itens Gerais Formalizados pelo Diretor</div>
+                    <span class="badge b-gray">Registro</span>
+                    <div class="topic-desc">Alinhamentos formais registrados no grupo: mata-junta será centralizado (confirmado por Felipe); escadas com cantoneiras urgente — cliente cobra constantemente; remarcar saída do exaustor com fita durex e foto no iPad; toalheiros subir 50cm e comprar novos 220v; escavação 40cm + seixo ao redor da casa iniciada hoje; estudar impermeabilização externa da parede da suíte casal com tinta impermeabilizante interna. Checklist deve ser atualizado diariamente pois cliente acompanha. Relatório semanal com fotos é compromisso fixo de sexta-feira.</div>
+                  </div>
+                </div>
+                <div class="decision-box"><div class="tt">Decisão</div>Todos os itens listados são compromissos formais da equipe de campo a partir desta semana.</div>
+              </div>
+
+              <div class="topic">
+                <div class="topic-head">
+                  <div class="topic-no">6</div>
+                  <div>
+                    <div class="topic-title">Laudo Elétrico e Película AC</div>
+                    <span class="badge b-gray">Registro</span>
+                    <div class="topic-desc">Eletricista possui CREA mas não paga anuidade. Solução: emitir laudo informal com número de CREA, suficiente para suporte ao cliente (a MIA não fez a instalação original). Película da Sala de Jantar: cliente optou por não instalar agora. Laudo OVê disponível para envio. Instalador agendado para 29/04.</div>
+                  </div>
+                </div>
+                <div class="action-box"><div class="tt">Ação</div>Victor: enviar laudo OVê ao cliente segunda-feira + e-mail informando instalador em 29/04. Solicitar laudo ao eletricista com número de CREA.</div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 5 — DELIBERAÇÕES -->
+        <section>
+          <div class="section-head">
+            <div class="section-number">05</div>
+            <div>
+              <div class="label">Deliberações Consolidadas</div>
+              <h2>Síntese de Ações Confirmadas</h2>
+              <p>Visão executiva dos itens consolidados da semana, ordenados por criticidade e responsável.</p>
+            </div>
+          </div>
+
+          <div class="dark-panel">
+            <div class="head">
+              <div>
+                <div class="sub">Ações Confirmadas — Semana 20–24 Abr 2026</div>
+                <h3>Deliberações Consolidadas</h3>
+              </div>
+            </div>
+            <ul class="confirm-list">
+              <li><div class="ci red">!</div><div class="confirm-text">Enviar orçamento de pintura R$200k ao cliente na segunda e obter aprovação TOOLS até quarta 22/04 — entrada obrigatória até 27/04.</div><div class="confirm-meta">Alê + Victor<br>Seg 20/04</div></li>
+              <li><div class="ci red">!</div><div class="confirm-text">RDOs diários até 17h a partir de segunda-feira — sem exceção. Victor e Felipe alinham formato e cadência.</div><div class="confirm-meta">Victor + Felipe<br>A partir Seg</div></li>
+              <li><div class="ci red">!</div><div class="confirm-text">Instalar cantoneiras nas escadas — cliente cobra constantemente, sem justificativa para atraso adicional.</div><div class="confirm-meta">Victor<br>Imediato</div></li>
+              <li><div class="ci red">!</div><div class="confirm-text">Suíte 3 e Suíte 2: conclusão do checklist (exceto pintura) até 24/04 — compromisso irrevogável desta semana.</div><div class="confirm-meta">Victor<br>Sex 24/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Registrar na quarta todas as pendências de TUS/terceiros nos ambientes da 1ª onda para proteção contratual da MIA.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Cobrar Montanha: orçamento desmonte telhado pergolado + impermeabilização + contrapiso + canalização do ralo.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Cobrar TOOLS: definição de acabamento do exaustor mecânico (mapa enviado 07/04, aguarda há 10 dias).</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Cobrar luminárias da circulação íntima junto ao fornecedor.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Ligar para Armani Lux na quarta para confirmar prazo de entrega da pedra da área de serviço.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci amb">→</div><div class="confirm-text">Iniciar cotações de limpeza especializada na quarta-feira.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Enviar laudo OVê ao cliente + e-mail informando instalador de película em 29/04.</div><div class="confirm-meta">Victor<br>Seg 20/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Enviar orçamento acesso lateral pedra cacão (Enéas) ao cliente e mapa de forro via WhatsApp.</div><div class="confirm-meta">Alê + Victor<br>Seg/Qua</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Agendar visita de Rafael (TOOLS) ao canteiro para alinhamento presencial e desbloqueio de aprovações.</div><div class="confirm-meta">Alê → Rafael<br>Semana 20/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Registrar formalmente com André a intervenção na suíte das crianças (umidade) como aditivo — não executar antes da aprovação documentada.</div><div class="confirm-meta">Alê + André<br>Semana 20/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Reunião sexta 24/04 a partir das 15h: levantar todos os itens fora do escopo original para registro formal e justificativa de custo e prazo.</div><div class="confirm-meta">Alê + Victor<br>Sex 24/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Solicitar laudo elétrico ao responsável técnico com número de CREA, mesmo sem assinatura formal.</div><div class="confirm-meta">Victor<br>Semana 20/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Marcar posição saída do exaustor nos banheiros com fita durex + foto no iPad para visualização do cliente.</div><div class="confirm-meta">Victor<br>Qua 22/04</div></li>
+              <li><div class="ci open">○</div><div class="confirm-text">Relatório semanal com fotos de todos os ambientes limpos e organizados — entrega toda sexta-feira.</div><div class="confirm-meta">Victor<br>Sex 24/04</div></li>
+            </ul>
+          </div>
+        </section>
+
+      </div><!-- /content -->
+
+      <footer class="footer">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;">MIA Engenharia — Precisão · Silêncio · Perfeição</div>
+        <div>CCSP-C7 · Rev.003 · 17/04/2026 · Material Confidencial</div>
+        <div>miaengenharia.com.br</div>
+      </footer>
+
+    </div><!-- /doc-shell -->
+  </div><!-- /page -->
+</body>
+</html>
