@@ -1,6 +1,6 @@
 # Contratos e lastro institucional — PCS
 
-_Atualizado em 2026-04-20_
+_Atualizado em 2026-04-23_
 
 ## Fontes
 - `/root/.openclaw/media/inbound/PCS_-_CONTRATO_ASSINADO_TEATRO_DE_SUZANO---a0a6f82c-6b06-481a-a199-8dc0b04bd82a.pdf`
@@ -38,7 +38,39 @@ _Atualizado em 2026-04-20_
 - Leitura útil: estabelece o vínculo formal da PCS com os Correios para pacote de serviços, faturamento, cartões de postagem e uso de sistemas próprios.
 - Observação: documento relevante como lastro operacional, mas não substitui a leitura de anexo comercial específico quando o tema for preço, pacote ou serviço habilitado.
 
-## 4. Estrutura societária consolidada
+## 4. SPTrans — Licitação nº 002/2026 (consórcio, em fase final)
+- Status: **licitação em fase final** (não é contrato assinado ainda)
+- Processo administrativo: **PALC nº 2026/0036**
+- Processo SEI: **5010.2025/0024336-8**
+- Valor global: **R$ 59.950.003,20**
+- Vigência total: **51 meses** a partir da assinatura
+- Prazo de execução: **48 meses** a partir da emissão da 1ª OS
+- Sessão pública de notas técnicas: **23/04/2026**
+- Abertura de habilitação: **30/04/2026**
+- Contratada (se homologada): **Consórcio Vias de São Paulo**
+  - Multiplano Engenharia — 30% (líder)
+  - LBR — 30%
+  - Lettieri — 15%
+  - **PCS — 15%**
+  - GOS — 10%
+- Marcos pós-adjudicação (conforme Edital/Minuta):
+  - Assinatura: até 5 dias úteis após convocação
+  - Garantia contratual: até 10 dias úteis após celebração
+  - Cronograma detalhado: até 10 dias após 1ª OS
+  - Plano de Execução BIM (PEB): até 30 dias após 1ª OS
+- Origem dos dados: mensagem do Alê em 2026-04-23 (compilação dos documentos da licitação)
+
+### Gatilho pendente — ativar quando Alê enviar a 1ª Ordem de Serviço
+Assim que o Alê sinalizar o **envio/recebimento da 1ª OS**, criar alertas (cron/schedule) contando a partir da data da OS:
+- **D+10**: Cronograma detalhado (entrega ao contratante)
+- **D+30**: Plano de Execução BIM (PEB)
+
+Também criar, a partir da **celebração do contrato** (se sinalizada separadamente):
+- **D+10 dias úteis**: Garantia contratual
+
+Não criar cron agora — aguardar o gatilho do Alê com a data real.
+
+## 5. Estrutura societária consolidada
 - Razão social: **PCS Obras e Locações LTDA**
 - NIRE: **35.220.364.370**
 - Capital social consolidado: **R$ 3.874.480,00**

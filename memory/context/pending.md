@@ -15,6 +15,7 @@ _Atualizado em 2026-04-22_
 
 - [ ] **Instagram integration** — confirmar arquitetura final 10/10: conta Instagram Business exata, Facebook Page vinculada, domínio/subdomínio público das páginas legais e objetivo/escopos reais do app antes de live/review.
 - [ ] **Novos contatos/equipe** — preencher `memory/context/people.md` conforme equipe e parceiros relevantes surgirem.
+- [ ] **SPTrans — 1ª OS (Ordem de Serviço)**: quando Alê enviar/sinalizar o recebimento, criar alertas a partir da data da OS — **D+10** (cronograma detalhado) e **D+30** (Plano de Execução BIM). Fonte: `memory/projects/pcs/contratos-e-lastro.md` seção 4.
 
 ## Em andamento interno
 
