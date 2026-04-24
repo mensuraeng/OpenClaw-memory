@@ -299,9 +299,11 @@
   <button class="tab-btn active" onclick="showTab(0,this)">Pontos Críticos</button>
   <button class="tab-btn" onclick="showTab(1,this)">Cronograma</button>
   <button class="tab-btn" onclick="showTab(2,this)">Ambientes</button>
-  <button class="tab-btn" onclick="showTab(3,this)">Plano de Ação</button>
-  <button class="tab-btn" onclick="showTab(4,this)">Ata de Reunião</button>
-  <button class="tab-btn" onclick="showTab(5,this)">Deliberações</button>
+  <button class="tab-btn" onclick="showTab(3,this)">Extra-Escopo</button>
+  <button class="tab-btn" onclick="showTab(4,this)">Pendências TOOLS</button>
+  <button class="tab-btn" onclick="showTab(5,this)">Plano de Ação</button>
+  <button class="tab-btn" onclick="showTab(6,this)">Ata de Reunião</button>
+  <button class="tab-btn" onclick="showTab(7,this)">Deliberações</button>
 </div>
 
 <div class="content">
@@ -427,28 +429,6 @@
         <div class="critico-head nivel-2">
           <div class="critico-num">05</div>
           <div>
-            <div class="critico-title">Miniguia e Batedor de Garagem — aprovação TOOLS em atraso de 17 dias</div>
-          </div>
-          <div class="critico-badge">Nível Alto</div>
-        </div>
-        <div class="critico-body">
-          <p>O mapa do miniguia e do batedor de garagem foi enviado em 07/04. A aprovação TOOLS deveria ter ocorrido até 15/04 — está em atraso de 17 dias corridos. A instalação de ambos depende da conclusão da garagem (prevista para 29/04) e da aprovação, compra e entrega do material. A cadeia de dependências comprime a janela de instalação para os primeiros dias de maio. Sem aprovação imediata, este item escorrega para fora do prazo da obra.</p>
-          <div class="critico-impact">
-            <span class="impact-tag prazo">17 dias de atraso na aprovação</span>
-            <span class="impact-tag contrato">Responsabilidade TOOLS documentada</span>
-          </div>
-          <div class="critico-acao">
-            <div class="al">Ação obrigatória</div>
-            Escalação formal para TOOLS com prazo-limite de resposta de 27/04. Após esta data, o atraso na instalação será de responsabilidade documentada da gestora. MIA deve emitir comunicação formal registrando a dependência.
-          </div>
-        </div>
-      </div>
-
-      <!-- CRÍTICO 6 -->
-      <div class="critico-card">
-        <div class="critico-head nivel-2">
-          <div class="critico-num">06</div>
-          <div>
             <div class="critico-title">Limpeza Especializada — mobilização prevista para 11/05 com janela insuficiente</div>
           </div>
           <div class="critico-badge">Nível Alto</div>
@@ -466,10 +446,10 @@
         </div>
       </div>
 
-      <!-- CRÍTICO 7 -->
+      <!-- CRÍTICO 6 -->
       <div class="critico-card">
         <div class="critico-head nivel-3">
-          <div class="critico-num">07</div>
+          <div class="critico-num">06</div>
           <div>
             <div class="critico-title">Exaustores Mecânicos — aprovados, compra e instalação pendentes</div>
           </div>
@@ -487,10 +467,10 @@
         </div>
       </div>
 
-      <!-- CRÍTICO 8 -->
+      <!-- CRÍTICO 7 -->
       <div class="critico-card">
         <div class="critico-head nivel-3">
-          <div class="critico-num">08</div>
+          <div class="critico-num">07</div>
           <div>
             <div class="critico-title">Área de Serviço e Área Técnica — 40% de avanço com início há 14 dias</div>
           </div>
@@ -795,9 +775,312 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
-     TAB 3 — PLANO DE AÇÃO
+     TAB 3 — ATIVIDADES FORA DO CHECK-LIST (EXTRA-ESCOPO)
 ═══════════════════════════════════════════ -->
 <div class="panel" id="panel-3">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div>
+        <div class="label">Extra-Escopo Executado</div>
+        <h2>Atividades Fora do Check-list</h2>
+        <p>Registro formal das intervenções técnicas executadas pela MIA além do escopo contratual, identificadas em campo como necessárias à integridade e à performance da edificação. Itens documentados para fins de aditivo técnico e referência contratual.</p>
+      </div>
+    </div>
+
+    <div class="alert-banner" style="background:#1a1408;border-left-color:var(--amber);">
+      <div class="alert-icon" style="background:rgba(160,96,16,.22);color:#ffd080;">+</div>
+      <div>
+        <h3 style="color:#ffe6b8;">Seis intervenções técnicas executadas fora do escopo original</h3>
+        <p style="color:#d8c8a8;">As atividades descritas a seguir não constavam no check-list contratual e foram executadas pela MIA após identificação técnica em campo. Todas justificam-se por necessidade de correção de patologias construtivas, adequação estrutural ou prevenção de não conformidades na entrega.</p>
+      </div>
+    </div>
+
+    <div class="criticos-grid">
+
+      <div class="critico-card">
+        <div class="critico-head nivel-2">
+          <div class="critico-num">01</div>
+          <div><div class="critico-title">Abertura de vala</div></div>
+          <div class="critico-badge">Extra-Escopo</div>
+        </div>
+        <div class="critico-body">
+          <p>Execução de abertura de vala para adequação de infraestrutura enterrada não prevista no escopo original. Intervenção necessária para reordenamento de tubulações e viabilização das frentes subsequentes de impermeabilização e acabamento externo.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Serviço adicional</span>
+            <span class="impact-tag qualidade">Infraestrutura enterrada</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="critico-card">
+        <div class="critico-head nivel-2">
+          <div class="critico-num">02</div>
+          <div><div class="critico-title">Abertura de vão e demolição parcial de laje — içamento de condensadora</div></div>
+          <div class="critico-badge">Extra-Escopo</div>
+        </div>
+        <div class="critico-body">
+          <p>Execução de abertura de vão e demolição controlada de trecho de laje para viabilizar a subida da condensadora do sistema de ar-condicionado até o pavimento superior. A operação exigiu avaliação estrutural prévia e restituição posterior da laje, com reforço localizado onde aplicável.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Serviço adicional com restituição estrutural</span>
+            <span class="impact-tag qualidade">Equipamentos AVAC</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="critico-card">
+        <div class="critico-head nivel-2">
+          <div class="critico-num">03</div>
+          <div><div class="critico-title">Abertura de parede no pergolado — tubulação interrompida e foco de umidade</div></div>
+          <div class="critico-badge">Extra-Escopo · Patologia</div>
+        </div>
+        <div class="critico-body">
+          <p>Identificada, durante sondagem em campo, tubulação proveniente do telhado cuja terminação ocorria no interior da alvenaria do pergolado, sem destino de escoamento — caracterizando falha de execução da obra original. Esta condição gerava infiltração ativa e foco de umidade ascendente. Procedeu-se à abertura da parede, remoção do trecho de tubulação inoperante, tratamento da alvenaria e refechamento com selagem adequada.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Correção de patologia preexistente</span>
+            <span class="impact-tag qualidade">Combate à umidade estrutural</span>
+            <span class="impact-tag contrato">Responsabilidade documentada em construtora anterior</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="critico-card">
+        <div class="critico-head nivel-2">
+          <div class="critico-num">04</div>
+          <div><div class="critico-title">Preenchimento de baldrame e impermeabilização da meia-cana</div></div>
+          <div class="critico-badge">Extra-Escopo</div>
+        </div>
+        <div class="critico-body">
+          <p>Execução de preenchimento de baldrame perimetral e aplicação de sistema de impermeabilização por meia-cana. Intervenção realizada para garantir estanqueidade na interface entre piso e alvenaria, prevenindo infiltrações em ponto crítico não tratado no escopo original. Sistema executado conforme NBR 9575 e NBR 9574.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Impermeabilização adicional</span>
+            <span class="impact-tag qualidade">Conformidade NBR 9575/9574</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="critico-card">
+        <div class="critico-head nivel-2">
+          <div class="critico-num">05</div>
+          <div><div class="critico-title">Impermeabilização perimetral por meia-cana — entorno da edificação</div></div>
+          <div class="critico-badge">Extra-Escopo</div>
+        </div>
+        <div class="critico-body">
+          <p>Execução de impermeabilização perimetral por meia-cana em todo o entorno da edificação, com tratamento contínuo da interface solo–alvenaria. Serviço não previsto no escopo original, executado para eliminar pontos de absorção capilar e mitigar risco de umidade ascendente nas paredes internas e externas.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Perímetro integral</span>
+            <span class="impact-tag qualidade">Prevenção de umidade ascendente</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="critico-card">
+        <div class="critico-head nivel-1">
+          <div class="critico-num">06</div>
+          <div><div class="critico-title">Calhas e rufos — correção de não conformidade executiva</div></div>
+          <div class="critico-badge">Extra-Escopo · Patologia</div>
+        </div>
+        <div class="critico-body">
+          <p>Sistema de calhas e rufos apresentava deficiências executivas e subdimensionamento do volume de captação, identificados em inspeção técnica. Procedeu-se à correção geométrica, ao redimensionamento dos elementos e ao refazimento das emendas e fixações, assegurando o escoamento adequado de águas pluviais e a estanqueidade das interfaces com a cobertura. Intervenção classificada como correção de vício construtivo preexistente.</p>
+          <div class="critico-impact">
+            <span class="impact-tag custo">Correção de vício construtivo</span>
+            <span class="impact-tag qualidade">Redimensionamento hidráulico</span>
+            <span class="impact-tag contrato">Responsabilidade técnica documentada</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ata-box" style="margin-top:22px;">
+      <div class="head" style="padding:18px 22px;border-bottom:1px solid var(--gray-200);background:var(--gray-100);">
+        <div class="sub" style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);margin-bottom:4px;font-weight:600;">Observação Contratual</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--black);">Tratamento formal destas atividades</div>
+      </div>
+      <div style="padding:20px;font-size:13px;color:var(--gray-700);line-height:1.7;">
+        As seis atividades listadas foram executadas sem paralisação da obra para preservar o prazo contratual. A documentação fotográfica de antes, durante e após cada intervenção encontra-se arquivada no sistema. Recomenda-se consolidação formal em aditivo técnico ou registro contratual de serviço extraordinário, conforme avaliação comercial a ser definida entre MIA e TOOLS.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TAB 4 — PENDÊNCIAS TOOLS
+═══════════════════════════════════════════ -->
+<div class="panel" id="panel-4">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div>
+        <div class="label">Definições Pendentes · Gestora Imobiliária</div>
+        <h2>Pendências TOOLS</h2>
+        <p>Itens que dependem de definição, especificação ou aprovação pela gestora imobiliária TOOLS e/ou pelo cliente final. A ausência destas respostas impede a liberação completa de frentes executivas e pode comprometer o prazo de entrega.</p>
+      </div>
+    </div>
+
+    <div class="alert-banner" style="background:#08141a;border-left-color:#2080a0;">
+      <div class="alert-icon" style="background:rgba(32,128,160,.22);color:#a0dce8;">?</div>
+      <div>
+        <h3 style="color:#c0e8f0;">20 pendências aguardando definição para liberação executiva</h3>
+        <p style="color:#a8c8d0;">Cada item abaixo representa uma decisão bloqueante que depende de TOOLS ou do cliente. Recomenda-se tratamento na reunião de 27/04 com retorno formal por item até, no máximo, 02/05/2026.</p>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:44px;">#</th>
+            <th>Pendência Técnica</th>
+            <th style="width:180px;">Frente / Ambiente</th>
+            <th style="width:120px;">Criticidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="gr"><td colspan="4">Acabamentos e Complementos</td></tr>
+          <tr>
+            <td><strong>01</strong></td>
+            <td><strong>Acabamento dos exaustores mecânicos</strong><br><span style="font-size:12px;color:var(--gray-700);">Definição do tipo de grelha/caixilho de acabamento externo dos exaustores. Especificar material, cor e padrão visual para compatibilização com o revestimento dos banheiros.</span></td>
+            <td><span class="badge bc">Banheiros 1ª Onda</span></td>
+            <td><span class="badge br">Alta</span></td>
+          </tr>
+          <tr>
+            <td><strong>02</strong></td>
+            <td><strong>Puxadores das telas mosquiteiras</strong><br><span style="font-size:12px;color:var(--gray-700);">Definição do modelo e acabamento dos puxadores para as telas mosquiteiras já instaladas nas esquadrias.</span></td>
+            <td><span class="badge bc">Esquadrias</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>03</strong></td>
+            <td><strong>Acabamento das portas de madeira</strong><br><span style="font-size:12px;color:var(--gray-700);">Definição do tipo de acabamento final (verniz, laca, hidrorrepelente) e cor para as portas de madeira internas.</span></td>
+            <td><span class="badge bc">Geral · Ambientes Internos</span></td>
+            <td><span class="badge br">Alta</span></td>
+          </tr>
+          <tr>
+            <td><strong>04</strong></td>
+            <td><strong>Rejunte interno e externo — tipo e coloração</strong><br><span style="font-size:12px;color:var(--gray-700);">Especificação do rejunte a ser aplicado nas áreas internas e externas: tipo (cimentício, epóxi), tonalidade e fabricante. Decisão bloqueia a entrega de banheiros, cozinha, áreas molhadas e fachada.</span></td>
+            <td><span class="badge bc">Áreas Molhadas + Externo</span></td>
+            <td><span class="badge br">Crítica</span></td>
+          </tr>
+          <tr>
+            <td><strong>05</strong></td>
+            <td><strong>Pintura da porta de alumínio da área de serviço — e presença de guarnição</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se a porta de alumínio receberá pintura e, em caso afirmativo, especificar cor e sistema. Informar se haverá guarnição complementar.</span></td>
+            <td><span class="badge bc">Área de Serviço</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>06</strong></td>
+            <td><strong>Pintura do piso da escada da cozinha</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se o acabamento será exclusivamente verniz ou se haverá sistema de pintura adicional. Especificar produto.</span></td>
+            <td><span class="badge bc">Cozinha</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>07</strong></td>
+            <td><strong>Acabamentos de fachada pendentes de definição</strong><br><span style="font-size:12px;color:var(--gray-700);">Listagem formal dos acabamentos de fachada ainda não instalados, com especificação e quantitativo por trecho.</span></td>
+            <td><span class="badge bc">Fachada</span></td>
+            <td><span class="badge br">Alta</span></td>
+          </tr>
+
+          <tr class="gr"><td colspan="4">Elementos de Segurança, Controle de Acesso e Fechaduras</td></tr>
+          <tr>
+            <td><strong>08</strong></td>
+            <td><strong>Especificação da fechadura a ser utilizada</strong><br><span style="font-size:12px;color:var(--gray-700);">Definição do modelo, fabricante e acabamento da fechadura-padrão das portas internas e externas.</span></td>
+            <td><span class="badge bc">Geral</span></td>
+            <td><span class="badge br">Alta</span></td>
+          </tr>
+          <tr>
+            <td><strong>09</strong></td>
+            <td><strong>Fechadura digital na porta da área de serviço</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se a porta de acesso à área de serviço receberá fechadura digital. Especificar modelo e protocolo de integração.</span></td>
+            <td><span class="badge bc">Área de Serviço</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>10</strong></td>
+            <td><strong>Corrimão da varanda — verificação de projeto</strong><br><span style="font-size:12px;color:var(--gray-700);">Item não localizado nos projetos executivos recebidos. Solicitar detalhamento ou confirmação formal de inexistência, considerando os requisitos de NBR 9050 e NBR 14718 aplicáveis.</span></td>
+            <td><span class="badge bc">Varanda</span></td>
+            <td><span class="badge br">Alta · Norma</span></td>
+          </tr>
+
+          <tr class="gr"><td colspan="4">Sistemas Prediais e Automação</td></tr>
+          <tr>
+            <td><strong>11</strong></td>
+            <td><strong>Sistema de som — especificação e pontos de instalação</strong><br><span style="font-size:12px;color:var(--gray-700);">Definição do sistema de som ambiente: modelo das caixas, pontos de instalação, subwoofers e infraestrutura elétrica/lógica associada.</span></td>
+            <td><span class="badge bc">Sala de Estar + Áreas Sociais</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>12</strong></td>
+            <td><strong>Iluminação do corredor íntimo</strong><br><span style="font-size:12px;color:var(--gray-700);">Especificação das luminárias, temperatura de cor, sistema de comando e posicionamento das peças no corredor íntimo.</span></td>
+            <td><span class="badge bc">Circulação Íntima</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>13</strong></td>
+            <td><strong>Luminárias permanentes do teto da suíte do casal</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se as luminárias atualmente instaladas correspondem ao produto final ou se haverá substituição por peças definitivas.</span></td>
+            <td><span class="badge bc">Suíte do Casal</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>14</strong></td>
+            <td><strong>Conclusão da instalação de Wi-Fi</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se a pendência se restringe à fixação dos equipamentos ou se há serviços complementares de passagem de cabeamento, configuração ou balanceamento de rede.</span></td>
+            <td><span class="badge bc">Sistema Predial</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+
+          <tr class="gr"><td colspan="4">Áreas Molhadas e Chuveiros</td></tr>
+          <tr>
+            <td><strong>15</strong></td>
+            <td><strong>Impermeabilização do chuveiro — escopo a esclarecer</strong><br><span style="font-size:12px;color:var(--gray-700);">Detalhamento técnico do sistema de impermeabilização a ser aplicado: produto, número de demãos, interfaces tratadas e critério de aceitação.</span></td>
+            <td><span class="badge bc">Banheiros</span></td>
+            <td><span class="badge br">Alta · Norma</span></td>
+          </tr>
+          <tr>
+            <td><strong>16</strong></td>
+            <td><strong>Instalação de pedra no chuveiro — confirmação de nicho</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se a pedra especificada refere-se ao nicho embutido do box do chuveiro. Definir pedra, dimensões e forma de fixação.</span></td>
+            <td><span class="badge bc">Banheiros</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+
+          <tr class="gr"><td colspan="4">Áreas Externas e Paisagismo</td></tr>
+          <tr>
+            <td><strong>17</strong></td>
+            <td><strong>Ganchos do pergolado — detalhamento executivo</strong><br><span style="font-size:12px;color:var(--gray-700);">Solicitar detalhamento técnico dos ganchos a serem instalados no pergolado: modelo, carga admissível, sistema de fixação e posicionamento no desenho.</span></td>
+            <td><span class="badge bc">Pergolado</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+          <tr>
+            <td><strong>18</strong></td>
+            <td><strong>Replantio sob responsabilidade da Flávia — definição de contratante</strong><br><span style="font-size:12px;color:var(--gray-700);">Definir formalmente se a contratação do serviço de replantio será executada diretamente pelo cliente, pela TOOLS ou pela MIA, considerando a saída da MPH do escopo.</span></td>
+            <td><span class="badge bc">Paisagismo</span></td>
+            <td><span class="badge br">Alta</span></td>
+          </tr>
+          <tr>
+            <td><strong>19</strong></td>
+            <td><strong>Toldo da sala de jantar — existência, configuração e quantidade</strong><br><span style="font-size:12px;color:var(--gray-700);">Confirmar se a sala de jantar receberá toldo e, em caso afirmativo, definir se será peça única de grande vão ou duas peças menores. Especificar dimensões, acionamento e sistema de fixação.</span></td>
+            <td><span class="badge bc">Sala de Jantar</span></td>
+            <td><span class="badge ba">Média</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ata-box" style="margin-top:22px;">
+      <div class="head" style="padding:18px 22px;border-bottom:1px solid var(--gray-200);background:var(--gray-100);">
+        <div class="sub" style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);margin-bottom:4px;font-weight:600;">Protocolo de Encaminhamento</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--black);">Recomendação MIA para tratativa formal</div>
+      </div>
+      <div style="padding:20px;font-size:13px;color:var(--gray-700);line-height:1.7;">
+        A MIA recomenda que as 19 pendências acima sejam organizadas em pauta única e tratadas na reunião de 27/04/2026 com a TOOLS, com prazo máximo de retorno formal por item até 02/05/2026. Itens classificados como <strong>Crítica</strong> e <strong>Alta · Norma</strong> bloqueiam frentes executivas no caminho crítico — a ausência de definição dentro do prazo recomendado deve ser registrada como transferência formal de responsabilidade pelo atraso correspondente.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TAB 5 — PLANO DE AÇÃO
+═══════════════════════════════════════════ -->
+<div class="panel" id="panel-5">
   <div class="sec">
     <div class="sec-head">
       <div class="sec-num">03</div>
@@ -904,12 +1187,12 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
-     TAB 4 — ATA
+     TAB 6 — ATA
 ═══════════════════════════════════════════ -->
-<div class="panel" id="panel-4">
+<div class="panel" id="panel-6">
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-num">04</div>
+      <div class="sec-num">06</div>
       <div>
         <div class="label">Ata de Reunião</div>
         <h2>Registro Formal das Deliberações</h2>
@@ -919,7 +1202,7 @@
     <div class="ata-box">
       <div class="ata-strip">
         <div><div class="k">Data</div><div class="v">24 de Abril de 2026</div></div>
-        <div><div class="k">Participantes</div><div class="v">Victor · Alê · Gustavo (TOOLS)</div></div>
+        <div><div class="k">Participantes</div><div class="v">Victor · Alexandre Aguiar</div></div>
         <div><div class="k">Próx. Reunião</div><div class="v">Seg 27/04 — com Rafael/TOOLS</div></div>
         <div><div class="k">Fechamento Semanal</div><div class="v">Quinta-feira a partir desta semana</div></div>
       </div>
@@ -1006,12 +1289,12 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
-     TAB 5 — DELIBERAÇÕES
+     TAB 7 — DELIBERAÇÕES
 ═══════════════════════════════════════════ -->
-<div class="panel" id="panel-5">
+<div class="panel" id="panel-7">
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-num">05</div>
+      <div class="sec-num">07</div>
       <div>
         <div class="label">Deliberações Consolidadas</div>
         <h2>Síntese de Ações — Semana 27/04 a 02/05</h2>
