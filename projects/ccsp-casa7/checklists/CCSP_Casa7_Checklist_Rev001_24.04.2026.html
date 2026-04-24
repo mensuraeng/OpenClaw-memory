@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MIA · CCSP Casa 7 · Status do Checklist · 24/04/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#0a0a0a; --graphite:#1c1c1c; --graphite-mid:#2e2e2e;
+    --champagne:#c9a96e; --champagne-light:#e8d5b0; --champagne-pale:#f5ede0;
+    --cream:#faf8f4; --white:#ffffff;
+    --gray-100:#f4f4f2; --gray-200:#e8e8e4; --gray-300:#d0d0ca;
+    --gray-500:#8a8a84; --gray-700:#4a4a46;
+    --green:#1a5c32; --amber:#a06010; --red:#8b2020;
+    --green-light:#e8f4ec; --amber-light:#fdf3e3; --red-light:#fdf0f0;
+    --shadow:0 12px 32px rgba(10,10,10,0.08); --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--graphite);line-height:1.55;padding:28px 16px 56px;}
+  .page{max-width:1400px;margin:0 auto;}
+  .doc-shell{background:var(--white);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);}
+
+  /* HEADER */
+  .header{background:var(--black);color:var(--white);padding:42px 48px 0;position:relative;}
+  .header::after{content:'';display:block;height:1px;margin-top:26px;background:linear-gradient(90deg,rgba(201,169,110,0),rgba(201,169,110,1),rgba(201,169,110,0));}
+  .header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .mia-logo{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;letter-spacing:8px;line-height:1;}
+  .mia-sub{font-size:9px;letter-spacing:4px;color:var(--champagne);margin-top:4px;text-transform:uppercase;}
+  .logo-row{display:flex;align-items:center;gap:28px;margin-bottom:4px;}
+  .logo-block{display:flex;flex-direction:column;}
+  .logo-divider{width:1px;height:48px;background:linear-gradient(180deg,rgba(201,169,110,0),rgba(201,169,110,0.5),rgba(201,169,110,0));}
+  .tools-logo{height:52px;width:auto;display:block;}
+  .doc-type{margin-top:18px;font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;}
+  .doc-ref{margin-top:8px;color:var(--champagne-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+  .project-title{margin-top:10px;font-size:14px;color:var(--gray-300);}
+  .header-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:8px;}
+  .pill{border:1px solid rgba(255,255,255,.14);color:var(--white);border-radius:999px;padding:7px 13px;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.04);}
+  .pill.alert{border-color:rgba(139,32,32,.5);background:rgba(139,32,32,.2);color:#f1c1c1;}
+  .pill.ok{border-color:rgba(26,92,50,.5);background:rgba(26,92,50,.2);color:#a0ddb0;}
+  .pill.warn{border-color:rgba(160,96,16,.5);background:rgba(160,96,16,.18);color:#ffd080;}
+  .pill.neutral{border-color:rgba(201,169,110,.3);background:rgba(201,169,110,.08);color:var(--champagne-light);}
+
+  /* TECH BAR */
+  .tech-bar{background:var(--graphite);padding:18px 22px;display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+  .tech-item .k{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne-light);margin-bottom:5px;}
+  .tech-item .v{font-size:14px;font-weight:500;color:var(--white);}
+
+  /* TABS */
+  .tabs{display:flex;gap:0;overflow-x:auto;background:var(--black);}
+  .tab-btn{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--gray-500);padding:14px 20px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;white-space:nowrap;transition:all .2s;}
+  .tab-btn.active{color:var(--champagne);border-bottom-color:var(--champagne);}
+  .tab-btn:hover{color:var(--champagne-light);}
+
+  /* PANELS */
+  .panel{display:none;} .panel.active{display:block;}
+  .content{padding:32px 32px 0;}
+
+  /* SECTION HEADERS */
+  .sec{margin-bottom:36px;}
+  .sec-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px;}
+  .sec-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--champagne-light);line-height:1;min-width:52px;}
+  .sec-head h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;color:var(--black);margin-bottom:4px;}
+  .sec-head p{color:var(--gray-700);font-size:13px;line-height:1.6;}
+  .label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);font-weight:600;}
+
+  /* ALERT BANNER */
+  .alert-banner{display:flex;gap:16px;align-items:flex-start;background:#1a0808;border-left:4px solid var(--red);border-radius:16px;padding:18px 20px;margin-bottom:28px;}
+  .alert-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(139,32,32,.22);color:#ffdddd;font-weight:700;flex-shrink:0;font-size:18px;}
+  .alert-banner h3{color:#f5c7c7;font-size:15px;margin-bottom:5px;}
+  .alert-banner p{color:#dcc8c8;font-size:13px;line-height:1.65;}
+
+  .warn-banner{display:flex;gap:16px;align-items:flex-start;background:#1a1000;border-left:4px solid var(--amber);border-radius:16px;padding:18px 20px;margin-bottom:28px;}
+  .warn-banner h3{color:#ffd89a;font-size:15px;margin-bottom:5px;}
+  .warn-banner p{color:#d8c8a8;font-size:13px;line-height:1.65;}
+  .warn-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(160,96,16,.22);color:#ffd060;font-weight:700;flex-shrink:0;font-size:18px;}
+
+  /* KPI STRIP */
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px;}
+  .kpi-card{background:var(--white);border:1px solid var(--gray-200);border-top:4px solid var(--champagne);border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(10,10,10,.04);}
+  .kpi-card.g{border-top-color:var(--green);}
+  .kpi-card.a{border-top-color:var(--amber);}
+  .kpi-card.r{border-top-color:var(--red);}
+  .kpi-card .tt{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray-500);margin-bottom:8px;}
+  .kpi-card .vv{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:500;line-height:1;}
+  .kpi-card.g .vv{color:var(--green);}
+  .kpi-card.a .vv{color:var(--amber);}
+  .kpi-card.r .vv{color:var(--red);}
+  .kpi-card .ss{font-size:12px;color:var(--gray-700);margin-top:8px;}
+  .kpi-card .bar{height:5px;background:var(--gray-200);border-radius:999px;margin-top:12px;overflow:hidden;}
+  .kpi-card .bar-fill{height:100%;border-radius:999px;transition:width 1s ease;}
+  .bar-fill.g{background:var(--green);}
+  .bar-fill.a{background:var(--amber);}
+  .bar-fill.r{background:var(--red);}
+  .bar-fill.c{background:var(--champagne);}
+
+  /* PROGRESS RING */
+  .ring-wrap{display:flex;align-items:center;gap:24px;background:var(--black);border-radius:20px;padding:24px 28px;margin-bottom:26px;}
+  .ring-svg{flex-shrink:0;}
+  .ring-info{flex:1;}
+  .ring-info h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);font-weight:500;margin-bottom:6px;}
+  .ring-info p{font-size:13px;color:var(--gray-300);line-height:1.6;}
+  .ring-legend{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+  .ring-leg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--gray-300);}
+  .ring-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  /* TABLE */
+  .tw{border:1px solid var(--gray-200);border-radius:16px;overflow:hidden;background:var(--white);margin-bottom:24px;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray-500);background:var(--gray-100);padding:12px 14px;border-bottom:1px solid var(--gray-200);font-weight:400;}
+  td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle;font-size:12.5px;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#fafaf8;}
+  .th-r{text-align:right;}
+  .td-r{text-align:right;}
+  .gr td{background:var(--graphite-mid);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--champagne-light);padding:14px;}
+
+  /* PROGRESS BAR INLINE */
+  .prog{width:90px;height:6px;background:var(--gray-200);border-radius:999px;overflow:hidden;margin-bottom:4px;}
+  .fill{height:100%;border-radius:999px;}
+  .fill.g{background:var(--green);}
+  .fill.a{background:var(--amber);}
+  .fill.r{background:var(--red);}
+  .fill.n{background:var(--gray-400);}
+  .fill.c{background:var(--champagne);}
+  .pct{font-size:11px;font-weight:600;}
+  .pct.g{color:var(--green);}
+  .pct.a{color:var(--amber);}
+  .pct.r{color:var(--red);}
+  .pct.n{color:var(--gray-500);}
+
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+  .bg{background:var(--green-light);color:var(--green);}
+  .ba{background:var(--amber-light);color:var(--amber);}
+  .br{background:var(--red-light);color:var(--red);}
+  .bc{background:var(--gray-100);color:var(--gray-700);}
+  .bk{background:var(--graphite);color:var(--champagne-light);}
+  .bn{background:#f0f0f0;color:#606060;}
+
+  /* AMBIENTE GRID */
+  .env-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px;}
+  .env-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:18px;box-shadow:0 4px 16px rgba(10,10,10,.04);transition:box-shadow .2s;}
+  .env-card:hover{box-shadow:0 8px 28px rgba(10,10,10,.09);}
+  .env-card.danger{border-left:4px solid var(--red);}
+  .env-card.warning{border-left:4px solid var(--amber);}
+  .env-card.ok{border-left:4px solid var(--green);}
+  .env-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px;}
+  .env-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--black);}
+  .env-sub{font-size:11px;color:var(--gray-500);margin-top:2px;}
+  .mini-prog{height:5px;background:var(--gray-200);border-radius:999px;overflow:hidden;margin:10px 0 12px;}
+  .env-stats{display:flex;gap:12px;}
+  .env-stat{font-size:11px;color:var(--gray-700);}
+  .env-stat span{font-weight:600;}
+
+  /* RISK MATRIX */
+  .risk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px;}
+  .risk-card{border-radius:16px;overflow:hidden;border:1px solid var(--gray-200);box-shadow:0 4px 16px rgba(10,10,10,.05);}
+  .risk-head{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid rgba(0,0,0,.07);}
+  .risk-head.sev-high{background:#2a0808;}
+  .risk-head.sev-med{background:#1e1208;}
+  .risk-head.sev-low{background:#0e1614;}
+  .risk-sev{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;line-height:1;min-width:44px;}
+  .sev-high .risk-sev{color:#ff9090;}
+  .sev-med .risk-sev{color:#ffc060;}
+  .sev-low .risk-sev{color:#80d0a0;}
+  .risk-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;}
+  .sev-high .risk-title{color:#fff0f0;}
+  .sev-med .risk-title{color:#fff8e8;}
+  .sev-low .risk-title{color:#e8fff4;}
+  .risk-badge{margin-left:auto;padding:3px 10px;border-radius:999px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;white-space:nowrap;}
+  .sev-high .risk-badge{background:rgba(200,40,40,.3);color:#ffaaaa;}
+  .sev-med .risk-badge{background:rgba(200,120,20,.3);color:#ffd080;}
+  .sev-low .risk-badge{background:rgba(30,140,70,.3);color:#80e0a0;}
+  .risk-body{padding:14px 18px;background:var(--white);}
+  .risk-body p{font-size:12.5px;color:var(--gray-700);line-height:1.65;margin-bottom:10px;}
+  .risk-meta{display:flex;gap:8px;flex-wrap:wrap;}
+  .risk-tag{font-size:10px;padding:3px 9px;border-radius:999px;}
+  .rt-q{background:#fdf0f0;color:var(--red);}
+  .rt-f{background:#fdf3e3;color:var(--amber);}
+  .rt-s{background:#e8f4ec;color:var(--green);}
+  .rt-g{background:var(--graphite);color:var(--champagne-light);}
+
+  /* HEATMAP */
+  .heatmap-wrap{margin-bottom:26px;}
+  .heatmap-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px;}
+  .heatmap{display:grid;grid-template-columns:auto repeat(5,1fr);gap:3px;}
+  .hm-cell{border-radius:8px;padding:10px 8px;text-align:center;font-size:11px;font-weight:600;}
+  .hm-label{background:transparent;font-size:10px;color:var(--gray-500);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+  .hm-0{background:#f5f5f3;color:#aaa;}
+  .hm-1{background:#e8f4ec;color:var(--green);}
+  .hm-2{background:#c8e8d0;color:#156028;}
+  .hm-4{background:#fdf3e3;color:var(--amber);}
+  .hm-6{background:#fdf0e0;color:#905010;}
+  .hm-8{background:#fde8d0;color:#803808;}
+  .hm-9{background:#fde0d0;color:#783010;}
+  .hm-12{background:#fde0d0;color:#783010;}
+  .hm-15{background:#fdd0c0;color:#882010;}
+  .hm-16{background:#fdc0b0;color:#8b2020;}
+  .hm-20{background:#f0a0a0;color:#6a0000;font-size:12px;}
+
+  /* CRITICAL ITEMS TABLE */
+  .crit-badge{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex-shrink:0;}
+  .crit-a{background:var(--red);}
+  .crit-b{background:var(--amber);}
+  .crit-c{background:var(--gray-500);}
+  .id-cell{font-family:'Outfit',monospace;font-size:11px;color:var(--gray-500);white-space:nowrap;}
+
+  /* SISTEMA BARS */
+  .sis-grid{display:grid;gap:10px;margin-bottom:24px;}
+  .sis-row{display:grid;grid-template-columns:200px 1fr 80px;gap:16px;align-items:center;}
+  .sis-name{font-size:12px;color:var(--graphite);}
+  .sis-bar-wrap{height:10px;background:var(--gray-200);border-radius:999px;overflow:hidden;}
+  .sis-bar{height:100%;border-radius:999px;transition:width 1s ease;}
+  .sis-nums{font-size:11px;color:var(--gray-500);text-align:right;white-space:nowrap;}
+
+  /* FOOTER */
+  .footer{background:var(--black);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .footer-left{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:4px;color:var(--champagne);}
+  .footer-right{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray-500);}
+
+  /* LEGEND BOX */
+  .legend-box{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:14px 18px;background:var(--gray-100);border-radius:12px;}
+  .leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray-700);}
+  .leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  /* GRID TWO COL */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:26px;}
+  .col-card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:20px;}
+  .col-card h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--black);margin-bottom:14px;}
+
+  /* PIE WRAPPER */
+  .pie-wrap{display:flex;align-items:center;gap:20px;}
+  .pie-legend{flex:1;}
+  .pie-leg-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--gray-100);}
+  .pie-leg-row:last-child{border-bottom:none;}
+  .pie-leg-left{display:flex;align-items:center;gap:8px;font-size:12px;}
+  .pie-leg-right{font-size:12px;font-weight:600;}
+
+  /* CARD MINI */
+  .mini-card{background:var(--gray-100);border-radius:12px;padding:14px;margin-bottom:10px;}
+  .mini-card .mc-id{font-size:10px;color:var(--champagne);letter-spacing:1px;margin-bottom:4px;}
+  .mini-card .mc-title{font-size:13px;font-weight:500;color:var(--black);margin-bottom:6px;}
+  .mini-card .mc-meta{font-size:11px;color:var(--gray-700);display:flex;gap:10px;flex-wrap:wrap;}
+
+  .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--gray-200),transparent);margin:30px 0;}
+
+  @media(max-width:900px){
+    .kpi-strip{grid-template-columns:repeat(2,1fr);}
+    .env-grid{grid-template-columns:repeat(2,1fr);}
+    .risk-grid{grid-template-columns:1fr;}
+    .two-col{grid-template-columns:1fr;}
+    .tech-bar{grid-template-columns:repeat(3,1fr);}
+    .sis-row{grid-template-columns:140px 1fr 60px;}
+    .header{padding:28px 24px 0;}
+    .content{padding:20px 16px 0;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-shell">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div class="logo-row">
+        <div class="logo-block">
+          <div class="mia-logo">MIA</div>
+          <div class="mia-sub">ENGENHARIA · SÃO PAULO</div>
+        </div>
+        <div class="logo-divider"></div>
+        <div class="logo-block">
+          <svg class="tools-logo" viewBox="0 0 220 64" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="40" font-family="Outfit,sans-serif" font-size="38" font-weight="800" fill="#ffffff" letter-spacing="1">TOOLS</text>
+            <text x="2" y="58" font-family="Outfit,sans-serif" font-size="10" font-weight="400" fill="#c9a96e" letter-spacing="0.5">Gerenciamento e Engenharia</text>
+          </svg>
+        </div>
+      </div>
+      <div class="doc-type">Relatório de Status — Checklist de Recebimento</div>
+      <div class="doc-ref">CCSP-C7 · Rev.001 · 24/04/2026</div>
+      <div class="project-title">Casa 7 — CCSP · Acompanhamento do Checklist MIA · 343 itens auditados</div>
+    </div>
+    <div class="header-pills">
+      <div class="pill">343 Itens Totais</div>
+      <div class="pill ok">103 Concluídos (30%)</div>
+      <div class="pill alert">21 Críticos A-Seg. Pendentes</div>
+      <div class="pill warn">227 A Verificar</div>
+    </div>
+  </div>
+</header>
+
+<!-- TECH BAR -->
+<div class="tech-bar">
+  <div class="tech-item"><div class="k">Data de Referência</div><div class="v">24/04/2026</div></div>
+  <div class="tech-item"><div class="k">Engenheiro de Campo</div><div class="v">Victor Evangelista</div></div>
+  <div class="tech-item"><div class="k">Diretor de Qualidade</div><div class="v">MIA Engenharia</div></div>
+  <div class="tech-item"><div class="k">Itens Concluídos</div><div class="v" style="color:#80d090;">103 / 343</div></div>
+  <div class="tech-item"><div class="k">Avanço do Checklist</div><div class="v" style="color:#c07020;">30,0%</div></div>
+  <div class="tech-item"><div class="k">Próxima Revisão</div><div class="v">01/05/2026</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" onclick="showTab(0,this)">Visão Geral</button>
+  <button class="tab-btn" onclick="showTab(1,this)">Por Ambiente</button>
+  <button class="tab-btn" onclick="showTab(2,this)">Itens Críticos</button>
+  <button class="tab-btn" onclick="showTab(3,this)">Por Sistema</button>
+  <button class="tab-btn" onclick="showTab(4,this)">Matriz de Risco</button>
+  <button class="tab-btn" onclick="showTab(5,this)">Agendamentos</button>
+  <button class="tab-btn" onclick="showTab(6,this)">📷 Galeria de Evidências</button>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════ TAB 0 — VISÃO GERAL ═══════════════ -->
+<div class="panel active" id="panel-0">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">◎</div>
+      <div>
+        <div class="label">Status Consolidado</div>
+        <h2>Visão Geral do Checklist de Recebimento</h2>
+        <p>Consolidação de todos os 343 itens do Checklist MIA CCSP — status atual, distribuição por criticidade e indicadores de progresso. Data base: 24/04/2026.</p>
+      </div>
+    </div>
+
+    <div class="alert-banner">
+      <div class="alert-icon">!</div>
+      <div>
+        <h3>Avanço real: 30% — 103 itens concluídos com evidência fotográfica (regra MIA)</h3>
+        <p>Com a regra MIA aplicada (foto = CONCLUÍDO), o checklist apresenta 103 itens concluídos (30%) e 227 ainda a verificar, o checklist de recebimento da Casa 7 encontra-se no início de sua execução. Há 21 itens de criticidade A (Segurança/Dano) em aberto, incluindo cabos elétricos expostos, vazamentos graves e drenagem externa incompleta — estes devem ser priorizados imediatamente, independente da ordem de onda. A conclusão dos 240 itens restantes até 22/05/2026 requer cadência de ~12 itens/dia útil.</p>
+      </div>
+    </div>
+
+    <!-- KPI STRIP -->
+    <div class="kpi-strip">
+      <div class="kpi-card g">
+        <div class="tt">Concluídos</div>
+        <div class="vv">103</div>
+        <div class="ss">30,0% do total · Evidência fotográfica = CONCLUÍDO</div>
+        <div class="bar"><div class="bar-fill g" style="width:30%"></div></div>
+      </div>
+      <div class="kpi-card r">
+        <div class="tt">A Verificar</div>
+        <div class="vv">227</div>
+        <div class="ss">66,2% — aguardam inspeção QA</div>
+        <div class="bar"><div class="bar-fill r" style="width:66.2%"></div></div>
+      </div>
+      <div class="kpi-card a">
+        <div class="tt">Agendados</div>
+        <div class="vv">13</div>
+        <div class="ss">3,8% — datas definidas, execução pendente</div>
+        <div class="bar"><div class="bar-fill a" style="width:3.8%"></div></div>
+      </div>
+      <div class="kpi-card r">
+        <div class="tt">Críticos A-Seg.</div>
+        <div class="vv">21</div>
+        <div class="ss">Segurança/Dano — todos em aberto</div>
+        <div class="bar"><div class="bar-fill r" style="width:100%"></div></div>
+      </div>
+      <div class="kpi-card">
+        <div class="tt">Total Registrado</div>
+        <div class="vv">343</div>
+        <div class="ss">24 ambientes · 8 sistemas · 10 riscos mapeados</div>
+        <div class="bar"><div class="bar-fill c" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <!-- PROGRESS RING -->
+    <div class="ring-wrap">
+      <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#2e2e2e" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#1a5c32" stroke-width="10"
+          stroke-dasharray="314" stroke-dashoffset="220" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#a06010" stroke-width="10"
+          stroke-dasharray="314" stroke-dashoffset="282" stroke-linecap="round" transform="rotate(-83.5 60 60)" opacity="0.9"/>
+        <text x="60" y="55" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="24" font-weight="500" fill="white">30%</text>
+        <text x="60" y="72" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#8a8a84">checklist</text>
+      </svg>
+      <div class="ring-info">
+        <h3>Progresso Atual: 103 de 343 itens concluídos</h3>
+        <p>A taxa de conclusão real é 30,0% — regra MIA: foto = CONCLUÍDO reflete o estágio inicial de inspeção do checklist. Para atingir 100% de conclusão até 22/05/2026, considerando 20 dias úteis restantes, restam 240 itens pendentes, exigindo cadência de ~12 itens/dia útil. A fila de 227 "A Verificar" deve ser atacada pela metodologia de ondas (Segurança → Funcionalidade → Estética).</p>
+        <div class="ring-legend">
+          <div class="ring-leg-item"><div class="ring-leg-dot" style="background:#1a5c32"></div>Concluídos: 103</div>
+          <div class="ring-leg-item"><div class="ring-leg-dot" style="background:#a06010"></div>Agendados: 13</div>
+          <div class="ring-leg-item"><div class="ring-leg-dot" style="background:#8b2020"></div>A Verificar: 227</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DISTRIBUIÇÃO POR CRITICIDADE -->
+    <div class="two-col">
+      <div class="col-card">
+        <h3>Distribuição por Criticidade</h3>
+        <div class="pie-wrap">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#8b2020" stroke-width="18" stroke-dasharray="26.4 225.6" stroke-dashoffset="0" transform="rotate(-90 55 55)"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#a06010" stroke-width="18" stroke-dasharray="180.1 72.4" stroke-dashoffset="-26.4" transform="rotate(-90 55 55)"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#8a8a84" stroke-width="18" stroke-dasharray="45.9 206.6" stroke-dashoffset="-206.4" transform="rotate(-90 55 55)"/>
+            <text x="55" y="59" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="14" fill="#1c1c1c" font-weight="500">343</text>
+          </svg>
+          <div class="pie-legend">
+            <div class="pie-leg-row">
+              <div class="pie-leg-left"><div class="ring-leg-dot" style="background:#8b2020;width:10px;height:10px;border-radius:50%"></div>A — Segurança/Dano</div>
+              <div class="pie-leg-right" style="color:#8b2020">103 (30,0%)</div>
+            </div>
+            <div class="pie-leg-row">
+              <div class="pie-leg-left"><div class="ring-leg-dot" style="background:#a06010;width:10px;height:10px;border-radius:50%"></div>B — Funcionalidade</div>
+              <div class="pie-leg-right" style="color:#a06010">205 (59,8%)</div>
+            </div>
+            <div class="pie-leg-row">
+              <div class="pie-leg-left"><div class="ring-leg-dot" style="background:#8a8a84;width:10px;height:10px;border-radius:50%"></div>C — Estética</div>
+              <div class="pie-leg-right" style="color:#666">35 (10,2%)</div>
+            </div>
+          </div>
+        </div>
+        <div class="mini-prog" style="margin-top:14px;">
+          <div class="fill r" style="width:100%;"></div>
+        </div>
+        <p style="font-size:11px;color:var(--gray-500);margin-top:4px;">100% dos itens A-Segurança ainda em aberto. Ação imediata requerida.</p>
+      </div>
+
+      <div class="col-card">
+        <h3>Status Geral dos Itens</h3>
+        <div style="display:grid;gap:12px;margin-top:4px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:12px;color:var(--graphite);">Concluído / Done</span>
+              <span class="pct g">103 itens (30,0%)</span>
+            </div>
+            <div class="prog" style="width:100%;"><div class="fill g" style="width:30%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:12px;color:var(--graphite);">A Verificar</span>
+              <span class="pct r">227 itens (66,2%)</span>
+            </div>
+            <div class="prog" style="width:100%;"><div class="fill r" style="width:66.2%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:12px;color:var(--graphite);">Agendado</span>
+              <span class="pct a">13 itens (3,8%)</span>
+            </div>
+            <div class="prog" style="width:100%;"><div class="fill a" style="width:4.1%"></div></div>
+          </div>
+        </div>
+        <div class="section-divider"></div>
+        <div style="font-size:11px;color:var(--gray-500);line-height:1.7;">
+          <b style="color:var(--graphite);">Regra MIA:</b> Item só transita para CONCLUÍDO quando há evidência fotográfica registrada e aprovação QA. Items "A Verificar" aguardam inspeção em campo. <br><br>
+          <b style="color:var(--graphite);">Critério MIA:</b> foto registrada = CONCLUÍDO. 88 evidências de campo
+        </div>
+      </div>
+    </div>
+
+    <!-- METODOLOGIA -->
+    <div class="warn-banner">
+      <div class="warn-icon">◈</div>
+      <div>
+        <h3>Protocolo de Fechamento — Metodologia de Ondas</h3>
+        <p>O critério de conclusão MIA é: <b style="color:#ffd080;">foto registrada no campo = item CONCLUÍDO</b>. O checklist é estruturado em 3 ondas de execução: <b style="color:#ffd080;">Onda 1 — Estabilidade (A-Segurança/Dano)</b>, <b style="color:#ffd080;">Onda 2 — Funcionalidade (B)</b> e <b style="color:#ffd080;">Onda 3 — Estética (C)</b>. A progressão deve respeitar esta ordem. Os 21 itens de Onda 1 ainda em aberto bloqueiam a certificação de entrega e devem ser endereçados antes de qualquer foco em acabamento estético.</p>
+      </div>
+    </div>
+
+  </div><!-- /sec -->
+</div><!-- /panel-0 -->
+
+<!-- ═══════════════ TAB 1 — POR AMBIENTE ═══════════════ -->
+<div class="panel" id="panel-1">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">⊞</div>
+      <div>
+        <div class="label">Detalhamento por Espaço</div>
+        <h2>Status por Ambiente</h2>
+        <p>Progresso de cada ambiente conforme os 343 itens registrados. Classificação de risco baseada no percentual de conclusão e presença de itens A-Segurança em aberto.</p>
+      </div>
+    </div>
+
+    <div class="legend-box">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Risco Alto (0–15% ou A-Seg. aberto)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div>Atenção (16–40%)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Em Dia (>40%)</div>
+    </div>
+
+    <div class="env-grid">
+
+      <!-- Banheiros -->
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Banheiro 01 — Infantil</div><div class="env-sub">17 itens · Banho completo</div></div>
+          <span class="badge br">12%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:12%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>2</span> concluídos</div>
+          <div class="env-stat">⏳ <span>14</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Banheiro 02 — Hóspedes</div><div class="env-sub">17 itens</div></div>
+          <span class="badge br">12%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:12%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>2</span> concluídos</div>
+          <div class="env-stat">⏳ <span>15</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Banheiro 03 — Casal</div><div class="env-sub">27 itens · ⚠ Vazamento ativo</div></div>
+          <span class="badge br">11%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:11%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>3</span> concluídos</div>
+          <div class="env-stat">⏳ <span>23</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Banheiro 04 — Lavabo</div><div class="env-sub">15 itens · ⚠ Ralos pendentes</div></div>
+          <span class="badge br">13%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:13%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>2</span> concluídos</div>
+          <div class="env-stat">⏳ <span>13</span> a verificar</div>
+        </div>
+      </div>
+
+      <!-- Salas -->
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Sala de Jantar</div><div class="env-sub">22 itens · ⚠ Infiltração portas</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>20</span> a verificar</div>
+          <div class="env-stat">📅 <span>2</span> agendados</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Sala de Estar</div><div class="env-sub">29 itens · ⚠ 3 itens A-Seg.</div></div>
+          <span class="badge br">3%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:3%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>1</span> concluído</div>
+          <div class="env-stat">⏳ <span>26</span> a verificar</div>
+          <div class="env-stat">📅 <span>2</span> agendados</div>
+        </div>
+      </div>
+
+      <!-- Área Externa -->
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Área Externa</div><div class="env-sub">36 itens · ⚠ Drenagem crítica</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>35</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Área de Serviço</div><div class="env-sub">27 itens</div></div>
+          <span class="badge br">4%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:4%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>1</span> concluído</div>
+          <div class="env-stat">⏳ <span>25</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Cozinha</div><div class="env-sub">22 itens · ⚠ Vazamento grave</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>22</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card warning">
+        <div class="env-top">
+          <div><div class="env-title">Cozinha / Circulação</div><div class="env-sub">5 itens</div></div>
+          <span class="badge ba">40%</span>
+        </div>
+        <div class="mini-prog"><div class="fill a" style="width:40%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>2</span> concluídos</div>
+          <div class="env-stat">⏳ <span>2</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Quarto 04</div><div class="env-sub">17 itens · ⚠ Cabos expostos</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>17</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Corredor Íntimo</div><div class="env-sub">12 itens</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>10</span> a verificar</div>
+          <div class="env-stat">📅 <span>2</span> agendados</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Suíte 01 — Infantil</div><div class="env-sub">9 itens</div></div>
+          <span class="badge br">11%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:11%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>1</span> concluído</div>
+          <div class="env-stat">⏳ <span>7</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Suíte 03 — Casal</div><div class="env-sub">16 itens</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>16</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Suíte Hóspede</div><div class="env-sub">16 itens · ⚠ Cabos no closet</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>15</span> a verificar</div>
+          <div class="env-stat">📅 <span>1</span> agendado</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Terraço</div><div class="env-sub">15 itens · ⚠ Cabos expostos</div></div>
+          <span class="badge br">7%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:7%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>1</span> concluído</div>
+          <div class="env-stat">⏳ <span>14</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Pergolado</div><div class="env-sub">11 itens · ⚠ Cabos expostos</div></div>
+          <span class="badge br">9%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:9%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>1</span> concluído</div>
+          <div class="env-stat">⏳ <span>10</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Garagem</div><div class="env-sub">6 itens</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>6</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Fonte d'água</div><div class="env-sub">4 itens · ⚠ Ralo + Bomba</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>4</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Área Técnica</div><div class="env-sub">6 itens · ⚠ Cabos expostos</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>6</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card ok">
+        <div class="env-top">
+          <div><div class="env-title">Geral</div><div class="env-sub">7 itens · Itens gerais</div></div>
+          <span class="badge bg">71%</span>
+        </div>
+        <div class="mini-prog"><div class="fill g" style="width:71%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>5</span> concluídos</div>
+          <div class="env-stat">⏳ <span>2</span> a verificar</div>
+        </div>
+      </div>
+
+      <div class="env-card danger">
+        <div class="env-top">
+          <div><div class="env-title">Paisagismo</div><div class="env-sub">4 itens</div></div>
+          <span class="badge br">0%</span>
+        </div>
+        <div class="mini-prog"><div class="fill r" style="width:1%"></div></div>
+        <div class="env-stats">
+          <div class="env-stat">✔ <span>0</span> concluídos</div>
+          <div class="env-stat">⏳ <span>4</span> a verificar</div>
+        </div>
+      </div>
+
+    </div><!-- /env-grid -->
+
+    <!-- TABELA RESUMO -->
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Ambiente</th>
+            <th class="th-r">Total</th>
+            <th class="th-r">Concluídos</th>
+            <th class="th-r">A Verificar</th>
+            <th class="th-r">Agendados</th>
+            <th>Progresso</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="amb-table-body">
+          <tr><td>Área Externa</td><td class="td-r">36</td><td class="td-r">0</td><td class="td-r">35</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Sala de Estar</td><td class="td-r">29</td><td class="td-r">1</td><td class="td-r">26</td><td class="td-r">2</td><td><div class="prog"><div class="fill r" style="width:3%"></div></div><span class="pct r">3%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Área de Serviço</td><td class="td-r">27</td><td class="td-r">1</td><td class="td-r">25</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:4%"></div></div><span class="pct r">4%</span></td><td><span class="badge br">Crítico</span></td></tr>
+          <tr><td>Banheiro 03 (Casal)</td><td class="td-r">27</td><td class="td-r">3</td><td class="td-r">23</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:11%"></div></div><span class="pct r">11%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Sala de Jantar</td><td class="td-r">22</td><td class="td-r">0</td><td class="td-r">20</td><td class="td-r">2</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Cozinha</td><td class="td-r">22</td><td class="td-r">0</td><td class="td-r">22</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Banheiro 01 (Infantil)</td><td class="td-r">17</td><td class="td-r">2</td><td class="td-r">14</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:12%"></div></div><span class="pct r">12%</span></td><td><span class="badge ba">Atenção</span></td></tr>
+          <tr><td>Banheiro 02 (Hóspedes)</td><td class="td-r">17</td><td class="td-r">2</td><td class="td-r">15</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:12%"></div></div><span class="pct r">12%</span></td><td><span class="badge ba">Atenção</span></td></tr>
+          <tr><td>Quarto 04</td><td class="td-r">17</td><td class="td-r">0</td><td class="td-r">17</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Suíte 03 (Casal)</td><td class="td-r">16</td><td class="td-r">0</td><td class="td-r">16</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">Crítico</span></td></tr>
+          <tr><td>Suíte Hóspede</td><td class="td-r">16</td><td class="td-r">0</td><td class="td-r">15</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Banheiro 04 (Lavabo)</td><td class="td-r">15</td><td class="td-r">2</td><td class="td-r">13</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:13%"></div></div><span class="pct r">13%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Terraço</td><td class="td-r">15</td><td class="td-r">1</td><td class="td-r">14</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:7%"></div></div><span class="pct r">7%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Corredor Íntimo</td><td class="td-r">12</td><td class="td-r">0</td><td class="td-r">10</td><td class="td-r">2</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">Crítico</span></td></tr>
+          <tr><td>Pergolado</td><td class="td-r">11</td><td class="td-r">1</td><td class="td-r">10</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:9%"></div></div><span class="pct r">9%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Suíte 01 (Infantil)</td><td class="td-r">9</td><td class="td-r">1</td><td class="td-r">7</td><td class="td-r">1</td><td><div class="prog"><div class="fill r" style="width:11%"></div></div><span class="pct r">11%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Área Técnica</td><td class="td-r">6</td><td class="td-r">0</td><td class="td-r">6</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Garagem</td><td class="td-r">6</td><td class="td-r">0</td><td class="td-r">6</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">Crítico</span></td></tr>
+          <tr><td>Cozinha / Circulação</td><td class="td-r">5</td><td class="td-r">2</td><td class="td-r">2</td><td class="td-r">1</td><td><div class="prog"><div class="fill a" style="width:40%"></div></div><span class="pct a">40%</span></td><td><span class="badge ba">Atenção</span></td></tr>
+          <tr><td>Fonte d'água</td><td class="td-r">4</td><td class="td-r">0</td><td class="td-r">4</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge br">⚠ A-Seg.</span></td></tr>
+          <tr><td>Paisagismo</td><td class="td-r">4</td><td class="td-r">0</td><td class="td-r">4</td><td class="td-r">0</td><td><div class="prog"><div class="fill r" style="width:1%"></div></div><span class="pct r">0%</span></td><td><span class="badge bc">Baixo vol.</span></td></tr>
+          <tr><td>Geral</td><td class="td-r">7</td><td class="td-r">5</td><td class="td-r">2</td><td class="td-r">0</td><td><div class="prog"><div class="fill g" style="width:71%"></div></div><span class="pct g">71%</span></td><td><span class="badge bg">Em dia</span></td></tr>
+          <tr class="gr"><td colspan="7">TOTAL GERAL — 343 Itens</td></tr>
+          <tr>
+            <td><b>Consolidado</b></td>
+            <td class="td-r"><b>343</b></td>
+            <td class="td-r" style="color:var(--green);font-weight:700;">21</td>
+            <td class="td-r" style="color:var(--red);font-weight:700;">308</td>
+            <td class="td-r" style="color:var(--amber);font-weight:700;">14</td>
+            <td><div class="prog"><div class="fill g" style="width:6.1%"></div></div><span class="pct g">6,1%</span></td>
+            <td><span class="badge br">Em Execução</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div><!-- /panel-1 -->
+
+<!-- ═══════════════ TAB 2 — ITENS CRÍTICOS ═══════════════ -->
+<div class="panel" id="panel-2">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">⚠</div>
+      <div>
+        <div class="label">Prioridade Máxima</div>
+        <h2>Itens Críticos — Segurança e Dano (Onda 1)</h2>
+        <p>21 itens classificados como A — Segurança/Dano encontram-se em aberto. Estes itens bloqueiam a emissão do laudo de entrega e representam risco real ao usuário. Devem ser tratados antes de qualquer item das ondas 2 e 3.</p>
+      </div>
+    </div>
+
+    <div class="alert-banner">
+      <div class="alert-icon">!</div>
+      <div>
+        <h3>21 itens A-Segurança em aberto — entrega bloqueada até resolução</h3>
+        <p>Nenhum dos 21 itens de criticidade máxima foi concluído. Os padrões MIA determinam que a transição para Onda 2 e Onda 3 somente ocorre após a liquidação total da Onda 1. Os itens de maior severidade são: cabos elétricos expostos em múltiplos ambientes (risco de choque), vazamentos graves em portas francesas (salas e cozinha) e drenagem externa incompleta.</p>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ambiente</th>
+            <th>Sistema</th>
+            <th>Descrição do Item</th>
+            <th>Status</th>
+            <th>Risco Associado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="gr"><td colspan="6">⚡ ELÉTRICA — Cabos Expostos (Risco de Choque)</td></tr>
+          <tr><td class="id-cell">CCSP-0110</td><td>Quarto 04</td><td>Elétrica/Tecnologia</td><td>Cabos expostos (perigo) no guarda-roupa</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0140</td><td>Área Externa</td><td>Elétrica/Tecnologia</td><td>Cobrir cabos externos expostos</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0181</td><td>Cozinha</td><td>Elétrica/Tecnologia</td><td>Cabos expostos (perigo) nos armários precisam ser arrumados</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0237</td><td>Pergolado</td><td>Elétrica/Tecnologia</td><td>Cobrir cabos expostos com tampa</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0291</td><td>Suíte Hóspede</td><td>Elétrica/Tecnologia</td><td>Cabos expostos no closet Suíte 02 (Hóspedes)</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0327</td><td>Terraço</td><td>Elétrica/Tecnologia</td><td>Cabos expostos na entrada</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0337</td><td>Área Técnica</td><td>Elétrica/Tecnologia</td><td>Cabos expostos lado direito</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R2 · Sev. 15</span></td></tr>
+
+          <tr class="gr"><td colspan="6">💧 HIDRÁULICA — Vazamentos e Drenagem</td></tr>
+          <tr><td class="id-cell">CCSP-0053</td><td>Banheiro 03 (Casal)</td><td>Hidráulica/Drenagem</td><td>Vazamento de água fora do box</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0084</td><td>Sala de Jantar</td><td>Hidráulica/Drenagem</td><td>Portas francesas não fecham / com vazamento / frestas</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0130</td><td>Área Externa</td><td>Hidráulica/Drenagem</td><td>Reparo da drenagem da área externa</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R4 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0149</td><td>Área Externa</td><td>Hidráulica/Drenagem</td><td>Necessário concluir novo projeto completo de drenagem</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R4 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0150</td><td>Área Externa</td><td>Hidráulica/Drenagem</td><td>Execução de novo projeto de drenagem</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R4 · Sev. 15</span></td></tr>
+          <tr><td class="id-cell">CCSP-0174</td><td>Cozinha</td><td>Hidráulica/Drenagem</td><td>Porta externa com vazamento grave</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0209</td><td>Sala de Estar</td><td>Hidráulica/Drenagem</td><td>Infiltração de água nas portas</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0217</td><td>Sala de Estar</td><td>Hidráulica/Drenagem</td><td>Portas francesas não fecham / com vazamento / frestas</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0218</td><td>Sala de Estar</td><td>Hidráulica/Drenagem</td><td>Porta francesa em direção à fonte com vazamento grave</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+          <tr><td class="id-cell">CCSP-0276</td><td>Suíte 01 (Infantil)</td><td>Hidráulica/Drenagem</td><td>Portas francesas não fecham / com vazamento / frestas</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf0f0;color:#8b2020;font-size:9px;">R1 · Sev. 20</span></td></tr>
+
+          <tr class="gr"><td colspan="6">⚙ GERAL — Sistemas e Funcionalidade</td></tr>
+          <tr><td class="id-cell">CCSP-0065</td><td>Banheiro 04 (Lavabo)</td><td>Geral</td><td>Instalar pedra do ralo do chuveiro</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf3e3;color:#a06010;font-size:9px;">R8 · Sev. 12</span></td></tr>
+          <tr><td class="id-cell">CCSP-0066</td><td>Banheiro 04 (Lavabo)</td><td>Geral</td><td>Tampa de pedra para ralo ao lado do vaso</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf3e3;color:#a06010;font-size:9px;">R8 · Sev. 12</span></td></tr>
+          <tr><td class="id-cell">CCSP-0339</td><td>Fonte d'água</td><td>Geral</td><td>Ralo não funciona</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf3e3;color:#a06010;font-size:9px;">R8 · Sev. 12</span></td></tr>
+          <tr><td class="id-cell">CCSP-0340</td><td>Fonte d'água</td><td>Geral</td><td>Bomba não funciona</td><td><span class="badge br">A Verificar</span></td><td><span class="badge" style="background:#fdf3e3;color:#a06010;font-size:9px;">R8 · Sev. 12</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div><!-- /panel-2 -->
+
+<!-- ═══════════════ TAB 3 — POR SISTEMA ═══════════════ -->
+<div class="panel" id="panel-3">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">⊕</div>
+      <div>
+        <div class="label">Por Disciplina</div>
+        <h2>Status por Sistema / Disciplina</h2>
+        <p>Distribuição dos 343 itens por sistema de obra. O sistema GERAL concentra 61,8% do total, seguido de Elétrica/Tecnologia (18,7%) e Esquadrias/Portas (10,5%).</p>
+      </div>
+    </div>
+
+    <div class="sis-grid">
+      <div class="sis-row">
+        <div class="sis-name">Geral</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:6.1%;background:var(--green);"></div></div>
+        <div class="sis-nums">13 / 212 (6,1%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Elétrica / Tecnologia</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:10.9%;background:var(--amber);"></div></div>
+        <div class="sis-nums">7 / 64 (10,9%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Esquadrias / Portas</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:2.8%;background:var(--red);"></div></div>
+        <div class="sis-nums">1 / 36 (2,8%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Pintura</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:1%;background:var(--red);"></div></div>
+        <div class="sis-nums">0 / 11 (0%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Hidráulica / Drenagem</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:1%;background:var(--red);"></div></div>
+        <div class="sis-nums">0 / 11 (0%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Acabamentos</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:1%;background:var(--red);"></div></div>
+        <div class="sis-nums">0 / 4 (0%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Limpeza Técnica</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:1%;background:var(--red);"></div></div>
+        <div class="sis-nums">0 / 3 (0%)</div>
+      </div>
+      <div class="sis-row">
+        <div class="sis-name">Marcenaria</div>
+        <div class="sis-bar-wrap"><div class="sis-bar" style="width:1%;background:var(--red);"></div></div>
+        <div class="sis-nums">0 / 2 (0%)</div>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Sistema / Disciplina</th>
+            <th class="th-r">Total Itens</th>
+            <th class="th-r">Concluídos</th>
+            <th class="th-r">A Verificar</th>
+            <th class="th-r">% Conclusão</th>
+            <th>Status QA</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Geral</b></td><td class="td-r">212</td><td class="td-r" style="color:var(--green);">13</td><td class="td-r">199</td><td class="td-r"><span class="pct a">6,1%</span></td><td><span class="badge ba">Em andamento</span></td><td style="font-size:11px;color:var(--gray-500);">Maior volume — prioridade de varredura</td></tr>
+          <tr><td><b>Elétrica / Tecnologia</b></td><td class="td-r">64</td><td class="td-r" style="color:var(--green);">7</td><td class="td-r">57</td><td class="td-r"><span class="pct a">10,9%</span></td><td><span class="badge br">⚠ Cabos expostos</span></td><td style="font-size:11px;color:var(--gray-500);">7 itens A-Seg. elétrica pendentes</td></tr>
+          <tr><td><b>Esquadrias / Portas</b></td><td class="td-r">36</td><td class="td-r" style="color:var(--green);">1</td><td class="td-r">35</td><td class="td-r"><span class="pct r">2,8%</span></td><td><span class="badge br">Crítico</span></td><td style="font-size:11px;color:var(--gray-500);">Portas francesas com vazamento — A-Seg.</td></tr>
+          <tr><td><b>Pintura</b></td><td class="td-r">11</td><td class="td-r" style="color:var(--red);">0</td><td class="td-r">11</td><td class="td-r"><span class="pct r">0%</span></td><td><span class="badge br">Não iniciado</span></td><td style="font-size:11px;color:var(--gray-500);">Onda 3 — aguarda Ondas 1 e 2</td></tr>
+          <tr><td><b>Hidráulica / Drenagem</b></td><td class="td-r">11</td><td class="td-r" style="color:var(--red);">0</td><td class="td-r">11</td><td class="td-r"><span class="pct r">0%</span></td><td><span class="badge br">⚠ Crítico</span></td><td style="font-size:11px;color:var(--gray-500);">Drenagem externa + vazamentos A-Seg.</td></tr>
+          <tr><td><b>Acabamentos</b></td><td class="td-r">4</td><td class="td-r" style="color:var(--red);">0</td><td class="td-r">4</td><td class="td-r"><span class="pct r">0%</span></td><td><span class="badge bc">Aguardando</span></td><td style="font-size:11px;color:var(--gray-500);">Onda 3</td></tr>
+          <tr><td><b>Limpeza Técnica</b></td><td class="td-r">3</td><td class="td-r" style="color:var(--red);">0</td><td class="td-r">3</td><td class="td-r"><span class="pct r">0%</span></td><td><span class="badge bc">Aguardando</span></td><td style="font-size:11px;color:var(--gray-500);">Última etapa antes da entrega</td></tr>
+          <tr><td><b>Marcenaria</b></td><td class="td-r">2</td><td class="td-r" style="color:var(--red);">0</td><td class="td-r">2</td><td class="td-r"><span class="pct r">0%</span></td><td><span class="badge ba">Agendado</span></td><td style="font-size:11px;color:var(--gray-500);">BRB — data confirmada</td></tr>
+          <tr class="gr"><td colspan="7">TOTAIS</td></tr>
+          <tr><td><b>TOTAL GERAL</b></td><td class="td-r"><b>343</b></td><td class="td-r" style="color:var(--green);font-weight:700;"><b>21</b></td><td class="td-r" style="color:var(--red);font-weight:700;"><b>315</b></td><td class="td-r"><span class="pct g"><b>6,1%</b></span></td><td><span class="badge br">Em Execução</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div><!-- /panel-3 -->
+
+<!-- ═══════════════ TAB 4 — MATRIZ DE RISCO ═══════════════ -->
+<div class="panel" id="panel-4">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">◈</div>
+      <div>
+        <div class="label">Gestão de Riscos</div>
+        <h2>Matriz de Risco — Top 10 CCSP</h2>
+        <p>10 riscos identificados e mapeados. Todos os riscos estão com status ABERTO. Severidade calculada por P×I (Probabilidade × Impacto, escala 1–5 cada). Riscos com severidade ≥15 requerem ação imediata.</p>
+      </div>
+    </div>
+
+    <!-- HEATMAP -->
+    <div class="heatmap-wrap">
+      <div class="heatmap-title">Heatmap P × I — Distribuição dos 10 Riscos</div>
+      <div class="heatmap">
+        <div class="hm-label"></div>
+        <div class="hm-cell hm-0" style="background:var(--gray-100);color:var(--gray-500);font-size:10px;">I=1</div>
+        <div class="hm-cell hm-0" style="background:var(--gray-100);color:var(--gray-500);font-size:10px;">I=2</div>
+        <div class="hm-cell hm-0" style="background:var(--gray-100);color:var(--gray-500);font-size:10px;">I=3</div>
+        <div class="hm-cell hm-0" style="background:var(--gray-100);color:var(--gray-500);font-size:10px;">I=4</div>
+        <div class="hm-cell hm-0" style="background:var(--gray-100);color:var(--gray-500);font-size:10px;">I=5</div>
+
+        <div class="hm-label">P=5</div>
+        <div class="hm-cell hm-4">5</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+
+        <div class="hm-label">P=4</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-12">R7,R10</div>
+        <div class="hm-cell hm-16">R3,R5</div>
+        <div class="hm-cell hm-20">R1</div>
+
+        <div class="hm-label">P=3</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-12">R6,R8,R9</div>
+        <div class="hm-cell hm-15">R2,R4</div>
+
+        <div class="hm-label">P=2</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+
+        <div class="hm-label">P=1</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+        <div class="hm-cell hm-0">—</div>
+      </div>
+    </div>
+
+    <!-- RISK CARDS -->
+    <div class="risk-grid">
+
+      <div class="risk-card">
+        <div class="risk-head sev-high">
+          <div class="risk-sev">20</div>
+          <div>
+            <div class="risk-title">R1 — Estanqueidade: infiltrações e vazamentos</div>
+          </div>
+          <div class="risk-badge">P=4 · I=5</div>
+        </div>
+        <div class="risk-body">
+          <p>Risco de maior severidade. Infiltrações ativas em portas/boxes/caixilhos. Dano + retrabalho + reabertura + perda de confiança do cliente. Teste por zona + evidência em vídeo obrigatório.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Qualidade</span>
+            <span class="risk-tag rt-g">Gate G0</span>
+            <span class="risk-tag rt-f">QA + Esquadrias</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-high">
+          <div class="risk-sev">16</div>
+          <div>
+            <div class="risk-title">R3 — Esquadrias/Portas: não fecha, frestas, travas</div>
+          </div>
+          <div class="risk-badge">P=4 · I=4</div>
+        </div>
+        <div class="risk-body">
+          <p>Portas francesas, telas mosquiteiras e fechaduras com defeitos. Cliente percebe obra incompleta. Mutirão por sistema + tolerâncias + vídeo de abrir/fechar.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Qualidade</span>
+            <span class="risk-tag rt-g">Gate G1</span>
+            <span class="risk-tag rt-f">Esquadrias + QA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-high">
+          <div class="risk-sev">16</div>
+          <div>
+            <div class="risk-title">R5 — Reabertura de itens DONE sem evidência</div>
+          </div>
+          <div class="risk-badge">P=4 · I=4</div>
+        </div>
+        <div class="risk-body">
+          <p>Definição de pronto fraca ou pressão por fechar gera falsos DONE. Retrabalho, atraso e perda de credibilidade. DONE = Evidência + QA OK. Auditoria diária obrigatória.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Governança</span>
+            <span class="risk-tag rt-g">G1/G2</span>
+            <span class="risk-tag rt-f">GP + QA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-med">
+          <div class="risk-sev">15</div>
+          <div>
+            <div class="risk-title">R2 — Segurança elétrica: cabos expostos</div>
+          </div>
+          <div class="risk-badge">P=3 · I=5</div>
+        </div>
+        <div class="risk-body">
+          <p>7 pontos ativos com cabos expostos em múltiplos ambientes. Risco de acidente + reprovação imediata + retrabalho. Stop-the-line até resolução. Evidência foto/vídeo obrigatória.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Segurança</span>
+            <span class="risk-tag rt-g">Gate G0</span>
+            <span class="risk-tag rt-f">Elétrica + QA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-med">
+          <div class="risk-sev">15</div>
+          <div>
+            <div class="risk-title">R4 — Drenagem externa: poças e retorno de água</div>
+          </div>
+          <div class="risk-badge">P=3 · I=5</div>
+        </div>
+        <div class="risk-body">
+          <p>Projeto de drenagem incompleto com 3 itens A-Seg. abertos. Infiltração, mofo e degradação a longo prazo. Teste com mangueira + correção de caimentos + destino final.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Dano</span>
+            <span class="risk-tag rt-g">Gate G0</span>
+            <span class="risk-tag rt-f">Civil + Impermeab.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-med">
+          <div class="risk-sev">12</div>
+          <div>
+            <div class="risk-title">R6 — Atraso / indisponibilidade de fornecedor</div>
+          </div>
+          <div class="risk-badge">P=3 · I=4</div>
+        </div>
+        <div class="risk-body">
+          <p>SLA fraco, falta de peças e agenda estourada. Cascata de atrasos e janelas perdidas. Mapa de restrições + SLA + plano B com equipe reserva.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-f">Prazo</span>
+            <span class="risk-tag rt-g">G0–G2</span>
+            <span class="risk-tag rt-f">GP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-med">
+          <div class="risk-sev">12</div>
+          <div>
+            <div class="risk-title">R7 — Acabamento não editorial (pintura/silicone)</div>
+          </div>
+          <div class="risk-badge">P=4 · I=3</div>
+        </div>
+        <div class="risk-body">
+          <p>Aceite sem admiração e fricção na entrega AAA. Inspeção com luz rasante + correção + limpeza técnica final antes da vistoria.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Qualidade</span>
+            <span class="risk-tag rt-g">Gate G2</span>
+            <span class="risk-tag rt-f">QA + Acabamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-med">
+          <div class="risk-sev">12</div>
+          <div>
+            <div class="risk-title">R8 — Sistemas não funcionando (bomba/fonte/drenos)</div>
+          </div>
+          <div class="risk-badge">P=3 · I=4</div>
+        </div>
+        <div class="risk-body">
+          <p>Bomba da fonte e ralo não funcionam. Chamados pós-entrega. Roteiro de comissionamento + teste assistido + evidência obrigatória antes da entrega.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-f">Operação</span>
+            <span class="risk-tag rt-g">Gate G1</span>
+            <span class="risk-tag rt-f">MEP/Hidráulica</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-low">
+          <div class="risk-sev">12</div>
+          <div>
+            <div class="risk-title">R9 — Expectativa AAA mal gerida</div>
+          </div>
+          <div class="risk-badge">P=3 · I=4</div>
+        </div>
+        <div class="risk-body">
+          <p>Sem previsibilidade e comunicação estruturada com cliente TOOLS/JLL. Relatório semanal + comunicação proativa de desvios + alinhamento de expectativas.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-q">Governança</span>
+            <span class="risk-tag rt-g">G0–G2</span>
+            <span class="risk-tag rt-f">GP + MIA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-head sev-low">
+          <div class="risk-sev">12</div>
+          <div>
+            <div class="risk-title">R10 — Interferência de frentes / sequência errada</div>
+          </div>
+          <div class="risk-badge">P=4 · I=3</div>
+        </div>
+        <div class="risk-body">
+          <p>Retrabalho por execução fora de sequência. Pintura antes de elétrica/hidráulica concluídas gera NCR. Look Ahead + BRB semanal + aprovação de sequência.</p>
+          <div class="risk-meta">
+            <span class="risk-tag rt-f">Qualidade</span>
+            <span class="risk-tag rt-g">G0–G1</span>
+            <span class="risk-tag rt-f">GP + Victor</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /risk-grid -->
+
+    <div class="warn-banner" style="margin-top:16px;">
+      <div class="warn-icon">◈</div>
+      <div>
+        <h3>Todos os 10 riscos estão com status ABERTO</h3>
+        <p>Nenhum risco foi mitigado, transferido ou encerrado até a data de referência. Os riscos R1 (Sev. 20), R3 e R5 (Sev. 16 cada) exigem plano de ação ativo com responsável definido e prazo de fechamento registrado no checklist.</p>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /panel-4 -->
+
+<!-- ═══════════════ TAB 5 — AGENDAMENTOS ═══════════════ -->
+<div class="panel" id="panel-5">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">📅</div>
+      <div>
+        <div class="label">Pipeline de Execução</div>
+        <h2>Itens Agendados — Próximas Execuções</h2>
+        <p>14 itens com datas de execução confirmadas. Monitorar cumprimento e atualizar status para CONCLUÍDO com evidência fotográfica após inspeção QA.</p>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Data Planejada</th>
+            <th>Ambiente</th>
+            <th>Sistema</th>
+            <th>Descrição</th>
+            <th>Empresa</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="gr"><td colspan="7">Fevereiro–Março 2026</td></tr>
+          <tr><td class="id-cell">CCSP-0077</td><td>27/02/2026</td><td>Sala de Jantar</td><td>Esquadrias/Portas</td><td>Porta não fecha — Ajuste da fechadura lado esquerdo</td><td style="font-size:11px;color:var(--gray-500);">—</td><td><span class="badge ba">Agendado</span></td></tr>
+          <tr><td class="id-cell">CCSP-0078</td><td>25/02/2026</td><td>Sala de Jantar</td><td>Esquadrias/Portas</td><td>Instalação de puxadores da tela mosquiteira</td><td style="font-size:11px;color:var(--gray-500);">—</td><td><span class="badge ba">Agendado</span></td></tr>
+          <tr><td class="id-cell">CCSP-0038</td><td>27/02/2026</td><td>Banheiro 03 (Casal)</td><td>Esquadrias/Portas</td><td>Abertura do armário</td><td style="font-size:11px;color:var(--gray-500);">—</td><td><span class="badge ba">Agendado</span></td></tr>
+          <tr><td class="id-cell">CCSP-0003</td><td>02/03/2026</td><td>Banheiro 01 (Infantil)</td><td>Marcenaria</td><td>Acabamento do armário</td><td style="font-size:11px;color:var(--gray-500);">BRB</td><td><span class="badge ba">Agendado</span></td></tr>
+          <tr><td class="id-cell">CCSP-0117</td><td>10/03/2026</td><td>Área Externa</td><td>Geral</td><td>Paisagismo</td><td style="font-size:11px;color:var(--gray-500);">—</td><td><span class="badge ba">Agendado</span></td></tr>
+          <tr class="gr"><td colspan="7">Demais agendamentos (sem data confirmada)</td></tr>
+          <tr><td colspan="7" style="text-align:center;color:var(--gray-500);font-size:12px;padding:16px;">9 itens adicionais marcados como AGENDADO sem data definida. Recomenda-se atualização imediata com datas no Excel de acompanhamento.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warn-banner">
+      <div class="warn-icon">⏰</div>
+      <div>
+        <h3>Atenção: 9 dos 14 agendamentos sem data definida</h3>
+        <p>Itens marcados como AGENDADO sem data comprometem o planejamento de ondas. O engenheiro de campo (Victor Evangelista) deve preencher as datas no Excel de acompanhamento até a próxima reunião de alinhamento para que o relatório reflita o pipeline real de execução.</p>
+      </div>
+    </div>
+
+    <!-- PRÓXIMOS PASSOS -->
+    <div style="margin-top:24px;">
+      <div class="label" style="margin-bottom:14px;">Próximos Passos Críticos — Semana 25/04 a 01/05/2026</div>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ação</th>
+              <th>Responsável</th>
+              <th>Prazo</th>
+              <th>Prioridade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Cobrir e isolar todos os 7 pontos de cabos elétricos expostos identificados</td><td>Eletricista + Victor</td><td>27/04/2026</td><td><span class="badge br">IMEDIATO</span></td></tr>
+            <tr><td>2</td><td>Definir e iniciar execução do novo projeto de drenagem da área externa</td><td>Victor / Civil</td><td>28/04/2026</td><td><span class="badge br">IMEDIATO</span></td></tr>
+            <tr><td>3</td><td>Teste de estanqueidade nas portas francesas (Salas, Cozinha, Suíte Infantil)</td><td>Victor + QA</td><td>30/04/2026</td><td><span class="badge br">A-Seg.</span></td></tr>
+            <tr><td>4</td><td>Comissionamento da bomba e ralo da fonte d'água</td><td>MEP / Victor</td><td>01/05/2026</td><td><span class="badge ba">Alto</span></td></tr>
+            <tr><td>5</td><td>Atualizar 9 agendamentos sem data no Excel de acompanhamento</td><td>Victor</td><td>25/04/2026</td><td><span class="badge ba">Alto</span></td></tr>
+            <tr><td>6</td><td>Registrar evidências fotográficas dos 21 itens concluídos no Excel</td><td>Victor + QA</td><td>25/04/2026</td><td><span class="badge ba">Alto</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /panel-5 -->
+
+<!-- ═══════════════ TAB 6 — GALERIA DE EVIDÊNCIAS ═══════════════ -->
+<div class="panel" id="panel-6">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">📷</div>
+      <div>
+        <div class="label">Evidências Fotográficas de Campo</div>
+        <h2>Galeria de Evidências — Checklist CCSP</h2>
+        <p>77 fotos registradas pelo engenheiro de campo. Clique em qualquer imagem para ampliar. Filtre por ambiente, status ou criticidade.</p>
+      </div>
+    </div>
+
+    <!-- GALLERY STATS -->
+    <div id="gallery-stats" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;padding:16px 20px;background:var(--graphite);border-radius:16px;align-items:center;">
+      <div style="color:var(--champagne);font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;line-height:1;">88</div>
+      <div style="color:var(--gray-300);font-size:12px;">itens concluídos (foto = DONE)</div>
+      <div style="width:1px;height:32px;background:rgba(255,255,255,.1);"></div>
+      <div style="color:var(--champagne-light);font-size:12px;" id="gallery-showing">Exibindo todos os 88 itens concluídos</div>
+      <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;" id="gallery-filter-chips"></div>
+    </div>
+
+    <!-- FILTERS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px;">
+      <div>
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);margin-bottom:6px;">Filtrar por Ambiente</div>
+        <select id="filter-amb" onchange="applyFilters()" style="width:100%;padding:10px 12px;border:1px solid var(--gray-200);border-radius:10px;font-family:'Outfit',sans-serif;font-size:12px;background:var(--white);color:var(--graphite);cursor:pointer;">
+          <option value="">Todos os ambientes</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);margin-bottom:6px;">Filtrar por Status</div>
+        <select id="filter-status" onchange="applyFilters()" style="width:100%;padding:10px 12px;border:1px solid var(--gray-200);border-radius:10px;font-family:'Outfit',sans-serif;font-size:12px;background:var(--white);color:var(--graphite);cursor:pointer;">
+          <option value="">Todos os status</option>
+          <option value="CONCLUÍDO">✔ Concluído</option>
+          <option value="A VERIFICAR">⏳ A Verificar</option>
+          <option value="AGENDADO">📅 Agendado</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne);margin-bottom:6px;">Filtrar por Criticidade</div>
+        <select id="filter-crit" onchange="applyFilters()" style="width:100%;padding:10px 12px;border:1px solid var(--gray-200);border-radius:10px;font-family:'Outfit',sans-serif;font-size:12px;background:var(--white);color:var(--graphite);cursor:pointer;">
+          <option value="">Todas as criticidades</option>
+          <option value="A - SEGURANÇA/DANO">🔴 A — Segurança/Dano</option>
+          <option value="B - FUNCIONALIDADE">🟡 B — Funcionalidade</option>
+          <option value="C - ESTÉTICA">⚪ C — Estética</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GALLERY GRID -->
+    <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;"></div>
+    <div id="gallery-empty" style="display:none;text-align:center;padding:48px;color:var(--gray-500);">
+      <div style="font-size:40px;margin-bottom:12px;">🔍</div>
+      <div style="font-size:14px;">Nenhuma foto encontrada com os filtros selecionados.</div>
+    </div>
+
+  </div>
+</div><!-- /panel-6 -->
+
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;flex-direction:column;align-items:center;justify-content:center;" onclick="closeLightbox(event)">
+  <button onclick="closeLightbox()" style="position:absolute;top:20px;right:24px;background:rgba(255,255,255,.1);border:none;color:white;font-size:22px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+  <button id="lb-prev" onclick="lbNav(-1);event.stopPropagation();" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:white;font-size:24px;width:50px;height:50px;border-radius:50%;cursor:pointer;">‹</button>
+  <button id="lb-next" onclick="lbNav(1);event.stopPropagation();" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:white;font-size:24px;width:50px;height:50px;border-radius:50%;cursor:pointer;">›</button>
+  <img id="lb-img" src="" style="max-width:88vw;max-height:75vh;border-radius:12px;object-fit:contain;box-shadow:0 24px 80px rgba(0,0,0,.5);" onclick="event.stopPropagation()"/>
+  <div id="lb-info" style="margin-top:18px;text-align:center;max-width:600px;padding:0 20px;"></div>
+  <div id="lb-counter" style="margin-top:8px;font-size:11px;color:#666;letter-spacing:2px;"></div>
+</div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <div class="footer-left">MIA</div>
+    <div style="font-size:10px;letter-spacing:2px;color:var(--gray-500);text-transform:uppercase;margin-top:4px;">ENGENHARIA · SÃO PAULO</div>
+  </div>
+  <div style="text-align:center;">
+    <div style="font-size:11px;color:var(--champagne);letter-spacing:1px;">CCSP — CASA 7 · RELATÓRIO DE CHECKLIST</div>
+    <div style="font-size:10px;color:var(--gray-500);margin-top:4px;letter-spacing:1px;">CCSP-C7-CHK-REV003 · 24/04/2026 · CONFIDENCIAL</div>
+  </div>
+  <div class="footer-right">
+    <div>Documento gerado em 24/04/2026</div>
+    <div style="margin-top:4px;">Fonte: MIA_CCSP_Checklist_PTBR_PowerBI_v4</div>
+    <div style="margin-top:4px;">343 itens · 103 concluídos · 88 fotos · 10 riscos</div>
+  </div>
+</footer>
+
+</div><!-- /doc-shell -->
+</div><!-- /page -->
+
+<script>
+  function showTab(idx, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + idx).classList.add('active');
+    el.classList.add('active');
+    if(idx === 6) initGallery();
+  }
+
+  // Animate bars on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill, .sis-bar, .fill').forEach(el => {
+        const w = el.style.width;
+        el.style.width = '0%';
+        setTimeout(() => { el.style.width = w; }, 100);
+      });
+    }, 200);
+  });
+
+  // ═══════════════ GALLERY ═══════════════
+  const ALL_ITEMS = [{"id":"CCSP-0001","ambiente":"Banheiro 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Acabamento da instalação da luminária","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/4d5M3pC9/e3570a34-3477-48a8-8e32-f02ec95077e5.jpg","empresa":"MpH"},{"id":"CCSP-0002","ambiente":"Banheiro 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar câmera","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"17/12/2025","foto":"https://i.postimg.cc/8PhqPfSn/002.jpg","empresa":"Telework"},{"id":"CCSP-0008","ambiente":"Banheiro 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco, usar nível de bolha para garantir alinhamento","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/rF9qPR3k/0008.jpg","empresa":""},{"id":"CCSP-0010","ambiente":"Banheiro 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Interruptores travando e com mau funcionamento","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/Kv5mH3wc/0010.jpg","empresa":""},{"id":"CCSP-0011","ambiente":"Banheiro 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Luminárias instaladas","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/mrhXMt0K/011.jpg","empresa":""},{"id":"CCSP-0012","ambiente":"Banheiro 01 (Infantil)","sistema":"GERAL","resumo":"Espelho no armário","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/sgXLgMK5/41958c51-30aa-4846-9879-96cb99e9c5e2.jpg","empresa":""},{"id":"CCSP-0013","ambiente":"Banheiro 01 (Infantil)","sistema":"MARCENARIA","resumo":"Armário não abre","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/63rdGKpT/013.jpg","empresa":""},{"id":"CCSP-0015","ambiente":"Banheiro 01 (Infantil)","sistema":"ESQUADRIAS / PORTAS","resumo":"Furo na tela mosquiteira","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/xd9cmSJx/051b08e3-9e3d-43de-a914-9899c186f573.jpg","empresa":""},{"id":"CCSP-0019","ambiente":"Banheiro 02 (Hóspedes)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Acabamento da instalação da luminária","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/4dQ9x1WT/019.jpg","empresa":"MpH"},{"id":"CCSP-0020","ambiente":"Banheiro 02 (Hóspedes)","sistema":"GERAL","resumo":"Remover ponto de lâmpada extra no teto","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/7YNqWJdY/0020.jpg","empresa":"Lights and Colors"},{"id":"CCSP-0021","ambiente":"Banheiro 02 (Hóspedes)","sistema":"GERAL","resumo":"Instalar espelho","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"19/12/2025","foto":"https://i.postimg.cc/6phqRQdj/021.jpg","empresa":""},{"id":"CCSP-0026","ambiente":"Banheiro 02 (Hóspedes)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/gkKGTLQj/0026.jpg","empresa":""},{"id":"CCSP-0028","ambiente":"Banheiro 02 (Hóspedes)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Instalar luminárias","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/7ZXPhWkK/028.jpg","empresa":""},{"id":"CCSP-0030","ambiente":"Banheiro 02 (Hóspedes)","sistema":"GERAL","resumo":"Instalação do caixilho da janela não concluída","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/4yCsjC6Z/030.jpg","empresa":""},{"id":"CCSP-0034","ambiente":"Banheiro 02 (Hóspedes)","sistema":"GERAL","resumo":"Um azulejo e uma pedra faltando ao lado do vidro do box","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/kgstf4d0/9acf4c17-edfd-4c39-a45e-1b96c46364a0.jpg","empresa":""},{"id":"CCSP-0035","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Pintura do nicho","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/DwfF9PXb/035.jpg","empresa":"Lights and Colors"},{"id":"CCSP-0038","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Abertura do armário","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"AGENDADO","data_planejada":"27/02/2026","foto":"https://i.postimg.cc/wB332Q2Y/bdc42075-5a6e-4d63-9582-1d1427f346b4.jpg","empresa":"BRB"},{"id":"CCSP-0045","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Luminárias - não instaladas e furos na parede muito grandes","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/sgHgMZzF/e0eacfa3-547e-46af-820d-392655b39dc7.jpg","empresa":""},{"id":"CCSP-0046","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Interruptores não cobrindo totalmente os furos na parede","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/jjGqX0Lr/213070e1-b832-44c8-85d3-2cb83b18e9bc.jpg","empresa":""},{"id":"CCSP-0047","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Pia do lado esquerdo precisa ser reajustada, não está firme na parede","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/gkJ9nt2j/d75398c5-2240-414f-a0c4-b85b99bfaed2.jpg","empresa":""},{"id":"CCSP-0052","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Caixa da descarga precisa ser fixada corretamente na parede","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/9fHNtLCg/6ab7d70e-645c-454f-b948-ab9a4394c470.jpg","empresa":""},{"id":"CCSP-0053","ambiente":"Banheiro 03 (Casal)","sistema":"HIDRÁULICA / DRENAGEM","resumo":"Vazamento de água fora do box","criticidade":"A - SEGURANÇA/DANO","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/fyhQBcsB/053.jpg","empresa":""},{"id":"CCSP-0054","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Porta do armário não abre e precisa ser substituída","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/wB332Q2Y/bdc42075-5a6e-4d63-9582-1d1427f346b4.jpg","empresa":""},{"id":"CCSP-0055","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Abertura ao redor da porta muito rústica e precisa ser finalizada","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/hPsR1Q5X/055.jpg","empresa":""},{"id":"CCSP-0057","ambiente":"Banheiro 03 (Casal)","sistema":"ESQUADRIAS / PORTAS","resumo":"Sem batente/guarnição externo","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/QNg2jWs1/057.jpg","empresa":""},{"id":"CCSP-0061","ambiente":"Banheiro 03 (Casal)","sistema":"GERAL","resumo":"Acabamento do rodapé mal feito","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/HL7NRrBP/060.jpg","empresa":""},{"id":"CCSP-0062","ambiente":"Banheiro 04 (Lavabo)","sistema":"GERAL","resumo":"Espelho","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"","foto":"https://i.postimg.cc/c1cbpyMj/062.jpg","empresa":""},{"id":"CCSP-0066","ambiente":"Banheiro 04 (Lavabo)","sistema":"GERAL","resumo":"Tampa de pedra para ralo ao lado do vaso","criticidade":"A - SEGURANÇA/DANO","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/BQL2x26g/066.jpg","empresa":""},{"id":"CCSP-0068","ambiente":"Banheiro 04 (Lavabo)","sistema":"GERAL","resumo":"Puxador do chuveiro faltando","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/y6nLfh71/068.jpg","empresa":""},{"id":"CCSP-0082","ambiente":"Sala de Jantar","sistema":"GERAL","resumo":"Instalar cortina de tecido no teto","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/fLVYBdK1/082.jpg","empresa":""},{"id":"CCSP-0091","ambiente":"Sala de Jantar","sistema":"GERAL","resumo":"Unidade de ar-condicionado precisa estar reta","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/4NPnHdv0/091.jpg","empresa":""},{"id":"CCSP-0093","ambiente":"Sala de Jantar","sistema":"ESQUADRIAS / PORTAS","resumo":"Batente/guarnição em direção à lavanderia com excesso de pintura do lado direito","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/YS5SBm7P/093.jpg","empresa":""},{"id":"CCSP-0094","ambiente":"Sala de Jantar","sistema":"GERAL","resumo":"Fechar furo na parede (elétrico e tubulação)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/ZYF5XRQn/094.jpg","empresa":""},{"id":"CCSP-0096","ambiente":"Sala de Jantar","sistema":"GERAL","resumo":"Parede danificada em ambos os lados do banco","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/rmDYxKtR/096.jpg","empresa":""},{"id":"CCSP-0097","ambiente":"Sala de Jantar","sistema":"ESQUADRIAS / PORTAS","resumo":"Corrigir acabamento da parede no topo acima das portas francesas","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/wT8bRxxD/097.jpg","empresa":""},{"id":"CCSP-0100","ambiente":"Quarto 04","sistema":"GERAL","resumo":"Instalação de puxadores de gaveta","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/W3ddSw2q/f75a6ec5-2b57-4b26-bd92-3d92c6cd9ca2.jpg","empresa":"BRB"},{"id":"CCSP-0101","ambiente":"Quarto 04","sistema":"ESQUADRIAS / PORTAS","resumo":"Refazer janela inteira e telas (não fecha de jeito nenhum)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/fRT4kW5v/0101.jpg","empresa":""},{"id":"CCSP-0103","ambiente":"Quarto 04","sistema":"GERAL","resumo":"Caixilho externo da janela incompleto e não totalmente instalado","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/4xNCn4wQ/0103.jpg","empresa":""},{"id":"CCSP-0107","ambiente":"Quarto 04","sistema":"GERAL","resumo":"Remover toldo de fora da janela","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/K8vX4cQ7/0107.jpg","empresa":""},{"id":"CCSP-0108","ambiente":"Quarto 04","sistema":"GERAL","resumo":"Porta do guarda-roupa","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/qvMfgBQw/0108.jpg","empresa":""},{"id":"CCSP-0111","ambiente":"Quarto 04","sistema":"GERAL","resumo":"Danos no armário durante obras - precisa ser repintado","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/XY7MXNxx/0111.jpg","empresa":""},{"id":"CCSP-0130","ambiente":"Área Externa","sistema":"HIDRÁULICA / DRENAGEM","resumo":"Reparo da drenagem da área externa","criticidade":"A - SEGURANÇA/DANO","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/cL4q61T9/0130.jpg","empresa":"MpH"},{"id":"CCSP-0134","ambiente":"Área Externa","sistema":"GERAL","resumo":"Remover outros toldos ou estruturas de toldo","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/kgXrDMwj/0134.jpg","empresa":""},{"id":"CCSP-0147","ambiente":"Área Externa","sistema":"GERAL","resumo":"Borda de pedra fora do corredor e quarto de hóspedes não finalizada,","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/cL4q61Tk/0147.jpg","empresa":""},{"id":"CCSP-0164","ambiente":"Corredor Íntimo","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Interruptores travando e com mau funcionamento","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/wjT98TYX/0164.jpg","empresa":""},{"id":"CCSP-0165","ambiente":"Corredor Íntimo","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco, usar nível de bolha para garantir alinhamento","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/Jz4RV4Cs/0165.jpg","empresa":""},{"id":"CCSP-0166","ambiente":"Corredor Íntimo","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Alterar tomadas para 220V","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/cL4dy4GC/0166.jpg","empresa":""},{"id":"CCSP-0167","ambiente":"Corredor Íntimo","sistema":"GERAL","resumo":"Porta invisível danificando a parede","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/3xJ35JQZ/0167.jpg","empresa":""},{"id":"CCSP-0172","ambiente":"Corredor Íntimo","sistema":"GERAL","resumo":"Juntas entre rodapé e batentes precisam ser finalizadas","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/qvMfgBQt/0172.jpg","empresa":""},{"id":"CCSP-0175","ambiente":"Cozinha","sistema":"ESQUADRIAS / PORTAS","resumo":"Batente/guarnição externo precisa ser refeito, repintado e ajustado","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/Jz4wt7KZ/0175.jpg","empresa":""},{"id":"CCSP-0176","ambiente":"Cozinha","sistema":"GERAL","resumo":"Moldura ao redor do armário atrás da porta da cozinha precisa ser refeita","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/zGXm3DpW/0176.jpg","empresa":""},{"id":"CCSP-0178","ambiente":"Cozinha","sistema":"GERAL","resumo":"Instalar portas da geladeira","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/653dgnYY/c7ff8fea-5f87-4f3b-9de5-852f6678f387.jpg","empresa":""},{"id":"CCSP-0179","ambiente":"Cozinha","sistema":"GERAL","resumo":"Corrigir acabamento interno dos armários acima da geladeira, colocar grade na abertura","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/CxnbLYyv/4ee9ba7c-5c09-4e73-93ed-42d522c81dc0.jpg","empresa":""},{"id":"CCSP-0180","ambiente":"Cozinha","sistema":"GERAL","resumo":"Finalizar parte do armário da pia contra a parede","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/mg2xhZVz/0180.jpg","empresa":""},{"id":"CCSP-0183","ambiente":"Cozinha","sistema":"GERAL","resumo":"Bandeja para talheres","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/SK0Cn5kp/2d796e75-6cd6-4b17-8118-4137c251b61f.jpg","empresa":""},{"id":"CCSP-0189","ambiente":"Cozinha","sistema":"GERAL","resumo":"Concluir instalação do filtro de água","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/wTZsrPt9/e7e2b59b-a86d-4405-8ffd-b96ccc9c788c.jpg","empresa":""},{"id":"CCSP-0195","ambiente":"Cozinha / Circulação","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Ajustar fechadura da porta da cozinha","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"18/12/2025","foto":"https://i.postimg.cc/htPFh4Mm/0195.jpg","empresa":""},{"id":"CCSP-0196","ambiente":"Cozinha / Circulação","sistema":"GERAL","resumo":"Instalação da saída de água do filtro","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"17/12/2025","foto":"https://i.postimg.cc/WbBh8kKq/4b55fe02-b96b-4bb0-b34d-64236417d87b.jpg","empresa":"GSM"},{"id":"CCSP-0197","ambiente":"Cozinha / Circulação","sistema":"GERAL","resumo":"Instalação da adega","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"21/01/2026","foto":"https://i.postimg.cc/rmwmsC0k/7129a4a6-346b-4752-8294-7bd6f33a4323.jpg","empresa":""},{"id":"CCSP-0199","ambiente":"Cozinha / Circulação","sistema":"GERAL","resumo":"Portas da geladeira","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/qvMfgBQX/0199.jpg","empresa":"BRB"},{"id":"CCSP-0215","ambiente":"Sala de Estar","sistema":"ESQUADRIAS / PORTAS","resumo":"Porta francesa direita não tem batente/guarnição externo","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/cHDtyLDX/0215.jpg","empresa":""},{"id":"CCSP-0219","ambiente":"Sala de Estar","sistema":"ESQUADRIAS / PORTAS","resumo":"Porta francesa em direção à fonte faltando batente/guarnição externo","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/Kz93S890/0219.jpg","empresa":""},{"id":"CCSP-0249","ambiente":"Área de Serviço","sistema":"ESQUADRIAS / PORTAS","resumo":"Batente/guarnição danificado durante as obras","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/26HLRSHc/0249.jpg","empresa":""},{"id":"CCSP-0274","ambiente":"Suíte 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar câmera para interna","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"CONCLUÍDO","data_planejada":"17/12/2025","foto":"https://i.postimg.cc/XJ2BSY2z/0274.jpg","empresa":"Telework"},{"id":"CCSP-0276","ambiente":"Suíte 01 (Infantil)","sistema":"HIDRÁULICA / DRENAGEM","resumo":"Portas francesas não fecham/com vazamento/frestas","criticidade":"A - SEGURANÇA/DANO","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/pT05bL03/0276.jpg","empresa":""},{"id":"CCSP-0278","ambiente":"Suíte 01 (Infantil)","sistema":"GERAL","resumo":"Faltando proteção metálica superior da porta francesa para mecanismo de travamento","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/pT05bL0g/0278.jpg","empresa":""},{"id":"CCSP-0279","ambiente":"Suíte 01 (Infantil)","sistema":"ESQUADRIAS / PORTAS","resumo":"Faltando batente/guarnição interno","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/rmhRXwhB/0279.jpg","empresa":""},{"id":"CCSP-0280","ambiente":"Suíte 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Interruptores travando e com mau funcionamento","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/Y9XLKCnc/0280.jpg","empresa":""},{"id":"CCSP-0281","ambiente":"Suíte 01 (Infantil)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco, usar nível de bolha para garantir alinhamento","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/cL4dy4GB/0281.jpg","empresa":""},{"id":"CCSP-0283","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Instalação de puxadores de gaveta Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/k4jR3g13/0283.jpg","empresa":"BRB"},{"id":"CCSP-0287","ambiente":"Suíte Hóspede","sistema":"ESQUADRIAS / PORTAS","resumo":"Batente/guarnição externo danificado Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/ZnCBTzgM/0287.jpg","empresa":""},{"id":"CCSP-0288","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Faltando proteção metálica superior da porta francesa para mecanismo de travamento Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/mktzbWqd/0288.jpg","empresa":""},{"id":"CCSP-0289","ambiente":"Suíte Hóspede","sistema":"ESQUADRIAS / PORTAS","resumo":"Batente/guarnição do closet faltando Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/hvfzSRwY/0289.jpg","empresa":""},{"id":"CCSP-0290","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Porta do quarto de hóspedes danificada durante obras, precisa ser substituída Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/x8cJ0V7B/0290.jpg","empresa":""},{"id":"CCSP-0291","ambiente":"Suíte Hóspede","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Cabos expostos no closet Suíte 02 (Hóspedes)","criticidade":"A - SEGURANÇA/DANO","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/8PbT0f9z/0291.jpg","empresa":""},{"id":"CCSP-0292","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Dano ao redor da porta dentro do closet Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/T1pLRvFX/0292.jpg","empresa":""},{"id":"CCSP-0293","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Porta do closet arranhando o chão Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/kGB6nPzm/0293.jpg","empresa":""},{"id":"CCSP-0294","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Armário faltando barra de pendurar Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/90rRWHK2/0294.jpg","empresa":""},{"id":"CCSP-0295","ambiente":"Suíte Hóspede","sistema":"GERAL","resumo":"Gavetas inferiores do closet faltando puxadores Suíte 02 (Hóspedes)","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/cCrgsG20/0295.jpg","empresa":""},{"id":"CCSP-0296","ambiente":"Suíte Hóspede","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco Suíte 02 (Hóspedes)","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/T3YTMYvp/0296.jpg","empresa":""},{"id":"CCSP-0300","ambiente":"Suíte 03 (Casal)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Alterar tomadas de 127V para 220V","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"13/02/2026","foto":"https://i.postimg.cc/ZnCBTz2J/0300.jpg","empresa":"GSM"},{"id":"CCSP-0303","ambiente":"Suíte 03 (Casal)","sistema":"ELÉTRICA / TECNOLOGIA","resumo":"Trocar acabamento das tomadas para branco","criticidade":"C - ESTÉTICA","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/wvWR8jWm/0303.jpg","empresa":""},{"id":"CCSP-0304","ambiente":"Suíte 03 (Casal)","sistema":"GERAL","resumo":"Alterar acabamento das tomadas para 220V","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/rmhRXwhS/0304.jpg","empresa":""},{"id":"CCSP-0307","ambiente":"Suíte 03 (Casal)","sistema":"GERAL","resumo":"Placa atrás da TV substituída ou reparada dos furos de parafuso","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/MpKz2KJZ/0307.jpg","empresa":""},{"id":"CCSP-0309","ambiente":"Suíte 03 (Casal)","sistema":"ESQUADRIAS / PORTAS","resumo":"Sem batente/guarnição externo","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/rmhRXwh5/0309.jpg","empresa":""},{"id":"CCSP-0310","ambiente":"Suíte 03 (Casal)","sistema":"GERAL","resumo":"Porta arranhando o chão","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/NMN2qjN7/0310.jpg","empresa":""},{"id":"CCSP-0311","ambiente":"Suíte 03 (Casal)","sistema":"GERAL","resumo":"Batentes não alcançam o chão","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/nzd9bhdK/0311.jpg","empresa":""},{"id":"CCSP-0312","ambiente":"Suíte 03 (Casal)","sistema":"GERAL","resumo":"Armários do canto esquerdo refinalizados","criticidade":"B - FUNCIONALIDADE","status":"CONCLUÍDO","status_original":"A VERIFICAR","data_planejada":"","foto":"https://i.postimg.cc/JnTHVzTK/0312.jpg","empresa":""}]
+  const PHOTO_ITEMS = ALL_ITEMS.filter(i => i.foto && i.foto.startsWith('http'));
+  let filteredItems = [...PHOTO_ITEMS];
+  let currentLbIdx = 0;
+  let galleryInited = false;
+
+  function statusBadge(s) {
+    if(s==='CONCLUÍDO') return '<span style="background:#e8f4ec;color:#1a5c32;font-size:9px;padding:3px 8px;border-radius:999px;font-weight:700;letter-spacing:1px;">✔ CONCLUÍDO</span>';
+    if(s==='AGENDADO') return '<span style="background:#fdf3e3;color:#a06010;font-size:9px;padding:3px 8px;border-radius:999px;font-weight:700;letter-spacing:1px;">📅 AGENDADO</span>';
+    return '<span style="background:#fdf0f0;color:#8b2020;font-size:9px;padding:3px 8px;border-radius:999px;font-weight:700;letter-spacing:1px;">⏳ A VERIFICAR</span>';
+  }
+
+  function critBadge(c) {
+    if(c==='A - SEGURANÇA/DANO') return '<span style="background:#8b2020;color:#fff;font-size:8px;padding:2px 7px;border-radius:999px;font-weight:700;">A-SEG</span>';
+    if(c==='B - FUNCIONALIDADE') return '<span style="background:#2e2e2e;color:#c9a96e;font-size:8px;padding:2px 7px;border-radius:999px;font-weight:700;">B-FUNC</span>';
+    return '<span style="background:#e8e8e4;color:#666;font-size:8px;padding:2px 7px;border-radius:999px;font-weight:700;">C-EST</span>';
+  }
+
+  function initGallery() {
+    if(galleryInited) return;
+    galleryInited = true;
+
+    // Populate ambient filter
+    const ambSelect = document.getElementById('filter-amb');
+    const ambients = [...new Set(PHOTO_ITEMS.map(i => i.ambiente))].sort();
+    ambients.forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a; opt.textContent = a;
+      ambSelect.appendChild(opt);
+    });
+
+    renderGallery(PHOTO_ITEMS);
+  }
+
+  function applyFilters() {
+    const amb = document.getElementById('filter-amb').value;
+    const status = document.getElementById('filter-status').value;
+    const crit = document.getElementById('filter-crit').value;
+    filteredItems = PHOTO_ITEMS.filter(i =>
+      (!amb || i.ambiente === amb) &&
+      (!status || i.status === status) &&
+      (!crit || i.criticidade === crit)
+    );
+    renderGallery(filteredItems);
+    const parts = [];
+    if(amb) parts.push(amb);
+    if(status) parts.push(status);
+    if(crit) parts.push(crit.split(' - ')[1]);
+    document.getElementById('gallery-showing').textContent = filteredItems.length + ' foto(s)' + (parts.length ? ' — ' + parts.join(' · ') : '');
+  }
+
+  function renderGallery(items) {
+    const grid = document.getElementById('gallery-grid');
+    const empty = document.getElementById('gallery-empty');
+    if(!items.length) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    // Group by ambiente
+    const grouped = {};
+    items.forEach(item => {
+      const k = item.ambiente || 'Geral';
+      if(!grouped[k]) grouped[k] = [];
+      grouped[k].push(item);
+    });
+
+    let html = '';
+    Object.keys(grouped).sort().forEach(amb => {
+      // Group header spanning all columns
+      html += `<div style="grid-column:1/-1;margin-top:18px;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--black);">${amb}</span>
+        <span style="font-size:11px;color:var(--gray-500);">${grouped[amb].length} foto(s)</span>
+      </div>`;
+      grouped[amb].forEach(item => {
+        const globalIdx = filteredItems.indexOf(item);
+        const isSeg = item.criticidade === 'A - SEGURANÇA/DANO';
+        html += `
+          <div onclick="openLightbox(${globalIdx})" style="cursor:pointer;border-radius:14px;overflow:hidden;background:var(--white);border:1px solid var(--gray-200);${isSeg?'border-top:3px solid #8b2020;':''}box-shadow:0 3px 12px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 3px 12px rgba(0,0,0,.05)'">
+            <div style="aspect-ratio:4/3;overflow:hidden;background:#f0f0ee;position:relative;">
+              <img src="${item.foto}" alt="${item.resumo}" loading="lazy"
+                style="width:100%;height:100%;object-fit:cover;transition:transform .3s;"
+                onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''"
+                onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#aaa;font-size:28px;\'>📷</div>'"/>
+              ${isSeg?'<div style="position:absolute;top:8px;left:8px;background:#8b2020;color:white;font-size:9px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:1px;">⚠ A-SEG</div>':''}
+            </div>
+            <div style="padding:12px 12px 14px;flex:1;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:9px;color:var(--champagne);letter-spacing:1.5px;text-transform:uppercase;">${item.id}</div>
+              <div style="font-size:12px;font-weight:500;color:var(--graphite);line-height:1.4;">${item.resumo.length>60?item.resumo.substring(0,60)+'…':item.resumo}</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;">
+                ${statusBadge(item.status)}
+                ${critBadge(item.criticidade)}
+              </div>
+              ${item.sistema?`<div style="font-size:10px;color:var(--gray-500);">${item.sistema}</div>`:''}
+            </div>
+          </div>`;
+      });
+    });
+    grid.innerHTML = html;
+  }
+
+  function openLightbox(idx) {
+    currentLbIdx = idx;
+    updateLightbox();
+    const lb = document.getElementById('lightbox');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateLightbox() {
+    const item = filteredItems[currentLbIdx];
+    if(!item) return;
+    document.getElementById('lb-img').src = item.foto;
+    document.getElementById('lb-info').innerHTML = `
+      <div style="font-size:11px;color:var(--champagne);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">${item.id} · ${item.ambiente}</div>
+      <div style="font-size:16px;font-weight:500;color:white;margin-bottom:10px;">${item.resumo}</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        ${statusBadge(item.status)}
+        ${critBadge(item.criticidade)}
+        ${item.sistema?`<span style="background:#2e2e2e;color:#c9a96e;font-size:9px;padding:2px 9px;border-radius:999px;">${item.sistema}</span>`:''}
+        ${item.empresa?`<span style="background:#1c1c1c;color:#aaa;font-size:9px;padding:2px 9px;border-radius:999px;">${item.empresa}</span>`:''}
+      </div>`;
+    document.getElementById('lb-counter').textContent = (currentLbIdx+1) + ' / ' + filteredItems.length;
+    document.getElementById('lb-prev').style.display = currentLbIdx > 0 ? 'flex' : 'none';
+    document.getElementById('lb-next').style.display = currentLbIdx < filteredItems.length-1 ? 'flex' : 'none';
+  }
+
+  function lbNav(dir) {
+    currentLbIdx = Math.max(0, Math.min(filteredItems.length-1, currentLbIdx+dir));
+    updateLightbox();
+  }
+
+  function closeLightbox(e) {
+    if(e && e.target !== document.getElementById('lightbox') && !e.target.closest('button')) return;
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if(lb.style.display !== 'flex') return;
+    if(e.key==='Escape') { lb.style.display='none'; document.body.style.overflow=''; }
+    if(e.key==='ArrowRight') lbNav(1);
+    if(e.key==='ArrowLeft') lbNav(-1);
+  });
+</script>
+</body>
+</html>
