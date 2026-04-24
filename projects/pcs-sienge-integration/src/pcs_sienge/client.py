@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-from .auth import AccessToken, fetch_access_token
+from .auth import AccessToken, fetch_access_token, fetch_basic_access_token
 from .config import SiengeConfig
 from .errors import SiengeApiError
 from .models import FetchResult
@@ -64,7 +64,10 @@ class SiengeClient:
 
     def _get_access_token(self) -> AccessToken:
         if self._access_token is None:
-            self._access_token = fetch_access_token(self.config)
+            if self.config.auth_type == "basic":
+                self._access_token = fetch_basic_access_token(self.config)
+            else:
+                self._access_token = fetch_access_token(self.config)
         return self._access_token
 
     def get(self, path: str, params: dict[str, Any] | None = None) -> FetchResult:

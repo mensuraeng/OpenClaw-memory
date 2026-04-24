@@ -27,6 +27,13 @@ def build_client_basic_auth_header(config: SiengeConfig) -> str:
     return f"Basic {token}"
 
 
+def fetch_basic_access_token(config: SiengeConfig) -> AccessToken:
+    """Returns a Basic auth token directly — no OAuth token exchange needed."""
+    raw = f"{config.username}:{config.password}".encode("utf-8")
+    encoded = base64.b64encode(raw).decode("utf-8")
+    return AccessToken(token=encoded, token_type="Basic")
+
+
 def fetch_access_token(config: SiengeConfig) -> AccessToken:
     payload = urllib.parse.urlencode(
         {

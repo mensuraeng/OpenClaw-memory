@@ -2,6 +2,10 @@
 """
 Upload orçamento Teatro Suzano → Sienge
 Formato específico: TEATRO SUZANO - Orçamento SIENGE.xlsx
+
+Suporta checkpoint/resume: salva progresso em /tmp/teatro_upload_checkpoint.json
+Limite diário: 100 req/dia (reset ~21:00 BRT = 00:00 UTC)
+176 itens no total — precisa de 2 execuções diárias para completar.
 """
 from __future__ import annotations
 
@@ -15,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pcs_sienge.config import SiengeConfig
 from pcs_sienge.client import SiengeClient, SiengeApiError
-from pcs_sienge.endpoints.budget import get_resources, create_resource
+from pcs_sienge.endpoints.budget import create_resource
 
 try:
     import openpyxl
@@ -24,6 +28,10 @@ except ImportError:
 
 XLSX_PATH = "/tmp/teatro_suzano.xlsx"
 BUILDING_ID = 1354
+PUBLIC_CONFIG = "/root/.openclaw/workspace/config/sienge-pcs-public.json"
+CHECKPOINT_FILE = "/tmp/teatro_upload_checkpoint.json"
+RESULT_FILE = "/tmp/teatro_upload_result.json"
+BATCH_LIMIT = 90  # conservative — leave buffer for retries within daily limit
 
 
 def parse_float(val) -> float | None:
@@ -45,20 +53,20 @@ def read_excel(path: str) -> list[dict]:
     rows = list(ws.iter_rows(values_only=True))
 
     items = []
-    for row in rows[4:]:  # pula cabeçalho nas linhas 1-4
+    for row in rows[4:]:  # skip header rows 1-4
         desc  = row[4] if len(row) > 4 else None
         unid  = row[5] if len(row) > 5 else None
         qtd   = row[6] if len(row) > 6 else None
         v_bdi = row[8] if len(row) > 8 else None
         total = row[9] if len(row) > 9 else None
 
-        # Só itens com descrição + unidade + quantidade + preço
-        if not desc or not unid or qtd is None or v_bdi is None:
+        if not desc or v_bdi is None:
             continue
 
-        qtd_f  = parse_float(qtd)
+        qtd_f  = parse_float(qtd) or 1.0
+        unid   = unid or "UN"
         vbdi_f = parse_float(v_bdi)
-        if not qtd_f or not vbdi_f:
+        if not vbdi_f:
             continue
 
         total_f = parse_float(total) or round(qtd_f * vbdi_f, 2)
@@ -77,16 +85,37 @@ def read_excel(path: str) -> list[dict]:
     return items
 
 
+def load_checkpoint() -> dict:
+    cp = Path(CHECKPOINT_FILE)
+    if cp.exists():
+        try:
+            return json.loads(cp.read_text())
+        except Exception:
+            pass
+    return {"sent_indices": [], "ok": 0, "errors": [], "complete": False}
+
+
+def save_checkpoint(cp: dict) -> None:
+    Path(CHECKPOINT_FILE).write_text(json.dumps(cp, ensure_ascii=False, indent=2))
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--file", default=XLSX_PATH)
     parser.add_argument("--building-id", type=int, default=BUILDING_ID)
+    parser.add_argument("--config", default=PUBLIC_CONFIG)
+    parser.add_argument("--batch-limit", type=int, default=BATCH_LIMIT)
+    parser.add_argument("--reset-checkpoint", action="store_true", help="Apaga checkpoint e reinicia do zero")
     args = parser.parse_args()
+
+    if args.reset_checkpoint and Path(CHECKPOINT_FILE).exists():
+        Path(CHECKPOINT_FILE).unlink()
+        print("Checkpoint resetado.")
 
     print(f"\n{'='*65}")
     print(f"Upload orçamento → Sienge | Obra {args.building_id} | Teatro Suzano")
-    print(f"Modo: {'DRY-RUN' if args.dry_run else 'REAL'}")
+    print(f"Modo: {'DRY-RUN' if args.dry_run else 'REAL'} | Config: {args.config}")
     print(f"{'='*65}\n")
 
     print("1. Lendo Excel...")
@@ -105,18 +134,33 @@ def main():
         print("   Preview em /tmp/teatro_budget_preview.json")
         return
 
-    cfg = SiengeConfig.from_file()
+    # Load checkpoint
+    cp = load_checkpoint()
+    if cp.get("complete"):
+        print("Upload já completo (checkpoint marcado como concluído). Use --reset-checkpoint para refazer.")
+        return
+
+    sent_set = set(cp.get("sent_indices", []))
+    pending = [(idx, item) for idx, item in enumerate(items) if idx not in sent_set]
+
+    if not pending:
+        cp["complete"] = True
+        save_checkpoint(cp)
+        print("Todos os itens já foram enviados (checkpoint). Upload completo.")
+        return
+
+    print(f"2. Retomando upload | {len(sent_set)} já enviados | {len(pending)} pendentes")
+    print(f"   Limite desta execução: {args.batch_limit} itens\n")
+
+    cfg = SiengeConfig.from_file(args.config)
     client = SiengeClient(cfg)
 
-    print("2. Verificando itens existentes no Sienge...")
-    existing = get_resources(client, args.building_id)
-    existing_count = existing.raw.get("resultSetMetadata", {}).get("count", 0) if isinstance(existing.raw, dict) else 0
-    print(f"   {existing_count} itens já existem na obra {args.building_id}\n")
+    batch = pending[:args.batch_limit]
+    ok_this_run = 0
+    errors_this_run = []
 
-    print(f"3. Enviando {len(items)} itens...\n")
-    ok = 0
-    errors = []
-    for i, item in enumerate(items, 1):
+    print(f"3. Enviando {len(batch)} itens (índices {batch[0][0]}..{batch[-1][0]})...\n")
+    for i, (idx, item) in enumerate(batch, 1):
         payload = {
             "description": item["descricao"],
             "unitId":      item["unidade"],
@@ -128,32 +172,59 @@ def main():
 
         try:
             create_resource(client, args.building_id, payload)
-            ok += 1
+            cp["sent_indices"].append(idx)
+            cp["ok"] = cp.get("ok", 0) + 1
+            ok_this_run += 1
         except SiengeApiError as e:
-            errors.append({"item": item["descricao"][:50], "error": str(e)[:80]})
+            err = {"idx": idx, "item": item["descricao"][:50], "error": str(e)[:100]}
+            cp.setdefault("errors", []).append(err)
+            errors_this_run.append(err)
         except Exception as e:
-            errors.append({"item": item["descricao"][:50], "error": str(e)[:80]})
+            err = {"idx": idx, "item": item["descricao"][:50], "error": str(e)[:100]}
+            cp.setdefault("errors", []).append(err)
+            errors_this_run.append(err)
 
-        if i % 20 == 0 or i == len(items):
-            print(f"   {i}/{len(items)} | OK: {ok} | Erros: {len(errors)}")
+        # Save checkpoint every 10 items
+        if i % 10 == 0:
+            save_checkpoint(cp)
+            print(f"   {i}/{len(batch)} | OK esta execução: {ok_this_run} | Erros: {len(errors_this_run)}")
 
-        time.sleep(0.35)  # ~170 req/min — dentro do limite de 200/min
+        time.sleep(0.35)
+
+    # Final checkpoint save
+    total_sent = len(cp["sent_indices"])
+    remaining_after = len(items) - total_sent
+    if remaining_after == 0:
+        cp["complete"] = True
+    save_checkpoint(cp)
 
     print(f"\n{'='*65}")
-    print(f"CONCLUÍDO: {ok}/{len(items)} itens enviados")
-    print(f"Total orçado carregado: R$ {total_orcado:,.2f}")
-    if errors:
-        print(f"\nERROS ({len(errors)}):")
-        for e in errors[:15]:
-            print(f"  - {e['item']}: {e['error']}")
+    print(f"Esta execução: {ok_this_run} enviados | {len(errors_this_run)} erros")
+    print(f"Total acumulado: {total_sent}/{len(items)} itens")
+    print(f"Restam: {remaining_after} itens para próxima execução")
     print(f"{'='*65}\n")
 
-    # Save result log
-    result = {"ok": ok, "errors": len(errors), "total": len(items),
-              "total_orcado": total_orcado, "error_detail": errors}
-    with open("/tmp/teatro_upload_result.json", "w") as f:
+    if errors_this_run:
+        print(f"ERROS ({len(errors_this_run)}):")
+        for e in errors_this_run[:10]:
+            print(f"  - [{e['idx']}] {e['item']}: {e['error']}")
+
+    result = {
+        "ok_this_run": ok_this_run,
+        "errors_this_run": len(errors_this_run),
+        "total_sent": total_sent,
+        "total_items": len(items),
+        "remaining": remaining_after,
+        "total_orcado": total_orcado,
+        "complete": cp.get("complete", False),
+        "error_detail": errors_this_run,
+    }
+    with open(RESULT_FILE, "w") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-    print("Log salvo em /tmp/teatro_upload_result.json")
+    print(f"Log salvo em {RESULT_FILE}")
+
+    if cp.get("complete"):
+        print("\nUPLOAD COMPLETO.")
 
 
 if __name__ == "__main__":
