@@ -61,3 +61,4 @@ venv*/
 # Media gerada localmente
 media/
 marketing/
+memory/context/ga4-service-account.json
