@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Monitoramento Diário — Máquina Comercial MENSURA
-Roda todo dia às 08:00 BRT via cron.
-Puxa HubSpot + Phantombuster, gera relatório CFO, envia no Telegram.
+Roda seg-sex às 08:00 BRT via cron (exceto feriados nacionais).
+Puxa HubSpot + Phantombuster, gera relatório CFO em HTML, envia no Telegram.
 """
 
 import json
@@ -11,6 +11,21 @@ import urllib.parse
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import re
+
+# ── Feriados nacionais brasileiros ───────────────────────────────────────────
+# Fixos: (mês, dia) | Variáveis: listados por ano
+_FERIADOS_FIXOS = {(1,1),(4,21),(5,1),(9,7),(10,12),(11,2),(11,15),(12,25)}
+_FERIADOS_VARIAVEIS = {
+    # Carnaval (seg/ter), Sexta da Paixão, Corpus Christi
+    2026: {(2,16),(2,17),(4,3),(6,4)},
+    2027: {(2,8),(2,9),(3,26),(6,17)},
+}
+
+def _is_feriado(dt: datetime) -> bool:
+    if (dt.month, dt.day) in _FERIADOS_FIXOS:
+        return True
+    ano_vars = _FERIADOS_VARIAVEIS.get(dt.year, set())
+    return (dt.month, dt.day) in ano_vars
 
 # ── Credenciais (carregadas de config — nunca hardcoded) ─────────────────────
 _BASE = Path(__file__).parent.parent
@@ -79,9 +94,14 @@ def pb_get(path, params=None):
     except Exception as e:
         return {"error": str(e)}
 
-def telegram_send(msg):
+def telegram_send(html: str):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    data = json.dumps({"chat_id": TELEGRAM_CHAT, "text": msg, "parse_mode": "Markdown"}).encode()
+    data = json.dumps({
+        "chat_id": TELEGRAM_CHAT,
+        "text": html,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True,
+    }).encode()
     req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
         urllib.request.urlopen(req, timeout=10)
@@ -195,21 +215,23 @@ def coleta_leads_quentes():
 
     return leads, urgentes
 
-# ── Gerar relatório ───────────────────────────────────────────────────────────
+# ── Gerar relatório HTML ──────────────────────────────────────────────────────
 def gerar_relatorio(hs, pb, leads_quentes, urgentes):
     brt = timezone(timedelta(hours=-3))
-    hoje = datetime.now(brt).strftime("%d/%m/%Y")
+    agora = datetime.now(brt)
+    hoje = agora.strftime("%d/%m/%Y")
+    hora = agora.strftime("%H:%M")
 
     outreach = pb.get("linkedin_outreach", {})
     sender   = pb.get("hubspot_contact_sender", {})
 
-    # Pipeline summary
+    # Pipeline
     pipeline_lines = []
     for stage_id, label in STAGE_LABELS.items():
         count = hs["por_estagio"].get(stage_id, 0)
         if count > 0:
-            pipeline_lines.append(f"  {label}: *{count}*")
-    pipeline_str = "\n".join(pipeline_lines) if pipeline_lines else "  (pipeline vazio — deals serão criados conforme Phantombuster avança)"
+            pipeline_lines.append(f"  • {label}: <b>{count}</b>")
+    pipeline_str = "\n".join(pipeline_lines) if pipeline_lines else "  ⚪ Pipeline vazio — aguardando primeiros aceites"
 
     # Taxa de aceite
     taxa = outreach.get("taxa_aceite_pct")
@@ -222,55 +244,64 @@ def gerar_relatorio(hs, pb, leads_quentes, urgentes):
     alertas = []
     if urgentes:
         for d in urgentes:
-            alertas.append(f"🔥 URGENTE: *{d}* — Resposta recebida há 2d+ sem follow-up")
+            alertas.append(f"🔥 <b>URGENTE:</b> {d} — resposta recebida há 2d+ sem follow-up")
     if hs["leads_parados_7d"] > 0:
-        alertas.append(f"⚠️ {hs['leads_parados_7d']} deals sem atividade há 7+ dias")
+        alertas.append(f"⚠️ <b>{hs['leads_parados_7d']} deals</b> sem atividade há 7+ dias")
     if hs["deals_total"] == 0:
         alertas.append("ℹ️ Pipeline vazio — aguardando primeiros aceites do Outreach")
     if outreach.get("nb_launches", 0) < 1:
         alertas.append("⚠️ LinkedIn Outreach sem execuções — verificar se está ativo")
     alertas_str = "\n".join(alertas) if alertas else "✅ Nenhum alerta crítico"
 
-    relatorio = f"""📊 *RELATÓRIO DIÁRIO — MÁQUINA COMERCIAL MENSURA*
-Data: {hoje}
-
-*1. RESUMO EXECUTIVO*
-Contatos no CRM: *{hs['contatos_total']}* ({hs['contatos_novos_24h']} novos nas últimas 24h)
-Empresas cadastradas: *{hs['empresas_total']}*
-Deals ativos: *{hs['deals_total']}*
-Leads parados (7d+): *{hs['leads_parados_7d']}*
-
-*2. PIPELINE MENSURA*
-{pipeline_str}
-
-*3. PHANTOMBUSTER*
-LinkedIn Outreach: `{outreach.get('status', '—')}` | {outreach.get('nb_launches', 0)} execuções | taxa aceite: *{taxa_str}*
-HubSpot Sender: `{sender.get('status', '—')}` | {sender.get('nb_launches', 0)} execuções
-
-*4. LEADS QUENTES (últimos ativos)*
-{quentes_str}
-
-*5. ALERTAS*
-{alertas_str}
-
-*6. AÇÃO PRIORITÁRIA HOJE*
-• Verificar no LinkedIn quem aceitou o convite → responder usando protocolo Cenário A/B
-• Deals em "Resposta recebida" → ligar hoje (roteiro qualificação 20 min)
-• Atualizar estágio no HubSpot após cada interação
-
-_Gerado automaticamente pelo OpenClaw — {datetime.now(brt).strftime('%H:%M')} BRT_"""
+    relatorio = (
+        f"📊 <b>RELATÓRIO DIÁRIO — MÁQUINA COMERCIAL MENSURA</b>\n"
+        f"<i>Data: {hoje} | {hora} BRT</i>\n"
+        f"\n"
+        f"<b>1. RESUMO EXECUTIVO</b>\n"
+        f"Contatos no CRM: <b>{hs['contatos_total']}</b> (+{hs['contatos_novos_24h']} nas últimas 24h)\n"
+        f"Empresas cadastradas: <b>{hs['empresas_total']}</b>\n"
+        f"Deals ativos: <b>{hs['deals_total']}</b>\n"
+        f"Leads parados 7d+: <b>{hs['leads_parados_7d']}</b>\n"
+        f"\n"
+        f"<b>2. PIPELINE MENSURA</b>\n"
+        f"{pipeline_str}\n"
+        f"\n"
+        f"<b>3. PHANTOMBUSTER / LINKEDIN</b>\n"
+        f"  • Outreach: <code>{outreach.get('status', '—')}</code> | {outreach.get('nb_launches', 0)} execuções | taxa aceite: <b>{taxa_str}</b>\n"
+        f"  • HubSpot Sender: <code>{sender.get('status', '—')}</code> | {sender.get('nb_launches', 0)} execuções\n"
+        f"\n"
+        f"<b>4. LEADS QUENTES</b>\n"
+        f"{quentes_str}\n"
+        f"\n"
+        f"<b>5. ALERTAS</b>\n"
+        f"{alertas_str}\n"
+        f"\n"
+        f"<b>6. AÇÃO PRIORITÁRIA HOJE</b>\n"
+        f"  • Verificar LinkedIn: quem aceitou → responder (Cenário A/B)\n"
+        f"  • Deals em <i>Resposta recebida</i> → ligar hoje (roteiro 20 min)\n"
+        f"  • Atualizar estágio no HubSpot após cada interação\n"
+        f"\n"
+        f"<i>Gerado pelo OpenClaw — {hora} BRT</i>"
+    )
 
     return relatorio
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
+    brt = timezone(timedelta(hours=-3))
+    hoje = datetime.now(brt)
+
+    if _is_feriado(hoje):
+        print(f"📅 Hoje ({hoje.strftime('%d/%m/%Y')}) é feriado nacional — relatório não enviado.")
+        return
+
     print("Coletando HubSpot...")
     hs = coleta_hubspot()
     print("Coletando Phantombuster...")
     pb = coleta_phantombuster()
     print("Coletando leads quentes e follow-ups urgentes...")
     leads_quentes, urgentes = coleta_leads_quentes()
-    print("Gerando relatório...")
+    print("Gerando relatório HTML...")
     relatorio = gerar_relatorio(hs, pb, leads_quentes, urgentes)
     print(relatorio)
     print("\nEnviando no Telegram...")
