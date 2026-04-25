@@ -43,7 +43,7 @@ _Flush realizado em 2026-04-25_
 - [ ] **Concluir pairing WhatsApp PCS** — QR scan pendente
 - [ ] **Consolidar financeiro MIA** — aguardando romaneio para cruzar com comprovantes
 - [ ] **Incorporar checklist cliente Casa 7 na página principal** — após estabilizar rota/domínio
-- [ ] **Descobrir rota financeira Teatro Suzano no Sienge** — mapear endpoint válido para obra `1354`
+- [ ] **Lançar orçamento Teatro Suzano no Sienge** — integração desbloqueada (2026-04-25), mas planilha com valores placeholder; orçamento real precisa ser inserido no Sienge
 - [ ] **Popular memória documental MENSURA/MIA/PCS** — estruturar `apresentacao.md`, `ficha-cadastral.md`, `dados-institucionais.md`
 
 ---

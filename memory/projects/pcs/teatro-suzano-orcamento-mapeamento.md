@@ -1,6 +1,6 @@
 # Teatro Suzano — Mapeamento do Módulo Orçamento (Sienge)
 
-_Atualizado em 2026-04-24_
+_Atualizado em 2026-04-25_
 
 ## Identificação
 
@@ -14,12 +14,12 @@ _Atualizado em 2026-04-24_
 
 ## Endpoints mapeados
 
-| Endpoint | Status | Recurso necessário |
+| Endpoint | Status | Observação |
 |---|---|---|
-| `GET /building-cost-estimations/{id}/sheets` | ❌ 403 | `building-cost-estimations-v1` |
-| `GET /building-cost-estimations/{id}/sheets/{unitId}/items` | ❌ 403 | `building-cost-estimations-v1` |
-| `GET /building-cost-estimations/{id}/resources` | ✅ OK | (já liberado) |
-| `GET /building-cost-estimations/{id}/cost-estimate-resources` | ❌ 403 | `building-cost-estimation-cost-estimate-resources-v1` |
+| `GET /building-cost-estimations/{id}/sheets` | ✅ 200 | 1 planilha: "TEATRO MUNICÍPIO DE SUZANO" (UNLOCKED) |
+| `GET /building-cost-estimations/{id}/sheets/{unitId}/items` | ✅ 200 | 5 itens — valores placeholder (R$0,00 / R$1,00) |
+| `GET /building-cost-estimations/{id}/resources` | ✅ 200 | 5.227 insumos cadastrados |
+| `GET /building-cost-estimations/{id}/cost-estimate-resources` | ✅ 200 | 0 registros — orçamento não lançado |
 
 ### O que cada endpoint retorna
 
@@ -35,11 +35,11 @@ Total de insumos cadastrados: **5.227**
 - LABOR: ~3%
 - EQUIPMENT: ~1%
 
-## Para destravar o orçamento completo
+## Status da integração (2026-04-25)
 
-Acessar Sienge → **Gerenciamento de API** → usuário `pcsservices-project` → habilitar:
-1. `building-cost-estimations-v1` → libera `/sheets` e `/sheets/{id}/items` (valores reais do orçamento)
-2. `building-cost-estimation-cost-estimate-resources-v1` → libera insumos orçados com preços
+✅ **Integração desbloqueada** — permissões `building-cost-estimations-v1` e `building-cost-estimation-cost-estimate-resources-v1` habilitadas no Sienge.
+
+⚠️ **Orçamento não lançado** — a planilha existe no Sienge mas os itens têm valores placeholder (R$0,00). O orçamento real precisa ser inserido manualmente no Sienge antes de qualquer extração útil de dados.
 
 ## Código de integração
 
