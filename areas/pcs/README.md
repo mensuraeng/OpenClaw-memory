@@ -1,22 +1,53 @@
-# Área PCS
+# Mapa — Área PCS Engenharia
 
-Frente operacional da PCS.
+_Atualizado: 2026-04-25_
 
-## Para que serve
+## Propósito
+Obras públicas, licitações, contratos técnicos e capacidade operacional real. Foco em engenharia integradora com governança e previsibilidade.
 
-Esta pasta concentra contexto vivo, materiais recorrentes e base operacional da PCS.
-A PCS deve ser tratada como frente prioritária de engenharia e obras com foco em obras públicas, licitações, contratos técnicos e capacidade operacional real.
+## Tese central
+"Engenharia integradora com foco em obras públicas e licitações, combinando planejamento, controle e execução com governança, previsibilidade e capacidade operacional real."
 
-## Subpastas recomendadas
+## Estrutura de arquivos
 
-- `contexto/` → identidade, tese, linguagem e enquadramento institucional
-- `comercial/` → proposta de valor, argumentos, materiais de venda e narrativa
-- `portfolios/` → provas operacionais, obras, contratos e casos
-- `restauro/` → frente especializada PCS Restauro, sem romper a unidade da marca principal
-- `operacao/` → checklists, cadências, contratos, governança e rotinas recorrentes
+### `areas/pcs/` (operação viva)
+| Path | Conteúdo |
+|---|---|
+| `comercial/base-comercial.md` | Base comercial — proposta de valor, argumentos |
+| `contexto/` | Identidade, tese, linguagem institucional |
+| `restauro/` | Frente PCS Restauro |
+| `operacao/` | Checklists, contratos, governança |
 
-## Regras
+### `memory/projects/pcs/` (contexto permanente)
+| Arquivo | Conteúdo |
+|---|---|
+| `dados-institucionais.md` | Dados institucionais PCS |
+| `cadastro-base-pcs.md` | Cadastro base para propostas/contratos |
+| `ficha-cadastral.md` | Ficha cadastral completa |
+| `identidade-visual.md` | Identidade visual PCS |
+| `contratos-e-lastro.md` | Contratos ativos e lastro operacional |
+| `estado-operacional.md` | Estado operacional atual |
+| `obras-e-centros-de-custo-sienge.md` | Base PCS↔Sienge (fonte primária) |
+| `teatro-suzano-orcamento-mapeamento.md` | Teatro Suzano — orçamento |
+| `teatro-suzano-pedidos-compra.md` | Teatro Suzano — pedidos de compra |
+| `documentos-index.md` | Índice de documentos |
 
-- decisão permanente não fica aqui, vai para `memory/context/`
-- projeto com início e fim definidos vai para `/projects`
-- esta pasta deve refletir a operação viva da PCS, não virar arquivo morto
+## Agente responsável
+`pcs` — canal: Grupo PCS, tópico 1
+Skill: `pcs-autopilot`
+
+## Obras em andamento
+| Obra | Status | Referência |
+|---|---|---|
+| Teatro Suzano | Em mapeamento | `teatro-suzano-orcamento-mapeamento.md` |
+| SPTrans (CPA) | Aguardando 1ª OS | `contratos-e-lastro.md` seção 4 |
+
+## Integrações
+- **Sienge:** obras e centros de custo — `obras-e-centros-de-custo-sienge.md`
+- **M365:** tenant configurado + 14 modelos de contrato indexados no agente jurídico
+
+## Pendências PCS
+- [ ] Classificar base Sienge: obra executável / centro de custo admin / ambíguo
+- [ ] Calibrar triagem inbox antes de desligar dry-run
+- [ ] SPTrans: criar alertas D+10 e D+30 após 1ª OS
+- [ ] Descobrir rota financeira Teatro Suzano (obra `1354`) no Sienge
