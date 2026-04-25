@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const PUBLIC_ROUTES = new Set(["/login"]);
-const PUBLIC_API_PREFIXES = ["/api/auth/", "/api/health", "/api/linkedin/callback"];
+const PUBLIC_API_PREFIXES = ["/api/auth/", "/api/health", "/api/linkedin/callback", "/api/tasks/reconcile"];
 
 function timingSafeCompare(a: string, b: string): boolean {
   if (!a || !b) return false;
