@@ -38,10 +38,11 @@ def _load_config():
 
 _hs_cfg, _pb_cfg, _oc_cfg = _load_config()
 
-HUBSPOT_TOKEN  = _hs_cfg["accessToken"]
-PHANTOM_KEY    = _pb_cfg["apiKey"]
-TELEGRAM_TOKEN = _oc_cfg["channels"]["telegram"]["botToken"]
-TELEGRAM_CHAT  = _oc_cfg["channels"]["telegram"]["allowFrom"][0]
+HUBSPOT_TOKEN    = _hs_cfg["accessToken"]
+PHANTOM_KEY      = _pb_cfg["apiKey"]
+TELEGRAM_TOKEN   = _oc_cfg["channels"]["telegram"]["botToken"]
+TELEGRAM_CHAT    = "-1003366344184"  # Grupo Mensura
+TELEGRAM_TOPIC   = 1                 # Tópico principal Mensura
 
 PHANTOM_AGENTS = _pb_cfg["agents"]
 
