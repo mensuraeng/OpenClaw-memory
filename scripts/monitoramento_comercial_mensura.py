@@ -42,7 +42,7 @@ HUBSPOT_TOKEN    = _hs_cfg["accessToken"]
 PHANTOM_KEY      = _pb_cfg["apiKey"]
 TELEGRAM_TOKEN   = _oc_cfg["channels"]["telegram"]["botToken"]
 TELEGRAM_CHAT    = "-1003366344184"  # Grupo Mensura
-TELEGRAM_TOPIC   = 1                 # Tópico principal Mensura
+TELEGRAM_TOPIC   = 43               # Tópico MKT
 
 PHANTOM_AGENTS = _pb_cfg["agents"]
 
@@ -99,6 +99,7 @@ def telegram_send(html: str):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     data = json.dumps({
         "chat_id": TELEGRAM_CHAT,
+        "message_thread_id": TELEGRAM_TOPIC,
         "text": html,
         "parse_mode": "HTML",
         "disable_web_page_preview": True,
