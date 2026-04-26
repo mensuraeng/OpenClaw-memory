@@ -661,6 +661,179 @@ def cmd_repair_date_fields(args):
     else:
         print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
 
+
+def cmd_analytics_universe(args):
+    sql = """
+    with latest as (
+      select distinct on (sv.project_id)
+        sv.id schedule_version_id, sv.project_id, p.code project_code, p.name project_name,
+        sv.version_label, sv.data_date
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+    ), q as (
+      select
+        l.project_id, l.project_code, l.project_name, l.version_label, l.data_date,
+        count(av.id) activities,
+        count(*) filter (where av.current_finish is not null) current_finish_count,
+        count(*) filter (where av.percent_complete is not null) percent_count,
+        count(*) filter (where av.is_critical is not null) critical_flag_count,
+        count(*) filter (where av.baseline_finish is not null) baseline_finish_count,
+        count(*) filter (where av.is_critical is true) critical_total,
+        max(av.current_finish) max_current_finish,
+        max(av.baseline_finish) max_baseline_finish
+      from latest l
+      join schedule.activity_versions av on av.schedule_version_id = l.schedule_version_id
+      group by l.project_id, l.project_code, l.project_name, l.version_label, l.data_date
+    ), scored as (
+      select *,
+        round(100 * current_finish_count::numeric / nullif(activities,0), 2) current_finish_coverage,
+        round(100 * percent_count::numeric / nullif(activities,0), 2) percent_coverage,
+        round(100 * critical_flag_count::numeric / nullif(activities,0), 2) critical_flag_coverage,
+        round(100 * baseline_finish_count::numeric / nullif(activities,0), 2) baseline_finish_coverage,
+        case when project_code ~* '(^|_)TESTE($|_)|OBRA_MODELO|MODELO|TEMPLATE|SCHDULE|ARQUIVOS_AUXILIARES' then true else false end is_model_or_auxiliary
+      from q
+    )
+    select
+      project_code,
+      project_name,
+      version_label,
+      data_date,
+      activities,
+      critical_total,
+      current_finish_coverage,
+      baseline_finish_coverage,
+      (max_current_finish - max_baseline_finish) delay_vs_baseline,
+      case
+        when is_model_or_auxiliary then 'exclude'
+        when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'predictive'
+        when current_finish_coverage >= 95 then 'control_only'
+        else 'blocked'
+      end as universe_status,
+      case
+        when is_model_or_auxiliary then 'modelo/auxiliar/teste; excluir do universo analítico'
+        when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'apto para risk-report, baseline compare e forecast inicial'
+        when current_finish_coverage >= 95 then 'apto para controle; baseline insuficiente para previsão robusta'
+        else 'bloqueado por qualidade de datas'
+      end as note
+    from scored
+    where (%s is false or not is_model_or_auxiliary)
+    order by case
+        when is_model_or_auxiliary then 4
+        when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 1
+        when current_finish_coverage >= 95 then 2
+        else 3 end,
+      coalesce((max_current_finish - max_baseline_finish),0) desc, project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.analytics_only, args.limit))
+        print_rows(cur.fetchall(), ["project", "name", "version", "data_date", "activities", "critical", "current_finish_cov", "baseline_cov", "delay_vs_baseline", "universe_status", "note"], args.json)
+
+
+def cmd_forecast_initial(args):
+    base_sql = """
+    with m as (
+      select m.*, p.contract_finish_date,
+        case when p.code ~* '(^|_)TESTE($|_)|OBRA_MODELO|MODELO|TEMPLATE|SCHDULE|ARQUIVOS_AUXILIARES' then true else false end is_model_or_auxiliary
+      from analytics.v_project_schedule_metrics_current m
+      join schedule.projects p on p.id = m.project_id
+    ), f as (
+      select
+        project_id,
+        project_code,
+        data_date,
+        max_current_finish predicted_finish_date,
+        greatest(coalesce(projected_delay_days_vs_baseline, 0), 0)::numeric expected_delay_days,
+        case
+          when projected_delay_days_vs_baseline is null then null
+          when projected_delay_days_vs_baseline <= 0 then 0.15
+          when projected_delay_days_vs_baseline <= 15 then 0.45
+          when projected_delay_days_vs_baseline <= 30 then 0.65
+          when projected_delay_days_vs_baseline <= 60 then 0.80
+          else 0.90
+        end::numeric p_finish_after_contract,
+        jsonb_build_array(
+          jsonb_build_object('driver','projected_delay_days_vs_baseline','value',projected_delay_days_vs_baseline),
+          jsonb_build_object('driver','critical_open','value',critical_open),
+          jsonb_build_object('driver','critical_overdue','value',critical_overdue),
+          jsonb_build_object('driver','avg_percent_complete','value',round(avg_percent_complete::numeric,2))
+        ) drivers,
+        jsonb_build_object(
+          'version_label', version_label,
+          'activities_total', activities_total,
+          'critical_total', critical_total,
+          'critical_open', critical_open,
+          'critical_overdue', critical_overdue,
+          'activities_overdue', activities_overdue,
+          'avg_percent_complete', round(avg_percent_complete::numeric,2),
+          'max_current_finish', max_current_finish,
+          'max_baseline_finish', max_baseline_finish,
+          'projected_delay_days_vs_baseline', projected_delay_days_vs_baseline
+        ) feature_snapshot
+      from m
+      where not is_model_or_auxiliary
+        and max_current_finish is not null
+        and max_baseline_finish is not null
+    )
+    """
+    preview_sql = base_sql + """
+    select project_code, data_date, predicted_finish_date, expected_delay_days, p_finish_after_contract, drivers
+    from f
+    order by expected_delay_days desc nulls last, project_code
+    limit %s;
+    """
+    insert_sql = base_sql + """
+    insert into analytics.forecasts (
+      project_id, forecast_date, forecast_type, model_name, model_version, horizon_days,
+      predicted_finish_date, p_finish_after_contract, expected_delay_days, p50_delay_days, p80_delay_days, p95_delay_days,
+      drivers, input_feature_snapshot
+    )
+    select
+      f.project_id,
+      current_date,
+      'project_finish',
+      'heuristic_schedule_delay',
+      'v0.1',
+      180,
+      f.predicted_finish_date,
+      f.p_finish_after_contract,
+      f.expected_delay_days,
+      f.expected_delay_days,
+      round((f.expected_delay_days * 1.25)::numeric, 2),
+      round((f.expected_delay_days * 1.60)::numeric, 2),
+      f.drivers,
+      f.feature_snapshot
+    from f
+    where not exists (
+      select 1 from analytics.forecasts af
+      where af.project_id = f.project_id
+        and af.forecast_date = current_date
+        and af.forecast_type = 'project_finish'
+        and af.model_name = 'heuristic_schedule_delay'
+        and af.model_version = 'v0.1'
+    );
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        inserted = None
+        if args.execute:
+            cur.execute(insert_sql)
+            inserted = cur.rowcount
+            conn.commit()
+        cur.execute(preview_sql, (args.limit,))
+        rows = cur.fetchall()
+        if args.json:
+            payload = {
+                "mode": "execute" if args.execute else "preview",
+                "inserted": inserted,
+                "rows": [dict(zip(["project", "data_date", "predicted_finish", "expected_delay_days", "p_finish_after_contract", "drivers"], r)) for r in rows]
+            }
+            print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
+        else:
+            if inserted is not None:
+                print(f"inserted={inserted}")
+            print_rows(rows, ["project", "data_date", "predicted_finish", "expected_delay_days", "p_finish_after_contract", "drivers"], False)
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -892,6 +1065,19 @@ def build_parser():
     s.add_argument("--limit", type=int, default=200000)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_repair_date_fields)
+
+
+    s = sub.add_parser("analytics-universe", help="Lista universo analítico filtrando modelos/auxiliares")
+    s.add_argument("--analytics-only", action="store_true")
+    s.add_argument("--limit", type=int, default=80)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_analytics_universe)
+
+    s = sub.add_parser("forecast-initial", help="Preview/insere forecast heurístico inicial de término por projeto")
+    s.add_argument("--execute", action="store_true")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_forecast_initial)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)

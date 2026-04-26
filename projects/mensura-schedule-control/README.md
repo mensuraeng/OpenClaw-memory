@@ -61,12 +61,14 @@ Comandos principais:
 ./bin/mensura-schedule critical-summary --limit 20
 ./bin/mensura-schedule quality-report
 ./bin/mensura-schedule data-readiness
+./bin/mensura-schedule analytics-universe --analytics-only
 ./bin/mensura-schedule project-classify
 ./bin/mensura-schedule risk-report
 ./bin/mensura-schedule baseline-discovery --only-candidates
 ./bin/mensura-schedule baseline-compare
 ./bin/mensura-schedule weekly-metrics-preview
 ./bin/mensura-schedule populate-weekly-metrics --execute
+./bin/mensura-schedule forecast-initial --execute
 ./bin/mensura-schedule repair-date-fields --execute
 ./bin/mensura-schedule audit-orphans
 ./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
