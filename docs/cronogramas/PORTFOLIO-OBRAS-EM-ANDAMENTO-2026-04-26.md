@@ -16,7 +16,7 @@ Não entram no relatório executivo:
 - modelos, testes ou arquivos auxiliares;
 - centros administrativos;
 - registros PCS sem confirmação de obra física ativa;
-- exclusões operacionais definidas pelo Alê: `DOPPIO`, `MELICITA`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR`, `CCN_BIOMA`.
+- exclusões operacionais definidas pelo Alê: `DOPPIO`, `MELICITA`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR`, `CCN_BIOMA`, `DF345_DIOGO_DE_FARIA`.
 
 Regra específica: `MELICITA` e `MELICITA_R1` representam a mesma obra; manter `MELICITA_R1` como referência válida e desconsiderar `MELICITA` no relatório executivo.
 
@@ -28,7 +28,6 @@ Fonte: Supabase `mensura-schedule-control`, comando `mensura-schedule executive-
 
 | Projeto | Empresa | Risco | Término atual | Atraso esperado | Críticas abertas | Status |
 |---|---|---:|---:|---:|---:|---|
-| DF345_DIOGO_DE_FARIA | Mensura | CRÍTICO | 2026-09-15 | 95 dias | 56 | Em andamento |
 | P_G | Mensura | CRÍTICO | 2026-08-02 | 63 dias | 36 | Em andamento |
 | MELICITA_R1 | Mensura | CRÍTICO | 2026-08-14 | 30 dias | 103 | Em andamento |
 
@@ -36,7 +35,7 @@ Fonte: Supabase `mensura-schedule-control`, comando `mensura-schedule executive-
 
 - `P_G` corresponde a **P&G Louveira** e tem status jurídico sensível já registrado: comunicação externa exige dupla revisão do Alê.
 - `MELICITA` e `MELICITA_R1` representam a mesma obra; manter `MELICITA_R1` e excluir `MELICITA`.
-- `DOPPIO`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR` e `CCN_BIOMA` foram excluídos do relatório executivo por decisão operacional do Alê.
+- `DOPPIO`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR`, `CCN_BIOMA` e `DF345_DIOGO_DE_FARIA` foram excluídos do relatório executivo por decisão operacional do Alê.
 - `TESTE_1` foi excluído por regra de modelo/teste.
 
 ---
@@ -109,7 +108,7 @@ Estes registros existem na base PCS/Sienge, mas **não devem entrar automaticame
 
 | Empresa | Confirmados em andamento | Candidatos / validar | Observação |
 |---|---:|---:|---|
-| Mensura | 3 | 5 excluídos por decisão operacional | Coberto pelo Supabase Schedule Control |
+| Mensura | 2 | 6 excluídos por decisão operacional | Coberto pelo Supabase Schedule Control |
 | MIA | 1 | 0 | CCSP Casa 7 ativo, ainda fora do Supabase |
 | PCS | 0 confirmado | 3+ candidatos | Requer classificação Sienge/obra ativa |
 
