@@ -67,6 +67,7 @@ Comandos principais:
 ./bin/mensura-schedule baseline-compare
 ./bin/mensura-schedule weekly-metrics-preview
 ./bin/mensura-schedule populate-weekly-metrics --execute
+./bin/mensura-schedule repair-date-fields --execute
 ./bin/mensura-schedule audit-orphans
 ./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
 ./bin/mensura-schedule download-sharepoint
