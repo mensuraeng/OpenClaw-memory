@@ -209,6 +209,242 @@ def cmd_audit_orphans(args):
             print_rows(cur.fetchall(), ["status", "jobs", "first_imported_at", "last_imported_at"], args.json)
 
 
+
+def cmd_project_classify(args):
+    sql = """
+    with latest as (
+      select distinct on (sv.project_id)
+        sv.id schedule_version_id, sv.project_id, p.code project_code, p.name project_name,
+        sv.version_label, sv.data_date, sv.created_at
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+    ), metrics as (
+      select
+        l.project_id,
+        count(av.id) activities,
+        count(*) filter (where av.is_critical is true) critical,
+        round(avg(av.percent_complete) filter (where av.percent_complete is not null)::numeric, 2) avg_pct,
+        min(av.current_start) min_start,
+        max(av.current_finish) max_finish,
+        count(*) filter (where av.current_finish is null) missing_finish,
+        count(*) filter (where av.is_critical is null) missing_critical
+      from latest l
+      join schedule.activity_versions av on av.schedule_version_id = l.schedule_version_id
+      group by l.project_id
+    ), dupkey as (
+      select
+        coalesce(m.activities,0) activities,
+        coalesce(m.critical,0) critical,
+        m.min_start,
+        m.max_finish,
+        count(*) projects_same_shape
+      from latest l
+      join metrics m on m.project_id = l.project_id
+      group by coalesce(m.activities,0), coalesce(m.critical,0), m.min_start, m.max_finish
+    )
+    select
+      l.project_code,
+      l.project_name,
+      l.version_label,
+      l.data_date,
+      m.activities,
+      m.critical,
+      m.avg_pct,
+      case
+        when l.project_code ~* '(^|_)TESTE($|_)|OBRA_MODELO|MODELO|TEMPLATE|SCHDULE|ARQUIVOS_AUXILIARES' then 'exclude_model_or_auxiliary'
+        when d.projects_same_shape > 1 and l.project_code ~* 'TESTE|COPY|C[ÓO]PIA|ARQUIVOS_AUXILIARES' then 'exclude_probable_duplicate'
+        when m.activities < 20 then 'review_too_few_activities'
+        when (m.missing_finish::numeric / nullif(m.activities,0)) > 0.25 then 'review_low_date_quality'
+        when (m.missing_critical::numeric / nullif(m.activities,0)) > 0.25 then 'review_low_critical_quality'
+        else 'valid_for_analytics'
+      end as classification,
+      d.projects_same_shape,
+      m.missing_finish,
+      m.missing_critical
+    from latest l
+    join metrics m on m.project_id = l.project_id
+    join dupkey d on d.activities = coalesce(m.activities,0)
+      and d.critical = coalesce(m.critical,0)
+      and d.min_start is not distinct from m.min_start
+      and d.max_finish is not distinct from m.max_finish
+    order by classification desc, m.critical desc nulls last, l.project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        print_rows(cur.fetchall(), ["project", "name", "version", "data_date", "activities", "critical", "avg_pct", "classification", "same_shape", "missing_finish", "missing_critical"], args.json)
+
+
+def cmd_baseline_discovery(args):
+    sql = """
+    with by_version as (
+      select
+        p.code project_code,
+        sv.version_label,
+        sv.data_date,
+        sv.is_baseline_candidate,
+        count(av.id) activities,
+        count(*) filter (where av.baseline_finish is not null) baseline_finish_count,
+        count(*) filter (where av.current_finish is not null) current_finish_count,
+        max(av.baseline_finish) max_baseline_finish,
+        max(av.current_finish) max_current_finish,
+        case
+          when sv.is_baseline_candidate then 'explicit_candidate'
+          when sv.version_label ~* 'baseline|base.?line|linha.?base|lb|r0|rev.?0|original' then 'label_candidate'
+          when count(*) filter (where av.baseline_finish is not null) > 0 then 'activity_baseline_fields'
+          else 'no_baseline_signal'
+        end baseline_signal
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      join schedule.activity_versions av on av.schedule_version_id = sv.id
+      group by p.code, sv.id
+    )
+    select
+      project_code,
+      version_label,
+      data_date,
+      baseline_signal,
+      activities,
+      baseline_finish_count,
+      round(100 * baseline_finish_count::numeric / nullif(activities,0), 2) baseline_finish_coverage_pct,
+      max_baseline_finish,
+      max_current_finish,
+      (max_current_finish - max_baseline_finish) project_finish_variance_days
+    from by_version
+    where (%s is false or baseline_signal <> 'no_baseline_signal')
+    order by project_code, case baseline_signal when 'explicit_candidate' then 1 when 'label_candidate' then 2 when 'activity_baseline_fields' then 3 else 4 end, data_date
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.only_candidates, args.limit))
+        print_rows(cur.fetchall(), ["project", "version", "data_date", "baseline_signal", "activities", "baseline_finish", "coverage_pct", "max_baseline_finish", "max_current_finish", "finish_variance_days"], args.json)
+
+
+def cmd_risk_report(args):
+    sql = """
+    with q as (
+      with latest as (
+        select distinct on (sv.project_id) sv.id, sv.project_id, p.code project_code, sv.version_label, sv.data_date
+        from schedule.schedule_versions sv
+        join schedule.projects p on p.id = sv.project_id
+        order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+      )
+      select
+        l.project_id,
+        count(*) activities,
+        count(*) filter (where av.current_finish is null) missing_finish,
+        count(*) filter (where av.percent_complete is null) missing_percent,
+        count(*) filter (where av.is_critical is null) missing_critical,
+        count(*) filter (where av.current_finish < av.current_start) inverted_dates,
+        count(*) filter (where av.percent_complete < 0 or av.percent_complete > 100) invalid_percent
+      from latest l
+      join schedule.activity_versions av on av.schedule_version_id = l.id
+      group by l.project_id
+    )
+    select
+      m.project_code,
+      m.version_label,
+      m.data_date,
+      m.activities_total,
+      m.critical_total,
+      m.critical_open,
+      m.critical_overdue,
+      m.activities_overdue,
+      round(m.avg_percent_complete::numeric, 2) avg_pct,
+      m.max_current_finish,
+      m.projected_delay_days_vs_baseline,
+      round(100 * (1 - (q.missing_finish + q.missing_percent + q.missing_critical + q.inverted_dates + q.invalid_percent)::numeric / nullif(q.activities * 5, 0)), 2) quality_score,
+      (
+        coalesce(m.critical_overdue,0) * 5
+        + coalesce(m.activities_overdue,0) * 2
+        + coalesce(m.critical_open,0) * 0.5
+        + greatest(coalesce(m.projected_delay_days_vs_baseline,0),0) * 1.5
+        + greatest(85 - coalesce(round(100 * (1 - (q.missing_finish + q.missing_percent + q.missing_critical + q.inverted_dates + q.invalid_percent)::numeric / nullif(q.activities * 5, 0)), 2),85),0)
+      )::numeric(12,2) risk_score,
+      case
+        when coalesce(m.critical_overdue,0) > 0 or coalesce(m.projected_delay_days_vs_baseline,0) > 30 then 'CRITICO'
+        when coalesce(m.activities_overdue,0) > 0 or coalesce(m.critical_open,0) > 100 then 'ATENCAO'
+        when round(100 * (1 - (q.missing_finish + q.missing_percent + q.missing_critical + q.inverted_dates + q.invalid_percent)::numeric / nullif(q.activities * 5, 0)), 2) < 80 then 'DADO_FRACO'
+        else 'OK'
+      end risk_level
+    from analytics.v_project_schedule_metrics_current m
+    join q on q.project_id = m.project_id
+    order by risk_score desc nulls last, m.critical_total desc nulls last, m.project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        print_rows(cur.fetchall(), ["project", "version", "data_date", "activities", "critical", "critical_open", "critical_overdue", "activities_overdue", "avg_pct", "projected_finish", "delay_vs_baseline", "quality_score", "risk_score", "risk_level"], args.json)
+
+
+def cmd_populate_weekly_metrics(args):
+    sql = """
+    insert into analytics.project_weekly_metrics (
+      project_id, week_start, data_date, planned_percent, actual_percent,
+      critical_activities_delayed_count, negative_float_activities_count,
+      forecast_finish_date_current, delay_days_vs_contract, metrics
+    )
+    select
+      m.project_id,
+      date_trunc('week', m.data_date)::date as week_start,
+      m.data_date,
+      null::numeric as planned_percent,
+      round(m.avg_percent_complete::numeric, 2) as actual_percent,
+      m.critical_overdue::integer as critical_activities_delayed_count,
+      0::integer as negative_float_activities_count,
+      m.max_current_finish as forecast_finish_date_current,
+      case when p.contract_finish_date is not null and m.max_current_finish is not null
+        then (m.max_current_finish - p.contract_finish_date)::numeric
+        else m.projected_delay_days_vs_baseline::numeric
+      end as delay_days_vs_contract,
+      jsonb_build_object(
+        'source', 'mensura-schedule CLI populate-weekly-metrics',
+        'version_label', m.version_label,
+        'activities_total', m.activities_total,
+        'critical_total', m.critical_total,
+        'critical_open', m.critical_open,
+        'activities_overdue', m.activities_overdue,
+        'avg_finish_variance_days', m.avg_finish_variance_days,
+        'projected_delay_days_vs_baseline', m.projected_delay_days_vs_baseline
+      ) as metrics
+    from analytics.v_project_schedule_metrics_current m
+    join schedule.projects p on p.id = m.project_id
+    on conflict (project_id, week_start) do update set
+      data_date = excluded.data_date,
+      planned_percent = excluded.planned_percent,
+      actual_percent = excluded.actual_percent,
+      critical_activities_delayed_count = excluded.critical_activities_delayed_count,
+      negative_float_activities_count = excluded.negative_float_activities_count,
+      forecast_finish_date_current = excluded.forecast_finish_date_current,
+      delay_days_vs_contract = excluded.delay_days_vs_contract,
+      metrics = excluded.metrics;
+    """
+    preview_sql = """
+    select
+      m.project_code,
+      date_trunc('week', m.data_date)::date week_start,
+      m.data_date,
+      round(m.avg_percent_complete::numeric, 2) actual_percent,
+      m.critical_overdue,
+      m.max_current_finish forecast_finish_date_current,
+      m.projected_delay_days_vs_baseline
+    from analytics.v_project_schedule_metrics_current m
+    order by m.project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        if args.execute:
+            cur.execute(sql)
+            affected = cur.rowcount
+            conn.commit()
+            if args.json:
+                print(json.dumps({"mode": "execute", "upserted_or_updated": affected}, ensure_ascii=False, indent=2))
+            else:
+                print(f"upserted_or_updated={affected}")
+        cur.execute(preview_sql, (args.limit,))
+        print_rows(cur.fetchall(), ["project", "week_start", "data_date", "actual_pct", "critical_overdue", "forecast_finish", "delay_vs_baseline"], args.json)
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -403,6 +639,29 @@ def build_parser():
     s.add_argument("--limit", type=int, default=50)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_audit_orphans)
+
+
+    s = sub.add_parser("project-classify", help="Classifica projetos como válidos, modelos, duplicados prováveis ou revisão")
+    s.add_argument("--limit", type=int, default=80)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_project_classify)
+
+    s = sub.add_parser("baseline-discovery", help="Descobre sinais de baseline por versão/projeto")
+    s.add_argument("--only-candidates", action="store_true")
+    s.add_argument("--limit", type=int, default=120)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_baseline_discovery)
+
+    s = sub.add_parser("risk-report", help="Ranking executivo de risco dos cronogramas atuais")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_risk_report)
+
+    s = sub.add_parser("populate-weekly-metrics", help="Preview/upsert das métricas semanais atuais em analytics.project_weekly_metrics")
+    s.add_argument("--execute", action="store_true")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_populate_weekly_metrics)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)

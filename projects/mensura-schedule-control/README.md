@@ -51,7 +51,7 @@ Entry point:
 ./bin/mensura-schedule --help
 ```
 
-Comandos v0.1:
+Comandos principais:
 
 ```bash
 ./bin/mensura-schedule validate
@@ -60,8 +60,12 @@ Comandos v0.1:
 ./bin/mensura-schedule db-counts
 ./bin/mensura-schedule critical-summary --limit 20
 ./bin/mensura-schedule quality-report
+./bin/mensura-schedule project-classify
+./bin/mensura-schedule risk-report
+./bin/mensura-schedule baseline-discovery --only-candidates
 ./bin/mensura-schedule baseline-compare
 ./bin/mensura-schedule weekly-metrics-preview
+./bin/mensura-schedule populate-weekly-metrics --execute
 ./bin/mensura-schedule audit-orphans
 ./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
 ./bin/mensura-schedule download-sharepoint
