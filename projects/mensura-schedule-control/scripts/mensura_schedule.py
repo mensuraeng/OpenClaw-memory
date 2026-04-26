@@ -18,6 +18,7 @@ from typing import Any
 
 import psycopg2
 import requests
+from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = Path("/root/.openclaw/workspace")
@@ -194,6 +195,34 @@ def cmd_search_sharepoint(args):
             print(f"{i}. {x['name']} | {x.get('size')} | {x.get('lastModified')}\n   {x.get('webUrl')}")
 
 
+def cmd_inspect_workbooks(args):
+    manifest = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    out = []
+    for m in manifest:
+        lp = m.get("local_path")
+        if not lp or not Path(lp).exists():
+            out.append({**m, "inspection_status": "missing_local_path", "tables": []})
+            continue
+        try:
+            wb = load_workbook(lp, read_only=False, data_only=True)
+            tables = []
+            for ws in wb.worksheets:
+                for table in ws.tables.values():
+                    tables.append({"sheet": ws.title, "table": table.name, "ref": table.ref})
+            out.append({**m, "inspection_status": "ok", "sheet_count": len(wb.worksheets), "tables": tables})
+        except Exception as e:
+            out.append({**m, "inspection_status": "error", "error": str(e)[:500], "tables": []})
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    schedule = [x for x in out if any("schedule" in (t.get("table", "").lower()) for t in x.get("tables", []))]
+    print(f"inspected={len(out)} schedule_table_workbooks={len(schedule)} output={output}")
+    if args.print_schedule:
+        for i, x in enumerate(schedule[: args.print_limit], 1):
+            ts = ", ".join(f"{t['table']}@{t['sheet']}:{t['ref']}" for t in x.get("tables", []) if "schedule" in t.get("table", "").lower())
+            print(f"{i}. {x.get('name')} | {ts}")
+
+
 def cmd_download_sharepoint(args):
     token = graph_token()
     items = json.loads(Path(args.input).read_text(encoding="utf-8"))
@@ -265,6 +294,13 @@ def build_parser():
     s.add_argument("--input", default=str(ROOT / "runtime/sharepoint/search_results.json"))
     s.add_argument("--output-dir", default=str(ROOT / "runtime/sharepoint/raw"))
     s.set_defaults(func=cmd_download_sharepoint)
+
+    s = sub.add_parser("inspect-workbooks", help="Inspeciona abas/tabelas Excel baixadas")
+    s.add_argument("--input", default=str(ROOT / "runtime/sharepoint/manifest.json"))
+    s.add_argument("--output", default=str(ROOT / "runtime/sharepoint/workbook_inspection.json"))
+    s.add_argument("--print-schedule", action="store_true")
+    s.add_argument("--print-limit", type=int, default=80)
+    s.set_defaults(func=cmd_inspect_workbooks)
 
     return p
 

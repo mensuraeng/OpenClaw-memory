@@ -241,17 +241,24 @@ def main():
                 project_id = cur.fetchone()["id"]
                 file_hash = hashlib.sha256(path.read_bytes()).hexdigest()
                 data_date = (m.get("lastModified") or "")[:10] or None
+                version_label = f"sharepoint-{data_date or datetime.utcnow().date()}-{t['table']}"
+                cur.execute("""
+                    select id from schedule.schedule_versions
+                    where project_id = %s and version_label = %s
+                """, (project_id, version_label))
+                existing_version = cur.fetchone()
+                if existing_version:
+                    summary.append({"project":code,"file":m["name"],"table":t["table"],"rows":len(mapped),"status":"skipped_existing_version"})
+                    continue
                 cur.execute("""
                     insert into raw.import_jobs (project_id, source_tool, source_filename, source_uri, file_hash, imported_by, status, data_date, raw_metadata)
                     values (%s,'excel',%s,%s,%s,'flavia','validated',%s,%s)
                     returning id
                 """, (project_id, m["name"], m.get("webUrl"), file_hash, data_date, json.dumps({"local_path":str(path),"table":t,"size":m.get("size"),"lastModified":m.get("lastModified")})))
                 import_job_id = cur.fetchone()["id"]
-                version_label = f"sharepoint-{data_date or datetime.utcnow().date()}-{t['table']}"
                 cur.execute("""
                     insert into schedule.schedule_versions (project_id, import_job_id, version_label, data_date, source_tool, notes, metadata)
                     values (%s,%s,%s,%s,'excel',%s,%s)
-                    on conflict (project_id, version_label) do update set import_job_id=excluded.import_job_id, metadata=excluded.metadata
                     returning id
                 """, (project_id, import_job_id, version_label, data_date or datetime.utcnow().date(), f"Imported from {m['name']} table {t['table']}", json.dumps({"sheet":t["sheet"],"ref":t["ref"],"headers":headers})))
                 version_id = cur.fetchone()["id"]
@@ -263,26 +270,75 @@ def main():
                     values %s
                     on conflict (import_job_id, source_row_number) do nothing
                 """, source_rows, page_size=1000)
-                count=0
-                for r in mapped:
-                    src_uid = r["activity_code"] or f"row-{count+1}"
+                identity_rows = []
+                version_rows = []
+                for idx, r in enumerate(mapped, start=1):
+                    src_uid = r["activity_code"] or f"row-{idx}"
                     normalized = r["activity_name"][:500]
-                    cur.execute("""
-                        insert into schedule.activity_identities (project_id, source_activity_uid, activity_code, normalized_name, wbs_code, identity_confidence)
-                        values (%s,%s,%s,%s,%s,'high')
-                        on conflict (project_id, source_activity_uid) do update set normalized_name=excluded.normalized_name, activity_code=excluded.activity_code, wbs_code=excluded.wbs_code
-                        returning id
-                    """, (project_id, src_uid, r["activity_code"], normalized, r["wbs_code"]))
-                    aid = cur.fetchone()["id"]
-                    cur.execute("""
-                        insert into schedule.activity_versions (
-                            schedule_version_id, activity_identity_id, activity_code, activity_name, wbs_code, discipline, location,
-                            planned_duration_days, remaining_duration_days, baseline_start, baseline_finish, current_start, current_finish, actual_start, actual_finish,
-                            percent_complete, physical_percent_complete, is_critical, total_float_days, status, raw_payload
-                        ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                        on conflict (schedule_version_id, activity_identity_id) do nothing
-                    """, (version_id, aid, r["activity_code"], r["activity_name"], r["wbs_code"], r["discipline"], r["location"], r["planned_duration_days"], r["remaining_duration_days"], r["baseline_start"], r["baseline_finish"], r["current_start"], r["current_finish"], r["actual_start"], r["actual_finish"], r["percent_complete"], r["physical_percent_complete"], r["is_critical"], r["total_float_days"], r["status"], json.dumps(r["raw_payload"], default=str)))
-                    count += 1
+                    identity_rows.append((project_id, src_uid, r["activity_code"], normalized, r["wbs_code"]))
+                    version_rows.append((
+                        src_uid, r["activity_code"], r["activity_name"], r["wbs_code"], r["discipline"], r["location"],
+                        r["planned_duration_days"], r["remaining_duration_days"], r["baseline_start"], r["baseline_finish"],
+                        r["current_start"], r["current_finish"], r["actual_start"], r["actual_finish"], r["percent_complete"],
+                        r["physical_percent_complete"], r["is_critical"], r["total_float_days"], r["status"], json.dumps(r["raw_payload"], default=str)
+                    ))
+                psycopg2.extras.execute_values(cur, """
+                    insert into schedule.activity_identities (project_id, source_activity_uid, activity_code, normalized_name, wbs_code, identity_confidence)
+                    values %s
+                    on conflict (project_id, source_activity_uid) do update
+                    set normalized_name=excluded.normalized_name,
+                        activity_code=excluded.activity_code,
+                        wbs_code=excluded.wbs_code
+                """, identity_rows, template="(%s,%s,%s,%s,%s,'high')", page_size=1000)
+                cur.execute("""
+                    create temp table if not exists tmp_activity_versions_import (
+                        source_activity_uid text,
+                        activity_code text,
+                        activity_name text,
+                        wbs_code text,
+                        discipline text,
+                        location text,
+                        planned_duration_days numeric,
+                        remaining_duration_days numeric,
+                        baseline_start date,
+                        baseline_finish date,
+                        current_start date,
+                        current_finish date,
+                        actual_start date,
+                        actual_finish date,
+                        percent_complete numeric,
+                        physical_percent_complete numeric,
+                        is_critical boolean,
+                        total_float_days numeric,
+                        status text,
+                        raw_payload jsonb
+                    ) on commit drop
+                """)
+                cur.execute("truncate tmp_activity_versions_import")
+                psycopg2.extras.execute_values(cur, """
+                    insert into tmp_activity_versions_import (
+                        source_activity_uid, activity_code, activity_name, wbs_code, discipline, location,
+                        planned_duration_days, remaining_duration_days, baseline_start, baseline_finish, current_start, current_finish,
+                        actual_start, actual_finish, percent_complete, physical_percent_complete, is_critical, total_float_days, status, raw_payload
+                    ) values %s
+                """, version_rows, page_size=1000)
+                cur.execute("""
+                    insert into schedule.activity_versions (
+                        schedule_version_id, activity_identity_id, activity_code, activity_name, wbs_code, discipline, location,
+                        planned_duration_days, remaining_duration_days, baseline_start, baseline_finish, current_start, current_finish, actual_start, actual_finish,
+                        percent_complete, physical_percent_complete, is_critical, total_float_days, status, raw_payload
+                    )
+                    select
+                        %s, ai.id, tmp.activity_code, tmp.activity_name, tmp.wbs_code, tmp.discipline, tmp.location,
+                        tmp.planned_duration_days, tmp.remaining_duration_days, tmp.baseline_start, tmp.baseline_finish,
+                        tmp.current_start, tmp.current_finish, tmp.actual_start, tmp.actual_finish,
+                        tmp.percent_complete, tmp.physical_percent_complete, tmp.is_critical, tmp.total_float_days, tmp.status, tmp.raw_payload
+                    from tmp_activity_versions_import tmp
+                    join schedule.activity_identities ai
+                      on ai.project_id = %s
+                     and ai.source_activity_uid = tmp.source_activity_uid
+                    on conflict (schedule_version_id, activity_identity_id) do nothing
+                """, (version_id, project_id))
                 summary.append({"project":code,"file":m["name"],"table":t["table"],"rows":len(mapped)})
         conn.commit()
     except Exception:

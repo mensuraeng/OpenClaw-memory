@@ -61,6 +61,7 @@ Comandos v0.1:
 ./bin/mensura-schedule critical-summary --limit 20
 ./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
 ./bin/mensura-schedule download-sharepoint
+./bin/mensura-schedule inspect-workbooks --print-schedule
 ./bin/mensura-schedule ingest-sharepoint --dry-run
 ./bin/mensura-schedule ingest-sharepoint
 ```
