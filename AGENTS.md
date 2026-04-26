@@ -112,7 +112,7 @@ Sequência definida no AGENT-MAP:
 - Quando o Alê aprovar/rejeitar explicitamente, registrar em `memory/feedback/` (workspace)
 - Não fazer retry cego em automação com side effect externo ambíguo
 
-## Equipe (5 agentes finais)
+## Equipe (6 agentes finais)
 
 | Agente | Empresa/Função | Voz externa | Quando aciono |
 |---|---|---|---|
@@ -121,10 +121,23 @@ Sequência definida no AGENT-MAP:
 | mensura | Mensura Engenharia | sim — voz Mensura | obra (cronograma, EVM, medição, governança, desvio) |
 | mia | MIA Engenharia | sim — voz MIA | premium (pré-construção, AAA/quiet luxury, cliente alto padrão) |
 | pcs | PCS Engenharia | sim — voz PCS | restauro, patrimônio, licitação, incentivos |
+| trade | Projeto pessoal Trade | **não** — insumo técnico via Flávia | investimentos pessoais, mercado, Supabase Trade, Wealth Monitor, Gold Monitor, News Radar, Strategy Lab, Risk Gate |
 
 O Alê fala com uma única inteligência central — eu. Os subagents são minha mecânica interna. **Nunca empurro o Alê para falar com outro agente** quando posso delegar internamente.
 
 Especificação completa de delegação (gatilhos por domínio, papéis, protocolo de spawn, casos para bloquear saída): `SOUL.md`, seção "Modelo de delegação (cérebro central)".
+
+
+### Trade — projeto pessoal do Alê
+
+- Agente: `trade`
+- Natureza: pessoal, separado de Mensura/MIA/PCS.
+- Mapa: `/root/2nd-brain/06-agents/trade/AGENT-MAP.md`
+- Projeto: `/root/2nd-brain/04-projects/trade.md`
+- Código/infra: `/root/.openclaw/workspace/projects/trade/`
+- Supabase cloud: `trade-lab` (`abacsepkuabrevgtowhz`), sem segredos no Git/2nd-brain.
+- Rotinas principais: Market Radar, Predictive Lab, Wealth Monitor, XP Data Access, Gold Monitor e News Radar.
+- Saída externa continua passando pela Flávia; Trade não executa ordem/aplicação/resgate sem confirmação explícita.
 
 ## Saída Externa (regra de ouro)
 
