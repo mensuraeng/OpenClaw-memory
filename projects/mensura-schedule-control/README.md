@@ -62,6 +62,7 @@ Comandos principais:
 ./bin/mensura-schedule quality-report
 ./bin/mensura-schedule data-readiness
 ./bin/mensura-schedule analytics-universe --analytics-only
+./bin/mensura-schedule executive-risk-report
 ./bin/mensura-schedule project-classify
 ./bin/mensura-schedule risk-report
 ./bin/mensura-schedule baseline-discovery --only-candidates

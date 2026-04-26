@@ -834,6 +834,118 @@ def cmd_forecast_initial(args):
                 print(f"inserted={inserted}")
             print_rows(rows, ["project", "data_date", "predicted_finish", "expected_delay_days", "p_finish_after_contract", "drivers"], False)
 
+
+def cmd_executive_risk_report(args):
+    sql = """
+    with latest_forecasts as (
+      select distinct on (project_id)
+        project_id,
+        forecast_date,
+        predicted_finish_date,
+        expected_delay_days,
+        p_finish_after_contract,
+        p80_delay_days,
+        p95_delay_days
+      from analytics.forecasts
+      where forecast_type='project_finish'
+        and model_name='heuristic_schedule_delay'
+        and model_version='v0.1'
+      order by project_id, forecast_date desc, created_at desc
+    ), universe as (
+      select m.*, p.contract_finish_date,
+        case when m.project_code ~* '(^|_)TESTE($|_)|OBRA_MODELO|MODELO|TEMPLATE|SCHDULE|ARQUIVOS_AUXILIARES' then true else false end is_model_or_auxiliary
+      from analytics.v_project_schedule_metrics_current m
+      join schedule.projects p on p.id = m.project_id
+    ), risk as (
+      select
+        u.project_id,
+        u.project_code,
+        u.project_name,
+        u.version_label,
+        u.data_date,
+        u.activities_total,
+        u.critical_total,
+        u.critical_open,
+        u.critical_overdue,
+        u.activities_overdue,
+        round(u.avg_percent_complete::numeric, 2) avg_percent_complete,
+        u.max_current_finish,
+        u.max_baseline_finish,
+        u.projected_delay_days_vs_baseline,
+        lf.predicted_finish_date,
+        lf.expected_delay_days,
+        lf.p_finish_after_contract,
+        lf.p80_delay_days,
+        lf.p95_delay_days,
+        case
+          when u.is_model_or_auxiliary then 'EXCLUIR'
+          when coalesce(lf.expected_delay_days,0) >= 60 or coalesce(u.critical_overdue,0) > 0 then 'CRITICO'
+          when coalesce(lf.expected_delay_days,0) >= 30 or coalesce(u.critical_open,0) >= 100 then 'ALTO'
+          when coalesce(lf.expected_delay_days,0) >= 15 or coalesce(u.critical_open,0) >= 50 then 'MEDIO'
+          else 'BAIXO'
+        end as executive_risk,
+        (
+          greatest(coalesce(lf.expected_delay_days,0),0) * 2
+          + coalesce(u.critical_overdue,0) * 10
+          + coalesce(u.critical_open,0) * 0.5
+          + coalesce(u.activities_overdue,0) * 2
+        )::numeric(12,2) executive_score
+      from universe u
+      left join latest_forecasts lf on lf.project_id = u.project_id
+      where not u.is_model_or_auxiliary
+    )
+    select
+      project_code,
+      version_label,
+      data_date,
+      activities_total,
+      critical_total,
+      critical_open,
+      critical_overdue,
+      avg_percent_complete,
+      max_baseline_finish,
+      max_current_finish,
+      projected_delay_days_vs_baseline,
+      predicted_finish_date,
+      expected_delay_days,
+      p_finish_after_contract,
+      p80_delay_days,
+      p95_delay_days,
+      executive_risk,
+      executive_score,
+      case
+        when executive_risk='CRITICO' then 'Revisão executiva imediata: validar baseline, caminho crítico e plano de recuperação.'
+        when executive_risk='ALTO' then 'Abrir análise de frente/WBS e confirmar mitigação de críticas abertas.'
+        when executive_risk='MEDIO' then 'Monitorar semanalmente e exigir explicação para variação de término.'
+        else 'Acompanhar em rotina normal.'
+      end as recommended_action
+    from risk
+    order by executive_score desc nulls last, expected_delay_days desc nulls last, critical_open desc nulls last
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        rows = cur.fetchall()
+    headers = ["project", "version", "data_date", "activities", "critical", "critical_open", "critical_overdue", "avg_pct", "baseline_finish", "current_finish", "delay_vs_baseline", "predicted_finish", "expected_delay_days", "p_finish_after_contract", "p80_delay", "p95_delay", "risk", "score", "recommended_action"]
+    if args.json:
+        print(json.dumps([dict(zip(headers, r)) for r in rows], ensure_ascii=False, indent=2, default=str))
+        return
+    print("# Mensura Schedule Control — Relatório Executivo de Risco")
+    print("")
+    print(f"Projetos no relatório: {len(rows)}")
+    print("")
+    for i, r in enumerate(rows, 1):
+        d = dict(zip(headers, r))
+        print(f"## {i}. {d['project']} — {d['risk']}")
+        print(f"- Versão/data-base: {d['version']} / {d['data_date']}")
+        print(f"- Atividades: {d['activities']} | Críticas: {d['critical']} | Críticas abertas: {d['critical_open']} | Críticas atrasadas: {d['critical_overdue']}")
+        print(f"- Avanço médio: {d['avg_pct']}%")
+        print(f"- Baseline finish: {d['baseline_finish']} | Current finish: {d['current_finish']} | Delay vs baseline: {d['delay_vs_baseline']} dias")
+        print(f"- Forecast finish: {d['predicted_finish']} | Atraso esperado: {d['expected_delay_days']} dias | P(atraso): {d['p_finish_after_contract']}")
+        print(f"- P80/P95 delay: {d['p80_delay']} / {d['p95_delay']} dias")
+        print(f"- Ação: {d['recommended_action']}")
+        print("")
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -1078,6 +1190,12 @@ def build_parser():
     s.add_argument("--limit", type=int, default=50)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_forecast_initial)
+
+
+    s = sub.add_parser("executive-risk-report", help="Relatório executivo de risco filtrado por universo analítico e forecast")
+    s.add_argument("--limit", type=int, default=20)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_executive_risk_report)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)
