@@ -30,6 +30,19 @@ A identidade permanente da atividade fica em `schedule.activity_identities`; o e
 
 `supabase/migrations/20260426144000_schedule_predictive_foundation.sql`
 
+## Supabase cloud
+
+Projeto cloud separado criado para não misturar cronogramas/obras com o projeto pessoal Trade:
+
+- Nome: `mensura-schedule-control`
+- Ref: `ckmuyvbacgdidmiccvif`
+- Região: `sa-east-1`
+- Dashboard: `https://supabase.com/dashboard/project/ckmuyvbacgdidmiccvif`
+
+Credenciais ficam somente em arquivo local ignorado pelo Git:
+
+`/root/.openclaw/workspace/memory/context/mensura_schedule_supabase.env`
+
 ## Documento de arquitetura
 
 `/root/.openclaw/workspace/docs/cronogramas/SUPABASE-CRONOGRAMA-PREDITIVO-v0.1.md`
