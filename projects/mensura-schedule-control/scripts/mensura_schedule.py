@@ -307,7 +307,7 @@ def cmd_baseline_discovery(args):
       baseline_signal,
       activities,
       baseline_finish_count,
-      round(100 * baseline_finish_count::numeric / nullif(activities,0), 2) baseline_finish_coverage_pct,
+      round(100 * q.baseline_finish_count::numeric / nullif(q.activities,0), 2) baseline_finish_coverage_pct,
       max_baseline_finish,
       max_current_finish,
       (max_current_finish - max_baseline_finish) project_finish_variance_days
@@ -444,6 +444,122 @@ def cmd_populate_weekly_metrics(args):
                 print(f"upserted_or_updated={affected}")
         cur.execute(preview_sql, (args.limit,))
         print_rows(cur.fetchall(), ["project", "week_start", "data_date", "actual_pct", "critical_overdue", "forecast_finish", "delay_vs_baseline"], args.json)
+
+
+def cmd_data_readiness(args):
+    sql = """
+    with latest as (
+      select distinct on (sv.project_id)
+        sv.id schedule_version_id, sv.project_id, p.code project_code, p.name project_name,
+        sv.version_label, sv.data_date, sv.created_at
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+    ), q as (
+      select
+        l.project_id,
+        l.project_code,
+        l.project_name,
+        l.version_label,
+        l.data_date,
+        count(av.id) activities,
+        count(*) filter (where av.current_start is not null) current_start_count,
+        count(*) filter (where av.current_finish is not null) current_finish_count,
+        count(*) filter (where av.percent_complete is not null) percent_count,
+        count(*) filter (where av.is_critical is not null) critical_flag_count,
+        count(*) filter (where av.baseline_finish is not null) baseline_finish_count,
+        count(*) filter (where av.is_critical is true) critical_total,
+        count(*) filter (where av.is_critical is true and av.actual_finish is null and coalesce(av.percent_complete,0) < 100) critical_open,
+        count(*) filter (where av.current_finish < av.current_start) inverted_dates,
+        count(*) filter (where av.percent_complete < 0 or av.percent_complete > 100) invalid_percent,
+        max(av.current_finish) max_current_finish,
+        max(av.baseline_finish) max_baseline_finish
+      from latest l
+      join schedule.activity_versions av on av.schedule_version_id = l.schedule_version_id
+      group by l.project_id, l.project_code, l.project_name, l.version_label, l.data_date
+    ), shape as (
+      select activities, critical_total, max_current_finish, count(*) same_shape_projects
+      from q
+      group by activities, critical_total, max_current_finish
+    ), scored as (
+      select
+        q.*,
+        round(100 * q.current_start_count::numeric / nullif(q.activities,0), 2) current_start_coverage,
+        round(100 * q.current_finish_count::numeric / nullif(q.activities,0), 2) current_finish_coverage,
+        round(100 * q.percent_count::numeric / nullif(q.activities,0), 2) percent_coverage,
+        round(100 * q.critical_flag_count::numeric / nullif(q.activities,0), 2) critical_flag_coverage,
+        round(100 * q.baseline_finish_count::numeric / nullif(q.activities,0), 2) baseline_finish_coverage,
+        s.same_shape_projects,
+        case
+          when q.project_code ~* '(^|_)TESTE($|_)|OBRA_MODELO|MODELO|TEMPLATE|SCHDULE|ARQUIVOS_AUXILIARES' then true
+          else false
+        end is_model_or_auxiliary,
+        (
+          least(round(100 * q.current_finish_count::numeric / nullif(q.activities,0), 2),100) * 0.30
+          + least(round(100 * q.percent_count::numeric / nullif(q.activities,0), 2),100) * 0.20
+          + least(round(100 * q.critical_flag_count::numeric / nullif(q.activities,0), 2),100) * 0.20
+          + least(round(100 * q.baseline_finish_count::numeric / nullif(q.activities,0), 2),100) * 0.20
+          + case when q.inverted_dates = 0 and q.invalid_percent = 0 then 10 else 0 end
+        )::numeric(8,2) readiness_score
+      from q
+      join shape s on s.activities = q.activities
+        and s.critical_total = q.critical_total
+        and s.max_current_finish is not distinct from q.max_current_finish
+    )
+    select
+      project_code,
+      version_label,
+      data_date,
+      activities,
+      critical_total,
+      critical_open,
+      current_finish_coverage,
+      percent_coverage,
+      critical_flag_coverage,
+      baseline_finish_coverage,
+      inverted_dates,
+      invalid_percent,
+      same_shape_projects,
+      readiness_score,
+      case
+        when is_model_or_auxiliary then 'EXCLUIR_MODELO_AUXILIAR'
+        when readiness_score >= 85 and baseline_finish_coverage >= 80 then 'PRONTO_PREDITIVO'
+        when readiness_score >= 75 and baseline_finish_coverage >= 20 then 'PRONTO_ANALISE_CONTROLE'
+        when current_finish_coverage < 80 then 'BLOQUEADO_DATAS_ATUAIS'
+        when baseline_finish_coverage < 20 then 'BLOQUEADO_BASELINE'
+        when critical_flag_coverage < 80 then 'BLOQUEADO_CRITICA'
+        else 'REVISAO_MANUAL'
+      end readiness_level,
+      case
+        when is_model_or_auxiliary then 'Excluir do universo analítico ou mapear manualmente se for obra real.'
+        when current_finish_coverage < 80 then 'Revisar mapeamento/importação das datas atuais de término no Excel/MS Project.'
+        when baseline_finish_coverage < 20 then 'Selecionar/importar baseline aprovada e registrar em schedule.baselines.'
+        when critical_flag_coverage < 80 then 'Revisar captura da coluna Crítica do MS Project.'
+        when readiness_score >= 85 and baseline_finish_coverage >= 80 then 'Pode entrar na camada preditiva inicial.'
+        when readiness_score >= 75 then 'Pode entrar em análise de controle; predição depende de baseline/histórico.'
+        else 'Revisão manual de qualidade e identidade das atividades.'
+      end recommended_action
+    from scored
+    order by
+      case
+        when is_model_or_auxiliary then 5
+        when readiness_score >= 85 and baseline_finish_coverage >= 80 then 1
+        when readiness_score >= 75 and baseline_finish_coverage >= 20 then 2
+        when current_finish_coverage < 80 then 3
+        else 4
+      end,
+      readiness_score desc nulls last,
+      critical_total desc nulls last,
+      project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        print_rows(cur.fetchall(), [
+            "project", "version", "data_date", "activities", "critical", "critical_open",
+            "current_finish_cov", "percent_cov", "critical_cov", "baseline_cov",
+            "inverted_dates", "invalid_pct", "same_shape", "readiness_score", "readiness_level", "recommended_action"
+        ], args.json)
 
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
@@ -662,6 +778,12 @@ def build_parser():
     s.add_argument("--limit", type=int, default=50)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_populate_weekly_metrics)
+
+
+    s = sub.add_parser("data-readiness", help="Semáforo de aptidão dos projetos para análise e predição")
+    s.add_argument("--limit", type=int, default=80)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_data_readiness)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)
