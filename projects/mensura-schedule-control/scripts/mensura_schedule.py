@@ -94,6 +94,121 @@ def cmd_critical_summary(args):
         print_rows(cur.fetchall(), ["project", "activities", "critical", "critical_open", "critical_overdue", "avg_pct", "delay_vs_baseline"], args.json)
 
 
+def cmd_quality_report(args):
+    sql = """
+    with latest as (
+      select distinct on (sv.project_id)
+        sv.id, sv.project_id, p.code project_code, sv.version_label, sv.data_date
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+    ), q as (
+      select
+        l.project_code,
+        l.version_label,
+        l.data_date,
+        count(*) activities,
+        count(*) filter (where av.current_start is null) missing_current_start,
+        count(*) filter (where av.current_finish is null) missing_current_finish,
+        count(*) filter (where av.percent_complete is null) missing_percent,
+        count(*) filter (where av.is_critical is null) missing_critical_flag,
+        count(*) filter (where av.baseline_finish is null) missing_baseline_finish,
+        count(*) filter (where av.current_finish < av.current_start) inverted_current_dates,
+        count(*) filter (where av.percent_complete < 0 or av.percent_complete > 100) invalid_percent
+      from latest l
+      join schedule.activity_versions av on av.schedule_version_id = l.id
+      group by l.project_code, l.version_label, l.data_date
+    )
+    select *,
+      round(100 * (1 - (missing_current_finish + missing_percent + missing_critical_flag + inverted_current_dates + invalid_percent)::numeric / nullif(activities * 5, 0)), 2) quality_score
+    from q
+    order by quality_score asc nulls last, activities desc
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        print_rows(cur.fetchall(), ["project", "version", "data_date", "activities", "missing_start", "missing_finish", "missing_pct", "missing_critical", "missing_baseline", "inverted_dates", "invalid_pct", "quality_score"], args.json)
+
+
+def cmd_baseline_compare(args):
+    sql = """
+    with latest as (
+      select distinct on (sv.project_id)
+        sv.id, sv.project_id, p.code project_code, sv.version_label, sv.data_date
+      from schedule.schedule_versions sv
+      join schedule.projects p on p.id = sv.project_id
+      order by sv.project_id, sv.data_date desc nulls last, sv.created_at desc
+    )
+    select
+      l.project_code,
+      count(*) filter (where av.baseline_finish is not null and av.current_finish is not null) comparable_activities,
+      count(*) filter (where av.baseline_finish is not null and av.current_finish > av.baseline_finish) delayed_activities,
+      count(*) filter (where av.is_critical and av.baseline_finish is not null and av.current_finish > av.baseline_finish) delayed_critical_activities,
+      max(av.current_finish - av.baseline_finish) max_finish_slip_days,
+      round(avg((av.current_finish - av.baseline_finish))::numeric, 2) avg_finish_slip_days
+    from latest l
+    join schedule.activity_versions av on av.schedule_version_id = l.id
+    where (%s is null or l.project_code = %s)
+    group by l.project_code
+    order by delayed_critical_activities desc nulls last, delayed_activities desc nulls last
+    limit %s;
+    """
+    project = args.project
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (project, project, args.limit))
+        print_rows(cur.fetchall(), ["project", "comparable", "delayed", "delayed_critical", "max_slip_days", "avg_slip_days"], args.json)
+
+
+def cmd_weekly_metrics_preview(args):
+    sql = """
+    select
+      project_code,
+      activities_total,
+      round(avg_percent_complete::numeric, 2) avg_percent_complete,
+      critical_total,
+      critical_open,
+      critical_overdue,
+      max_current_finish as projected_finish_current,
+      projected_delay_days_vs_baseline
+    from analytics.v_project_schedule_metrics_current
+    order by critical_overdue desc nulls last, projected_delay_days_vs_baseline desc nulls last, project_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.limit,))
+        print_rows(cur.fetchall(), ["project", "activities", "avg_pct", "critical", "critical_open", "critical_overdue", "projected_finish", "delay_vs_baseline"], args.json)
+
+
+def cmd_audit_orphans(args):
+    sql = """
+    select
+      ij.status,
+      count(*) jobs,
+      min(ij.imported_at) first_imported_at,
+      max(ij.imported_at) last_imported_at
+    from raw.import_jobs ij
+    left join schedule.schedule_versions sv on sv.import_job_id = ij.id
+    where sv.id is null
+    group by ij.status
+    order by jobs desc;
+    """
+    detail_sql = """
+    select ij.id, ij.status, ij.source_filename, ij.imported_at, ij.data_date
+    from raw.import_jobs ij
+    left join schedule.schedule_versions sv on sv.import_job_id = ij.id
+    where sv.id is null
+    order by ij.imported_at desc
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        if args.detail:
+            cur.execute(detail_sql, (args.limit,))
+            print_rows(cur.fetchall(), ["id", "status", "source_filename", "imported_at", "data_date"], args.json)
+        else:
+            cur.execute(sql)
+            print_rows(cur.fetchall(), ["status", "jobs", "first_imported_at", "last_imported_at"], args.json)
+
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -266,6 +381,28 @@ def build_parser():
     s.add_argument("--limit", type=int, default=30)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_critical_summary)
+
+    s = sub.add_parser("quality-report", help="Qualidade dos dados nas versões atuais")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_quality_report)
+
+    s = sub.add_parser("baseline-compare", help="Compara término atual x baseline_finish importado")
+    s.add_argument("--project", help="Código do projeto")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_baseline_compare)
+
+    s = sub.add_parser("weekly-metrics-preview", help="Preview read-only de métricas semanais derivadas")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_weekly_metrics_preview)
+
+    s = sub.add_parser("audit-orphans", help="Audita raw.import_jobs sem schedule_version; não limpa")
+    s.add_argument("--detail", action="store_true")
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_audit_orphans)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)

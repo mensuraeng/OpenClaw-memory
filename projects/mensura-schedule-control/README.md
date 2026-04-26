@@ -59,6 +59,10 @@ Comandos v0.1:
 ./bin/mensura-schedule migration-list
 ./bin/mensura-schedule db-counts
 ./bin/mensura-schedule critical-summary --limit 20
+./bin/mensura-schedule quality-report
+./bin/mensura-schedule baseline-compare
+./bin/mensura-schedule weekly-metrics-preview
+./bin/mensura-schedule audit-orphans
 ./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
 ./bin/mensura-schedule download-sharepoint
 ./bin/mensura-schedule inspect-workbooks --print-schedule
