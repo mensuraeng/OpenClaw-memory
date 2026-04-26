@@ -1,0 +1,7 @@
+# Runtime/downloaded SharePoint files and generated ingest reports
+runtime/
+
+# Local env/secrets
+.env
+.env.*
+!.env.supabase.example
