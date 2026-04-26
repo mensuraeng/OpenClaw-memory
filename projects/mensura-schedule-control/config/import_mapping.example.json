@@ -1,0 +1,19 @@
+{
+  "source_tool": "ms_project_excel",
+  "required_columns": {
+    "activity_uid": ["Unique ID", "UID", "ID Exclusivo", "ID"],
+    "activity_code": ["ID", "Código", "Activity ID"],
+    "activity_name": ["Nome da tarefa", "Task Name", "Atividade"],
+    "wbs_code": ["EDT", "WBS", "Código EDT"],
+    "baseline_start": ["Início da linha de base", "Baseline Start"],
+    "baseline_finish": ["Término da linha de base", "Baseline Finish"],
+    "current_start": ["Início", "Start"],
+    "current_finish": ["Término", "Finish"],
+    "actual_start": ["Início Real", "Actual Start"],
+    "actual_finish": ["Término Real", "Actual Finish"],
+    "percent_complete": ["% concluída", "% Complete", "% Concluído"],
+    "remaining_duration": ["Duração Restante", "Remaining Duration"],
+    "total_float": ["Margem de atraso total", "Total Float", "Folga Total"],
+    "is_critical": ["Crítica", "Critical"]
+  }
+}

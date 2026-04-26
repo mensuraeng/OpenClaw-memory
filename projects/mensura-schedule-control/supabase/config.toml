@@ -1,0 +1,63 @@
+project_id = "mensura-schedule-control"
+
+[api]
+enabled = true
+port = 54421
+schemas = ["raw", "schedule", "control", "analytics", "public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54422
+shadow_port = 54420
+health_timeout = "2m"
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54429
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[db.seed]
+enabled = false
+sql_paths = []
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54423
+api_url = "http://127.0.0.1"
+openai_api_key = "env(OPENAI_API_KEY)"
+
+[inbucket]
+enabled = true
+port = 54424
+smtp_port = 54425
+pop3_port = 54426
+
+[storage]
+enabled = false
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["https://127.0.0.1:3000"]
+jwt_expiry = 3600
+enable_signup = false
+
+[edge_runtime]
+enabled = false
+
+[analytics]
+enabled = true
+port = 54427
+vector_port = 54428
+backend = "postgres"
