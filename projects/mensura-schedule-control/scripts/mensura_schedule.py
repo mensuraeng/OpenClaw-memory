@@ -27,6 +27,17 @@ ENV_FILE = WORKSPACE / "memory/context/mensura_schedule_supabase.env"
 MENSURA_GRAPH_CONFIG = WORKSPACE / "config/ms-graph.json"
 GRAPH = "https://graph.microsoft.com/v1.0"
 
+# Projetos excluídos do relatório executivo por decisão operacional do Alê.
+# MELICITA é duplicado de MELICITA_R1; manter MELICITA_R1 como versão válida.
+EXECUTIVE_EXCLUDED_PROJECT_CODES = (
+    "DOPPIO",
+    "MELICITA",
+    "ELEV_ALTO_DO_IPIRANGA",
+    "SOFITEL_DIRETOR",
+    "CCN_BIOMA",
+)
+EXECUTIVE_EXCLUDED_SQL = "('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA')"
+
 
 def norm(s: Any) -> str:
     s = "" if s is None else str(s).strip().lower()
@@ -706,18 +717,20 @@ def cmd_analytics_universe(args):
       (max_current_finish - max_baseline_finish) delay_vs_baseline,
       case
         when is_model_or_auxiliary then 'exclude'
+        when project_code in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA') then 'exclude'
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'predictive'
         when current_finish_coverage >= 95 then 'control_only'
         else 'blocked'
       end as universe_status,
       case
         when is_model_or_auxiliary then 'modelo/auxiliar/teste; excluir do universo analítico'
+        when project_code in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA') then 'excluído por decisão operacional do Alê para relatório executivo'
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'apto para risk-report, baseline compare e forecast inicial'
         when current_finish_coverage >= 95 then 'apto para controle; baseline insuficiente para previsão robusta'
         else 'bloqueado por qualidade de datas'
       end as note
     from scored
-    where (%s is false or not is_model_or_auxiliary)
+    where (%s is false or (not is_model_or_auxiliary and project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA')))
     order by case
         when is_model_or_auxiliary then 4
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 1
@@ -776,6 +789,7 @@ def cmd_forecast_initial(args):
         and max_current_finish is not null
         and max_baseline_finish is not null
         and max_current_finish >= current_date
+        and project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA')
     )
     """
     preview_sql = base_sql + """
@@ -895,6 +909,7 @@ def cmd_executive_risk_report(args):
       left join latest_forecasts lf on lf.project_id = u.project_id
       where not u.is_model_or_auxiliary
         and u.max_current_finish >= current_date
+        and u.project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA')
     )
     select
       project_code,

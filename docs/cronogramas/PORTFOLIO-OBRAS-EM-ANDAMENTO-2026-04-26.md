@@ -15,7 +15,10 @@ Não entram no relatório executivo:
 - projetos com `current_finish` anterior à data atual;
 - modelos, testes ou arquivos auxiliares;
 - centros administrativos;
-- registros PCS sem confirmação de obra física ativa.
+- registros PCS sem confirmação de obra física ativa;
+- exclusões operacionais definidas pelo Alê: `DOPPIO`, `MELICITA`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR`, `CCN_BIOMA`.
+
+Regra específica: `MELICITA` e `MELICITA_R1` representam a mesma obra; manter `MELICITA_R1` como referência válida e desconsiderar `MELICITA` no relatório executivo.
 
 ---
 
@@ -25,19 +28,15 @@ Fonte: Supabase `mensura-schedule-control`, comando `mensura-schedule executive-
 
 | Projeto | Empresa | Risco | Término atual | Atraso esperado | Críticas abertas | Status |
 |---|---|---:|---:|---:|---:|---|
-| MELICITA | Mensura | CRÍTICO | 2026-08-14 | 30 dias | 112 | Em andamento |
-| DOPPIO | Mensura | CRÍTICO | 2026-06-12 | 14 dias | 142 | Em andamento |
 | DF345_DIOGO_DE_FARIA | Mensura | CRÍTICO | 2026-09-15 | 95 dias | 56 | Em andamento |
 | P_G | Mensura | CRÍTICO | 2026-08-02 | 63 dias | 36 | Em andamento |
-| MELICITA_R1 | Mensura | CRÍTICO | 2026-08-14 | 30 dias | 103 | Em andamento / possível versão duplicada de MELICITA |
-| ELEV_ALTO_DO_IPIRANGA | Mensura | MÉDIO | 2026-06-15 | 0 dias | 66 | Em andamento |
-| SOFITEL_DIRETOR | Mensura | MÉDIO | 2026-10-30 | 0 dias | 86 | Em andamento |
-| CCN_BIOMA | Mensura | MÉDIO | 2027-07-27 | 0 dias | 56 | Em andamento |
+| MELICITA_R1 | Mensura | CRÍTICO | 2026-08-14 | 30 dias | 103 | Em andamento |
 
 ### Observações Mensura
 
 - `P_G` corresponde a **P&G Louveira** e tem status jurídico sensível já registrado: comunicação externa exige dupla revisão do Alê.
-- `MELICITA` e `MELICITA_R1` provavelmente representam versões do mesmo projeto; manter ambos até reconciliação de identidade/versão.
+- `MELICITA` e `MELICITA_R1` representam a mesma obra; manter `MELICITA_R1` e excluir `MELICITA`.
+- `DOPPIO`, `ELEV_ALTO_DO_IPIRANGA`, `SOFITEL_DIRETOR` e `CCN_BIOMA` foram excluídos do relatório executivo por decisão operacional do Alê.
 - `TESTE_1` foi excluído por regra de modelo/teste.
 
 ---
@@ -110,7 +109,7 @@ Estes registros existem na base PCS/Sienge, mas **não devem entrar automaticame
 
 | Empresa | Confirmados em andamento | Candidatos / validar | Observação |
 |---|---:|---:|---|
-| Mensura | 8 | 0 | Coberto pelo Supabase Schedule Control |
+| Mensura | 3 | 5 excluídos por decisão operacional | Coberto pelo Supabase Schedule Control |
 | MIA | 1 | 0 | CCSP Casa 7 ativo, ainda fora do Supabase |
 | PCS | 0 confirmado | 3+ candidatos | Requer classificação Sienge/obra ativa |
 
