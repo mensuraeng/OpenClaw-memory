@@ -1,0 +1,45 @@
+{
+  "destination": {
+    "channel": "telegram",
+    "target_name": "Investimento",
+    "topic_name": "Notícias",
+    "target_id": "telegram:-1003794434256",
+    "thread_id": 1
+  },
+  "schedule": {
+    "weekday_pre_market": "08:00 America/Sao_Paulo",
+    "weekday_lunch": "12:00 America/Sao_Paulo",
+    "weekday_close": "18:00 America/Sao_Paulo",
+    "sunday_weekend_summary": "18:00 America/Sao_Paulo"
+  },
+  "queries": {
+    "macro_global": [
+      "Fed juros inflação mercados hoje",
+      "US yields dollar gold market news",
+      "global markets financial news today"
+    ],
+    "brasil": [
+      "mercado financeiro Brasil hoje Selic IPCA dólar Ibovespa",
+      "notícias B3 Ibovespa dólar juros hoje"
+    ],
+    "eua_global": [
+      "S&P 500 Nasdaq earnings yields today",
+      "US stock market futures yields dollar today"
+    ],
+    "ouro_commodities": [
+      "gold price news real yields dollar geopolitical risk",
+      "ouro dólar juros reais notícias hoje",
+      "commodities gold silver oil iron ore news"
+    ],
+    "wealth_monitor": [
+      "fundos investimento renda fixa CDI Tesouro CRI CRA notícias",
+      "crédito privado fundos renda fixa Brasil notícias"
+    ]
+  },
+  "guardrails": {
+    "send_empty_report": false,
+    "real_trading_enabled": false,
+    "orders_enabled": false,
+    "human_confirmation_required": true
+  }
+}

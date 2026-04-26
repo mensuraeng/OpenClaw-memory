@@ -1,0 +1,27 @@
+{
+  "primary": [
+    {"symbol": "GC=F", "label": "Gold Futures"},
+    {"symbol": "GLD", "label": "SPDR Gold Shares"},
+    {"symbol": "IAU", "label": "iShares Gold Trust"}
+  ],
+  "context": [
+    {"symbol": "SI=F", "label": "Silver Futures"},
+    {"symbol": "SLV", "label": "iShares Silver Trust"},
+    {"symbol": "DX-Y.NYB", "label": "US Dollar Index"},
+    {"symbol": "^TNX", "label": "US 10Y Yield"},
+    {"symbol": "USDBRL=X", "label": "USD/BRL"},
+    {"symbol": "SPY", "label": "S&P 500 ETF"}
+  ],
+  "alert_thresholds": {
+    "gold_daily_abs_change_pct": 1.25,
+    "gold_context_divergence_pct": 0.75,
+    "silver_daily_abs_change_pct": 2.0,
+    "usd_daily_abs_change_pct": 0.8,
+    "us10y_daily_abs_change_pct": 2.5
+  },
+  "safety": {
+    "read_only": true,
+    "real_trading_enabled": false,
+    "orders_enabled": false
+  }
+}

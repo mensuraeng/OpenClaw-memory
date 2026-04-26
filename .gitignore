@@ -61,3 +61,7 @@ venv*/
 # Media gerada localmente
 media/
 memory/context/ga4-service-account.json
+
+# Local secrets / credentials
+memory/context/*.env
+memory/context/trade_supabase.env

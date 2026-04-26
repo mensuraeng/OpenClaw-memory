@@ -1,0 +1,24 @@
+{
+  "fixed_income": {
+    "benchmarks": ["CDI", "SELIC", "IPCA", "TESOURO_SELIC", "TESOURO_IPCA"],
+    "product_types": ["cdb", "lci", "lca", "cri", "cra", "debenture", "tesouro_direto", "structured_note"],
+    "minimum_fields": ["issuer", "indexer", "rate", "maturity_date", "liquidity", "tax_treatment", "source"]
+  },
+  "funds": {
+    "open_funds": ["multimercado", "renda_fixa", "acoes", "cambial", "credito_privado", "previdencia"],
+    "listed_funds": ["fii", "fi_infra", "etf", "fip_ie"],
+    "minimum_fields": ["name", "manager", "administrator", "benchmark", "fee", "liquidity", "source"]
+  },
+  "global_markets": {
+    "equity_indices": ["SPY", "QQQ", "DIA", "EWZ", "ACWI", "EFA", "EEM"],
+    "rates_fx": ["DXY", "USDBRL", "US10Y", "US02Y"],
+    "commodities": ["gold", "silver", "oil_wti", "oil_brent", "iron_ore", "soybeans", "copper"]
+  },
+  "guardrails": {
+    "real_execution_enabled": false,
+    "broker_connection_enabled": false,
+    "require_human_confirmation": true,
+    "structured_products_require_payoff_review": true,
+    "private_credit_requires_credit_review": true
+  }
+}

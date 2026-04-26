@@ -1,0 +1,12 @@
+{
+  "mode": "paper",
+  "real_trading_enabled": false,
+  "max_position_pct": 0.05,
+  "max_new_exposure_per_week_pct": 0.20,
+  "daily_loss_freeze_pct": 0.02,
+  "weekly_loss_freeze_pct": 0.05,
+  "forbidden": ["options", "margin", "short", "leverage", "crypto"],
+  "require_human_confirmation_for_real_orders": true,
+  "require_thesis": true,
+  "require_exit_rule": true
+}

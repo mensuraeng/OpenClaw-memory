@@ -1,0 +1,10 @@
+{
+  "us": {
+    "benchmarks": ["SPY", "VOO", "QQQ"],
+    "watchlist": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "BRK.B", "JPM", "LLY"]
+  },
+  "br": {
+    "benchmarks": ["BOVA11", "SMAL11", "IVVB11"],
+    "watchlist": ["PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "WEGE3", "B3SA3", "RENT3", "ABEV3", "PRIO3"]
+  }
+}
