@@ -775,6 +775,7 @@ def cmd_forecast_initial(args):
       where not is_model_or_auxiliary
         and max_current_finish is not null
         and max_baseline_finish is not null
+        and max_current_finish >= current_date
     )
     """
     preview_sql = base_sql + """
@@ -893,6 +894,7 @@ def cmd_executive_risk_report(args):
       from universe u
       left join latest_forecasts lf on lf.project_id = u.project_id
       where not u.is_model_or_auxiliary
+        and u.max_current_finish >= current_date
     )
     select
       project_code,
