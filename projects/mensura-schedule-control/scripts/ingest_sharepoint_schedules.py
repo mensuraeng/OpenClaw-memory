@@ -83,8 +83,14 @@ def parse_date(v: Any):
     if isinstance(v, date):
         return v
     txt = str(v).strip()
-    if not txt:
+    if not txt or norm(txt) in {"nd", "n/d", "na", "n.a.", "-"}:
         return None
+    # MS Project exports in Portuguese often include weekday prefixes, e.g. "Qui 11/09/25".
+    txt = re.sub(r"^(seg|ter|qua|qui|sex|sáb|sab|dom)\.?\s+", "", txt, flags=re.I).strip()
+    # Remove time/annotation suffixes while preserving the date token.
+    m = re.search(r"\d{1,2}/\d{1,2}/\d{2,4}", txt)
+    if m:
+        txt = m.group(0)
     for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y-%m-%d %H:%M:%S"):
         try:
             return datetime.strptime(txt[:19], fmt).date()

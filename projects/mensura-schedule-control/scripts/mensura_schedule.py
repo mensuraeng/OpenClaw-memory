@@ -13,6 +13,7 @@ import os
 import re
 import subprocess
 import sys
+from datetime import datetime, date
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +27,12 @@ ENV_FILE = WORKSPACE / "memory/context/mensura_schedule_supabase.env"
 MENSURA_GRAPH_CONFIG = WORKSPACE / "config/ms-graph.json"
 GRAPH = "https://graph.microsoft.com/v1.0"
 
+
+def norm(s: Any) -> str:
+    s = "" if s is None else str(s).strip().lower()
+    s = s.replace("ì", "í")
+    s = re.sub(r"\s+", " ", s)
+    return s
 
 def load_env_file(path: Path = ENV_FILE) -> None:
     if not path.exists():
@@ -58,6 +65,35 @@ def print_rows(rows: list[tuple], headers: list[str], as_json: bool = False) -> 
     for r in rows:
         print("\t".join("" if v is None else str(v) for v in r))
 
+
+
+def parse_project_date(v: Any):
+    if v in (None, ""):
+        return None
+    if hasattr(v, "isoformat") and v.__class__.__name__ in {"date", "datetime"}:
+        return v.date() if hasattr(v, "date") else v
+    txt = str(v).strip()
+    if not txt or norm(txt) in {"nd", "n/d", "na", "n.a.", "-"}:
+        return None
+    txt = re.sub(r"^(seg|ter|qua|qui|sex|sáb|sab|dom)\.?\s+", "", txt, flags=re.I).strip()
+    m = re.search(r"\d{1,2}/\d{1,2}/\d{2,4}", txt)
+    if m:
+        txt = m.group(0)
+    for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y-%m-%d %H:%M:%S"):
+        try:
+            return datetime.strptime(txt[:19], fmt).date()
+        except Exception:
+            pass
+    return None
+
+
+def raw_get_alias(raw: dict[str, Any], aliases: list[str]):
+    nmap = {norm(k): k for k in raw.keys()}
+    for alias in aliases:
+        k = nmap.get(norm(alias))
+        if k is not None:
+            return raw.get(k)
+    return None
 
 def cmd_db_counts(args):
     sql = """
@@ -561,6 +597,70 @@ def cmd_data_readiness(args):
             "inverted_dates", "invalid_pct", "same_shape", "readiness_score", "readiness_level", "recommended_action"
         ], args.json)
 
+
+def cmd_repair_date_fields(args):
+    aliases = {
+        "baseline_start": ["início da linha de base", "inicio da linha de base", "início da linha de base1", "início da linha de base (meta)"],
+        "baseline_finish": ["término da linha de base", "termino da linha de base", "término da linha de base1", "término da linha de base (meta)"],
+        "current_start": ["início", "inicio"],
+        "current_finish": ["término", "termino"],
+        "actual_start": ["início real", "inicio real"],
+        "actual_finish": ["término real", "termino real"],
+    }
+    select_sql = """
+      select av.id, av.raw_payload,
+             av.baseline_start, av.baseline_finish, av.current_start, av.current_finish, av.actual_start, av.actual_finish
+      from schedule.activity_versions av
+      where av.raw_payload is not null
+        and (%s is true or av.current_finish is null or av.current_start is null or av.baseline_finish is null or av.baseline_start is null)
+      limit %s;
+    """
+    update_sql = """
+      update schedule.activity_versions
+      set baseline_start=%s, baseline_finish=%s, current_start=%s, current_finish=%s, actual_start=%s, actual_finish=%s
+      where id=%s;
+    """
+    changed = 0
+    scanned = 0
+    examples = []
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(select_sql, (args.overwrite, args.limit))
+        rows = cur.fetchall()
+        for row in rows:
+            scanned += 1
+            av_id, raw, bs, bf, cs, cf, astart, afinish = row
+            raw = raw or {}
+            parsed = {
+                "baseline_start": parse_project_date(raw_get_alias(raw, aliases["baseline_start"])),
+                "baseline_finish": parse_project_date(raw_get_alias(raw, aliases["baseline_finish"])),
+                "current_start": parse_project_date(raw_get_alias(raw, aliases["current_start"])),
+                "current_finish": parse_project_date(raw_get_alias(raw, aliases["current_finish"])),
+                "actual_start": parse_project_date(raw_get_alias(raw, aliases["actual_start"])),
+                "actual_finish": parse_project_date(raw_get_alias(raw, aliases["actual_finish"])),
+            }
+            new_vals = {
+                "baseline_start": parsed["baseline_start"] if (args.overwrite or bs is None) else bs,
+                "baseline_finish": parsed["baseline_finish"] if (args.overwrite or bf is None) else bf,
+                "current_start": parsed["current_start"] if (args.overwrite or cs is None) else cs,
+                "current_finish": parsed["current_finish"] if (args.overwrite or cf is None) else cf,
+                "actual_start": parsed["actual_start"] if (args.overwrite or astart is None) else astart,
+                "actual_finish": parsed["actual_finish"] if (args.overwrite or afinish is None) else afinish,
+            }
+            old_vals = {"baseline_start": bs, "baseline_finish": bf, "current_start": cs, "current_finish": cf, "actual_start": astart, "actual_finish": afinish}
+            if new_vals != old_vals:
+                changed += 1
+                if len(examples) < 5:
+                    examples.append({"id": str(av_id), "old": old_vals, "new": new_vals})
+                if args.execute:
+                    cur.execute(update_sql, (new_vals["baseline_start"], new_vals["baseline_finish"], new_vals["current_start"], new_vals["current_finish"], new_vals["actual_start"], new_vals["actual_finish"], av_id))
+        if args.execute:
+            conn.commit()
+    payload = {"mode": "execute" if args.execute else "dry_run", "scanned": scanned, "changed": changed, "examples": examples}
+    if args.json:
+        print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
+    else:
+        print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -784,6 +884,14 @@ def build_parser():
     s.add_argument("--limit", type=int, default=80)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_data_readiness)
+
+
+    s = sub.add_parser("repair-date-fields", help="Reparseia datas em raw_payload (ex.: 'Término' com dia da semana) e corrige campos nulos")
+    s.add_argument("--execute", action="store_true")
+    s.add_argument("--overwrite", action="store_true")
+    s.add_argument("--limit", type=int, default=200000)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_repair_date_fields)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)
