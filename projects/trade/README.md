@@ -22,6 +22,29 @@ MVP em fundação. Sem credenciais, sem dinheiro real e sem execução externa.
 - `src/trade/alerts` — notificações e resumos.
 - `runtime/` — cache, logs e relatórios locais.
 
+## CLI interna
+
+Entry point:
+
+```bash
+./bin/trade --help
+```
+
+Comandos v0.1:
+
+```bash
+./bin/trade status
+./bin/trade guardrails
+./bin/trade market-radar
+./bin/trade gold-monitor
+./bin/trade news-radar weekend
+./bin/trade reports --limit 10
+./bin/trade show-report runtime/reports/market-radar-latest.md
+./bin/trade supabase-status
+```
+
+Regra: CLI do Trade é informativa/read-only no MVP. Não existe comando de ordem real, compra, venda, aplicação, resgate ou conexão operacional com corretora.
+
 ## Regra de segurança
 
 Execução real é bloqueada por padrão. Qualquer ordem real exigirá confirmação explícita do Alê em fase futura.
