@@ -205,4 +205,26 @@ Skills foram migradas para estrutura em camadas. Novos paths:
 - Finance (fechado): 
 - PCS (fechado): 
 
-Ver documentacao completa: 
+Ver documentacao completa:
+
+---
+
+## Mensura Schedule Control — Cronograma Preditivo (2026-04-26)
+
+Nova infraestrutura Supabase separada para cronogramas, controle de obras e análise preditiva da Mensura.
+
+- Projeto técnico: `/root/.openclaw/workspace/projects/mensura-schedule-control/`
+- Arquitetura: `/root/.openclaw/workspace/docs/cronogramas/SUPABASE-CRONOGRAMA-PREDITIVO-v0.1.md`
+- Supabase cloud: `mensura-schedule-control`
+- Project ref: `ckmuyvbacgdidmiccvif`
+- Região: `sa-east-1`
+- Dashboard: `https://supabase.com/dashboard/project/ckmuyvbacgdidmiccvif`
+- Schemas: `raw`, `schedule`, `control`, `analytics`
+- Migration aplicada: `20260426144000_schedule_predictive_foundation.sql`
+
+Usar para: cronograma, baseline, MS Project/Excel/Primavera, caminho crítico, progresso semanal, restrições, riscos, PPC/IRR/IAO, SPI/BEI, EVM e previsão de atraso de obras.
+
+Regra: não misturar com Trade. Trade é investimentos pessoais; Mensura Schedule Control é operação de obras.
+
+Segredos ficam apenas em `/root/.openclaw/workspace/memory/context/mensura_schedule_supabase.env`. Nunca copiar credenciais para Git, 2nd-brain ou respostas.
+
