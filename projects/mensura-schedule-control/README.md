@@ -43,6 +43,30 @@ Credenciais ficam somente em arquivo local ignorado pelo Git:
 
 `/root/.openclaw/workspace/memory/context/mensura_schedule_supabase.env`
 
+## CLI interna
+
+Entry point:
+
+```bash
+./bin/mensura-schedule --help
+```
+
+Comandos v0.1:
+
+```bash
+./bin/mensura-schedule validate
+./bin/mensura-schedule lint
+./bin/mensura-schedule migration-list
+./bin/mensura-schedule db-counts
+./bin/mensura-schedule critical-summary --limit 20
+./bin/mensura-schedule search-sharepoint --contains "Arquivos Auxiliares"
+./bin/mensura-schedule download-sharepoint
+./bin/mensura-schedule ingest-sharepoint --dry-run
+./bin/mensura-schedule ingest-sharepoint
+```
+
+Regra: CLI deve retornar texto estruturado ou JSON (`--json` onde disponível) para uso por agentes/cron.
+
 ## Documento de arquitetura
 
 `/root/.openclaw/workspace/docs/cronogramas/SUPABASE-CRONOGRAMA-PREDITIVO-v0.1.md`
