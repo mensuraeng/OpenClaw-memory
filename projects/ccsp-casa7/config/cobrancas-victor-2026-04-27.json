@@ -1,0 +1,91 @@
+{
+  "source_report": "/root/.openclaw/workspace/projects/ccsp-casa7/relatorios/CCSP_Casa7_Rev004_24.04.2026.html",
+  "report_rev": "Rev.004",
+  "report_date": "2026-04-24",
+  "project": "CCSP Casa 7",
+  "valid_from": "2026-04-27",
+  "valid_to": "2026-05-02",
+  "email": {
+    "account": "mia",
+    "user": "alexandre@miaengenharia.com.br",
+    "to": "victor.evangelista@miaengenharia.com.br",
+    "cc": [
+      "alexandre@miaengenharia.com.br",
+      "andre@miaengenharia.com.br"
+    ]
+  },
+  "guardrails": {
+    "external_email_authorized_by": "Alexandre Aguiar",
+    "authorized_at": "2026-04-27",
+    "no_telegram_direct": true,
+    "daily_send_time_brt": "09:00",
+    "regenerate_after_weekly_report": true
+  },
+  "daily": {
+    "2026-04-27": {
+      "label": "Segunda-feira",
+      "subject": "CCSP Casa 7 — Cobranças de segunda-feira — 27/04",
+      "headline": "Dia de travar decisões que impactam diretamente a entrega em 22/05.",
+      "items": [
+        "Pintura: confirmar definição de fornecedor e caminho de aprovação TOOLS. A decisão precisa estar travada agora para mobilização até 04/05.",
+        "Sistema elétrico: realizar reunião com eletricista e obter diagnóstico completo das irregularidades, incluindo escopo de correção, prazo e impacto no cronograma.",
+        "Banheiros da 1ª onda: confirmar plano de ataque para conclusão até 30/04, separando o que é execução MIA do que depende de cliente/fornecedor.",
+        "Formalizar por escrito qualquer pendência externa que possa impactar prazo, custo ou responsabilidade da MIA."
+      ]
+    },
+    "2026-04-28": {
+      "label": "Terça-feira",
+      "subject": "CCSP Casa 7 — Cobranças de terça-feira — 28/04",
+      "headline": "Dia limite para transformar o diagnóstico elétrico em plano executável.",
+      "items": [
+        "Sistema elétrico: enviar diagnóstico completo com escopo de correção, prazo de execução, responsável e impacto na entrega.",
+        "Pintura: atualizar status da aprovação TOOLS e confirmar se há impedimento para mobilização até 04/05.",
+        "Banheiros da 1ª onda: reportar avanço real, pendências bloqueadoras e plano final para conclusão em 30/04.",
+        "Enviar evidências fotográficas das frentes críticas e registrar no RDO do dia."
+      ]
+    },
+    "2026-04-29": {
+      "label": "Quarta-feira",
+      "subject": "CCSP Casa 7 — Cobranças de quarta-feira — 29/04",
+      "headline": "Dia de eliminar indefinições antes do fechamento das frentes da semana.",
+      "items": [
+        "Pintura: confirmar fornecedor, escopo, insumos, equipe e data efetiva de mobilização. Se houver pendência TOOLS, registrar objetivamente.",
+        "Sistema elétrico: confirmar se as correções foram iniciadas ou se ainda dependem de aprovação/compra/terceiro.",
+        "Banheiros da 1ª onda: listar o que falta para conclusão de 30/04 e quem resolve cada item.",
+        "Área externa/garagem: atualizar situação das frentes ainda não iniciadas ou atrasadas, com responsável e data."
+      ]
+    },
+    "2026-04-30": {
+      "label": "Quinta-feira",
+      "subject": "CCSP Casa 7 — Cobranças de quinta-feira — 30/04",
+      "headline": "Dia de fechamento prometido dos banheiros da 1ª onda e preparação para a pintura.",
+      "items": [
+        "Banheiros da 1ª onda: confirmar conclusão ou apontar pendências remanescentes com causa, responsável e nova data.",
+        "Pintura: confirmar que não há bloqueio para mobilização em 04/05. Se houver bloqueio, formalizar imediatamente.",
+        "Sistema elétrico: confirmar avanço das correções e se ainda há risco para laudo técnico de entrega.",
+        "Preparar frentes para pintura/limpeza: liberar ambientes, retirar interferências e registrar evidências."
+      ]
+    },
+    "2026-05-01": {
+      "label": "Sexta-feira",
+      "subject": "CCSP Casa 7 — Cobranças de sexta-feira — 01/05",
+      "headline": "Fechamento da semana e preparação obrigatória para mobilização de 04/05.",
+      "items": [
+        "Confirmar se houve expediente ou restrição por feriado. Se não houve produção, registrar oficialmente.",
+        "Pintura: confirmar status final para entrada em 04/05, com fornecedor, equipe e condições de início.",
+        "Sistema elétrico: consolidar o que foi corrigido, o que permanece pendente e impacto na entrega/laudo.",
+        "Enviar fechamento da semana com fotos das frentes críticas, pendências externas e riscos para 04/05."
+      ]
+    },
+    "2026-05-02": {
+      "label": "Sábado",
+      "subject": "CCSP Casa 7 — Cobranças de sábado — 02/05",
+      "headline": "Uso apenas se houver expediente autorizado para recuperação.",
+      "items": [
+        "Confirmar se houve mobilização extraordinária e quais frentes avançaram.",
+        "Registrar fotos e pendências que impactam a entrada da pintura em 04/05.",
+        "Formalizar qualquer bloqueio remanescente antes da semana crítica."
+      ]
+    }
+  }
+}

@@ -109,3 +109,12 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 - Promover para `decisions.md` o que deixar de ser só lição e virar regra permanente.
 - Remover lição temporária quando o ambiente mudar e ela deixar de ser verdade.
 - Não registrar aqui detalhe de sessão que só importa uma vez.
+
+## 2026-04-27 — Evitar approval-timeout em comandos inline
+- Quando precisar editar/inspecionar arquivos, preferir ferramentas `read`, `edit`, `write` ou comandos simples sem `sed` inline/heredoc Python.
+- Evitar `python3 <<EOF`, `sed -n`, `sed s///` e blocos shell complexos quando a tarefa puder ser feita por ferramenta nativa.
+- Se um exec exigir aprovação, não repetir o mesmo comando; refatorar para ferramenta nativa ou comando mínimo.
+
+## 2026-04-27 — Cron operacional deve pertencer ao agente de domínio
+- Regra do Alê: para todos os crons, rotina operacional recorrente deve rodar no agente dono do domínio, não na Flávia/main, salvo supervisão/lembrete pessoal explícito.
+- Crons antigos de email CCSP/Victor foram desativados; manter apenas rotina baseada no relatório novo, sem email externo direto.
