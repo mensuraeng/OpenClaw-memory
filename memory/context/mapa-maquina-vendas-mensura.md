@@ -52,6 +52,7 @@ _Criado em 2026-04-25 | Atualizado automaticamente — consulte este arquivo ant
 | **Phantombuster** | Automação LinkedIn — 15 convites/dia | `config/phantombuster-mensura.json` |
 | **Make.com** | Webhooks de integração | Webhook: `hook.us2.make.com/nriwhmjs0o49p41452nk88wbp66t64k9` |
 | **LinkedIn** | Prospecção pessoal do Alexandre | `config/linkedin-mensura.json` |
+| **Mensura Commercial Intelligence** | Base versionada de contatos, campanhas, bounces, suppressions e higienização antes de envio/sync | `projects/mensura-commercial-intelligence/` |
 
 ### Agentes Phantombuster ativos
 | Nome | ID |
@@ -172,6 +173,9 @@ Data: | Período:
 | Script monitoramento diário | `scripts/monitoramento_comercial_mensura.py` |
 | Script operacional marketing | `scripts/operacional_marketing_mensura.py` |
 | Script revisão técnica | `scripts/revisao_tecnica_mensura.py` |
+| Base comercial versionada | `projects/mensura-commercial-intelligence/MAP.md` |
+| SQLite comercial | `projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite` |
+| Exports comerciais | `projects/mensura-commercial-intelligence/exports/` |
 
 ---
 

@@ -68,6 +68,7 @@ Flávia / Main (CFO — orquestra tudo)
 | Governança e cobrança de resultados | Flávia |
 | Posicionamento, oferta, argumento técnico | MENSURA |
 | Conteúdo, CRM, prospecção LinkedIn, follow-up | Marketing |
+| Base comercial validada, bounces, suppression e auditoria de campanhas | Mensura Commercial Intelligence (`projects/mensura-commercial-intelligence/`) |
 | Decisões estratégicas, aprovações, respostas LinkedIn | Alexandre |
 
 ---
