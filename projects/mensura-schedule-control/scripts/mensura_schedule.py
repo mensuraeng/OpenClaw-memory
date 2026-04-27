@@ -1340,6 +1340,137 @@ def cmd_portfolio_classify_pcs(args):
     print(json.dumps(payload, ensure_ascii=False, indent=2) if args.json else payload)
 
 
+
+def cmd_portfolio_risk_summary(args):
+    sql = """
+    with executive_projects as (
+      select pr.company, pr.canonical_code, pr.canonical_name, pr.schedule_project_id
+      from portfolio.project_registry pr
+      where pr.include_in_executive_report is true
+        and pr.schedule_project_id is not null
+        and (%s is null or pr.company=%s)
+    ), latest_versions as (
+      select distinct on (sv.project_id)
+        sv.project_id, sv.id as schedule_version_id, sv.version_label, sv.data_date
+      from schedule.schedule_versions sv
+      join executive_projects ep on ep.schedule_project_id=sv.project_id
+      order by sv.project_id, sv.data_date desc, sv.created_at desc
+    ), metrics as (
+      select
+        ep.company,
+        ep.canonical_code,
+        ep.canonical_name,
+        lv.version_label,
+        lv.data_date,
+        count(av.*)::int activities_total,
+        count(*) filter (where av.is_critical)::int critical_total,
+        count(*) filter (where av.is_critical and coalesce(av.percent_complete,0) < 100)::int critical_open,
+        count(*) filter (where av.is_critical and coalesce(av.percent_complete,0) < 100 and av.current_finish < lv.data_date)::int critical_overdue,
+        count(*) filter (where coalesce(av.percent_complete,0) < 100 and av.current_finish < lv.data_date)::int activities_overdue,
+        round(avg(av.percent_complete)::numeric,2) real_percent,
+        round(avg(
+          case
+            when av.baseline_start is null or av.baseline_finish is null then null
+            when lv.data_date < av.baseline_start then 0
+            when lv.data_date >= av.baseline_finish then 100
+            when av.baseline_finish = av.baseline_start then 100
+            else greatest(0, least(100, (100.0 * (lv.data_date - av.baseline_start)::numeric / nullif((av.baseline_finish - av.baseline_start),0))))
+          end
+        )::numeric,2) planned_percent,
+        min(av.current_start) current_start,
+        max(av.current_finish) current_finish,
+        min(av.baseline_start) baseline_start,
+        max(av.baseline_finish) baseline_finish
+      from executive_projects ep
+      join latest_versions lv on lv.project_id=ep.schedule_project_id
+      join schedule.activity_versions av on av.schedule_version_id=lv.schedule_version_id
+      group by ep.company, ep.canonical_code, ep.canonical_name, lv.version_label, lv.data_date
+    ), latest_forecasts as (
+      select distinct on (project_id)
+        project_id, expected_delay_days, predicted_finish_date, p_finish_after_contract
+      from analytics.forecasts
+      where forecast_type='project_finish'
+        and model_name='heuristic_schedule_delay'
+        and model_version='v0.1'
+      order by project_id, forecast_date desc, created_at desc
+    ), scored as (
+      select
+        m.*,
+        (m.current_finish - m.baseline_finish)::int delay_days,
+        (m.real_percent - m.planned_percent)::numeric(12,2) percent_gap,
+        lf.predicted_finish_date,
+        coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0))::numeric expected_delay_days,
+        lf.p_finish_after_contract,
+        case
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 60 or m.critical_overdue > 0 or (m.real_percent - m.planned_percent) <= -20 then 'CRITICO'
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 30 or m.critical_open >= 50 or (m.real_percent - m.planned_percent) <= -10 then 'ALTO'
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 15 or m.critical_open >= 20 or (m.real_percent - m.planned_percent) <= -5 then 'MEDIO'
+          else 'BAIXO'
+        end as executive_risk
+      from metrics m
+      left join schedule.projects sp on sp.code=m.canonical_code
+      left join latest_forecasts lf on lf.project_id=sp.id
+    )
+    select
+      company,
+      canonical_code,
+      canonical_name,
+      version_label,
+      data_date,
+      baseline_finish,
+      current_finish,
+      delay_days,
+      planned_percent,
+      real_percent,
+      percent_gap,
+      activities_total,
+      critical_total,
+      critical_open,
+      critical_overdue,
+      activities_overdue,
+      predicted_finish_date,
+      expected_delay_days,
+      p_finish_after_contract,
+      executive_risk,
+      case
+        when executive_risk='CRITICO' then 'Diretoria: exigir plano de recuperação, dono claro e decisão sobre caminho crítico em até 48h.'
+        when executive_risk='ALTO' then 'Diretoria: revisar frentes críticas e cobrar plano semanal de mitigação.'
+        when executive_risk='MEDIO' then 'Gestão: monitorar semanalmente e antecipar restrições antes de virar atraso executivo.'
+        else 'Manter rotina de acompanhamento; sem intervenção executiva imediata.'
+      end as recommendation
+    from scored
+    order by case executive_risk when 'CRITICO' then 1 when 'ALTO' then 2 when 'MEDIO' then 3 else 4 end,
+      expected_delay_days desc nulls last,
+      critical_open desc nulls last,
+      company,
+      canonical_code
+    limit %s;
+    """
+    headers = ['company','project','name','version','data_date','baseline_finish','current_finish','delay_days','planned_percent','real_percent','percent_gap','activities','critical_total','critical_open','critical_overdue','activities_overdue','predicted_finish','expected_delay_days','p_finish_after_contract','risk','recommendation']
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.company, args.company, args.limit))
+        rows = cur.fetchall()
+    if args.json:
+        print(json.dumps([dict(zip(headers, r)) for r in rows], ensure_ascii=False, indent=2, default=str))
+        return
+    print('# Relatório de Diretoria — Portfólio de Obras')
+    print('')
+    print(f'Obras no relatório: {len(rows)}')
+    print('')
+    for i, row in enumerate(rows, 1):
+        d = dict(zip(headers, row))
+        delay = d['delay_days'] if d['delay_days'] is not None else 'n/d'
+        gap = d['percent_gap'] if d['percent_gap'] is not None else 'n/d'
+        print(f"## {i}. {d['company']} — {d['project']} — {d['risk']}")
+        print(f"- Baseline x término atual: {d['baseline_finish']} → {d['current_finish']} ({delay} dias)")
+        print(f"- % planejado x % real: {d['planned_percent']}% → {d['real_percent']}% (gap {gap} p.p.)")
+        print(f"- Caminho crítico: {d['critical_open']} críticas abertas; {d['critical_overdue']} críticas atrasadas")
+        print(f"- Atividades: {d['activities']} totais; {d['activities_overdue']} atrasadas")
+        if d['predicted_finish']:
+            print(f"- Forecast: término previsto {d['predicted_finish']} | atraso esperado {d['expected_delay_days']} dias | P(atraso) {d['p_finish_after_contract']}")
+        print(f"- Recomendação: {d['recommendation']}")
+        print('')
+
 def cmd_portfolio_report(args):
     sql = """
     select
@@ -1674,6 +1805,12 @@ def build_parser():
     s.add_argument("--execute", action="store_true")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_portfolio_classify_pcs)
+
+    s = sub.add_parser("portfolio-risk-summary", help="Relatório sucinto de Diretoria: previsto x real, planejado x real, risco e recomendação")
+    s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--limit", type=int, default=50)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_portfolio_risk_summary)
 
     s = sub.add_parser("portfolio-report", help="Relatório transversal do portfolio registry com vínculo Schedule Control")
     s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])

@@ -184,3 +184,43 @@ Regra de proteção: não limpar histórico sem relatório de impacto, backup/ex
 3. Importar cada `.mpp` por `mensura-schedule import-mpp`.
 4. Criar `portfolio-risk-summary --executive-only` para consolidar risco, críticas e forecast de Mensura/MIA.
 5. Quando Teatro Suzano ficar pronto, importar como primeiro cronograma PCS.
+
+## Relatório de Diretoria — portfolio-risk-summary
+
+Comando criado:
+
+```bash
+mensura-schedule portfolio-risk-summary --json
+mensura-schedule portfolio-risk-summary
+mensura-schedule portfolio-risk-summary --company Mensura
+```
+
+Objetivo: entregar uma visão sucinta de Diretoria, não um relatório técnico de cronograma.
+
+Campos centrais:
+
+- Baseline x término atual;
+- % planejado x % real;
+- gap em pontos percentuais;
+- atividades totais e atrasadas;
+- caminho crítico: críticas abertas e críticas atrasadas;
+- forecast quando disponível;
+- risco executivo;
+- recomendação objetiva.
+
+Critério de risco inicial:
+
+- `CRITICO`: atraso esperado >= 60 dias, crítica atrasada, ou gap planejado x real <= -20 p.p.;
+- `ALTO`: atraso esperado >= 30 dias, muitas críticas abertas, ou gap <= -10 p.p.;
+- `MEDIO`: atraso esperado >= 15 dias ou gap <= -5 p.p.;
+- `BAIXO`: acompanhamento normal.
+
+Validação inicial em 2026-04-26:
+
+```text
+P_G           → CRITICO | baseline 2026-07-04 → atual 2026-08-02 | planejado 92,87% x real 40,39%
+MELICITA_R1   → CRITICO | baseline 2026-07-15 → atual 2026-08-14 | planejado 22,88% x real 12,27%
+CCSP_CASA_7   → CRITICO | baseline 2026-05-22 → atual 2026-05-22 | planejado 79,74% x real 53,72%
+```
+
+Observação: o cálculo de `% planejado` é heurístico por atividade, baseado na posição da data de status entre baseline_start e baseline_finish. É bom para visão executiva inicial, mas deve ser refinado depois com peso por duração/custo/frente.
