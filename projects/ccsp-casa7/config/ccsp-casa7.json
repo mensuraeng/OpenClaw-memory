@@ -1,0 +1,37 @@
+{
+  "obra": "CCSP Casa 7",
+  "empresa": "MIA",
+  "github_repo": "mensuraeng/ccsp-relatorios",
+  "relatorio_url": "https://relatorios.miaengenharia.com.br",
+  "sheet_name": "Cronograma",
+  "colunas": {
+    "atividade": "Atividade",
+    "pct_programado": "% Programado",
+    "pct_realizado": "% Realizado",
+    "data_inicio_plan": "Início Planejado",
+    "data_fim_plan": "Fim Planejado",
+    "data_fim_real": "Fim Real/Previsto",
+    "status": "Status",
+    "responsavel": "Responsável"
+  },
+  "thresholds": {
+    "desvio_critico_dias": 7,
+    "look_ahead_dias": 21
+  },
+  "git_flow": {
+    "branch": "main",
+    "historico": "append-only em relatorios/; index.html sobrescrito a cada geração",
+    "commit_template": "CCSP Casa 7 — Semana {semana} — {data}\nPPC: {ppc}% | Avanço: {avanco_global}% | Desvios: {desvios_criticos}",
+    "force_push": false,
+    "rebase": false
+  },
+  "inputs": {
+    "xlsx": "obrigatorio",
+    "ata": "obrigatorio",
+    "mpp": "opcional"
+  },
+  "notificacao": {
+    "destino": "flavia",
+    "envio_externo_requer_validacao": true
+  }
+}
