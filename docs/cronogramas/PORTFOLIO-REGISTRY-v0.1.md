@@ -80,7 +80,7 @@ Excluídos / duplicados:
 
 ### MIA
 
-- `CCSP_CASA_7` — obra ativa, ainda fora do Supabase Schedule Control.
+- `CCSP_CASA_7` — obra ativa, importada para o Supabase Schedule Control em 2026-04-26 via arquivo MPP.
 
 ### PCS
 
@@ -122,6 +122,29 @@ forecast-initial                   → MELICITA_R1, P_G
 ## Próximos passos
 
 1. Classificar PCS/Sienge entre obra ativa, encerrada, administrativo e ambíguo.
-2. Importar/registrar CCSP Casa 7 em camada de schedule ou manter como fonte externa até haver XLSX/MS Project.
+2. Productizar importação MPP em comando CLI (`import-mpp`) para não depender de script one-off.
 3. Criar comando `portfolio-report` consolidando Mensura/MIA/PCS.
 4. Remover hardcodes remanescentes de status auxiliar quando o registry cobrir 100% do universo.
+
+
+## Importação CCSP Casa 7 — 2026-04-26
+
+Arquivo recebido via Telegram e preservado em runtime ignorado pelo Git:
+
+```text
+projects/mensura-schedule-control/runtime/inbound/ccsp-casa7/CCSP_CASA_7_Cronograma_Executivo_r0.mpp
+```
+
+Snapshot criado no Supabase:
+
+- projeto: `CCSP_CASA_7`
+- empresa: `MIA`
+- versão: `r0_mpp_2026-04-24_telegram_5684`
+- data de status: `2026-04-24`
+- início: `2026-03-23`
+- término: `2026-05-22`
+- atividades importadas: 93
+- atividades críticas: 14
+- avanço médio importado: 53,72%
+
+O `portfolio.project_registry` foi atualizado para vincular `CCSP_CASA_7` ao `schedule.projects`.
