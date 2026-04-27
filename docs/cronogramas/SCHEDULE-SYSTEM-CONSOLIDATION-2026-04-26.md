@@ -224,3 +224,40 @@ CCSP_CASA_7   → CRITICO | baseline 2026-05-22 → atual 2026-05-22 | planejado
 ```
 
 Observação: o cálculo de `% planejado` é heurístico por atividade, baseado na posição da data de status entre baseline_start e baseline_finish. É bom para visão executiva inicial, mas deve ser refinado depois com peso por duração/custo/frente.
+
+## Avanço por custo e responsáveis por atraso — 2026-04-26
+
+O relatório de Diretoria passou a considerar avanço ponderado por custo quando os cronogramas trouxerem custo por atividade.
+
+Novos campos estruturais em `schedule.activity_versions`:
+
+- `planned_cost`
+- `actual_cost`
+- `remaining_cost`
+- `cost_weight_percent`
+- `responsible_name`
+
+Regra metodológica:
+
+- se houver custo válido em atividades não-resumo, o relatório usa `% planejado x % real` ponderado por custo;
+- se não houver custo válido, usa média simples como fallback;
+- responsáveis são ranqueados por impacto estimado de custo, críticas abertas e atividades atrasadas;
+- atividades resumo não entram na base de ponderação por custo para evitar dupla contagem.
+
+Validação inicial:
+
+```text
+P_G: método ponderado por custo; planejado 89,98% x real 41,34%; gap -48,64 p.p.
+MELICITA_R1: método ponderado por custo; planejado 31,95% x real 23,11%; gap -8,84 p.p.
+CCSP_CASA_7: sem custo no MPP; fallback média simples; planejado 79,74% x real 53,72%.
+```
+
+Responsáveis destacados no relatório atual:
+
+```text
+P_G: DroneTech, SUM - ELE, AIRTIME
+MELICITA_R1: Sem responsável, ARPOL, FLR - ELE
+CCSP_CASA_7: Sem responsável
+```
+
+Observação executiva: `Sem responsável` aparecendo alto é sinal de falha de cadastro do cronograma, não necessariamente de execução. Deve virar ação de saneamento com a equipe de planejamento.

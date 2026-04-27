@@ -1231,6 +1231,14 @@ def cmd_import_mpp(args):
                 "total_slack": str(t.getTotalSlack()) if t.getTotalSlack() else None,
                 "free_slack": str(t.getFreeSlack()) if t.getFreeSlack() else None,
                 "constraint_type": str(t.getConstraintType()) if t.getConstraintType() else None,
+                "cost": _mpp_num_value(t.getCost()),
+                "actual_cost": _mpp_num_value(t.getActualCost()),
+                "remaining_cost": _mpp_num_value(t.getRemainingCost()),
+                "fixed_cost": _mpp_num_value(t.getFixedCost()),
+                "resource_names": str(t.getResourceNames()) if t.getResourceNames() else None,
+                "primary_resource": str(t.getPrimaryResource()) if t.getPrimaryResource() else None,
+                "contact": str(t.getContact()) if t.getContact() else None,
+                "responsibility_code": str(t.getResponsibilityCode()) if t.getResponsibilityCode() else None,
             }
             cur.execute("""
                 insert into raw.source_rows(import_job_id,source_row_number,source_activity_uid,activity_code,raw_payload)
@@ -1252,13 +1260,16 @@ def cmd_import_mpp(args):
                   schedule_version_id, activity_identity_id, activity_code, activity_name, activity_type, wbs_code,
                   planned_duration_days, remaining_duration_days, baseline_start, baseline_finish,
                   current_start, current_finish, actual_start, actual_finish, percent_complete, physical_percent_complete,
-                  is_critical, total_float_days, free_float_days, constraint_type, status, raw_payload
-                ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::jsonb);
+                  is_critical, total_float_days, free_float_days, constraint_type, status,
+                  planned_cost, actual_cost, remaining_cost, responsible_name, raw_payload
+                ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::jsonb);
             """, (version_id, identity_id, activity_code, name, str(t.getType()) if t.getType() else None, wbs,
                   _mpp_duration_days(t.getDuration()), _mpp_duration_days(t.getRemainingDuration()), _mpp_jdate(t.getBaselineStart()), _mpp_jdate(t.getBaselineFinish()),
                   _mpp_jdate(t.getStart()), _mpp_jdate(t.getFinish()), _mpp_jdate(t.getActualStart()), _mpp_jdate(t.getActualFinish()), pct, _mpp_num_value(t.getPhysicalPercentComplete()),
                   bool(t.getCritical()) if t.getCritical() is not None else None, _mpp_duration_days(t.getTotalSlack()), _mpp_duration_days(t.getFreeSlack()), str(t.getConstraintType()) if t.getConstraintType() else None,
-                  _mpp_status(pct), json.dumps(raw, ensure_ascii=False)))
+                  _mpp_status(pct), _mpp_num_value(t.getCost()), _mpp_num_value(t.getActualCost()), _mpp_num_value(t.getRemainingCost()),
+                  str(t.getResourceNames() or t.getPrimaryResource() or t.getContact() or t.getResponsibilityCode() or '') or None,
+                  json.dumps(raw, ensure_ascii=False)))
             inserted += 1
         cur.execute("""
             insert into portfolio.project_registry(company, canonical_code, canonical_name, operational_status, include_in_executive_report, include_in_forecast, source_system, schedule_project_id, notes, metadata)
@@ -1341,6 +1352,7 @@ def cmd_portfolio_classify_pcs(args):
 
 
 
+
 def cmd_portfolio_risk_summary(args):
     sql = """
     with executive_projects as (
@@ -1355,36 +1367,86 @@ def cmd_portfolio_risk_summary(args):
       from schedule.schedule_versions sv
       join executive_projects ep on ep.schedule_project_id=sv.project_id
       order by sv.project_id, sv.data_date desc, sv.created_at desc
-    ), metrics as (
+    ), base as (
       select
         ep.company,
         ep.canonical_code,
         ep.canonical_name,
         lv.version_label,
         lv.data_date,
-        count(av.*)::int activities_total,
-        count(*) filter (where av.is_critical)::int critical_total,
-        count(*) filter (where av.is_critical and coalesce(av.percent_complete,0) < 100)::int critical_open,
-        count(*) filter (where av.is_critical and coalesce(av.percent_complete,0) < 100 and av.current_finish < lv.data_date)::int critical_overdue,
-        count(*) filter (where coalesce(av.percent_complete,0) < 100 and av.current_finish < lv.data_date)::int activities_overdue,
-        round(avg(av.percent_complete)::numeric,2) real_percent,
-        round(avg(
-          case
-            when av.baseline_start is null or av.baseline_finish is null then null
-            when lv.data_date < av.baseline_start then 0
-            when lv.data_date >= av.baseline_finish then 100
-            when av.baseline_finish = av.baseline_start then 100
-            else greatest(0, least(100, (100.0 * (lv.data_date - av.baseline_start)::numeric / nullif((av.baseline_finish - av.baseline_start),0))))
+        av.*,
+        coalesce(av.raw_payload->>'Resumo','Não') as resumo_flag,
+        coalesce(av.responsible_name, nullif(av.raw_payload->>'Responsáveis',''), 'Sem responsável') as responsible_effective,
+        case
+          when av.raw_payload ? '%% Previsto' and (av.raw_payload->>'%% Previsto') ~ '^-?[0-9]+([.,][0-9]+)?$'
+          then case
+            when replace(av.raw_payload->>'%% Previsto', ',', '.')::numeric <= 1 then replace(av.raw_payload->>'%% Previsto', ',', '.')::numeric * 100
+            else replace(av.raw_payload->>'%% Previsto', ',', '.')::numeric
           end
-        )::numeric,2) planned_percent,
-        min(av.current_start) current_start,
-        max(av.current_finish) current_finish,
-        min(av.baseline_start) baseline_start,
-        max(av.baseline_finish) baseline_finish
+          when av.baseline_start is null or av.baseline_finish is null then null
+          when lv.data_date < av.baseline_start then 0
+          when lv.data_date >= av.baseline_finish then 100
+          when av.baseline_finish = av.baseline_start then 100
+          else greatest(0, least(100, (100.0 * (lv.data_date - av.baseline_start)::numeric / nullif((av.baseline_finish - av.baseline_start),0))))
+        end as planned_activity_percent,
+        case
+          when coalesce(av.percent_complete,0) <= 1 then coalesce(av.percent_complete,0) * 100
+          else coalesce(av.percent_complete,0)
+        end as real_activity_percent
       from executive_projects ep
       join latest_versions lv on lv.project_id=ep.schedule_project_id
       join schedule.activity_versions av on av.schedule_version_id=lv.schedule_version_id
-      group by ep.company, ep.canonical_code, ep.canonical_name, lv.version_label, lv.data_date
+    ), metrics as (
+      select
+        company,
+        canonical_code,
+        canonical_name,
+        version_label,
+        data_date,
+        count(*)::int activities_total,
+        count(*) filter (where is_critical)::int critical_total,
+        count(*) filter (where is_critical and coalesce(real_activity_percent,0) < 100)::int critical_open,
+        count(*) filter (where is_critical and coalesce(real_activity_percent,0) < 100 and current_finish < data_date)::int critical_overdue,
+        count(*) filter (where coalesce(real_activity_percent,0) < 100 and current_finish < data_date)::int activities_overdue,
+        min(current_start) current_start,
+        max(current_finish) current_finish,
+        min(baseline_start) baseline_start,
+        max(baseline_finish) baseline_finish,
+        sum(planned_cost) filter (where resumo_flag <> 'Sim' and coalesce(planned_cost,0) > 0) cost_basis,
+        round(avg(real_activity_percent)::numeric,2) real_percent_simple,
+        round(avg(planned_activity_percent)::numeric,2) planned_percent_simple,
+        round((sum(planned_activity_percent * planned_cost) filter (where resumo_flag <> 'Sim' and coalesce(planned_cost,0) > 0) / nullif(sum(planned_cost) filter (where resumo_flag <> 'Sim' and coalesce(planned_cost,0) > 0),0))::numeric,2) planned_percent_cost,
+        round((sum(real_activity_percent * planned_cost) filter (where resumo_flag <> 'Sim' and coalesce(planned_cost,0) > 0) / nullif(sum(planned_cost) filter (where resumo_flag <> 'Sim' and coalesce(planned_cost,0) > 0),0))::numeric,2) real_percent_cost
+      from base
+      group by company, canonical_code, canonical_name, version_label, data_date
+    ), responsible as (
+      select
+        company,
+        canonical_code,
+        jsonb_agg(jsonb_build_object(
+          'responsavel', responsible_effective,
+          'atividades_atrasadas', overdue_count,
+          'criticas_abertas', critical_open_count,
+          'impacto_custo', round(cost_impact::numeric,2),
+          'gap_pp_medio', round(avg_gap::numeric,2)
+        ) order by cost_impact desc nulls last, critical_open_count desc, overdue_count desc) filter (where rn <= 3) as top_responsibles
+      from (
+        select *, row_number() over (partition by company, canonical_code order by cost_impact desc nulls last, critical_open_count desc, overdue_count desc) rn
+        from (
+          select
+            company,
+            canonical_code,
+            responsible_effective,
+            count(*) filter (where coalesce(real_activity_percent,0) < 100 and current_finish < data_date)::int overdue_count,
+            count(*) filter (where is_critical and coalesce(real_activity_percent,0) < 100)::int critical_open_count,
+            sum(coalesce(planned_cost,0) * greatest(coalesce(planned_activity_percent,0) - coalesce(real_activity_percent,0),0) / 100.0) filter (where resumo_flag <> 'Sim') as cost_impact,
+            avg(coalesce(planned_activity_percent,0) - coalesce(real_activity_percent,0)) filter (where coalesce(real_activity_percent,0) < 100 and (current_finish < data_date or is_critical)) as avg_gap
+          from base
+          group by company, canonical_code, responsible_effective
+        ) q
+        where overdue_count > 0 or critical_open_count > 0 or coalesce(cost_impact,0) > 0
+      ) ranked
+      group by company, canonical_code
     ), latest_forecasts as (
       select distinct on (project_id)
         project_id, expected_delay_days, predicted_finish_date, p_finish_after_contract
@@ -1396,20 +1458,25 @@ def cmd_portfolio_risk_summary(args):
     ), scored as (
       select
         m.*,
+        coalesce(m.planned_percent_cost, m.planned_percent_simple) planned_percent,
+        coalesce(m.real_percent_cost, m.real_percent_simple) real_percent,
+        case when m.cost_basis is not null then 'cost_weighted' else 'simple_average' end progress_method,
         (m.current_finish - m.baseline_finish)::int delay_days,
-        (m.real_percent - m.planned_percent)::numeric(12,2) percent_gap,
+        (coalesce(m.real_percent_cost, m.real_percent_simple) - coalesce(m.planned_percent_cost, m.planned_percent_simple))::numeric(12,2) percent_gap,
         lf.predicted_finish_date,
         coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0))::numeric expected_delay_days,
         lf.p_finish_after_contract,
+        coalesce(r.top_responsibles, '[]'::jsonb) top_responsibles,
         case
-          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 60 or m.critical_overdue > 0 or (m.real_percent - m.planned_percent) <= -20 then 'CRITICO'
-          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 30 or m.critical_open >= 50 or (m.real_percent - m.planned_percent) <= -10 then 'ALTO'
-          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 15 or m.critical_open >= 20 or (m.real_percent - m.planned_percent) <= -5 then 'MEDIO'
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 60 or m.critical_overdue > 0 or (coalesce(m.real_percent_cost, m.real_percent_simple) - coalesce(m.planned_percent_cost, m.planned_percent_simple)) <= -20 then 'CRITICO'
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 30 or m.critical_open >= 50 or (coalesce(m.real_percent_cost, m.real_percent_simple) - coalesce(m.planned_percent_cost, m.planned_percent_simple)) <= -10 then 'ALTO'
+          when coalesce(lf.expected_delay_days, greatest((m.current_finish - m.baseline_finish),0)) >= 15 or m.critical_open >= 20 or (coalesce(m.real_percent_cost, m.real_percent_simple) - coalesce(m.planned_percent_cost, m.planned_percent_simple)) <= -5 then 'MEDIO'
           else 'BAIXO'
         end as executive_risk
       from metrics m
       left join schedule.projects sp on sp.code=m.canonical_code
       left join latest_forecasts lf on lf.project_id=sp.id
+      left join responsible r on r.company=m.company and r.canonical_code=m.canonical_code
     )
     select
       company,
@@ -1423,11 +1490,14 @@ def cmd_portfolio_risk_summary(args):
       planned_percent,
       real_percent,
       percent_gap,
+      progress_method,
+      cost_basis,
       activities_total,
       critical_total,
       critical_open,
       critical_overdue,
       activities_overdue,
+      top_responsibles,
       predicted_finish_date,
       expected_delay_days,
       p_finish_after_contract,
@@ -1446,7 +1516,7 @@ def cmd_portfolio_risk_summary(args):
       canonical_code
     limit %s;
     """
-    headers = ['company','project','name','version','data_date','baseline_finish','current_finish','delay_days','planned_percent','real_percent','percent_gap','activities','critical_total','critical_open','critical_overdue','activities_overdue','predicted_finish','expected_delay_days','p_finish_after_contract','risk','recommendation']
+    headers = ['company','project','name','version','data_date','baseline_finish','current_finish','delay_days','planned_percent','real_percent','percent_gap','progress_method','cost_basis','activities','critical_total','critical_open','critical_overdue','activities_overdue','top_responsibles','predicted_finish','expected_delay_days','p_finish_after_contract','risk','recommendation']
     with db_conn() as conn, conn.cursor() as cur:
         cur.execute(sql, (args.company, args.company, args.limit))
         rows = cur.fetchall()
@@ -1461,11 +1531,17 @@ def cmd_portfolio_risk_summary(args):
         d = dict(zip(headers, row))
         delay = d['delay_days'] if d['delay_days'] is not None else 'n/d'
         gap = d['percent_gap'] if d['percent_gap'] is not None else 'n/d'
+        method = 'ponderado por custo' if d['progress_method'] == 'cost_weighted' else 'média simples'
         print(f"## {i}. {d['company']} — {d['project']} — {d['risk']}")
         print(f"- Baseline x término atual: {d['baseline_finish']} → {d['current_finish']} ({delay} dias)")
-        print(f"- % planejado x % real: {d['planned_percent']}% → {d['real_percent']}% (gap {gap} p.p.)")
+        print(f"- % planejado x % real: {d['planned_percent']}% → {d['real_percent']}% (gap {gap} p.p.; método: {method})")
         print(f"- Caminho crítico: {d['critical_open']} críticas abertas; {d['critical_overdue']} críticas atrasadas")
         print(f"- Atividades: {d['activities']} totais; {d['activities_overdue']} atrasadas")
+        responsibles = d['top_responsibles'] or []
+        if responsibles:
+            print('- Principais responsáveis/impactos:')
+            for item in responsibles[:3]:
+                print(f"  - {item.get('responsavel')}: {item.get('atividades_atrasadas')} atrasadas; {item.get('criticas_abertas')} críticas abertas; impacto custo {item.get('impacto_custo')}")
         if d['predicted_finish']:
             print(f"- Forecast: término previsto {d['predicted_finish']} | atraso esperado {d['expected_delay_days']} dias | P(atraso) {d['p_finish_after_contract']}")
         print(f"- Recomendação: {d['recommendation']}")
