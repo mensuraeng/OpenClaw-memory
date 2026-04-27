@@ -1088,6 +1088,39 @@ def _valid_mpp_tasks(project):
     return [t for t in list(project.getTasks()) if t is not None and t.getID() is not None and int(t.getID()) != 0 and t.getName()]
 
 
+
+def cmd_intake_packages(args):
+    sql = """
+    select package_code, company, package_status, lot_number, expected_filename,
+      intake_status, received_size_mb, item_count, imported_count, failed_count, partial_count, notes
+    from intake.v_schedule_intake_dashboard
+    where (%s is null or company=%s)
+      and (%s is null or package_status=%s)
+    order by company, package_status, lot_number
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.company, args.company, args.status, args.status, args.limit))
+        print_rows(cur.fetchall(), ['package_code','company','package_status','lot','expected_filename','intake_status','received_size_mb','item_count','imported_count','failed_count','partial_count','notes'], args.json)
+
+
+def cmd_intake_package_items(args):
+    sql = """
+    select p.package_code, i.company, i.project_code, i.project_name,
+      i.project_operational_status, i.relative_path, i.source_filename, i.file_type,
+      i.version_label, i.data_date, i.item_status, i.is_partial, i.schedule_version_id, i.notes
+    from intake.schedule_package_items i
+    join intake.schedule_packages p on p.id=i.package_id
+    where (%s is null or p.package_code=%s)
+      and (%s is null or i.company=%s)
+      and (%s is null or i.item_status=%s)
+    order by p.package_code, i.project_code, i.relative_path
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.package_code, args.package_code, args.company, args.company, args.item_status, args.item_status, args.limit))
+        print_rows(cur.fetchall(), ['package_code','company','project_code','project_name','project_operational_status','relative_path','source_filename','file_type','version_label','data_date','item_status','is_partial','schedule_version_id','notes'], args.json)
+
 def cmd_import_mpp(args):
     file_path = Path(args.file).expanduser().resolve()
     if not file_path.exists():
@@ -1600,6 +1633,22 @@ def build_parser():
     s.add_argument("--limit", type=int, default=20)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_executive_risk_report)
+
+
+    s = sub.add_parser("intake-packages", help="Lista pacotes planejados/recebidos de cronogramas")
+    s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--status", choices=["em_andamento", "concluidas", "misto", "historico", "outro"])
+    s.add_argument("--limit", type=int, default=100)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_intake_packages)
+
+    s = sub.add_parser("intake-items", help="Lista itens de pacotes de cronogramas")
+    s.add_argument("--package-code")
+    s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--item-status", choices=["planned", "received", "validated", "imported", "skipped", "failed", "partial"])
+    s.add_argument("--limit", type=int, default=200)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_intake_package_items)
 
     s = sub.add_parser("import-mpp", help="Importa arquivo Microsoft Project .mpp como novo snapshot versionado")
     s.add_argument("file")

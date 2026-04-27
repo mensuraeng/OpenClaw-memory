@@ -138,3 +138,42 @@ mensura-schedule import-mpp <arquivo.mpp> ... --execute --json
 ```
 
 Nada deve sobrescrever histórico. Cada revisão entra como nova `schedule.schedule_versions`.
+
+## Estrutura Supabase — Intake de pacotes
+
+Criado schema `intake` no Supabase para controlar recebimento dos pacotes antes da importação final.
+
+Tabelas:
+
+- `intake.schedule_packages`
+- `intake.schedule_package_items`
+
+View:
+
+- `intake.v_schedule_intake_dashboard`
+
+Pacotes planejados inicialmente:
+
+```text
+MENSURA_em_andamento_lote01
+MENSURA_concluidas_lote01
+MIA_em_andamento_lote01
+MIA_concluidas_lote01
+PCS_em_andamento_lote01
+PCS_concluidas_lote01
+```
+
+Comandos CLI:
+
+```bash
+mensura-schedule intake-packages --json
+mensura-schedule intake-packages --company Mensura --json
+mensura-schedule intake-items --json
+```
+
+Uso operacional:
+
+1. pacote recebido entra em `intake.schedule_packages`;
+2. arquivos extraídos entram em `intake.schedule_package_items`;
+3. cada item importado via `import-mpp` recebe vínculo com `schedule.schedule_versions`;
+4. portfólio final segue em `portfolio.project_registry`.
