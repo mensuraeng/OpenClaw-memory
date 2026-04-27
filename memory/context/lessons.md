@@ -118,3 +118,9 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 ## 2026-04-27 — Cron operacional deve pertencer ao agente de domínio
 - Regra do Alê: para todos os crons, rotina operacional recorrente deve rodar no agente dono do domínio, não na Flávia/main, salvo supervisão/lembrete pessoal explícito.
 - Crons antigos de email CCSP/Victor foram desativados; manter apenas rotina baseada no relatório novo, sem email externo direto.
+
+## 2026-04-27 — Trade Gold Monitor: destino correto
+- Alerta material do Gold Monitor não deve ir para DM do Alê nem sair como Flávia/main.
+- Responsável: agente Trade.
+- Destino: grupo Investimento, tópico Notícias (`telegram:-1003794434256`, threadId `1`).
+- DM do Alê só para falha operacional relevante, não para alerta de mercado normal.
