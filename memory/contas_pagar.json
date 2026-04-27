@@ -210,6 +210,20 @@
       "codigo_barras": "34191.09008 63798.001002 07644.050002 3 14220000086788",
       "status": "pendente",
       "evento_id": "AAMkADAwZDk2Mjk2LTA5Y2QtNGEwYi05ODViLTUwMDJmNzQzNTEwMwBGAAAAAADf9vAQxmosS69QU38n8OO9BwD_2b2i-O-CQ7g2VaW8BTq6AAAAAAENAAD_2b2i-O-CQ7g2VaW8BTq6AAVJDpHXAAA="
+    },
+    {
+      "id": "alexandre@miaengenharia.com.br_AAMkADA5ZGRjMjEx",
+      "email_id": "AAMkADA5ZGRjMjExLWU4MDQtNDkyNi1hZGI0LTc1N2NiYjlhNTFmNQBGAAAAAADD1eYX3FzUSLHLJjJMLP18BwDVJ-X561luSbyAZS6PXzMWAAAAAAEMAADVJ-X561luSbyAZS6PXzMWAAYR0oaXAAA=",
+      "conta": "alexandre@miaengenharia.com.br",
+      "assunto": "Conte com o Seguro Viagem Itaú Personnalité onde estiver",
+      "descricao": "Conte com o Seguro Viagem Itaú Personnalité onde estiver",
+      "remetente": "itau.personnalite@itau.com.br",
+      "recebido": "2026-04-19",
+      "vencimento": null,
+      "valor": null,
+      "codigo_barras": null,
+      "status": "pendente",
+      "evento_id": null
     }
   ],
   "pagos": []
