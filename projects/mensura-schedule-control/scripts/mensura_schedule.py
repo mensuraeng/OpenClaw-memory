@@ -1615,6 +1615,10 @@ def cmd_ingest_sharepoint(args):
         cmd.append("--dry-run")
     if args.limit:
         cmd += ["--limit", str(args.limit)]
+    if args.manifest:
+        cmd += ["--manifest", args.manifest]
+    if args.inspection:
+        cmd += ["--inspection", args.inspection]
     subprocess.run(cmd, cwd=ROOT, env=env, check=True)
 
 
@@ -1918,6 +1922,8 @@ def build_parser():
     s = sub.add_parser("ingest-sharepoint", help="Ingere workbooks baixados do runtime/sharepoint")
     s.add_argument("--dry-run", action="store_true")
     s.add_argument("--limit", type=int, default=0)
+    s.add_argument("--manifest", default=str(ROOT / "runtime/sharepoint/manifest.json"))
+    s.add_argument("--inspection", default=str(ROOT / "runtime/sharepoint/workbook_inspection.json"))
     s.set_defaults(func=cmd_ingest_sharepoint)
 
     s = sub.add_parser("search-sharepoint", help="Busca workbooks no SharePoint via Microsoft Graph Search")

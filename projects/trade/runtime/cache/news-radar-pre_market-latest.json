@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-26T13:18:43.814091",
+  "generated_at": "2026-04-27T08:22:12.749964",
   "mode": "pre_market",
   "destination": {
     "channel": "telegram",
     "target_name": "Investimento",
     "topic_name": "Notícias",
-    "target_id": null,
-    "thread_id": null
+    "target_id": "telegram:-1003794434256",
+    "thread_id": 1
   },
   "queries": {
     "macro_global": [

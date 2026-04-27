@@ -198,10 +198,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--manifest", default=str(MANIFEST), help="Path to SharePoint download manifest JSON")
+    ap.add_argument("--inspection", default=str(INSPECTION), help="Path to workbook inspection JSON")
     args = ap.parse_args()
 
-    manifest = json.loads(MANIFEST.read_text())
-    inspections = {x.get("local_path"): x for x in json.loads(INSPECTION.read_text())}
+    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+    inspections = {x.get("local_path"): x for x in json.loads(Path(args.inspection).read_text(encoding="utf-8"))}
     candidates = []
     for m in manifest:
         lp = m.get("local_path")

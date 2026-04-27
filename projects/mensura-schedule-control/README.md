@@ -77,6 +77,11 @@ Comandos principais:
 ./bin/mensura-schedule inspect-workbooks --print-schedule
 ./bin/mensura-schedule ingest-sharepoint --dry-run
 ./bin/mensura-schedule ingest-sharepoint
+
+# Para campanhas/crawls específicos sem sobrescrever o fluxo padrão:
+./bin/mensura-schedule ingest-sharepoint --dry-run \
+  --manifest runtime/sharepoint/manifest_20260427_full.json \
+  --inspection runtime/sharepoint/workbook_inspection_20260427_full.json
 ```
 
 Regra: CLI deve retornar texto estruturado ou JSON (`--json` onde disponível) para uso por agentes/cron.
