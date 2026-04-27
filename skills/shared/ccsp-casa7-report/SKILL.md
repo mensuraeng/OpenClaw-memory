@@ -47,6 +47,27 @@ Usar Read para ler o HTML salvo. Extrair:
   - Pendências TOOLS com data de aprovação necessária
   - Qualquer item com prazo explícito em formato DD/MM ou DD/MM/AAAA
 
+### 2.1 Regenerar cobranças diárias ao Victor
+
+Após salvar ou atualizar qualquer relatório semanal, executar obrigatoriamente:
+
+```bash
+/root/.openclaw/workspace/projects/ccsp-casa7/scripts/regenerar_cobrancas_victor.py --report /root/.openclaw/workspace/projects/ccsp-casa7/relatorios/CCSP_Casa7_RevXXX_DD.MM.AAAA.html --json
+```
+
+Isso atualiza:
+
+```text
+/root/.openclaw/workspace/projects/ccsp-casa7/config/cobrancas-victor-current.json
+```
+
+Regra operacional:
+- o cron diário `ccsp-casa7-cobranca-victor-9h` usa esse arquivo;
+- cada novo relatório semanal substitui a pauta da semana anterior;
+- a cobrança diária deve conter apenas os pontos daquele dia;
+- o envio é por email ao Victor, com Alê e André em cópia, às 9h BRT;
+- não criar crons extras por item se a pauta já estiver no `cobrancas-victor-current.json`.
+
 ### 3. Criar Crons Duráveis
 
 Para **cada prazo-chave** identificado, criar um cron durable com `CronCreate`:
