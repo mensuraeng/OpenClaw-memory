@@ -194,3 +194,38 @@ portfolio-report --executive-only: 3 registros
 - MIA: CCSP_CASA_7
 - PCS: nenhum
 ```
+
+## Importação MPP productizada — 2026-04-26
+
+Comando criado:
+
+```bash
+mensura-schedule import-mpp <arquivo.mpp> \
+  --company MIA \
+  --project-code CCSP_CASA_7 \
+  --project-name "CCSP Casa 7" \
+  --version-label r0_mpp_2026-04-24 \
+  --include-executive \
+  --include-forecast \
+  --execute \
+  --json
+```
+
+Comportamento:
+
+- lê `.mpp` via MPXJ;
+- valida assinatura CFB do arquivo;
+- executa preview por padrão;
+- só grava com `--execute`;
+- cria `raw.import_jobs`;
+- cria nova `schedule.schedule_versions`;
+- insere `raw.source_rows`, `schedule.activity_identities` e `schedule.activity_versions`;
+- atualiza `portfolio.project_registry`;
+- bloqueia reimportação com o mesmo `version_label`, salvo com novo label/uso explícito de `--force-new`.
+
+Validação com Casa 7:
+
+```text
+preview: 93 atividades, 14 críticas, início 2026-03-23, término 2026-05-22, avanço médio 53,72%.
+reimportação do mesmo version_label: bloqueada corretamente.
+```

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import hashlib
 import os
 import re
 import subprocess
@@ -1041,6 +1042,208 @@ def cmd_portfolio_registry(args):
         print_rows(cur.fetchall(), ['company','code','name','status','executive','forecast','source','schedule_code','parent','exclusion_reason','notes','aliases'], args.json)
 
 
+
+def _mpp_jdate(x):
+    return None if x is None else str(x)[:10]
+
+
+def _mpp_duration_days(x):
+    if x is None:
+        return None
+    try:
+        return float(x.getDuration())
+    except Exception:
+        return None
+
+
+def _mpp_num_value(x):
+    if x is None:
+        return None
+    try:
+        return float(x)
+    except Exception:
+        return str(x)
+
+
+def _mpp_status(percent):
+    if percent == 100:
+        return "completed"
+    if percent == 0:
+        return "not_started"
+    return "in_progress"
+
+
+def _read_mpp_project(path: Path):
+    try:
+        import mpxj
+        from jpype import JClass
+    except Exception as exc:
+        raise SystemExit(f"MPXJ/Jpype indisponível para leitura .mpp: {exc}")
+    if not mpxj.isJVMStarted():
+        mpxj.startJVM("-Dlog4j2.StatusLogger.level=OFF", "-Dorg.apache.logging.log4j.simplelog.StatusLogger.level=OFF")
+    return JClass("org.mpxj.reader.UniversalProjectReader")().read(str(path))
+
+
+def _valid_mpp_tasks(project):
+    return [t for t in list(project.getTasks()) if t is not None and t.getID() is not None and int(t.getID()) != 0 and t.getName()]
+
+
+def cmd_import_mpp(args):
+    file_path = Path(args.file).expanduser().resolve()
+    if not file_path.exists():
+        raise SystemExit(f"Arquivo não encontrado: {file_path}")
+    if file_path.read_bytes()[:8].hex() != "d0cf11e0a1b11ae1":
+        raise SystemExit("Arquivo não parece Microsoft Project .mpp/CFB válido")
+    project = _read_mpp_project(file_path)
+    props = project.getProjectProperties()
+    tasks = _valid_mpp_tasks(project)
+    if not tasks:
+        raise SystemExit("Nenhuma tarefa válida encontrada no .mpp")
+    file_hash = hashlib.sha256(file_path.read_bytes()).hexdigest()
+    data_date = args.data_date or _mpp_jdate(props.getStatusDate()) or _mpp_jdate(props.getCurrentDate())
+    start_date = _mpp_jdate(props.getStartDate())
+    finish_date = _mpp_jdate(props.getFinishDate())
+    version_label = args.version_label or f"mpp_{data_date}_{file_hash[:8]}"
+    critical_count = sum(1 for t in tasks if t.getCritical() is not None and bool(t.getCritical()))
+    pct_values = []
+    for t in tasks:
+        v = _mpp_num_value(t.getPercentageComplete())
+        if isinstance(v, float):
+            pct_values.append(v)
+    avg_percent = round(sum(pct_values)/len(pct_values), 2) if pct_values else None
+    summary = {
+        "mode": "execute" if args.execute else "preview",
+        "file": str(file_path),
+        "file_hash": file_hash[:16] + "...",
+        "company": args.company,
+        "project_code": args.project_code,
+        "project_name": args.project_name,
+        "version_label": version_label,
+        "data_date": data_date,
+        "start": start_date,
+        "finish": finish_date,
+        "tasks": len(tasks),
+        "critical_tasks": critical_count,
+        "avg_percent": avg_percent,
+        "original_title": str(props.getProjectTitle()) if props.getProjectTitle() else None,
+        "warnings": [],
+    }
+    if not data_date:
+        summary["warnings"].append("data_date ausente; informe --data-date")
+    if not start_date or not finish_date:
+        summary["warnings"].append("start/finish do projeto ausente no arquivo")
+    if critical_count == 0:
+        summary["warnings"].append("nenhuma atividade crítica encontrada")
+    if not args.execute:
+        print(json.dumps(summary, ensure_ascii=False, indent=2) if args.json else summary)
+        return
+    if summary["warnings"] and not args.allow_warnings:
+        raise SystemExit("Warnings encontrados; revise preview ou use --allow-warnings")
+
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute("""
+            insert into schedule.projects(code,name,company,client_name,contract_start_date,contract_finish_date,status,metadata)
+            values (%s,%s,%s,%s,%s,%s,'active',jsonb_build_object('source','import_mpp','original_title',%s,'file_hash',%s))
+            on conflict (code) do update set
+              name=excluded.name,
+              company=excluded.company,
+              client_name=coalesce(excluded.client_name, schedule.projects.client_name),
+              contract_start_date=coalesce(excluded.contract_start_date, schedule.projects.contract_start_date),
+              contract_finish_date=coalesce(excluded.contract_finish_date, schedule.projects.contract_finish_date),
+              status='active',
+              metadata=schedule.projects.metadata || excluded.metadata
+            returning id;
+        """, (args.project_code, args.project_name, args.company, args.client_name, start_date, finish_date, summary["original_title"], file_hash))
+        project_id = cur.fetchone()[0]
+        cur.execute("select id from schedule.schedule_versions where project_id=%s and version_label=%s", (project_id, version_label))
+        if cur.fetchone() and not args.force_new:
+            raise SystemExit(f"Versão já existe para este projeto: {version_label}. Use outro --version-label ou --force-new.")
+        cur.execute("""
+            insert into raw.import_jobs(project_id,source_tool,source_filename,source_uri,file_hash,imported_by,status,data_date,raw_metadata)
+            values (%s,'ms_project',%s,%s,%s,'Flávia/OpenClaw','parsed',%s,jsonb_build_object('tasks',%s,'status_date',%s,'project_title',%s,'import_command','import-mpp'))
+            returning id;
+        """, (project_id, file_path.name, str(file_path), file_hash, data_date, len(tasks), data_date, summary["original_title"]))
+        import_job_id = cur.fetchone()[0]
+        cur.execute("""
+            insert into schedule.schedule_versions(project_id,import_job_id,version_label,data_date,source_tool,is_baseline_candidate,schedule_quality_score,notes,metadata)
+            values (%s,%s,%s,%s,'ms_project',%s,%s,%s,jsonb_build_object('file_hash',%s,'original_path',%s,'import_command','import-mpp'))
+            returning id;
+        """, (project_id, import_job_id, version_label, data_date, args.baseline_candidate, args.quality_score, args.notes, file_hash, str(file_path)))
+        version_id = cur.fetchone()[0]
+        inserted = 0
+        for idx, t in enumerate(tasks, start=1):
+            uid = str(t.getUniqueID()) if t.getUniqueID() is not None else f"id-{t.getID()}"
+            name = str(t.getName())
+            activity_code = str(t.getOutlineNumber() or t.getID())
+            wbs = str(t.getWBS() or t.getOutlineNumber() or "") or None
+            pct = _mpp_num_value(t.getPercentageComplete())
+            raw = {
+                "id": int(t.getID()) if t.getID() is not None else None,
+                "unique_id": uid,
+                "name": name,
+                "outline_number": str(t.getOutlineNumber() or ""),
+                "outline_level": int(t.getOutlineLevel()) if t.getOutlineLevel() is not None else None,
+                "wbs": str(t.getWBS() or ""),
+                "start": str(t.getStart()) if t.getStart() else None,
+                "finish": str(t.getFinish()) if t.getFinish() else None,
+                "baseline_start": str(t.getBaselineStart()) if t.getBaselineStart() else None,
+                "baseline_finish": str(t.getBaselineFinish()) if t.getBaselineFinish() else None,
+                "actual_start": str(t.getActualStart()) if t.getActualStart() else None,
+                "actual_finish": str(t.getActualFinish()) if t.getActualFinish() else None,
+                "duration": str(t.getDuration()) if t.getDuration() else None,
+                "remaining_duration": str(t.getRemainingDuration()) if t.getRemainingDuration() else None,
+                "percent_complete": pct,
+                "physical_percent_complete": _mpp_num_value(t.getPhysicalPercentComplete()),
+                "critical": bool(t.getCritical()) if t.getCritical() is not None else None,
+                "total_slack": str(t.getTotalSlack()) if t.getTotalSlack() else None,
+                "free_slack": str(t.getFreeSlack()) if t.getFreeSlack() else None,
+                "constraint_type": str(t.getConstraintType()) if t.getConstraintType() else None,
+            }
+            cur.execute("""
+                insert into raw.source_rows(import_job_id,source_row_number,source_activity_uid,activity_code,raw_payload)
+                values (%s,%s,%s,%s,%s::jsonb);
+            """, (import_job_id, idx, uid, activity_code, json.dumps(raw, ensure_ascii=False)))
+            cur.execute("""
+                insert into schedule.activity_identities(project_id,source_activity_uid,activity_code,normalized_name,wbs_code,identity_confidence,first_seen_version_id)
+                values (%s,%s,%s,%s,%s,'high',%s)
+                on conflict (project_id, source_activity_uid) do update set
+                  activity_code=excluded.activity_code,
+                  normalized_name=excluded.normalized_name,
+                  wbs_code=excluded.wbs_code,
+                  is_active=true
+                returning id;
+            """, (project_id, uid, activity_code, norm(name), wbs, version_id))
+            identity_id = cur.fetchone()[0]
+            cur.execute("""
+                insert into schedule.activity_versions(
+                  schedule_version_id, activity_identity_id, activity_code, activity_name, activity_type, wbs_code,
+                  planned_duration_days, remaining_duration_days, baseline_start, baseline_finish,
+                  current_start, current_finish, actual_start, actual_finish, percent_complete, physical_percent_complete,
+                  is_critical, total_float_days, free_float_days, constraint_type, status, raw_payload
+                ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::jsonb);
+            """, (version_id, identity_id, activity_code, name, str(t.getType()) if t.getType() else None, wbs,
+                  _mpp_duration_days(t.getDuration()), _mpp_duration_days(t.getRemainingDuration()), _mpp_jdate(t.getBaselineStart()), _mpp_jdate(t.getBaselineFinish()),
+                  _mpp_jdate(t.getStart()), _mpp_jdate(t.getFinish()), _mpp_jdate(t.getActualStart()), _mpp_jdate(t.getActualFinish()), pct, _mpp_num_value(t.getPhysicalPercentComplete()),
+                  bool(t.getCritical()) if t.getCritical() is not None else None, _mpp_duration_days(t.getTotalSlack()), _mpp_duration_days(t.getFreeSlack()), str(t.getConstraintType()) if t.getConstraintType() else None,
+                  _mpp_status(pct), json.dumps(raw, ensure_ascii=False)))
+            inserted += 1
+        cur.execute("""
+            insert into portfolio.project_registry(company, canonical_code, canonical_name, operational_status, include_in_executive_report, include_in_forecast, source_system, schedule_project_id, notes, metadata)
+            values (%s,%s,%s,'ongoing',%s,%s,'mixed',%s,%s,jsonb_build_object('last_import_version_label',%s,'last_import_file_hash',%s))
+            on conflict (company, canonical_code) do update set
+              canonical_name=excluded.canonical_name,
+              operational_status='ongoing',
+              include_in_executive_report=excluded.include_in_executive_report,
+              include_in_forecast=excluded.include_in_forecast,
+              source_system='mixed',
+              schedule_project_id=excluded.schedule_project_id,
+              notes=coalesce(excluded.notes, portfolio.project_registry.notes),
+              metadata=portfolio.project_registry.metadata || excluded.metadata;
+        """, (args.company, args.project_code, args.project_name, args.include_executive, args.include_forecast, project_id, args.registry_notes, version_label, file_hash))
+        conn.commit()
+    summary.update({"project_id": str(project_id), "version_id": str(version_id), "import_job_id": str(import_job_id), "tasks_imported": inserted})
+    print(json.dumps(summary, ensure_ascii=False, indent=2) if args.json else summary)
+
 def cmd_portfolio_classify_pcs(args):
     # Classificação estrutural inicial da base PCS/Sienge informada pelo Alê.
     # Como as obras Sienge não têm cronograma, nenhuma entra em forecast/executive até haver cronograma importado.
@@ -1397,6 +1600,26 @@ def build_parser():
     s.add_argument("--limit", type=int, default=20)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_executive_risk_report)
+
+    s = sub.add_parser("import-mpp", help="Importa arquivo Microsoft Project .mpp como novo snapshot versionado")
+    s.add_argument("file")
+    s.add_argument("--company", required=True, choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--project-code", required=True)
+    s.add_argument("--project-name", required=True)
+    s.add_argument("--client-name")
+    s.add_argument("--version-label")
+    s.add_argument("--data-date")
+    s.add_argument("--baseline-candidate", action="store_true")
+    s.add_argument("--quality-score", type=float, default=95)
+    s.add_argument("--notes", default="Importação via mensura-schedule import-mpp")
+    s.add_argument("--registry-notes")
+    s.add_argument("--include-executive", action="store_true")
+    s.add_argument("--include-forecast", action="store_true")
+    s.add_argument("--force-new", action="store_true")
+    s.add_argument("--allow-warnings", action="store_true")
+    s.add_argument("--execute", action="store_true")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_import_mpp)
 
     s = sub.add_parser("portfolio-classify-pcs", help="Classifica registros PCS/Sienge no portfolio registry")
     s.add_argument("--execute", action="store_true")
