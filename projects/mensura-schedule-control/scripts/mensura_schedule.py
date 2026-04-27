@@ -1040,6 +1040,113 @@ def cmd_portfolio_registry(args):
         cur.execute(sql, (args.company,args.company,args.status,args.status,args.limit))
         print_rows(cur.fetchall(), ['company','code','name','status','executive','forecast','source','schedule_code','parent','exclusion_reason','notes','aliases'], args.json)
 
+
+def cmd_portfolio_classify_pcs(args):
+    # Classificação estrutural inicial da base PCS/Sienge informada pelo Alê.
+    # Como as obras Sienge não têm cronograma, nenhuma entra em forecast/executive até haver cronograma importado.
+    records = [
+        ('14','FACULDADE DE DIREITO DE SBC - CENTRO JURIDICO','candidate','Registro Sienge; validar se obra ativa, encerrada ou apenas referência histórica.'),
+        ('16','RETROFIT FACULDADE DE DIREITO DE SBC','candidate','Registro Sienge; validar status operacional.'),
+        ('24','MANUTENÇÃO PARANAPIACABA 2024','candidate','Registro Sienge; validar se é frente encerrada ou ativa.'),
+        ('71','CUSTOS COM PESSOAL - DIRETORIA','administrative','Centro administrativo; não tratar como obra.'),
+        ('83','SMARTJAMPA','candidate','Registro Sienge; validar status operacional.'),
+        ('100','ADM PCS','administrative','Centro administrativo PCS; não tratar como obra.'),
+        ('181','RUA LAURA 181','candidate','Registro Sienge; validar status operacional.'),
+        ('1000','ADM MIA ENGENHARIA','administrative','Centro administrativo MIA; não tratar como obra PCS.'),
+        ('1354','TEATRO MUNICÍPIO DE SUZANO','candidate','Obra PCS; cronograma em elaboração; fora de forecast/executive até importação.'),
+        ('1900','REFORMA E MAN. DE ESCOLAS SP - LOTE 180','candidate','Registro Sienge; validar contrato/frente ativa.'),
+        ('1901','EMEI EDUARDO CARLOS PEREIRA','candidate','Possível unidade do lote escolas; validar relação com contrato principal.'),
+        ('1902','EMEI CIDADE FERNÃO DIAS','candidate','Possível unidade do lote escolas; validar relação com contrato principal.'),
+        ('1903','EMEI AVIADOR EDU CHAVES','candidate','Possível unidade do lote escolas; validar relação com contrato principal.'),
+        ('1904','EMEF PROFA. ESMERALDA SALLES PEREIRA','candidate','Possível unidade do lote escolas; validar relação com contrato principal.'),
+        ('1905','EMEI PROF. ÊNIO CORREA','candidate','Possível unidade do lote escolas; validar relação com contrato principal.'),
+        ('4412','GERENCIAL PAVIMENTAÇÃO PARANAPICABA PCS','candidate','Registro gerencial; validar grafia e relação com Paranapiacaba.'),
+        ('4428','AV. NOVE DE JULHO 4428','candidate','Registro Sienge; validar status operacional.'),
+        ('4500','ATA CALÇADAS','candidate','Registro Sienge; validar se contrato/frente ativa.'),
+        ('5201','MP AUDITÓRIO RIACHUELO','candidate','Registro Sienge; validar status operacional.'),
+        ('45000','ATA CALÇADAS DIARIO DE OBRA 01 A 12 DE MARÇO','candidate','Provável registro operacional/diário; validar se não é duplicado de ATA CALÇADAS.'),
+        ('94539','LOCAÇÃO SÃO CAETANO - VUC PCS','administrative','Locação/equipamento; não tratar como obra física.'),
+        ('441','PAVIMENTAÇÃO PARANAPIACABA','candidate','Obra/frente PCS; validar status e cronograma futuro.'),
+    ]
+    if not args.execute:
+        rows=[]
+        for code,name,status,note in records:
+            rows.append((code,name,status,False,False,note))
+        print_rows(rows, ['sienge_code','name','suggested_status','executive','forecast','note'], args.json)
+        return
+    sql = """
+    insert into portfolio.project_registry(company, canonical_code, canonical_name, operational_status, include_in_executive_report, include_in_forecast, source_system, notes, metadata)
+    values ('PCS', %s, %s, %s, false, false, 'sienge', %s, jsonb_build_object('sienge_code', %s, 'schedule_status', 'not_available', 'classified_by', 'mensura-schedule portfolio-classify-pcs'))
+    on conflict (company, canonical_code) do update set
+      canonical_name=excluded.canonical_name,
+      operational_status=excluded.operational_status,
+      include_in_executive_report=false,
+      include_in_forecast=false,
+      source_system='sienge',
+      notes=excluded.notes,
+      metadata=portfolio.project_registry.metadata || excluded.metadata;
+    """
+    alias_sql = """
+    insert into portfolio.project_aliases(project_registry_id, alias, alias_type, source_system)
+    select id, %s, %s, 'sienge' from portfolio.project_registry where company='PCS' and canonical_code=%s
+    on conflict do nothing;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        for code,name,status,note in records:
+            canonical_code = 'PCS_SIENGE_' + code
+            if code == '1354': canonical_code = 'TEATRO_SUZANO'
+            elif code in ('441','4412'): canonical_code = 'PARANAPIACABA' if code == '441' else 'PARANAPIACABA_GERENCIAL'
+            cur.execute(sql, (canonical_code, name, status, note, code))
+            cur.execute(alias_sql, (code, 'sienge', canonical_code))
+            cur.execute(alias_sql, (name, 'name', canonical_code))
+        conn.commit()
+    payload={'mode':'execute','classified':len(records),'executive_included':0,'forecast_included':0}
+    print(json.dumps(payload, ensure_ascii=False, indent=2) if args.json else payload)
+
+
+def cmd_portfolio_report(args):
+    sql = """
+    select
+      pr.company,
+      pr.canonical_code,
+      pr.canonical_name,
+      pr.operational_status,
+      pr.include_in_executive_report,
+      pr.include_in_forecast,
+      pr.source_system,
+      sp.code as schedule_code,
+      latest.version_label,
+      latest.data_date,
+      latest.activities,
+      latest.critical,
+      latest.max_finish,
+      latest.avg_percent,
+      pr.notes
+    from portfolio.project_registry pr
+    left join schedule.projects sp on sp.id = pr.schedule_project_id
+    left join lateral (
+      select sv.version_label, sv.data_date, count(av.*)::int activities,
+        count(*) filter (where av.is_critical)::int critical,
+        max(av.current_finish) max_finish,
+        round(avg(av.percent_complete)::numeric, 2) avg_percent
+      from schedule.schedule_versions sv
+      left join schedule.activity_versions av on av.schedule_version_id=sv.id
+      where sv.project_id=sp.id
+      group by sv.id, sv.version_label, sv.data_date
+      order by sv.created_at desc
+      limit 1
+    ) latest on true
+    where (%s is null or pr.company=%s)
+      and (%s is false or pr.include_in_executive_report is true)
+    order by pr.company,
+      case pr.operational_status when 'ongoing' then 1 when 'candidate' then 2 when 'administrative' then 3 when 'duplicate' then 4 when 'excluded' then 5 else 9 end,
+      pr.canonical_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.company, args.company, args.executive_only, args.limit))
+        print_rows(cur.fetchall(), ['company','code','name','status','executive','forecast','source','schedule_code','version','data_date','activities','critical','max_finish','avg_percent','notes'], args.json)
+
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
 
@@ -1290,6 +1397,18 @@ def build_parser():
     s.add_argument("--limit", type=int, default=20)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_executive_risk_report)
+
+    s = sub.add_parser("portfolio-classify-pcs", help="Classifica registros PCS/Sienge no portfolio registry")
+    s.add_argument("--execute", action="store_true")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_portfolio_classify_pcs)
+
+    s = sub.add_parser("portfolio-report", help="Relatório transversal do portfolio registry com vínculo Schedule Control")
+    s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--executive-only", action="store_true")
+    s.add_argument("--limit", type=int, default=200)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_portfolio_report)
 
     s = sub.add_parser("portfolio-seed", help="Aplica seed inicial do portfolio.project_registry")
     s.add_argument("--json", action="store_true")

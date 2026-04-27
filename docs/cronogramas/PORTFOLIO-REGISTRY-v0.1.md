@@ -148,3 +148,49 @@ Snapshot criado no Supabase:
 - avanço médio importado: 53,72%
 
 O `portfolio.project_registry` foi atualizado para vincular `CCSP_CASA_7` ao `schedule.projects`.
+
+## Classificação PCS/Sienge — 2026-04-26
+
+Comando criado:
+
+```bash
+mensura-schedule portfolio-classify-pcs --json
+mensura-schedule portfolio-classify-pcs --execute --json
+```
+
+Regra aplicada:
+
+- registros PCS/Sienge não têm cronograma importável hoje;
+- portanto, nenhum registro PCS/Sienge entra em forecast ou relatório executivo até haver cronograma;
+- `TEATRO_SUZANO` permanece `candidate`, com cronograma em elaboração;
+- registros administrativos (`ADM PCS`, `CUSTOS COM PESSOAL`, `ADM MIA ENGENHARIA`, `LOCAÇÃO SÃO CAETANO`) ficam como `administrative`.
+
+Resultado da classificação:
+
+- 22 registros PCS/Sienge classificados;
+- 0 incluídos no relatório executivo;
+- 0 incluídos no forecast.
+
+## Portfolio Report transversal — 2026-04-26
+
+Comando criado:
+
+```bash
+mensura-schedule portfolio-report --json
+mensura-schedule portfolio-report --executive-only --json
+mensura-schedule portfolio-report --company PCS --json
+```
+
+Validação atual:
+
+```text
+portfolio-report total: 32 registros
+- Mensura: 8
+- MIA: 1
+- PCS: 23
+
+portfolio-report --executive-only: 3 registros
+- Mensura: P_G, MELICITA_R1
+- MIA: CCSP_CASA_7
+- PCS: nenhum
+```
