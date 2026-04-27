@@ -718,20 +718,20 @@ def cmd_analytics_universe(args):
       (max_current_finish - max_baseline_finish) delay_vs_baseline,
       case
         when is_model_or_auxiliary then 'exclude'
-        when project_code in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA','DF345_DIOGO_DE_FARIA') then 'exclude'
+        when exists (select 1 from portfolio.project_registry pr where pr.company='Mensura' and pr.schedule_project_id=project_id and pr.include_in_forecast is false and pr.operational_status in ('excluded','duplicate')) then 'exclude'
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'predictive'
         when current_finish_coverage >= 95 then 'control_only'
         else 'blocked'
       end as universe_status,
       case
         when is_model_or_auxiliary then 'modelo/auxiliar/teste; excluir do universo analítico'
-        when project_code in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA','DF345_DIOGO_DE_FARIA') then 'excluído por decisão operacional do Alê para relatório executivo'
+        when exists (select 1 from portfolio.project_registry pr where pr.company='Mensura' and pr.schedule_project_id=project_id and pr.include_in_forecast is false and pr.operational_status in ('excluded','duplicate')) then 'excluído/duplicado conforme portfolio.project_registry'
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 'apto para risk-report, baseline compare e forecast inicial'
         when current_finish_coverage >= 95 then 'apto para controle; baseline insuficiente para previsão robusta'
         else 'bloqueado por qualidade de datas'
       end as note
     from scored
-    where (%s is false or (not is_model_or_auxiliary and project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA','DF345_DIOGO_DE_FARIA')))
+    where (%s is false or (not is_model_or_auxiliary and exists (select 1 from portfolio.project_registry pr where pr.company='Mensura' and pr.schedule_project_id=project_id and pr.include_in_forecast is true)))
     order by case
         when is_model_or_auxiliary then 4
         when current_finish_coverage >= 95 and baseline_finish_coverage >= 80 then 1
@@ -790,7 +790,7 @@ def cmd_forecast_initial(args):
         and max_current_finish is not null
         and max_baseline_finish is not null
         and max_current_finish >= current_date
-        and project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA','DF345_DIOGO_DE_FARIA')
+        and exists (select 1 from portfolio.project_registry pr where pr.company='Mensura' and pr.schedule_project_id=m.project_id and pr.include_in_forecast is true)
     )
     """
     preview_sql = base_sql + """
@@ -910,7 +910,7 @@ def cmd_executive_risk_report(args):
       left join latest_forecasts lf on lf.project_id = u.project_id
       where not u.is_model_or_auxiliary
         and u.max_current_finish >= current_date
-        and u.project_code not in ('DOPPIO','MELICITA','ELEV_ALTO_DO_IPIRANGA','SOFITEL_DIRETOR','CCN_BIOMA','DF345_DIOGO_DE_FARIA')
+        and exists (select 1 from portfolio.project_registry pr where pr.company='Mensura' and pr.schedule_project_id=u.project_id and pr.include_in_executive_report is true)
     )
     select
       project_code,
@@ -963,6 +963,82 @@ def cmd_executive_risk_report(args):
         print(f"- P80/P95 delay: {d['p80_delay']} / {d['p95_delay']} dias")
         print(f"- Ação: {d['recommended_action']}")
         print("")
+
+
+def cmd_portfolio_seed(args):
+    rows = [
+        ('Mensura','P_G','P&G Louveira','ongoing',True,True,'schedule_control','P_G',None,'Projeto sensível: notificação legal ativa; comunicação externa exige dupla revisão do Alê.'),
+        ('Mensura','MELICITA_R1','Melicita','ongoing',True,True,'schedule_control','MELICITA_R1',None,'Referência válida para Melicita no relatório executivo.'),
+        ('Mensura','MELICITA','Melicita duplicado','duplicate',False,False,'schedule_control','MELICITA','MELICITA_R1','Duplicado de MELICITA_R1 por decisão do Alê.'),
+        ('Mensura','DOPPIO','Doppio','excluded',False,False,'schedule_control','DOPPIO',None,'Excluído do relatório executivo por decisão operacional do Alê.'),
+        ('Mensura','ELEV_ALTO_DO_IPIRANGA','ELEV Alto do Ipiranga','excluded',False,False,'schedule_control','ELEV_ALTO_DO_IPIRANGA',None,'Excluído do relatório executivo por decisão operacional do Alê.'),
+        ('Mensura','SOFITEL_DIRETOR','Sofitel Diretor','excluded',False,False,'schedule_control','SOFITEL_DIRETOR',None,'Excluído do relatório executivo por decisão operacional do Alê.'),
+        ('Mensura','CCN_BIOMA','CCN Bioma','excluded',False,False,'schedule_control','CCN_BIOMA',None,'Excluído do relatório executivo por decisão operacional do Alê.'),
+        ('Mensura','DF345_DIOGO_DE_FARIA','DF345 Diogo de Faria','excluded',False,False,'schedule_control','DF345_DIOGO_DE_FARIA',None,'Excluído do relatório executivo por decisão operacional do Alê.'),
+        ('MIA','CCSP_CASA_7','CCSP Casa 7','ongoing',True,False,'2nd_brain',None,None,'Obra MIA ativa; ainda fora do Supabase Schedule Control.'),
+        ('PCS','TEATRO_SUZANO','Teatro Município de Suzano','candidate',False,False,'sienge',None,None,'Candidato PCS; validar se obra ativa e cronograma.'),
+        ('PCS','PARANAPIACABA','Paranapiacaba / Pavimentação Paranapiacaba','candidate',False,False,'sienge',None,None,'Candidato PCS; patrimônio sensível/CONDEPHAAT, validar status ativo.'),
+        ('PCS','SPTRANS_1_OS','SPTrans — 1ª OS','candidate',False,False,'2nd_brain',None,None,'Aguardando recebimento da OS.'),
+    ]
+    sql = """
+    insert into portfolio.project_registry (
+      company, canonical_code, canonical_name, operational_status,
+      include_in_executive_report, include_in_forecast, source_system,
+      schedule_project_id, canonical_project_id, exclusion_reason, notes, metadata
+    )
+    values (
+      %s,%s,%s,%s,%s,%s,%s,
+      (select id from schedule.projects where code=%s),
+      (select id from portfolio.project_registry where company=%s and canonical_code=%s),
+      case when %s in ('excluded','duplicate') then %s else null end,
+      %s,
+      jsonb_build_object('seeded_by','mensura-schedule portfolio-seed','seeded_at',now())
+    )
+    on conflict (company, canonical_code) do update set
+      canonical_name=excluded.canonical_name,
+      operational_status=excluded.operational_status,
+      include_in_executive_report=excluded.include_in_executive_report,
+      include_in_forecast=excluded.include_in_forecast,
+      source_system=excluded.source_system,
+      schedule_project_id=excluded.schedule_project_id,
+      canonical_project_id=excluded.canonical_project_id,
+      exclusion_reason=excluded.exclusion_reason,
+      notes=excluded.notes,
+      metadata=portfolio.project_registry.metadata || excluded.metadata;
+    """
+    alias_sql = """
+    insert into portfolio.project_aliases(project_registry_id, alias, alias_type, source_system)
+    select id, %s, %s, %s from portfolio.project_registry where company=%s and canonical_code=%s
+    on conflict do nothing;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        for company, code, name, status, inc_exec, inc_fc, source, sched_code, parent, note in rows:
+            cur.execute(sql, (company, code, name, status, inc_exec, inc_fc, source, sched_code, company, parent or code, status, note, note))
+            cur.execute(alias_sql, (code, 'code', source, company, code))
+            cur.execute(alias_sql, (name, 'name', source, company, code))
+            if code == 'P_G':
+                cur.execute(alias_sql, ('P&G Louveira', 'name', 'manual', company, code))
+            if code == 'CCSP_CASA_7':
+                cur.execute(alias_sql, ('Casa 7', 'name', 'manual', company, code))
+        conn.commit()
+    payload={'mode':'execute','upserted':len(rows)}
+    print(json.dumps(payload,ensure_ascii=False,indent=2) if args.json else payload)
+
+
+def cmd_portfolio_registry(args):
+    sql = """
+    select company, canonical_code, canonical_name, operational_status,
+      include_in_executive_report, include_in_forecast, source_system,
+      schedule_project_code, canonical_parent_code, exclusion_reason, notes, aliases
+    from portfolio.v_project_registry_current
+    where (%s is null or company=%s)
+      and (%s is null or operational_status=%s)
+    order by company, case operational_status when 'ongoing' then 1 when 'candidate' then 2 when 'duplicate' then 3 when 'excluded' then 4 else 5 end, canonical_code
+    limit %s;
+    """
+    with db_conn() as conn, conn.cursor() as cur:
+        cur.execute(sql, (args.company,args.company,args.status,args.status,args.limit))
+        print_rows(cur.fetchall(), ['company','code','name','status','executive','forecast','source','schedule_code','parent','exclusion_reason','notes','aliases'], args.json)
 
 def cmd_validate(args):
     subprocess.run([sys.executable, str(ROOT / "scripts/validate_migration.py")], check=True)
@@ -1214,6 +1290,17 @@ def build_parser():
     s.add_argument("--limit", type=int, default=20)
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_executive_risk_report)
+
+    s = sub.add_parser("portfolio-seed", help="Aplica seed inicial do portfolio.project_registry")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_portfolio_seed)
+
+    s = sub.add_parser("portfolio-registry", help="Lista portfolio.project_registry")
+    s.add_argument("--company", choices=["Mensura", "MIA", "PCS", "Pessoal", "Outro"])
+    s.add_argument("--status")
+    s.add_argument("--limit", type=int, default=100)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_portfolio_registry)
 
     s = sub.add_parser("validate", help="Valida estrutura da migration foundation")
     s.set_defaults(func=cmd_validate)
