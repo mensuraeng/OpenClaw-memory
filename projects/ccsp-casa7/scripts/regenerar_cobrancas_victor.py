@@ -26,8 +26,8 @@ OUT_DEFAULT = ROOT / "config" / "cobrancas-victor-current.json"
 ARCHIVE_DIR = ROOT / "config" / "historico-cobrancas-victor"
 
 EMAIL = {
-    "account": "mia",
-    "user": "alexandre@miaengenharia.com.br",
+    "account": "mensura",
+    "user": "flavia@mensuraengenharia.com.br",
     "to": "victor.evangelista@miaengenharia.com.br",
     "cc": ["alexandre@miaengenharia.com.br", "andre@miaengenharia.com.br"],
 }

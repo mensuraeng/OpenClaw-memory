@@ -265,3 +265,7 @@ Nenhuma campanha deve partir de planilha bruta. Toda lista passa antes por dedup
 ## 2026-04-27 — Canal MKT da Mensura é o tópico MKT do grupo MENSURA Engenharia
 _Status: [ATIVA]_
 Operação de marketing da Mensura deve ocorrer no grupo Telegram `MENSURA Engenharia` (`telegram:-1003366344184`), tópico `MKT` (`thread 43`), com roteamento para agente/canal `marketing`, salvo instrução explícita em contrário.
+
+### Saídas de e-mail automáticas devem usar a conta da Flávia (2026-04-28)
+_Status: [ATIVA]_
+Quando uma rotina automatizada, cron ou script precisar enviar e-mail operacional, o remetente padrão deve ser `flavia@mensuraengenharia.com.br`, não contas pessoais/institucionais do Alê (`alexandre@...`). O e-mail do Alê pode ficar em cópia quando fizer sentido para visibilidade, mas não deve ser usado como remetente salvo autorização explícita para aquele envio. Rotinas de leitura/monitoramento podem continuar consultando caixas específicas do Alê quando a finalidade for inbox/calendário dele, sem transformar isso em remetente de saída.

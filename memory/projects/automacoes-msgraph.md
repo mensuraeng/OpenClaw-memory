@@ -48,3 +48,9 @@ _Atualizado em 2026-04-13_
   - calendário PCS respondeu normalmente
 - Evidência operacional relevante da inbox:
   - email de `dyonisiojpf@spobras.sp.gov.br` com assunto `ENC: INSTALAÇÃO ELÉTRICA`, incluindo uma ocorrência marcada como urgente em 15/04/2026.
+
+## Ajuste 2026-04-28 — remetente operacional Flávia
+- `config/ms-graph.json` passou a ter `defaultUser=flavia@mensuraengenharia.com.br` para a conta Mensura.
+- Rotina CCSP Casa 7 `ccsp-casa7-cobranca-victor-9h` corrigida: `projects/ccsp-casa7/config/cobrancas-victor-current.json` agora envia por `flavia@mensuraengenharia.com.br` via account `mensura`, mantendo Alê/André em CC.
+- Gerador `projects/ccsp-casa7/scripts/regenerar_cobrancas_victor.py` atualizado para não recriar config com remetente do Alê.
+- Regra: saídas automatizadas por e-mail usam Flávia como remetente; contas do Alê ficam só para leitura/monitoramento ou CC, salvo autorização explícita.

@@ -65,7 +65,7 @@ Regra operacional:
 - o cron diário `ccsp-casa7-cobranca-victor-9h` usa esse arquivo;
 - cada novo relatório semanal substitui a pauta da semana anterior;
 - a cobrança diária deve conter apenas os pontos daquele dia;
-- o envio é por email ao Victor, com Alê e André em cópia, às 9h BRT;
+- o envio é por email ao Victor, sempre pelo remetente operacional `flavia@mensuraengenharia.com.br`, com Alê e André em cópia, às 9h BRT;
 - não criar crons extras por item se a pauta já estiver no `cobrancas-victor-current.json`.
 
 ### 3. Criar Crons Duráveis
@@ -128,12 +128,15 @@ Resumir:
 - Quantos crons criados e para quais datas/itens
 - Situação atual da obra (avanço %, semana N/9, destaque principal)
 
-## Envio de E-mail Manual (Himalaya)
+## Envio de E-mail Manual
 
-Conta configurada: `mensura` (alexandre@mensuraengenharia.com.br)
+Usar Microsoft Graph via helper canônico, nunca Himalaya/SMTP para esta rotina.
+Remetente operacional padrão: `flavia@mensuraengenharia.com.br`.
 
 ```bash
-himalaya --account mensura message send \
+python3 /root/.openclaw/workspace/scripts/msgraph_email.py send \
+  --account mensura \
+  --user flavia@mensuraengenharia.com.br \
   --subject "ASSUNTO" \
   --to "destinatario@email.com" \
   --cc "copia@email.com" \

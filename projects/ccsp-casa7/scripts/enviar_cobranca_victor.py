@@ -47,7 +47,8 @@ Por favor, responder ainda hoje com:
 Observação: esta cobrança é parte da rotina semanal de controle da MIA para proteger prazo, escopo e rastreabilidade da obra.
 
 Abs,
-Alexandre
+Flávia
+Acompanhamento operacional MIA/Mensura
 """
 
 
