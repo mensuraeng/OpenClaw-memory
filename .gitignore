@@ -31,6 +31,7 @@ state/
 /finance/
 /marketing/
 /projects/claw3d/
+/projects/mensura-commercial-intelligence/
 /knowledge/*
 !/knowledge/OpenClaw/
 !/knowledge/OpenClaw/**
