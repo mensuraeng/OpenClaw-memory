@@ -30,9 +30,12 @@ def _is_feriado(dt: datetime) -> bool:
 # ── Credenciais (carregadas de config — nunca hardcoded) ─────────────────────
 _BASE = Path(__file__).parent.parent
 
+from secret_config import load_json_config
+
+
 def _load_config():
-    hs   = json.loads((_BASE / "config/hubspot-mensura.json").read_text())
-    pb   = json.loads((_BASE / "config/phantombuster-mensura.json").read_text())
+    hs   = load_json_config(_BASE / "config/hubspot-mensura.json")
+    pb   = load_json_config(_BASE / "config/phantombuster-mensura.json")
     oc   = json.loads((_BASE.parent / "openclaw.json").read_text())
     return hs, pb, oc
 

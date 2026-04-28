@@ -307,7 +307,14 @@ def run_triage(dry_run: bool = False, limit: int = 50,
 
     cfg = load_ms_graph_config()
     rules = load_rules()
-    user_email = cfg.get("user_email") or cfg.get("userEmail", "")
+    user_email = (
+        cfg.get("user_email")
+        or cfg.get("userEmail")
+        or cfg.get("default_user")
+        or cfg.get("defaultUser")
+        or cfg.get("mailbox")
+        or ""
+    )
 
     if not user_email:
         log.error("user_email nao encontrado em ms-graph-pcs.json")

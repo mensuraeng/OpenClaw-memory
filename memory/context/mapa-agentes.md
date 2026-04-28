@@ -1,93 +1,153 @@
 # Mapa de Agentes — Ecossistema OpenClaw
 
-_Atualizado: 2026-04-25 | Consultar antes de acionar ou criar agentes_
+_Atualizado: 2026-04-28 | Consultar antes de acionar ou criar agentes_
 
 ---
 
-## Agentes Principais
+## Regra principal
 
-| ID | Nome/Persona | Papel | Canal principal |
+Não renomear agentes. A arquitetura nova é funcional, não cosmética.
+
+Agentes ativos de referência:
+- `main` — Flávia
+- `finance`
+- `mensura`
+- `mia`
+- `pcs`
+- `trade`
+
+Frentes como Growth/Marketing/Authority são **funções operacionais**, não exigem agente novo até haver necessidade real.
+
+---
+
+## Agentes ativos
+
+| ID | Nome/Persona | Papel funcional | Canal principal |
 |---|---|---|---|
-| `main` | **Flávia** | CFO, orquestradora central, governança do ecossistema | Telegram DM (Alexandre) |
-| `mensura` | **MENSURA** | Domínio técnico-comercial, posicionamento, propostas | Grupo Mensura (topic 1) |
-| `marketing` | **Marketing** | Conteúdo, CRM, prospecção, follow-up, campanhas | Grupo Mensura — tópico MKT (thread 43) |
-| `mia` | **MIA** | Projetos ultra-premium, governança de obras AAA | Grupo MIA |
-| `pcs` | **PCS** | Obras públicas, licitações, contratos, Sienge | Grupo PCS |
-| `finance` | **Finance** | Financeiro, contas a pagar, fluxo de caixa | Grupo Finance (topic 13) |
-| `juridico` | **Jurídico** | Contratos, compliance, análise legal | — |
-| `bi` | **BI** | Business intelligence, relatórios analíticos | — |
-| `producao` | **Produção** | Gestão de obras em execução | — |
-| `rh` | **RH** | Recursos humanos, onboarding | — |
-| `suprimentos` | **Suprimentos** | Compras, fornecedores, cotações | — |
-| `pessoal` | **Pessoal** | Assuntos pessoais do Alexandre | — |
-
-## Agentes de Infraestrutura
-
-| ID | Função |
-|---|---|
-| `autopilot` | Autopilot — execução autônoma de tarefas longas |
-| `croncheap` | Agente de crons econômicos (GPT 4o Mini) — tarefas recorrentes de baixo custo |
-| `claude-code` | Claude Code — desenvolvimento de software |
-| `mkt` | Alias marketing |
+| `main` | Flávia | COO/CoS digital, orquestração, WORKING queue, health, memória, decisão e consolidação externa | Telegram DM Alê |
+| `finance` | Finance | Financeiro, comprovantes, contas, fluxo, conciliação e fiscal | Grupo Finance |
+| `mensura` | Mensura | Operação técnica/comercial MENSURA: cronograma, prazo, risco, CAPEX, medição, controle executivo e Growth técnico | Grupo Mensura |
+| `mia` | MIA | Obras premium, pré-construção, cliente alto padrão, comunicação e governança MIA | Grupo MIA |
+| `pcs` | PCS | Licitações, obras públicas, Sienge, SPObras, contratos, patrimônio/restauro | Grupo PCS |
+| `trade` | Trade | Projeto pessoal do Alê: mercado, carteira, radar, ouro, notícias, Strategy Lab e Risk Gate | Grupo Investimento / DM via Flávia |
 
 ---
 
-## Configuração de Grupos Telegram
+## Agentes legados / não canônicos nesta fase
 
-| Grupo | ID | Agente(s) | Tópicos |
-|---|---|---|---|
-| MENSURA Engenharia | `-1003366344184` | mensura (topic 1), marketing (topic 43) | 1 = Geral, 43 = MKT |
-| Finance | `-1003818163425` | finance | 13 = Finance |
-| MIA | `-1003704703669` | mia | 1 = Geral |
-| PCS | `-1003146152550` | pcs | 1 = Geral |
+Os IDs abaixo podem existir em histórico, allowlist, sessões ou arquivos antigos, mas **não devem ser tratados como topologia ativa sem validar config/runtime atual**:
+
+- `marketing`
+- `autopilot`
+- `juridico`
+- `bi`
+- `producao`
+- `rh`
+- `suprimentos`
+- `pessoal`
+- aliases como `mkt`
+
+Regra: antes de responder sobre organograma ou capacidade operacional, validar estado real com `agents_list`, config/runtime ou mapa no 2nd-brain.
 
 ---
 
-## Hierarquia e Fluxo de Trabalho
+## Hierarquia funcional
 
-```
-Alexandre (decisão estratégica)
+```text
+Alexandre — decisão estratégica e aprovação de alto risco
     │
     ▼
-Flávia / Main (CFO — orquestra tudo)
-    ├── MENSURA → posicionamento técnico, proposta, argumento
-    ├── Marketing → conteúdo, CRM, abordagem, follow-up
-    ├── Finance → contas, fluxo, cobranças
-    ├── MIA → obras premium
-    ├── PCS → obras públicas
-    ├── Jurídico → contratos
-    └── BI → relatórios e análise
+Flávia / main — COO digital e camada central de decisão
+    ├── finance — financeiro e conciliação
+    ├── mensura — MENSURA técnico/comercial/obras
+    ├── mia — MIA premium/pré-construção/obra
+    ├── pcs — PCS licitações/Sienge/obras públicas
+    └── trade — investimentos pessoais/mercado
 ```
 
 ---
 
-## Responsabilidades da Máquina de Vendas
+## Funções transversais sem criar agente novo
 
-| Função | Responsável |
-|---|---|
-| Governança e cobrança de resultados | Flávia |
-| Posicionamento, oferta, argumento técnico | MENSURA |
-| Conteúdo, CRM, prospecção LinkedIn, follow-up | Marketing |
-| Base comercial validada, bounces, suppression e auditoria de campanhas | Mensura Commercial Intelligence (`projects/mensura-commercial-intelligence/`) |
-| Decisões estratégicas, aprovações, respostas LinkedIn | Alexandre |
-
----
-
-## Modelos por Agente (padrão)
-
-- **Flávia / Main:** claude-sonnet-4-6 (padrão), claude-opus-4-7 (tarefas complexas)
-- **Croncheap:** GPT-4o Mini (economia em tarefas recorrentes)
-- **Outros agentes:** claude-sonnet-4-6
+| Função | Onde mora inicialmente | Quando virar agente separado |
+|---|---|---|
+| Growth / Marketing | Flávia + Mensura/MIA conforme frente | quando houver volume recorrente de campanhas, CRM, ads e conteúdo exigindo executor próprio |
+| Authority / Conteúdo | Flávia + Mensura/MIA/PCS | quando pipeline de transcrição→post→artigo→carrossel estiver recorrente |
+| Lead enrichment | runtime/data-pipeline + HubSpot/Phantombuster | quando houver uso intensivo de Apollo/Clay/Hunter/Meta/LinkedIn com custo mensurável |
+| QA operacional | Flávia + checklist QA | quando implementação por subagente ficar frequente |
 
 ---
 
-## Skills por Agente
+## Sistema Operacional 10/10
 
-| Agente | Skills principais |
-|---|---|
-| mensura | orcamentista, relatorio-preditivo-obras, redator-executivo-obra, analista-tecnico-documentos, mensura-os-torre-controle, control-tower-cronograma, mensura-relatorio-semanal |
-| marketing | linkedin-outreach, crm-hubspot, conteudo-linkedin |
-| pcs | inbox_triage, juridico-contratos |
+Artefatos canônicos:
 
-_Localização das skills: `/root/.openclaw/workspace/agents/<agentId>/skills/`_
-_Skills compartilhadas: `/root/.openclaw/workspace/projects/openclaw-memory/skills/shared/`_
+- Projeto: `/root/2nd-brain/04-projects/openclaw-sistema-operacional-10x.md`
+- WORKING Flávia: `/root/2nd-brain/06-agents/flavia/WORKING.md`
+- Organograma funcional: `/root/.openclaw/workspace/docs/operacao/ORGANOGRAMA-FUNCIONAL-AGENTES.md`
+- Matriz de autoridade: `/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md`
+- Regras de dados: `/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md`
+- Loops: `/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md`
+- Pipeline: `/root/.openclaw/workspace/docs/operacao/PIPELINE-DE-DADOS-OPERACIONAL.md`
+- Usage ledger: `/root/.openclaw/workspace/docs/operacao/USAGE-LEDGER.md`
+- Backlog leve: `/root/.openclaw/workspace/docs/operacao/BACKLOG-LEVE.md`
+
+---
+
+## Loops obrigatórios
+
+Todo agente deve respeitar:
+
+```text
+sinal real → classificar → vincular entidade/tarefa → agir com autoridade correta → registrar evidência → acompanhar até fechar → salvar lição se houver aprendizado
+```
+
+## Autoridade
+
+- Read é padrão.
+- Write externo exige aprovação explícita do Alê, salvo exceção formalizada.
+- Delete permanente exige aprovação; usar `.trash/`/quarentena quando possível.
+- Segredos devem migrar para KeeSpace/KeePassXC; docs/memória não guardam token.
+- Dados executivos precisam de fonte, janela, método, confiança e risco de erro.
+
+## Segredos / KeeSpace
+
+Mapa obrigatório para qualquer agente que precise entender credenciais:
+
+- Protocolo operacional: `/root/.openclaw/workspace/docs/operacao/KEESPACE-SECRETS-PROTOCOL.md`
+- Mapa de credenciais: `/root/.openclaw/workspace/memory/integrations/credentials-map.md`
+- Vault local existente: `/root/.secrets/flavia-vault.kdbx`
+- Resolver canônico: `/root/.openclaw/workspace/scripts/secret_config.py`
+
+Regra: agente nunca deve procurar token/API key em conversa, memória ou Git. Deve procurar referência no mapa, resolver via `secret_config.py`/env/KeeSpace, ou pedir desbloqueio do cofre se estiver inacessível.
+
+## Subagentes
+
+Subagente só vale se aumentar precisão, cobertura, velocidade, confiabilidade ou capacidade de teste.
+
+Nunca fire-and-forget:
+1. escopo claro;
+2. evidência;
+3. validação;
+4. fechamento;
+5. memória se houver decisão/lição.
+
+---
+
+## Grupos Telegram
+
+| Grupo | ID | Agente/Função | Tópicos |
+|---|---|---|---|
+| MENSURA Engenharia | `-1003366344184` | `mensura`; MKT como função no tópico 43 | 1 = Geral, 43 = MKT |
+| Finance | `-1003818163425` | `finance` | 13 = Finance |
+| MIA | `-1003704703669` | `mia` | 1 = Geral |
+| PCS | `-1003146152550` | `pcs` | 1 = Geral |
+| Investimento | `-1003794434256` | `trade` | 1 = Notícias |
+
+---
+
+## Referências
+
+- Mapas por agente: `/root/2nd-brain/06-agents/<agent>/AGENT-MAP.md`
+- Projeto 10/10: `/root/2nd-brain/04-projects/openclaw-sistema-operacional-10x.md`
+- Regra operacional central: `/root/.openclaw/workspace/AGENTS.md`
