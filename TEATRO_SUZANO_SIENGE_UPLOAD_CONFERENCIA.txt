@@ -1,0 +1,9 @@
+Arquivo: /root/.openclaw/workspace/TEATRO_SUZANO_SIENGE_UPLOAD_PRONTO.xlsx
+Itens válidos: 176
+Seções: 14
+Total: R$ 625,085.47
+Erros Excel (#REF etc.): 0
+Itens com código sintético: 1
+Linhas ignoradas: 10
+Códigos sintéticos:
+  linha 16: 2.4A / SEM_CODIGO_001 — RETIRADA DE CADEIRAS (DESMOBILIZAÇÃO)
