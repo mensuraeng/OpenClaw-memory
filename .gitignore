@@ -29,6 +29,7 @@ state/
 
 # Nested repos handled separately
 /finance/
+/marketing/
 /projects/claw3d/
 /knowledge/*
 !/knowledge/OpenClaw/
