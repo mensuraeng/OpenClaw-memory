@@ -1,22 +1,47 @@
 import { NextResponse } from 'next/server';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 import { appendTaskEvent, executeRetryQueue, getTaskAttention, getTaskMetrics, listTaskExecutions, reconcileTaskEvidence, reconcileTasksWithSessions } from '@/lib/task-tracking';
 
-const execAsync = promisify(exec);
+const OPENCLAW_DIR = process.env.OPENCLAW_DIR || '/root/.openclaw';
+
+function getErrorSummary(error: unknown) {
+  if (error && typeof error === 'object') {
+    const maybeError = error as { code?: unknown; signal?: unknown; message?: unknown };
+    return {
+      code: maybeError.code,
+      signal: maybeError.signal,
+      message: typeof maybeError.message === 'string' ? maybeError.message.split('\n')[0] : undefined,
+    };
+  }
+  return { message: String(error) };
+}
+
+function readSessionKeys(agentId = 'main') {
+  const storePath = join(OPENCLAW_DIR, 'agents', agentId, 'sessions', 'sessions.json');
+  if (!existsSync(storePath)) return [];
+
+  const parsed = JSON.parse(readFileSync(storePath, 'utf-8'));
+  if (Array.isArray(parsed)) {
+    return parsed
+      .map((session: { sessionKey?: string; key?: string }) => session.sessionKey || session.key)
+      .filter((key): key is string => Boolean(key));
+  }
+
+  if (parsed && typeof parsed === 'object') {
+    return Object.keys(parsed);
+  }
+
+  return [];
+}
 
 export async function POST() {
   try {
     let sessionKeys: string[] = [];
     try {
-      const { stdout } = await execAsync('openclaw sessions list --json 2>/dev/null', { timeout: 10000 });
-      const parsed = JSON.parse(stdout || '[]');
-      const sessions = Array.isArray(parsed) ? parsed : (parsed.sessions || []);
-      sessionKeys = sessions
-        .map((session: { sessionKey?: string; key?: string }) => session.sessionKey || session.key)
-        .filter(Boolean);
+      sessionKeys = readSessionKeys();
     } catch (error) {
-      console.warn('Task reconciliation session fetch skipped:', error);
+      console.warn('Task reconciliation session fetch skipped:', getErrorSummary(error));
     }
 
     const sessionUpdates = reconcileTasksWithSessions(sessionKeys);

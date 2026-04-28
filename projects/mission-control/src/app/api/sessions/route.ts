@@ -61,6 +61,31 @@ function sanitizeAgentId(agentId: string): string | null {
   return valid.includes(agentId) ? agentId : null;
 }
 
+function readSessionStore(agentId: string): RawSession[] {
+  const storePath = join(OPENCLAW_DIR, 'agents', agentId, 'sessions', 'sessions.json');
+  if (!existsSync(storePath)) return [];
+
+  const parsed = JSON.parse(readFileSync(storePath, 'utf-8'));
+  if (Array.isArray(parsed)) return parsed;
+
+  if (parsed && typeof parsed === 'object') {
+    const now = Date.now();
+    return Object.entries(parsed).map(([key, value]) => {
+      const session = value && typeof value === 'object' ? value as Partial<RawSession> : {};
+      const updatedAt = typeof session.updatedAt === 'number' ? session.updatedAt : 0;
+      return {
+        ...session,
+        key,
+        kind: session.kind || 'session',
+        updatedAt,
+        ageMs: typeof session.ageMs === 'number' ? session.ageMs : now - updatedAt,
+      };
+    });
+  }
+
+  return [];
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get('id');
@@ -73,17 +98,17 @@ export async function GET(request: NextRequest) {
 
 async function listSessions(agentId: string): Promise<NextResponse> {
   try {
-    // Try openclaw CLI first (F17: execAsync with timeout)
-    let sessions: RawSession[] = [];
+    let sessions: RawSession[] = readSessionStore(agentId);
     try {
-      const { stdout } = await execAsync(
-        `openclaw sessions list --json --agent ${agentId} 2>/dev/null`,
-        { timeout: 10000 }
-      );
-      const data = JSON.parse(stdout);
-      sessions = Array.isArray(data) ? data : (data.sessions || []);
+      if (!sessions.length) {
+        const { stdout } = await execAsync(
+          `openclaw sessions --json --agent ${agentId} 2>/dev/null`,
+          { timeout: 10000 }
+        );
+        const data = JSON.parse(stdout);
+        sessions = Array.isArray(data) ? data : (data.sessions || []);
+      }
     } catch {
-      // Fallback: read JSONL files directly from agent sessions dir
       const sessionsDir = join(OPENCLAW_DIR, 'agents', agentId, 'sessions');
       if (existsSync(sessionsDir)) {
         try {
