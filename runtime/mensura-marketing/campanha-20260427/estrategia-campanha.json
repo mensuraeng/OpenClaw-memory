@@ -1,0 +1,9 @@
+{
+  "criterio": "construtora/incorporadora, e-mail corporativo, sem role/generic, 1 por dominio/empresa",
+  "candidatos_filtrados": 379,
+  "lote_01": 30,
+  "por_segmento": {
+    "incorporadora": 1,
+    "construtora": 29
+  }
+}

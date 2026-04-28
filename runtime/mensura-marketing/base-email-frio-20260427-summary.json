@@ -1,0 +1,18 @@
+{
+  "arquivos": [
+    "/root/.openclaw/media/inbound/Mensura_-_Contatos_Comerciais_rev1---dc768bc2-a0ce-4b0f-9c09-49f5ed08166f.xlsx",
+    "/root/.openclaw/media/inbound/MENSURA_-_Contatos_2025---c23aae3d-b257-4700-954e-605fbe07232e.xlsx",
+    "/root/.openclaw/media/inbound/Contato_-_Incorporadora---b2eb7b95-cb13-4ac3-9a58-c6173e8869af.xlsx",
+    "/root/.openclaw/media/inbound/Contato_-_Construtora_PR---fcc0592c-0135-4d3d-81a3-142e89db31aa.xlsx",
+    "/root/.openclaw/media/inbound/Contato_-_Atacadista---3237b833-34a2-4649-9a80-f8fc3232bba6.xlsx"
+  ],
+  "contatos_unicos": 971,
+  "corporativos": 810,
+  "pessoais_baixo_sinal": 161,
+  "por_segmento": {
+    "atacadista": 206,
+    "construtora": 481,
+    "incorporadora": 39,
+    "mensura_contatos": 245
+  }
+}

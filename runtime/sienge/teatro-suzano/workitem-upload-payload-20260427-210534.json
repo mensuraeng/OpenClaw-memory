@@ -1,0 +1,559 @@
+[
+  {
+    "id": "3",
+    "description": "OBRA GERAL",
+    "workItemId": null,
+    "quantity": null,
+    "level": 1
+  },
+  {
+    "id": "1",
+    "description": "MÃO DE OBRA",
+    "workItemId": 80000,
+    "quantity": 1.0,
+    "level": 2
+  },
+  {
+    "id": "2",
+    "description": "ADMINISTRAÇÃO LOCAL",
+    "workItemId": 80001,
+    "quantity": 0.0,
+    "level": 2
+  },
+  {
+    "id": "4",
+    "description": "INSUMOS EM GERAL",
+    "workItemId": 80002,
+    "quantity": 0.0,
+    "level": 2
+  },
+  {
+    "id": "5",
+    "description": "LOCAÇÃO DE EQUIPAMENTOS ",
+    "workItemId": 80003,
+    "quantity": 0.0,
+    "level": 2
+  },
+  {
+    "description": "IMPORTADO PLANILHA - SERVIÇOS PRELIMINARES",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[1.1] FORNECIMENTO E INSTALAÇÃO DE PLACA DE OBRA COM CHAPA GALVANIZADA E ESTRUTURA DE MADEIRA. AF_03/2022_PS",
+    "workItemId": 6936,
+    "quantity": 6.0,
+    "level": 3
+  },
+  {
+    "description": "[1.3] MONTAGEM E DESMONTAGEM DE ANDAIME MODULAR FACHADEIRO, COM PISO METÁLICO, PARA EDIFICAÇÕES COM MÚLTIPLOS PAVIMENTOS (EXCLUSIVE ANDAIME E LIMPEZA). AF_11/2017",
+    "workItemId": 11625,
+    "quantity": 158.4,
+    "level": 3
+  },
+  {
+    "description": "[1.4] TAPUME COM COMPENSADO DE MADEIRA. AF_05/2018",
+    "workItemId": 12217,
+    "quantity": 29.4,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - DEMOLIÇÕES/REMOÇÕES",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[2.1] REMOÇÃO DE TELHAS DE FIBROCIMENTO METÁLICA E CERÂMICA, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11931,
+    "quantity": 615.04,
+    "level": 3
+  },
+  {
+    "description": "[2.2] REMOÇÃO DE TESOURAS DE MADEIRA, COM VÃO MAIOR OU IGUAL A 8M, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11936,
+    "quantity": 12.0,
+    "level": 3
+  },
+  {
+    "description": "[2.3] REMOÇÃO DE TRAMA DE MADEIRA PARA COBERTURA, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11934,
+    "quantity": 615.04,
+    "level": 3
+  },
+  {
+    "description": "[2.4] REMOÇÃO CALHAS E RUFOS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 7566,
+    "quantity": 96.3,
+    "level": 3
+  },
+  {
+    "description": "[2.5] REMOÇÃO DE FORROS DE DRYWALL, PVC E FIBROMINERAL, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023 (PLATEIA)",
+    "workItemId": 11925,
+    "quantity": 285.31,
+    "level": 3
+  },
+  {
+    "description": "[2.6] REMOÇÃO DE TRAMA METÁLICA OU DE MADEIRA PARA FORRO, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11927,
+    "quantity": 285.31,
+    "level": 3
+  },
+  {
+    "description": "[2.7] REMOÇÃO DE FORRO DE GESSO, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11926,
+    "quantity": 93.64,
+    "level": 3
+  },
+  {
+    "description": "[2.9] TRANSPORTE COM CAMINHÃO BASCULANTE DE 10 M³, EM VIA URBANA PAVIMENTADA, DMT ATÉ 30 KM (UNIDADE: M3XKM). AF_07/2020",
+    "workItemId": 11217,
+    "quantity": 933.66,
+    "level": 3
+  },
+  {
+    "description": "[2.10] REMOÇÃO DE PORTAS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11929,
+    "quantity": 7.0,
+    "level": 3
+  },
+  {
+    "description": "[2.11] REMOÇÃO DE METAIS SANITÁRIOS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11950,
+    "quantity": 11.0,
+    "level": 3
+  },
+  {
+    "description": "[2.12] REMOÇÃO DE LOUÇAS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11947,
+    "quantity": 26.0,
+    "level": 3
+  },
+  {
+    "description": "[2.13] REMOÇÃO DE ACESSÓRIOS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11948,
+    "quantity": 26.0,
+    "level": 3
+  },
+  {
+    "description": "[2.14] DEMOLIÇÃO DE REVESTIMENTO CERÂMICO, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11918,
+    "quantity": 208.85,
+    "level": 3
+  },
+  {
+    "description": "[2.15] DEMOLIÇÃO DE ALVENARIA DE BLOCO FURADO, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11908,
+    "quantity": 2.58,
+    "level": 3
+  },
+  {
+    "description": "[2.16] REMOÇÃO DE PORTAS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11929,
+    "quantity": 2.94,
+    "level": 3
+  },
+  {
+    "description": "[2.17] REMOÇÃO DE JANELAS, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11930,
+    "quantity": 2.4,
+    "level": 3
+  },
+  {
+    "description": "[2.19] DEMOLIÇÃO DE PISO DE CONCRETO SIMPLES, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 7552,
+    "quantity": 30.72,
+    "level": 3
+  },
+  {
+    "description": "[2.20] DEMOLIÇÃO DE ALVENARIA DE TIJOLO MACIÇO, DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11910,
+    "quantity": 1.08,
+    "level": 3
+  },
+  {
+    "description": "[2.21] REMOÇÃO DE PISO DE MADEIRA (ASSOALHO E BARROTE), DE FORMA MANUAL, SEM REAPROVEITAMENTO. AF_09/2023",
+    "workItemId": 11928,
+    "quantity": 107.77,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - COBERTURA",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[3.1] CALHA EM CHAPA DE AÇO GALVANIZADO NÚMERO 24, DESENVOLVIMENTO DE 100 CM, INCLUSO TRANSPORTE VERTICAL. AF_07/2019",
+    "workItemId": 10569,
+    "quantity": 96.3,
+    "level": 3
+  },
+  {
+    "description": "[3.2] RUFO EXTERNO/INTERNO EM CHAPA DE AÇO GALVANIZADO NÚMERO 26, CORTE DE 33 CM, INCLUSO IÇAMENTO. AF_07/2019",
+    "workItemId": 5031,
+    "quantity": 96.81,
+    "level": 3
+  },
+  {
+    "description": "[3.3] TUBO PVC, SÉRIE R, ÁGUA PLUVIAL, DN 100 MM, FORNECIDO E INSTALADO EM CONDUTORES VERTICAIS DE ÁGUAS PLUVIAIS. AF_06/2022",
+    "workItemId": 8685,
+    "quantity": 135.0,
+    "level": 3
+  },
+  {
+    "description": "[3.9] FORRO EM DRYWALL, PARA AMBIENTES COMERCIAIS, INCLUSIVE ESTRUTURA BIRECIONAL DE FIXAÇÃO. AF_08/2023_PS (FOYER)",
+    "workItemId": 11271,
+    "quantity": 84.7,
+    "level": 3
+  },
+  {
+    "description": "[3.10] TRAMA DE MADEIRA COMPOSTA POR TERÇAS PARA TELHADOS DE ATÉ 2 ÁGUAS PARA TELHA ESTRUTURAL DE FIBROCIMENTO, INCLUSO TRANSPORTE VERTICAL. AF_07/2019",
+    "workItemId": 9930,
+    "quantity": 81.02,
+    "level": 3
+  },
+  {
+    "description": "[3.11] TELHAMENTO COM TELHA ESTRUTURAL DE FIBROCIMENTO E= 8 MM, COM ATÉ 2 ÁGUAS, INCLUSO IÇAMENTO. AF_07/2019_PS",
+    "workItemId": 10559,
+    "quantity": 81.04,
+    "level": 3
+  },
+  {
+    "description": "[3.12] TRAMA DE AÇO COMPOSTA POR TERÇAS PARA TELHADOS DE ATÉ 2 ÁGUAS PARA TELHA ONDULADA DE FIBROCIMENTO, METÁLICA, PLÁSTICA OU TERMOACÚSTICA, INCLUSO TRANSPORTE VERTICAL. AF_07/2019",
+    "workItemId": 9963,
+    "quantity": 534.0,
+    "level": 3
+  },
+  {
+    "description": "[3.13] FABRICAÇÃO E INSTALAÇÃO DE TESOURA INTEIRA EM AÇO, VÃO DE 6 M, PARA TELHA ONDULADA DE FIBROCIMENTO, METÁLICA, PLÁSTICA OU TERMOACÚSTICA, INCLUSO IÇAMENTO. AF_12/2015",
+    "workItemId": 9978,
+    "quantity": 4.0,
+    "level": 3
+  },
+  {
+    "description": "[3.14] FABRICAÇÃO E INSTALAÇÃO DE TESOURA (INTEIRA OU MEIA) EM AÇO, VÃOS MAIORES OU IGUAIS A 3,0 M E MENORES OU IGUAL A 6,0 M, INCLUSO IÇAMENTO. AF_07/2019",
+    "workItemId": 5069,
+    "quantity": 283.08,
+    "level": 3
+  },
+  {
+    "description": "[3.15] FABRICAÇÃO E INSTALAÇÃO DE TESOURA (INTEIRA OU MEIA) EM AÇO, VÃOS MAIORES QUE 6,0 M E MENORES QUE 12,0 M, INCLUSO IÇAMENTO. AF_07/2019",
+    "workItemId": 5070,
+    "quantity": 297.81,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - ELÉTRICA",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[4.1] INTERRUPTOR SIMPLES (1 MÓDULO), 10A/250V, INCLUINDO SUPORTE E PLACA - FORNECIMENTO E INSTALAÇÃO. AF_03/2023",
+    "workItemId": 9552,
+    "quantity": 23.0,
+    "level": 3
+  },
+  {
+    "description": "[4.3] TOMADA BAIXA DE EMBUTIR (1 MÓDULO), 2P+T 10 A, INCLUINDO SUPORTE E PLACA - FORNECIMENTO E INSTALAÇÃO. AF_03/2023",
+    "workItemId": 9599,
+    "quantity": 58.0,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - SERVIÇOS COMPLEMENTARES",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[5.1] BARRA DE APOIO RETA, EM ACO INOX POLIDO, COMPRIMENTO 80 CM, FIXADA NA PAREDE - FORNECIMENTO E INSTALAÇÃO. AF_01/2020",
+    "workItemId": 5347,
+    "quantity": 6.0,
+    "level": 3
+  },
+  {
+    "description": "[5.2] BARRA DE APOIO RETA, EM ACO INOX POLIDO, COMPRIMENTO 70 CM,  FIXADA NA PAREDE - FORNECIMENTO E INSTALAÇÃO. AF_01/2020",
+    "workItemId": 5346,
+    "quantity": 3.0,
+    "level": 3
+  },
+  {
+    "description": "[5.4] LIMPEZA DE SUPERFÍCIE COM JATO DE ALTA PRESSÃO. AF_04/2019",
+    "workItemId": 12448,
+    "quantity": 26.4,
+    "level": 3
+  },
+  {
+    "description": "[5.5] ALVENARIA DE VEDAÇÃO DE BLOCOS CERÂMICOS FURADOS NA VERTICAL DE 14X19X39 CM (ESPESSURA 14 CM) E ARGAMASSA DE ASSENTAMENTO COM PREPARO EM BETONEIRA. AF_12/2021",
+    "workItemId": 6820,
+    "quantity": 18.8,
+    "level": 3
+  },
+  {
+    "description": "[5.8] DIVISORIA SANITÁRIA, TIPO CABINE, EM GRANITO CINZA POLIDO, ESP = 3CM, ASSENTADO COM ARGAMASSA COLANTE AC III-E, EXCLUSIVE FERRAGENS. AF_01/2021",
+    "workItemId": 6301,
+    "quantity": 13.14,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - ESQUADRIAS",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[6.2] FECHADURA DE EMBUTIR PARA PORTA DE BANHEIRO, COMPLETA, ACABAMENTO PADRÃO MÉDIO, INCLUSO EXECUÇÃO DE FURO - FORNECIMENTO E INSTALAÇÃO. AF_12/2019",
+    "workItemId": 9200,
+    "quantity": 3.0,
+    "level": 3
+  },
+  {
+    "description": "[6.3] TARJETA TIPO LIVRE/OCUPADO PARA PORTA DE BANHEIRO. AF_12/2019",
+    "workItemId": 5248,
+    "quantity": 5.0,
+    "level": 3
+  },
+  {
+    "description": "[6.6] GRADIL EM FERRO FIXADO EM VÃOS DE JANELAS, FORMADO POR BARRAS CHATAS DE 25X4,8 MM. AF_04/2019",
+    "workItemId": 12472,
+    "quantity": 14.4,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - HIDRÁULICA",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[7.2] VASO SANITARIO SIFONADO CONVENCIONAL PARA PCD SEM FURO FRONTAL COM  LOUÇA BRANCA SEM ASSENTO -  FORNECIMENTO E INSTALAÇÃO. AF_01/2020",
+    "workItemId": 11054,
+    "quantity": 3.0,
+    "level": 3
+  },
+  {
+    "description": "[7.5] SABONETEIRA PLASTICA TIPO DISPENSER PARA SABONETE LIQUIDO COM RESERVATORIO 800 A 1500 ML, INCLUSO FIXAÇÃO. AF_01/2020",
+    "workItemId": 11062,
+    "quantity": 8.0,
+    "level": 3
+  },
+  {
+    "description": "[7.7] BANCADA DE GRANITO CINZA POLIDO, DE 1,50 X 0,60 M, PARA PIA DE COZINHA - FORNECIMENTO E INSTALAÇÃO. AF_01/2020",
+    "workItemId": 7838,
+    "quantity": 2.0,
+    "level": 3
+  },
+  {
+    "description": "[7.9] MICTÓRIO SIFONADO LOUÇA BRANCA PARA ENTRADA DE ÁGUA EMBUTIDA –PADRÃO ALTO – FORNECIMENTO E INSTALAÇÃO. AF_01/2020",
+    "workItemId": 5338,
+    "quantity": 2.0,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - PISOS",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[8.1] LASTRO DE CONCRETO MAGRO, APLICADO EM PISOS, LAJES SOBRE SOLO OU RADIERS. AF_08/2017",
+    "workItemId": 11381,
+    "quantity": 12.99,
+    "level": 3
+  },
+  {
+    "description": "[8.7] ASSOALHO DE MADEIRA. AF_09/2020",
+    "workItemId": 5971,
+    "quantity": 107.77,
+    "level": 3
+  },
+  {
+    "description": "[8.8] RODAPÉ EM MADEIRA, ALTURA 7CM, FIXADO COM COLA. AF_09/2020",
+    "workItemId": 5966,
+    "quantity": 19.2,
+    "level": 3
+  },
+  {
+    "description": "[8.12] REVESTIMENTO CERÂMICO PARA PISO COM PLACAS TIPO PORCELANATO DE DIMENSÕES 60X60 CM APLICADA EM AMBIENTES DE ÁREA MAIOR QUE 10 M². AF_02/2023_PE (ÁREA EXTERNA)",
+    "workItemId": 7901,
+    "quantity": 131.67,
+    "level": 3
+  },
+  {
+    "description": "[8.14] PISO EM GRANITO APLICADO EM AMBIENTES INTERNOS. AF_09/2020",
+    "workItemId": 12289,
+    "quantity": 19.67,
+    "level": 3
+  },
+  {
+    "description": "[8.15] LASTRO DE CONCRETO MAGRO, APLICADO EM PISOS, LAJES SOBRE SOLO OU RADIERS, ESPESSURA DE 3 CM. AF_07/2016",
+    "workItemId": 10896,
+    "quantity": 119.4,
+    "level": 3
+  },
+  {
+    "description": "[8.16] REVESTIMENTO CERÂMICO PARA PISO COM PLACAS TIPO ESMALTADA EXTRA DE DIMENSÕES 60X60 CM APLICADA EM AMBIENTES DE ÁREA MENOR QUE 5 M2. AF_02/2023_PE",
+    "workItemId": 7893,
+    "quantity": 7.74,
+    "level": 3
+  },
+  {
+    "description": "[8.18] LIXAMENTO DE MADEIRA PARA APLICAÇÃO DE FUNDO OU PINTURA. AF_01/2021 (LIXAMENTO SOB O CARPETE (NOVO)",
+    "workItemId": 6271,
+    "quantity": 119.26,
+    "level": 3
+  },
+  {
+    "description": "[8.19] REVESTIMENTO CERÂMICO PARA PISO COM PLACAS TIPO PORCELANATO DE DIMENSÕES 60X60 CM APLICADA EM AMBIENTES DE ÁREA MAIOR QUE 10 M². AF_02/2023_PE (ÁREA INTERNA)",
+    "workItemId": 7901,
+    "quantity": 153.46,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - PINTURAS/REVESTIMENTO",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[9.1] PINTURA LÁTEX ACRÍLICA PREMIUM, APLICAÇÃO MANUAL EM PAREDES, DUAS DEMÃOS. AF_04/2023",
+    "workItemId": 8331,
+    "quantity": 3054.72,
+    "level": 3
+  },
+  {
+    "description": "[9.2] PINTURA TINTA DE ACABAMENTO (PIGMENTADA) A ÓLEO EM MADEIRA, 1 DEMÃO. AF_01/2021",
+    "workItemId": 6280,
+    "quantity": 23.1,
+    "level": 3
+  },
+  {
+    "description": "[9.4] APLICAÇÃO MANUAL DE PINTURA COM TINTA TEXTURIZADA ACRÍLICA EM PAREDES EXTERNAS DE CASAS, UMA COR. AF_06/2014",
+    "workItemId": 8305,
+    "quantity": 62.26,
+    "level": 3
+  },
+  {
+    "description": "[9.6] APLICAÇÃO MASSA ACRÍLICA PARA MADEIRA, PARA PINTURA COM TINTA DE ACABAMENTO (PIGMENTADA). AF_01/2021",
+    "workItemId": 6275,
+    "quantity": 78.33,
+    "level": 3
+  },
+  {
+    "description": "[9.7] PINTURA TINTA DE ACABAMENTO (PIGMENTADA) ESMALTE SINTÉTICO ACETINADO EM MADEIRA, 2 DEMÃOS. AF_01/2021",
+    "workItemId": 6289,
+    "quantity": 71.19,
+    "level": 3
+  },
+  {
+    "description": "[9.8] EMASSAMENTO COM MASSA LÁTEX, APLICAÇÃO EM PAREDE, UMA DEMÃO, LIXAMENTO MANUAL. AF_04/2023 (BANCADA DOS LAVATÓRIOS DOS SANITÁRIOS, BILHETERIA E CAFÉ)",
+    "workItemId": 8333,
+    "quantity": 131.72,
+    "level": 3
+  },
+  {
+    "description": "[9.9] CHAPISCO APLICADO EM ALVENARIAS E ESTRUTURAS DE CONCRETO INTERNAS, COM COLHER DE PEDREIRO.  ARGAMASSA TRAÇO 1:3 COM PREPARO MANUAL. AF_10/2022",
+    "workItemId": 8173,
+    "quantity": 63.12,
+    "level": 3
+  },
+  {
+    "description": "[9.10] MASSA ÚNICA, PARA RECEBIMENTO DE PINTURA, EM ARGAMASSA TRAÇO 1:2:8, PREPARO MANUAL, APLICADA MANUALMENTE EM FACES INTERNAS DE PAREDES, ESPESSURA DE 20MM, COM EXECUÇÃO DE TALISCAS. AF_06/2014",
+    "workItemId": 8042,
+    "quantity": 63.12,
+    "level": 3
+  },
+  {
+    "description": "[9.11] REVESTIMENTO CERÂMICO PARA PAREDES INTERNAS COM PLACAS TIPO ESMALTADA EXTRA DE DIMENSÕES 20X20 CM APLICADAS NA ALTURA INTEIRA DAS PAREDES.  AF_02/2023_PE",
+    "workItemId": 7902,
+    "quantity": 132.25,
+    "level": 3
+  },
+  {
+    "description": "[9.14] PINTURA LÁTEX ACRÍLICA PREMIUM, APLICAÇÃO MANUAL EM TETO, DUAS DEMÃOS. AF_04/2023",
+    "workItemId": 8330,
+    "quantity": 554.72,
+    "level": 3
+  },
+  {
+    "description": "IMPORTADO PLANILHA - ELÉTRICA (NÃO INCIDENTE)",
+    "workItemId": null,
+    "quantity": null,
+    "level": 2
+  },
+  {
+    "description": "[3.11] QUADRO DE DISTRIBUIÇÃO DE ENERGIA EM CHAPA DE AÇO GALVANIZADO, DE SOBREPOR, COM BARRAMENTO TRIFÁSICO, PARA 18 DISJUNTORES DIN 100A - FORNECIMENTO E INSTALAÇÃO. AF_10/2020",
+    "workItemId": 6050,
+    "quantity": 4.0,
+    "level": 3
+  },
+  {
+    "description": "[3.12] QUADRO DE DISTRIBUIÇÃO DE ENERGIA EM CHAPA DE AÇO GALVANIZADO, DE EMBUTIR, COM BARRAMENTO TRIFÁSICO, PARA 24 DISJUNTORES DIN 100A - FORNECIMENTO E INSTALAÇÃO. AF_10/2020",
+    "workItemId": 6051,
+    "quantity": 1.0,
+    "level": 3
+  },
+  {
+    "description": "[3.13] QUADRO DE DISTRIBUIÇÃO DE ENERGIA EM CHAPA DE AÇO GALVANIZADO, DE EMBUTIR, COM BARRAMENTO TRIFÁSICO, PARA 30 DISJUNTORES DIN 150A - FORNECIMENTO E INSTALAÇÃO. AF_10/2020",
+    "workItemId": 6052,
+    "quantity": 2.0,
+    "level": 3
+  },
+  {
+    "description": "[3.16] CABO DE COBRE FLEXÍVEL ISOLADO, 2,5 MM², ANTI-CHAMA 450/750 V, PARA CIRCUITOS TERMINAIS - FORNECIMENTO E INSTALAÇÃO. AF_03/2023",
+    "workItemId": 9527,
+    "quantity": 1530.0,
+    "level": 3
+  },
+  {
+    "description": "[3.17] CABO DE COBRE FLEXÍVEL ISOLADO, 4 MM², ANTI-CHAMA 450/750 V, PARA CIRCUITOS TERMINAIS - FORNECIMENTO E INSTALAÇÃO. AF_03/2023",
+    "workItemId": 9529,
+    "quantity": 100.0,
+    "level": 3
+  },
+  {
+    "description": "[3.18] CABO DE COBRE FLEXÍVEL ISOLADO, 6 MM², ANTI-CHAMA 450/750 V, PARA CIRCUITOS TERMINAIS - FORNECIMENTO E INSTALAÇÃO. AF_03/2023",
+    "workItemId": 9531,
+    "quantity": 387.0,
+    "level": 3
+  },
+  {
+    "description": "[3.19] CABO DE COBRE FLEXÍVEL ISOLADO, 10 MM², ANTI-CHAMA 0,6/1,0 KV, PARA DISTRIBUIÇÃO - FORNECIMENTO E INSTALAÇÃO. AF_12/2015",
+    "workItemId": 10255,
+    "quantity": 100.0,
+    "level": 3
+  },
+  {
+    "description": "[3.20] CABO DE COBRE ISOLADO, 25 MM², ANTI-CHAMA 450/750 V, INSTALADO EM ELETROCALHA OU PERFILADO - FORNECIMENTO E INSTALAÇÃO. AF_10/2020",
+    "workItemId": 6060,
+    "quantity": 40.0,
+    "level": 3
+  },
+  {
+    "description": "[3.42] ELETRODUTO FLEXÍVEL CORRUGADO, PEAD, DN 90 (3\"), PARA REDE ENTERRADA DE DISTRIBUIÇÃO DE ENERGIA ELÉTRICA - FORNECIMENTO E INSTALAÇÃO. AF_12/2021",
+    "workItemId": 11953,
+    "quantity": 75.0,
+    "level": 3
+  },
+  {
+    "description": "[3.43] ELETRODUTO FLEXÍVEL CORRUGADO, PEAD, DN 63 (2\"), PARA REDE ENTERRADA DE DISTRIBUIÇÃO DE ENERGIA ELÉTRICA - FORNECIMENTO E INSTALAÇÃO. AF_12/2021",
+    "workItemId": 11952,
+    "quantity": 20.0,
+    "level": 3
+  },
+  {
+    "description": "[3.45] HASTE DE ATERRAMENTO, DIÂMETRO 3/4\", COM 3 METROS - FORNECIMENTO E INSTALAÇÃO. AF_08/2023",
+    "workItemId": 11600,
+    "quantity": 1.0,
+    "level": 3
+  },
+  {
+    "description": "[3.46] CORDOALHA DE COBRE NU 50 MM², ENTERRADA - FORNECIMENTO E INSTALAÇÃO. AF_08/2023",
+    "workItemId": 11595,
+    "quantity": 131.0,
+    "level": 3
+  }
+]

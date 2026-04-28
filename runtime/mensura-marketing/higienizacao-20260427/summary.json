@@ -1,0 +1,35 @@
+{
+  "input_total": 971,
+  "aptos_campanha": 294,
+  "aptos_1por_dominio_empresa": 139,
+  "rejeitados": 677,
+  "bounces_aplicados": 17,
+  "dns_domains_checked": 515,
+  "por_segmento_aptos": {
+    "incorporadora": 3,
+    "construtora": 291
+  },
+  "por_segmento_rejeitados": {
+    "atacadista": 206,
+    "construtora": 190,
+    "incorporadora": 36,
+    "mensura_contatos": 245
+  },
+  "rejection_reasons_top": {
+    "email_generico_role_based": 257,
+    "segmento_legado_validar_antes": 245,
+    "segmento_fora_icp_atacadista": 206,
+    "sem_nome_contato": 202,
+    "dominio_sem_dns": 198,
+    "email_pessoal_baixo_sinal": 170,
+    "bounce_lote01:recipient not found": 12,
+    "bounce_lote01:domain does not exist/DNS": 4,
+    "email_placeholder_teste": 1,
+    "bounce_lote01:sender not authorized to relay": 1
+  },
+  "files": {
+    "aptos": "runtime/mensura-marketing/higienizacao-20260427/contatos-aptos-campanha.csv",
+    "aptos_1por_dominio": "runtime/mensura-marketing/higienizacao-20260427/contatos-aptos-1por-dominio.csv",
+    "rejeitados": "runtime/mensura-marketing/higienizacao-20260427/contatos-rejeitados.csv"
+  }
+}

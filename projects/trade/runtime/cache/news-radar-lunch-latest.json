@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-04-27T15:03:00+00:00",
+  "mode": "lunch",
+  "destination": {
+    "channel": "telegram",
+    "target_name": "Investimento",
+    "topic_name": "Notícias",
+    "target_id": "telegram:-1003794434256",
+    "thread_id": 1
+  },
+  "guardrails": {
+    "send_empty_report": false,
+    "real_trading_enabled": false,
+    "orders_enabled": false,
+    "human_confirmation_required": true
+  },
+  "note": "Execução direta dos scripts bloqueada pela política de exec em cron; radar produzido com web_search/web_fetch e caches/reports gravados pelo agente. Sem ordens/recomendações."
+}

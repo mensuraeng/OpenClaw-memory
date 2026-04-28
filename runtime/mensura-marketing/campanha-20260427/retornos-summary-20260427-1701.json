@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-04-27 17:01 BRT",
+  "sent_lote_01": 30,
+  "bounces": 17,
+  "sent_no_reply_yet": 13,
+  "positive_interest": 0,
+  "neutral": 0,
+  "no_timing": 0,
+  "unsubscribe_not_interested": 0,
+  "bounce_rate": 56.7,
+  "files": {
+    "check": "runtime/mensura-marketing/campanha-20260427/retornos-check-20260427-1701.json",
+    "bounces": "runtime/mensura-marketing/campanha-20260427/bounces-20260427-1701.json",
+    "status": "runtime/mensura-marketing/campanha-20260427/lote-01-status-apos-check-1701.csv",
+    "followup_eligible": "runtime/mensura-marketing/campanha-20260427/followup-eligible-d3.csv"
+  }
+}

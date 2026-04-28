@@ -1,0 +1,1 @@
+{"status":400,"developerMessage":"Could not read JSON: Unrecognized field \"unitPrice\" (class br.com.softplan.unic.buildingcostestimation.controller.sheet.v1.SheetItemDtoForPut), not marked as ignorable (5 known properties: \"id\", \"description\", \"workItemId\", \"quantity\", \"level\"])","clientMessage":"The request content could not be read. It may be empty or invalid."}
