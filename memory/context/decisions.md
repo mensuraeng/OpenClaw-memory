@@ -248,3 +248,20 @@ Duas camadas configuradas:
 
 Regra: nunca responder em menos de 40 segundos.
 Motivo: resposta imediata denuncia automação e quebra a experiência de atendimento.
+
+## 2026-04-27 — Segundo cérebro segue padrão operacional Contexto → Mapa → Skill → CLI → Rotina → Registro → Commit
+_Status: [ATIVA]_
+Toda frente durável deve nascer em contexto, ter mapa de navegação, declarar skill/processo quando recorrente, expor comando ou rotina auditável quando possível, registrar execução e versionar alteração relevante no 2nd-brain/GitHub.
+Referência: `/root/2nd-brain/_system/SECOND-BRAIN-OPERATING-STANDARD.md`.
+
+## 2026-04-27 — Croncheap usa OpenAI como trilha principal
+_Status: [ATIVA]_
+O `croncheap` não deve depender do harness `claude-cli`. Configuração atual: modelo primário `openai/gpt-5.4`, fallback `openai-codex/gpt-5.5`. Qualquer nova auditoria de crons deve validar o runtime real após restart, não só a intenção do config.
+
+## 2026-04-27 — Campanhas frias MENSURA só saem de base higienizada e auditável
+_Status: [ATIVA]_
+Nenhuma campanha deve partir de planilha bruta. Toda lista passa antes por deduplicação, DNS/domínio, suppression list, bounces, corte de role-based/genéricos quando aplicável e score A/B/C/D/X. Fonte operacional: repo `mensura-commercial-intelligence` + SQLite/exports auditáveis.
+
+## 2026-04-27 — Canal MKT da Mensura é o tópico MKT do grupo MENSURA Engenharia
+_Status: [ATIVA]_
+Operação de marketing da Mensura deve ocorrer no grupo Telegram `MENSURA Engenharia` (`telegram:-1003366344184`), tópico `MKT` (`thread 43`), com roteamento para agente/canal `marketing`, salvo instrução explícita em contrário.

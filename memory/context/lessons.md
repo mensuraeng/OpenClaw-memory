@@ -124,3 +124,16 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 - Responsável: agente Trade.
 - Destino: grupo Investimento, tópico Notícias (`telegram:-1003794434256`, threadId `1`).
 - DM do Alê só para falha operacional relevante, não para alerta de mercado normal.
+
+## 2026-04-27 — Backup estrutural amplo pode ser pesado demais para execução assíncrona
+- Tentativa de backup estrutural completo antes de mudança em cron/config foi encerrada por `SIGKILL`.
+- Para mudança localizada, fazer backup mínimo e verificável do arquivo-alvo antes de agir; backup amplo deve ser tarefa própria com janela/escopo apropriado.
+
+## 2026-04-27 — Sienge orçamento: `PUT /sheets/{unitId}/items` não preserva preço unitário
+- Endpoint público testado recusou `unitPrice`; aceita estrutura como `id`, `description`, `workItemId`, `quantity`, `level`.
+- Quando houver itens antigos com apropriações/necessidades/apontamentos, substituir planilha inteira pode falhar por vínculos.
+- Caminho provável: preservar itens antigos, mapear códigos para `workItemId`, subir estrutura e deixar Sienge calcular preços; antes de executar, validar cobertura e divergência de total.
+
+## 2026-04-27 — Campanha fria precisa proteger reputação antes de volume
+- Mesmo com envio aceito pelo Graph, bounces altos exigem suppression imediata e pausa antes do próximo lote.
+- Não disparar nova base no mesmo dia só para aproveitar momentum; reputação do domínio/remetente vale mais que volume.
