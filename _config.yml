@@ -1,12 +1,51 @@
 # Jekyll config for OpenClaw Memory GitHub Pages
-# Excludes directories with Liquid-incompatible syntax ({{ }} in docs/templates)
 exclude:
+  # Python/shell scripts
+  - "**/*.sh"
+  - "**/*.py"
+  - "**/*.pyc"
+  # Binary files
+  - "**/*.xlsx"
+  - "**/*.xls"
+  - "**/*.png"
+  - "**/*.jpg"
+  - "**/*.jpeg"
+  - "**/*.gif"
+  - "**/*.zip"
+  - "**/*.tar.gz"
+  - "**/*.enc"
+  - "**/*.db"
+  - "**/*.db-wal"
+  - "**/*.db-shm"
+  # Operational / runtime dirs (Liquid-incompatible or irrelevant)
   - tmp/
   - docling-env/
   - clawflows/
-  - skills/shared/superpowers/
-  - finance/tmp/
+  - skills/
+  - agents/
+  - runtime/
+  - scripts/
+  - exports/
+  - reports/
+  - relatorios/
+  - integrations/
+  - system/
+  - archive/
+  - context/
+  - references/
+  - referencias/
+  - marketing/
+  - openclaw-skill-audit/
+  - .openclaw/
+  - .state/
+  - .venvs/
+  - config/
+  - finance/
   - "**/.git"
-  - "*.sh"
-  - "*.py"
-
+  # Root noise files
+  - "*.bak_*"
+  - "*.bak-*"
+  - whatsapp_qr.png
+  - TEATRO_SUZANO_SIENGE_UPLOAD_CONFERENCIA.txt
+  - TEATRO_SUZANO_SIENGE_UPLOAD_PRONTO.xlsx
+  - mapeamento_liberacao_upload_excel.xlsx
