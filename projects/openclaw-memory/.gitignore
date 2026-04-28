@@ -1,5 +1,6 @@
 # Secrets and credentials
 config/*.json
+config/*.env
 credentials/
 .openclaw/
 .clawhub/

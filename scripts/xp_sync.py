@@ -27,6 +27,7 @@ import re
 import sys
 import traceback
 import urllib.parse
+import urllib.error
 import urllib.request
 from dataclasses import dataclass, field, asdict
 from datetime import date, datetime, timedelta
@@ -35,6 +36,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 CONFIG_PATH = Path("/root/.openclaw/bin/xp_sync.config.json")
+CDP_PREFLIGHT_TIMEOUT_SECONDS = 8
 
 
 # ---------- config ---------------------------------------------------------
@@ -115,6 +117,20 @@ def categorize(desc: str) -> str:
 def make_tx_id(date_iso: str, desc: str, amount: float, fitid: str | None) -> str:
     key = f"{date_iso}|{desc}|{amount:.2f}|{fitid or ''}"
     return hashlib.sha256(key.encode('utf-8')).hexdigest()[:32]
+
+
+def cdp_preflight(cdp_url: str) -> tuple[bool, str]:
+    version_url = cdp_url.rstrip("/") + "/json/version"
+    try:
+        with urllib.request.urlopen(version_url, timeout=CDP_PREFLIGHT_TIMEOUT_SECONDS) as response:
+            if response.status != 200:
+                return False, f"HTTP {response.status}"
+            payload = response.read(2048)
+            if not payload.strip():
+                return False, "empty CDP response"
+            return True, "ok"
+    except (OSError, urllib.error.URLError, TimeoutError) as e:
+        return False, str(e)
 
 
 # ---------- OFX parsing ---------------------------------------------------
@@ -651,6 +667,12 @@ async def run(cfg: Config, ofx_path_override: Path | None = None, dry_run: bool 
         ofx_path = ofx_path_override
         print(f"[*] Using OFX override: {ofx_path}", flush=True)
     else:
+        if cfg.cdp_url:
+            ok, detail = cdp_preflight(cfg.cdp_url)
+            if not ok:
+                print(f"[!] XP sync skipped: CDP unavailable at {cfg.cdp_url} ({detail})", flush=True)
+                print("[!] Open Chrome with remote debugging on the Windows host, then retry.", flush=True)
+                return 0
         try:
             ofx_path = await download_ofx(cfg, yesterday, yesterday)
             print(f"[+] Downloaded OFX: {ofx_path}", flush=True)
