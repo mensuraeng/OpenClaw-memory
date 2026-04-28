@@ -57,6 +57,7 @@ venv*/
 *.bak_*
 *.bak-*
 *.pre-*
+runtime/backups/
 
 # Media gerada localmente
 media/
