@@ -36,6 +36,7 @@ exclude:
   - referencias/
   - marketing/
   - openclaw-skill-audit/
+  - projects/openclaw-memory/
   - .openclaw/
   - .state/
   - .venvs/
