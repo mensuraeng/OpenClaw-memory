@@ -29,6 +29,7 @@ import {
   Globe,
   CheckSquare,
   ShieldCheck,
+  Cpu,
 } from "lucide-react";
 import { getAgentDisplayName, BRANDING } from "@/config/branding";
 
@@ -36,6 +37,7 @@ const navItems = [
   { href: "/", label: "Painel", icon: LayoutDashboard },
   { href: "/agents", label: "Agentes", icon: Users },
   { href: "/ops", label: "Ops 360", icon: ShieldCheck },
+  { href: "/openclaw", label: "OpenClaw", icon: Cpu },
   { href: "/office", label: "Office", icon: Gamepad2, highlight: true },
   { href: "/actions", label: "Quick Actions", icon: Zap },
   { href: "/system", label: "Sistema", icon: Server },
