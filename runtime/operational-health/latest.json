@@ -1,9 +1,8 @@
 {
-  "checked_at_utc": "2026-04-28T22:17:03.084906+00:00",
+  "checked_at_utc": "2026-04-29T14:16:00.411231+00:00",
   "overall": "active",
   "counts": {
-    "ok": 10,
-    "running": 1,
+    "ok": 11,
     "pending": 1
   },
   "checks": [
@@ -16,19 +15,19 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-28 18:19 | De: contato@novidades.riachuelo.com.br\n   Assunto: Looks para os jogos? Temos! ⚽\n   Clique, confira e compre online\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 13:31 | De: matilha_at_news_petlove_com_br_5dphxdxn4f_fa9a6769@privaterelay.appleid.com\n   Assunto:  O Paçoca merece esses brindes 😍\n   Escolha entre porta ração ou bolsa shopper na sua 1º compra compra! 💜\n ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ \n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-28 21:02 | De: assessoria@papodeinox.com.br\n   Assunto: Entre o fogo no Oriente Médio e o custo Brasil, como sobreviver a mais um ano de incerteza?\n   Visualizar este e-mail como página web\n\nA voz do inox no Brasil\n\nEntre o fogo no Oriente Médio e\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 13:39 | De: service@conectcar.com.br\n   Assunto: Gostaria de não receber mensagens sobre o Dia das Mães?\n   Sua experiência é importante para nós 🧡 ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📧 [AAMkADYw...] 2026-04-28 11:08 | De: flavia@mensuraengenharia.com.br\n   Assunto: Teatro Suzano — planilha para importação no Sienge\n   Philippe, bom dia.\n\nSegue em anexo a planilha do orçamento do Teatro Suzano tratada para importação \n\n",
+      "detail": "📩 [AAMkADYw...] 2026-04-29 09:09 | De: confirpdigital@confirp.com\n   Assunto: Documentos - 29/04/2026\n   Confirp Contabilidade | Documentos 29/04/2026\n\nEste e um e-mail automatico. Por favor, nao respond\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
@@ -45,15 +44,15 @@
     },
     {
       "name": "vps_full_backup",
-      "status": "running",
-      "detail": "0 parte(s) temporária(s)",
-      "evidence": "1041257 python3 /root/.openclaw/workspace/scripts/backup_vps_full_b2_stream.py --run\n1233771 bash -lc pgrep -af 'backup_vps_full_b2_stream.py --run' || true"
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json"
     },
     {
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-28T21:03:27.824219+00:00"
+      "evidence": "2026-04-29T13:00:40.247426+00:00"
     },
     {
       "name": "working_queue_flavia",

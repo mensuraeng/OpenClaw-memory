@@ -1,14 +1,14 @@
 {
   "mailboxes": {
     "alexandre@mensuraengenharia.com.br": {
-      "last_report_utc": "2026-04-28T17:02:14Z"
+      "last_report_utc": "2026-04-29T10:02:34Z"
     },
     "alexandre@miaengenharia.com.br": {
-      "last_report_utc": "2026-04-28T17:02:14Z"
+      "last_report_utc": "2026-04-29T10:02:34Z"
+    },
+    "alexandre@pcsengenharia.com.br": {
+      "last_report_utc": "2026-04-29T10:02:34Z"
     }
   },
-  "critical_pending": {},
-  "last_mailbox_errors": [
-    "PCS <alexandre@pcsengenharia.com.br>: Graph GET /users/alexandre@pcsengenharia.com.br/mailFolders/inbox/messages?$top=80&$orderby=receivedDateTime%20desc&$filter=receivedDateTime%20ge%202026-04-27T23%3A02%3A14Z&$select=id,conversationId,subject,from,receivedDateTime,isRead,bodyPreview,webLink,categories,hasAttachments,importance failed 403: {\"error\":{\"code\":\"ErrorAccessDenied\",\"message\":\"Access is denied. Check credentials and try again.\"}}"
-  ]
+  "critical_pending": {}
 }

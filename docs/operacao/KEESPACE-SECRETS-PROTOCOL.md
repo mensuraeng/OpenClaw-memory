@@ -16,6 +16,7 @@ KeeSpace/KeePassXC é o cofre oficial. Workspace, 2nd-brain e memória não deve
   - `config/hubspot-mensura.json`
   - `config/phantombuster-mensura.json`
 - Fallback temporário local, fora do workspace: `/root/.secrets/openclaw-commercial.env` com permissão `0600`
+- Fallback PCS/Sienge local, fora do workspace: `/root/.secrets/sienge-pcs.env` com permissão `0600` até gravação no KeeSpace/KeePassXC
 
 ## Caminho final
 
@@ -26,6 +27,7 @@ Mover os segredos do fallback temporário para KeeSpace nas entradas:
 | HubSpot MENSURA access token | `HUBSPOT_MENSURA_ACCESS_TOKEN` | `OpenClaw/MENSURA/HubSpot/access-token` |
 | Make webhook comercial | `HUBSPOT_MENSURA_MAKE_WEBHOOK` | `OpenClaw/MENSURA/Make/webhook-mensura-commercial` |
 | Phantombuster API key | `PHANTOMBUSTER_MENSURA_API_KEY` | `OpenClaw/MENSURA/Phantombuster/api-key` |
+| PCS Sienge basic auth | `SIENGE_PCS_USERNAME` / `SIENGE_PCS_PASSWORD` | `OpenClaw/PCS/Sienge/api-basic` |
 
 ## Como o resolver funciona
 

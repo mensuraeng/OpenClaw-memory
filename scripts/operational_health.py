@@ -79,15 +79,33 @@ def file_exists_check(name, path, ok_status='ok', missing_status='attention'):
     return status(name, ok_status if p.exists() else missing_status, str(p))
 
 
+def backup_processes():
+    matches = []
+    proc = Path('/proc')
+    for child in proc.iterdir():
+        if not child.name.isdigit():
+            continue
+        try:
+            raw = (child / 'cmdline').read_bytes()
+        except Exception:
+            continue
+        if not raw:
+            continue
+        args = [part.decode('utf-8', 'replace') for part in raw.split(b'\0') if part]
+        joined = ' '.join(args)
+        if 'backup_vps_full_b2_stream.py' in joined and '--run' in args:
+            matches.append(f"{child.name} {joined}")
+    return matches
+
+
 def backup_runtime_check():
     tmp = WORK / 'runtime/backups/vps-full-stream-tmp'
     manifests = WORK / 'runtime/backups/vps-full-manifests'
     parts = list(tmp.glob('*')) if tmp.exists() else []
     recent_manifests = sorted(manifests.glob('*.manifest.json'), key=lambda p: p.stat().st_mtime, reverse=True) if manifests.exists() else []
-    # running process?
-    rc, out, _ = run(['bash', '-lc', "pgrep -af 'backup_vps_full_b2_stream.py --run' || true"], timeout=10)
-    if out.strip():
-        return status('vps_full_backup', 'running', f'{len(parts)} parte(s) temporária(s)', evidence=out.strip()[:500])
+    running = backup_processes()
+    if running:
+        return status('vps_full_backup', 'running', f'{len(parts)} parte(s) temporária(s)', evidence='\n'.join(running)[:500])
     if parts:
         return status('vps_full_backup', 'attention', f'{len(parts)} parte(s) temporária(s) sem processo ativo')
     if recent_manifests:

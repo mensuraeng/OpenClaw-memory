@@ -40,6 +40,16 @@ Transformar a PCS em uma frente mais coerente, defensável e padronizada em:
 - `/root/2nd-brain/_system/SOUL.md`
 - arquivos locais do workspace só quando forem técnicos ou ainda não migrados
 
+## Credenciais PCS / Sienge
+
+- Protocolo de segredos: `/root/.openclaw/workspace/docs/operacao/KEESPACE-SECRETS-PROTOCOL.md`
+- Mapa de credenciais: `/root/.openclaw/workspace/memory/integrations/credentials-map.md`
+- Fallback local atual, fora do workspace e não versionável: `/root/.secrets/sienge-pcs.env`
+- Configs técnicas legadas ainda usadas por scripts: `/root/.openclaw/workspace/config/sienge-pcs-public.json` e `/root/.openclaw/workspace/config/sienge-pcs.json`
+- Entrada KeeSpace/KeePassXC sugerida: `OpenClaw/PCS/Sienge/api-basic`
+
+Regra: o agente PCS pode usar essas referências para resolver credencial em automações internas, mas nunca deve imprimir senha/token em chat, memória, log público ou commit.
+
 ## Regra de decisão
 
 Se o trabalho for sobre:
