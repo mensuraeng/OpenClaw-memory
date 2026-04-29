@@ -21,6 +21,7 @@ SOURCES = ['/root', '/etc', '/home', '/var', '/opt', '/usr/local', '/srv']
 EXCLUDES = [
     '/proc', '/sys', '/dev', '/run', '/tmp', '/mnt', '/media', '/lost+found',
     '/root/.cache', '/root/.npm', '/root/.local/share/Trash',
+    '/root/openclaw-backups',
     '/root/.openclaw/workspace/runtime/backups',
     '/root/.openclaw/workspace/tmp',
     '/var/cache', '/var/tmp', '/var/log/journal',
