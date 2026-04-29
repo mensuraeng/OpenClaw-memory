@@ -1,0 +1,17 @@
+{
+  "updated_at": "2026-04-28 17:45 BRT",
+  "status": "estrutura_preparada_sem_campanha_ativa",
+  "businesses_checked": {
+    "Ale Aguiar": { "id": "2000555950036298", "ad_accounts": 0 },
+    "Best Wind Atins": { "ad_accounts": 0 },
+    "MIA Engenharia": { "id": "819868261690628", "ad_accounts": 0 },
+    "Mensura Engenharia": { "id": "1736670143049009", "ad_accounts": 0 }
+  },
+  "recommended_next_step": "Criar ou vincular conta de anuncios ao Business correto antes de rodar campanha",
+  "read_only_first": true,
+  "no_campaign_changes_without_explicit_approval": true,
+  "docs": [
+    "docs/mensura-marketing/META-ADS-DIAGNOSTICO-README.md",
+    "docs/mensura-marketing/META-ADS-PRONTO-PARA-CAMPANHAS.md"
+  ]
+}

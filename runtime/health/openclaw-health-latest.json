@@ -1,0 +1,44 @@
+{
+  "status": "ok",
+  "timestamp_utc": "2026-04-28T23:09:26.617183+00:00",
+  "checks": {
+    "pm2": {
+      "status": "ok",
+      "detail": "mission-control online, restarts=18, unstable=0",
+      "restart_time": 18,
+      "unstable_restarts": 0
+    },
+    "mission_http": {
+      "status": "ok",
+      "detail": "HTTP 200",
+      "body_sample": "{\"status\":\"degraded\",\"checks\":[{\"name\":\"Mission Control\",\"status\":\"up\",\"details\":\"online · restarts: 18\"},{\"name\":\"OpenClaw Gateway\",\"status\":\"down\",\"details\":\"service not found\"},{\"name\":\"classvault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"content-vault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"brain\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"Sienge API\",\"status\":\"up\",\"latency\":376,\"url\":\"https://api.sienge.com.br\",\"details\":\"HTTP 401\"},{\"name\""
+    },
+    "systemd": {
+      "status": "ok",
+      "detail": "0 failed units",
+      "failed_units": []
+    },
+    "docker": {
+      "status": "ok",
+      "detail": "0 unhealthy containers",
+      "bad": []
+    },
+    "disk": {
+      "status": "ok",
+      "detail": "root disk 75.2% used",
+      "used_pct": 75.2,
+      "free_gb": 23.7
+    },
+    "logs": {
+      "status": "ok",
+      "detail": "0 log files >50MB",
+      "large": []
+    },
+    "backups": {
+      "status": "ok",
+      "detail": "backup retention policy satisfied",
+      "remote_vps_sets": 1,
+      "remote_2nd_brain_sets": 2
+    }
+  }
+}

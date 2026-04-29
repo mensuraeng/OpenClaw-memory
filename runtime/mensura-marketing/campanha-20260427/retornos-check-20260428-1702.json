@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-04-28 17:02 BRT",
+  "checked_after": "2026-04-28T17:00:00Z",
+  "messages_scanned": 1,
+  "campaign_related": 1,
+  "counts": {
+    "interesse positivo": 0,
+    "neutro": 0,
+    "sem timing": 0,
+    "descadastro/não interesse": 0,
+    "bounce": 1
+  },
+  "items": [
+    {
+      "receivedDateTime": "2026-04-28T17:26:43Z",
+      "from": "microsoftexchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "claudinei.cauduro@br.arteliagroup.com",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\nclaudinei.cauduro@br.arteliagroup.com (claudinei.cauduro@br.arteliagroup.com)\r\nYour message wasn't delivered. Despite repeated attempts to deliver your message, the recipient's email system refused to ",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAARlb_EAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAARlb%2BEAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    }
+  ]
+}

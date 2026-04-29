@@ -1,0 +1,84 @@
+{
+  "checked_at_utc": "2026-04-28T21:47:39.192514+00:00",
+  "overall": "attention",
+  "counts": {
+    "attention": 1,
+    "ok": 9,
+    "running": 1,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADAw...] 2026-04-28 18:19 | De: contato@novidades.riachuelo.com.br\n   Assunto: Looks para os jogos? Temos! ⚽\n   Clique, confira e compre online\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📩 [AAMkADA5...] 2026-04-28 21:02 | De: assessoria@papodeinox.com.br\n   Assunto: Entre o fogo no Oriente Médio e o custo Brasil, como sobreviver a mais um ano de incerteza?\n   Visualizar este e-mail como página web\n\nA voz do inox no Brasil\n\nEntre o fogo no Oriente Médio e\n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-28 11:08 | De: flavia@mensuraengenharia.com.br\n   Assunto: Teatro Suzano — planilha para importação no Sienge\n   Philippe, bom dia.\n\nSegue em anexo a planilha do orçamento do Teatro Suzano tratada para importação \n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-28 17:26 | De: MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br\n   Assunto: Undeliverable: Quando o cronograma vira instrumento de decisão\n   Delivery has failed to these recipients or groups:\n\nclaudinei.cauduro@br.arteliagroup.com (claudin\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "running",
+      "detail": "0 parte(s) temporária(s)",
+      "evidence": "1041257 python3 /root/.openclaw/workspace/scripts/backup_vps_full_b2_stream.py --run\n1159175 bash -lc pgrep -af 'backup_vps_full_b2_stream.py --run' || true"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-28T21:03:27.824219+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}
