@@ -14,12 +14,13 @@ interface RawJob {
   id: string;
   agentId?: string;
   name?: string;
+  description?: string;
   enabled?: boolean;
   createdAtMs?: number;
   updatedAtMs?: number;
   schedule?: { kind: string; expr?: string; tz?: string; everyMs?: number; at?: string };
   sessionTarget?: string;
-  payload?: { kind?: string; message?: string; text?: string };
+  payload?: { kind?: string; message?: string; text?: string; timeoutSeconds?: number; model?: string };
   wakeMode?: string;
 }
 
@@ -81,6 +82,7 @@ function mapJob(job: RawJob, states: Record<string, JobState>) {
     createdAtMs: job.createdAtMs,
     updatedAtMs: job.updatedAtMs,
     schedule: job.schedule,
+    payload: job.payload || {},
     sessionTarget: job.sessionTarget,
     description: formatDescription(job),
     scheduleDisplay: formatSchedule(job.schedule),
@@ -108,7 +110,7 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, enabled, expr, tz, name, agentId, message } = body;
+    const { id, enabled, expr, tz, name, agentId, message, description, scheduleKind, everyMs, at, sessionTarget } = body;
 
     if (!id || typeof id !== "string" || !/^[a-z0-9-]+$/i.test(id)) {
       return NextResponse.json({ error: "ID inválido" }, { status: 400 });
@@ -119,34 +121,81 @@ export async function PUT(request: NextRequest) {
     const job = jobs.find(j => j.id === id);
     if (!job) return NextResponse.json({ error: "Job não encontrado" }, { status: 404 });
 
+    let changed = false;
+
     if (typeof enabled === "boolean") {
       job.enabled = enabled;
-      job.updatedAtMs = Date.now();
-      writeFileSync(CRON_JOBS_FILE, JSON.stringify({ version: 1, jobs }, null, 2));
-      return NextResponse.json({ success: true, enabled });
+      changed = true;
     }
 
-    if (expr) {
-      if (!job.schedule) job.schedule = { kind: "cron" };
-      job.schedule.expr = expr;
-      if (tz) job.schedule.tz = tz;
-      job.updatedAtMs = Date.now();
-      writeFileSync(CRON_JOBS_FILE, JSON.stringify({ version: 1, jobs }, null, 2));
-      return NextResponse.json({ success: true });
+    if (typeof name === "string") {
+      const clean = name.trim();
+      if (!clean) return NextResponse.json({ error: "Nome não pode ficar vazio" }, { status: 400 });
+      job.name = clean.slice(0, 160);
+      changed = true;
     }
 
-    if (name || agentId || message !== undefined) {
-      if (name) job.name = name.trim();
-      if (agentId) job.agentId = agentId.trim();
-      if (message !== undefined) {
-        if (!job.payload) job.payload = { kind: "message" };
-        job.payload.message = message;
-        job.payload.text = message;
+    if (typeof description === "string") {
+      job.description = description.trim().slice(0, 500);
+      changed = true;
+    }
+
+    if (typeof agentId === "string") {
+      const cleanAgent = agentId.trim();
+      if (!/^[a-z0-9_-]{1,64}$/i.test(cleanAgent)) return NextResponse.json({ error: "Agent ID inválido" }, { status: 400 });
+      job.agentId = cleanAgent;
+      changed = true;
+    }
+
+    if (typeof sessionTarget === "string") {
+      const cleanTarget = sessionTarget.trim();
+      if (!/^(main|isolated|current|session:[a-zA-Z0-9_.:-]+)$/.test(cleanTarget)) {
+        return NextResponse.json({ error: "sessionTarget inválido" }, { status: 400 });
       }
+      job.sessionTarget = cleanTarget;
+      changed = true;
+    }
+
+    if (typeof scheduleKind === "string") {
+      if (!["cron", "every", "at"].includes(scheduleKind)) return NextResponse.json({ error: "Tipo de agenda inválido" }, { status: 400 });
+      if (scheduleKind === "cron") {
+        const cleanExpr = String(expr || "").trim();
+        if (!/^([0-9*,\-/]+\s+){4}[0-9*,\-/]+$/.test(cleanExpr)) return NextResponse.json({ error: "Expressão cron inválida" }, { status: 400 });
+        job.schedule = { kind: "cron", expr: cleanExpr, tz: typeof tz === "string" && tz.trim() ? tz.trim() : "America/Sao_Paulo" };
+      }
+      if (scheduleKind === "every") {
+        const ms = Number(everyMs);
+        if (!Number.isFinite(ms) || ms < 60000) return NextResponse.json({ error: "everyMs deve ser >= 60000" }, { status: 400 });
+        job.schedule = { kind: "every", everyMs: Math.floor(ms) };
+      }
+      if (scheduleKind === "at") {
+        const cleanAt = String(at || "").trim();
+        if (!cleanAt || Number.isNaN(new Date(cleanAt).getTime())) return NextResponse.json({ error: "Data ISO inválida" }, { status: 400 });
+        job.schedule = { kind: "at", at: cleanAt };
+      }
+      changed = true;
+    } else if (expr) {
+      const cleanExpr = String(expr).trim();
+      if (!/^([0-9*,\-/]+\s+){4}[0-9*,\-/]+$/.test(cleanExpr)) return NextResponse.json({ error: "Expressão cron inválida" }, { status: 400 });
+      if (!job.schedule) job.schedule = { kind: "cron" };
+      job.schedule.kind = "cron";
+      job.schedule.expr = cleanExpr;
+      if (tz) job.schedule.tz = String(tz).trim();
+      changed = true;
+    }
+
+    if (message !== undefined) {
+      if (!job.payload) job.payload = { kind: "agentTurn" };
+      const text = String(message);
+      if (job.payload.kind === "systemEvent") job.payload.text = text;
+      else job.payload.message = text;
+      changed = true;
+    }
+
+    if (changed) {
       job.updatedAtMs = Date.now();
-      const { writeFileSync } = require("fs");
       writeFileSync(CRON_JOBS_FILE, JSON.stringify({ version: 1, jobs }, null, 2));
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true, job: mapJob(job, readStateFile()) });
     }
     return NextResponse.json({ error: "Nenhuma alteração fornecida" }, { status: 400 });
   } catch (error) {

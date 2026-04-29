@@ -15,6 +15,7 @@ import {
   XCircle,
   History,
   Loader2,
+  Edit3,
 } from "lucide-react";
 
 export interface CronJob {
@@ -60,7 +61,7 @@ const AGENT_EMOJI: Record<string, string> = {
   freelance: "🔧",
 };
 
-export function CronJobCard({ job, onToggle, onDelete, onRun }: CronJobCardProps) {
+export function CronJobCard({ job, onToggle, onDelete, onEdit, onRun }: CronJobCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -310,6 +311,22 @@ export function CronJobCard({ job, onToggle, onDelete, onRun }: CronJobCardProps
 
         {/* Actions */}
         <div className="flex items-center gap-1 md:gap-2 mt-3 md:mt-4 pt-2 md:pt-4" style={{ borderTop: '1px solid var(--border)' }}>
+          <button
+            onClick={() => onEdit(job)}
+            className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm rounded-lg"
+            style={{
+              color: 'var(--accent)',
+              background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            title="Editar cron"
+          >
+            <Edit3 className="w-3.5 h-3.5 md:w-4 md:h-4" />
+            <span className="hidden sm:inline">Edit</span>
+          </button>
+
           <button
             onClick={() => onDelete(job.id)}
             className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm rounded-lg"

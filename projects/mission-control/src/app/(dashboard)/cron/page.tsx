@@ -1,11 +1,49 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Clock, RefreshCw, AlertCircle, LayoutGrid, CalendarDays, Zap } from "lucide-react";
+import { Clock, RefreshCw, AlertCircle, LayoutGrid, CalendarDays, Zap, X, Save } from "lucide-react";
 import { CronJobCard, type CronJob } from "@/components/CronJobCard";
 import { CronWeeklyTimeline } from "@/components/CronWeeklyTimeline";
 
 type ViewMode = "cards" | "timeline";
+
+type CronEditForm = {
+  id: string;
+  name: string;
+  agentId: string;
+  enabled: boolean;
+  scheduleKind: string;
+  expr: string;
+  tz: string;
+  everyMs: string;
+  at: string;
+  message: string;
+  description: string;
+  sessionTarget: string;
+};
+
+function getPayloadMessage(job: CronJob): string {
+  const payload = job.payload || {};
+  return String(payload.message || payload.text || job.description || "");
+}
+
+function toEditForm(job: CronJob): CronEditForm {
+  const schedule = typeof job.schedule === "object" && job.schedule ? job.schedule as Record<string, unknown> : {};
+  return {
+    id: job.id,
+    name: job.name || "",
+    agentId: job.agentId || "main",
+    enabled: Boolean(job.enabled),
+    scheduleKind: String(schedule.kind || "cron"),
+    expr: String(schedule.expr || ""),
+    tz: String(schedule.tz || job.timezone || "America/Sao_Paulo"),
+    everyMs: schedule.everyMs ? String(schedule.everyMs) : "",
+    at: String(schedule.at || ""),
+    message: getPayloadMessage(job),
+    description: job.description || "",
+    sessionTarget: job.sessionTarget || "isolated",
+  };
+}
 
 export default function CronJobsPage() {
   const [jobs, setJobs] = useState<CronJob[]>([]);
@@ -14,6 +52,9 @@ export default function CronJobsPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
   const [runToast, setRunToast] = useState<{ id: string; status: "success" | "error"; name: string } | null>(null);
+  const [editingJob, setEditingJob] = useState<CronJob | null>(null);
+  const [editForm, setEditForm] = useState<CronEditForm | null>(null);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const fetchJobs = useCallback(async () => {
     try {
@@ -84,6 +125,38 @@ export default function CronJobsPage() {
 
     setRunToast({ id, status: "success", name: job?.name || id });
     setTimeout(() => setRunToast(null), 4000);
+  };
+
+  const openEdit = (job: CronJob) => {
+    setEditingJob(job);
+    setEditForm(toEditForm(job));
+    setError(null);
+  };
+
+  const closeEdit = () => {
+    if (isSavingEdit) return;
+    setEditingJob(null);
+    setEditForm(null);
+  };
+
+  const saveEdit = async () => {
+    if (!editForm) return;
+    setIsSavingEdit(true);
+    try {
+      const res = await fetch("/api/cron", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editForm),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Falha ao salvar cron");
+      await fetchJobs();
+      closeEdit();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Falha ao salvar cron");
+    } finally {
+      setIsSavingEdit(false);
+    }
   };
 
   const activeJobs = jobs.filter((j) => j.enabled).length;
@@ -327,7 +400,7 @@ export default function CronJobsPage() {
               <CronJobCard
                 job={job}
                 onToggle={handleToggle}
-                onEdit={() => {}}
+                onEdit={openEdit}
                 onDelete={handleDelete}
                 onRun={handleRun}
               />
@@ -357,6 +430,116 @@ export default function CronJobsPage() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {editingJob && editForm && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 60,
+            background: "rgba(0,0,0,0.72)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem",
+          }}
+        >
+          <div
+            style={{
+              width: "min(860px, 100%)",
+              maxHeight: "90vh",
+              overflow: "auto",
+              background: "var(--card)",
+              border: "1px solid var(--border)",
+              borderRadius: "1rem",
+              boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
+            }}
+          >
+            <div className="flex items-start justify-between gap-4" style={{ padding: "1.25rem", borderBottom: "1px solid var(--border)" }}>
+              <div>
+                <h2 style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)", fontSize: "1.25rem", fontWeight: 700 }}>Editar cron</h2>
+                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Alterações internas no scheduler. Ações externas continuam exigindo aprovação fora daqui.</p>
+                <code className="text-xs" style={{ color: "var(--text-muted)" }}>{editingJob.id}</code>
+              </div>
+              <button onClick={closeEdit} style={{ background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer" }}>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" style={{ padding: "1.25rem" }}>
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Nome
+                <input value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} />
+              </label>
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Agent ID
+                <input value={editForm.agentId} onChange={(e) => setEditForm({ ...editForm, agentId: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} />
+              </label>
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Tipo de agenda
+                <select value={editForm.scheduleKind} onChange={(e) => setEditForm({ ...editForm, scheduleKind: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+                  <option value="cron">cron</option>
+                  <option value="every">every</option>
+                  <option value="at">at</option>
+                </select>
+              </label>
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Timezone
+                <input value={editForm.tz} onChange={(e) => setEditForm({ ...editForm, tz: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} placeholder="America/Sao_Paulo" />
+              </label>
+
+              {editForm.scheduleKind === "cron" && (
+                <label className="text-sm md:col-span-2" style={{ color: "var(--text-secondary)" }}>
+                  Expressão cron
+                  <input value={editForm.expr} onChange={(e) => setEditForm({ ...editForm, expr: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2 font-mono" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} placeholder="0 8 * * 1-5" />
+                </label>
+              )}
+              {editForm.scheduleKind === "every" && (
+                <label className="text-sm md:col-span-2" style={{ color: "var(--text-secondary)" }}>
+                  Intervalo em ms
+                  <input value={editForm.everyMs} onChange={(e) => setEditForm({ ...editForm, everyMs: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2 font-mono" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} placeholder="3600000" />
+                </label>
+              )}
+              {editForm.scheduleKind === "at" && (
+                <label className="text-sm md:col-span-2" style={{ color: "var(--text-secondary)" }}>
+                  Executar em ISO
+                  <input value={editForm.at} onChange={(e) => setEditForm({ ...editForm, at: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2 font-mono" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} placeholder="2026-04-29T20:00:00-03:00" />
+                </label>
+              )}
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Session target
+                <input value={editForm.sessionTarget} onChange={(e) => setEditForm({ ...editForm, sessionTarget: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} placeholder="isolated | main | current" />
+              </label>
+              <label className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Ativo
+                <select value={String(editForm.enabled)} onChange={(e) => setEditForm({ ...editForm, enabled: e.target.value === "true" })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+                  <option value="true">ativo</option>
+                  <option value="false">pausado</option>
+                </select>
+              </label>
+              <label className="text-sm md:col-span-2" style={{ color: "var(--text-secondary)" }}>
+                Descrição
+                <input value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)" }} />
+              </label>
+              <label className="text-sm md:col-span-2" style={{ color: "var(--text-secondary)" }}>
+                Mensagem / payload
+                <textarea value={editForm.message} onChange={(e) => setEditForm({ ...editForm, message: e.target.value })} rows={7} className="mt-1 w-full rounded-lg px-3 py-2" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-primary)", fontFamily: "var(--font-mono, monospace)" }} />
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between gap-3" style={{ padding: "1rem 1.25rem", borderTop: "1px solid var(--border)" }}>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>Dica: para health limpo, mantenha instrução de responder NO_REPLY quando não houver problema.</p>
+              <div className="flex gap-2">
+                <button onClick={closeEdit} disabled={isSavingEdit} className="rounded-lg px-4 py-2 text-sm" style={{ color: "var(--text-secondary)", background: "transparent", border: "1px solid var(--border)", cursor: "pointer" }}>Cancelar</button>
+                <button onClick={saveEdit} disabled={isSavingEdit} className="rounded-lg px-4 py-2 text-sm font-semibold" style={{ color: "white", background: "var(--accent)", border: "none", cursor: isSavingEdit ? "not-allowed" : "pointer", opacity: isSavingEdit ? 0.7 : 1 }}>
+                  <Save className="w-4 h-4 inline mr-2" />{isSavingEdit ? "Salvando..." : "Salvar cron"}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
