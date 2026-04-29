@@ -2,6 +2,12 @@
 
 _Atualizado em 2026-04-23_
 
+## Ativação dos Agentes
+
+Fonte oficial para estado ativo/sob demanda: `/root/2nd-brain/_system/AGENT-ACTIVATION-MATRIX.md`.
+
+Todo agente deve iniciar pelo próprio mapa em `/root/2nd-brain/06-agents/<agent-id>/AGENT-MAP.md`. Arquivos locais de workspace são ponte/compatibilidade; em conflito, vence o 2nd-brain.
+
 ## Núcleo Operacional
 
 **Fonte de verdade: `/root/2nd-brain/`**
@@ -227,4 +233,3 @@ Usar para: cronograma, baseline, MS Project/Excel/Primavera, caminho crítico, p
 Regra: não misturar com Trade. Trade é investimentos pessoais; Mensura Schedule Control é operação de obras.
 
 Segredos ficam apenas em `/root/.openclaw/workspace/memory/context/mensura_schedule_supabase.env`. Nunca copiar credenciais para Git, 2nd-brain ou respostas.
-
