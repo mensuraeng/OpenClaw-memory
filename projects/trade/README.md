@@ -41,6 +41,10 @@ Comandos v0.1:
 ./bin/trade reports --limit 10
 ./bin/trade show-report runtime/reports/market-radar-latest.md
 ./bin/trade supabase-status
+./bin/trade predictive-base --range 5y --db
+./bin/trade macro-bcb --years 10
+./bin/trade predictive-features
+./bin/trade validate-payload runtime/datasets/predictive-base-latest.jsonl
 ```
 
 Regra: CLI do Trade é informativa/read-only no MVP. Não existe comando de ordem real, compra, venda, aplicação, resgate ou conexão operacional com corretora.
@@ -57,6 +61,11 @@ Arquivos principais:
 
 - `docs/SUPABASE-ARCHITECTURE-v0.1.md` — arquitetura do banco operacional.
 - `supabase/migrations/20260426152300_trade_foundation.sql` — schema inicial `trade`.
+- `docs/DATA-INGESTION-CONTRACT-v0.1.md` — contrato de formatação dos dados antes do banco.
+- `scripts/validate_ingestion_payload.py` — valida envelopes JSON/JSONL antes da ingestão.
+- `scripts/build_predictive_base.py` — cria base histórica inicial para análise preditiva e pode gravar no Supabase.
+- `scripts/ingest_bcb_sgs.py` — ingere séries macro públicas do Banco Central/SGS.
+- `scripts/build_predictive_features.py` — calcula features técnicas preditivas sobre OHLCV.
 - `scripts/ingest_market_radar_supabase.py` — ingere o Market Radar no Postgres/Supabase.
 - `scripts/supabase_create_cloud.sh` — cria projeto cloud quando token/org/senha estiverem disponíveis.
 - `scripts/supabase_link_and_push.sh` — vincula projeto cloud e aplica migrations.

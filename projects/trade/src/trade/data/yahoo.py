@@ -9,6 +9,7 @@ import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, asdict
+from datetime import datetime, timezone
 from typing import Any
 
 
@@ -27,6 +28,24 @@ class QuoteSnapshot:
     change_pct: float | None
     source: str = "yahoo_chart"
     error: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class HistoricalBar:
+    symbol: str
+    source_symbol: str
+    ts: str
+    open: float | None
+    high: float | None
+    low: float | None
+    close: float | None
+    adjusted_close: float | None
+    volume: int | None
+    currency: str | None
+    source: str = "yahoo_chart"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -97,3 +116,61 @@ def fetch_quote(symbol: str, market: str) -> QuoteSnapshot:
         )
     except Exception as exc:  # noqa: BLE001 - adapter must degrade gracefully
         return QuoteSnapshot(symbol, source_symbol, None, None, None, None, None, None, None, None, None, error=repr(exc))
+
+
+def fetch_history(symbol: str, market: str, range_: str = "5y", interval: str = "1d") -> list[HistoricalBar]:
+    """Fetch historical OHLCV bars from Yahoo Chart API.
+
+    This is read-only, credentialless data collection for research/predictive
+    base building. It deliberately returns plain dataclasses so callers can
+    decide how to validate, persist and audit records.
+    """
+    source_symbol = normalize_symbol(symbol, market)
+    encoded = urllib.parse.quote(source_symbol)
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{encoded}?range={urllib.parse.quote(range_)}&interval={urllib.parse.quote(interval)}&events=history"
+    payload = _urlopen_json(url, timeout=30)
+    result = payload.get("chart", {}).get("result") or []
+    if not result:
+        err = payload.get("chart", {}).get("error")
+        raise RuntimeError(f"Yahoo returned no history for {symbol}: {err}")
+
+    item = result[0]
+    meta = item.get("meta", {})
+    timestamps = item.get("timestamp") or []
+    quote = (item.get("indicators", {}).get("quote") or [{}])[0]
+    adjclose = (item.get("indicators", {}).get("adjclose") or [{}])[0].get("adjclose") or []
+
+    bars: list[HistoricalBar] = []
+    for idx, ts in enumerate(timestamps):
+        close = _list_get(quote.get("close"), idx)
+        if close is None:
+            continue
+        bars.append(
+            HistoricalBar(
+                symbol=symbol,
+                source_symbol=source_symbol,
+                ts=datetime.fromtimestamp(int(ts), tz=timezone.utc).isoformat(),
+                open=_to_float(_list_get(quote.get("open"), idx)),
+                high=_to_float(_list_get(quote.get("high"), idx)),
+                low=_to_float(_list_get(quote.get("low"), idx)),
+                close=_to_float(close),
+                adjusted_close=_to_float(_list_get(adjclose, idx)) or _to_float(close),
+                volume=_to_int(_list_get(quote.get("volume"), idx)),
+                currency=meta.get("currency"),
+            )
+        )
+    return bars
+
+
+def _list_get(values: Any, idx: int) -> Any:
+    if not isinstance(values, list) or idx >= len(values):
+        return None
+    return values[idx]
+
+
+def _to_float(value: Any) -> float | None:
+    return float(value) if value is not None else None
+
+
+def _to_int(value: Any) -> int | None:
+    return int(value) if value is not None else None

@@ -101,6 +101,55 @@ def cmd_supabase_status(args):
     return run_python("supabase_status.py")
 
 
+def cmd_predictive_base(args):
+    cmd_args = []
+    if args.universe:
+        cmd_args += ["--universe", args.universe]
+    if args.range:
+        cmd_args += ["--range", args.range]
+    if args.interval:
+        cmd_args += ["--interval", args.interval]
+    if args.symbols:
+        cmd_args += ["--symbols", *args.symbols]
+    if args.include_runtime_reports:
+        cmd_args.append("--include-runtime-reports")
+    if args.output:
+        cmd_args += ["--output", args.output]
+    if args.db:
+        load_env_file()
+        cmd_args.append("--db")
+    return run_python("build_predictive_base.py", *cmd_args)
+
+
+def cmd_validate_payload(args):
+    cmd_args = [args.path]
+    if args.quiet:
+        cmd_args.append("--quiet")
+    return run_python("validate_ingestion_payload.py", *cmd_args)
+
+
+def cmd_macro_bcb(args):
+    load_env_file()
+    cmd_args = ["--years", str(args.years)]
+    if args.series:
+        cmd_args += ["--series", *args.series]
+    if args.json:
+        cmd_args.append("--json")
+    return run_python("ingest_bcb_sgs.py", *cmd_args)
+
+
+def cmd_predictive_features(args):
+    load_env_file()
+    cmd_args = []
+    if args.symbols:
+        cmd_args += ["--symbols", *args.symbols]
+    if args.limit_assets:
+        cmd_args += ["--limit-assets", str(args.limit_assets)]
+    if args.json:
+        cmd_args.append("--json")
+    return run_python("build_predictive_features.py", *cmd_args)
+
+
 def cmd_reports(args):
     reports_dir = ROOT / "runtime/reports"
     reports = sorted(reports_dir.glob("*.md"), reverse=True) if reports_dir.exists() else []
@@ -175,6 +224,33 @@ def build_parser():
 
     s = sub.add_parser("supabase-status", help="Checa env Supabase sem exibir segredos")
     s.set_defaults(func=cmd_supabase_status)
+
+    s = sub.add_parser("predictive-base", help="Monta base histórica validada para análise preditiva")
+    s.add_argument("--universe")
+    s.add_argument("--range", default="5y", help="janela Yahoo: 1y, 2y, 5y, 10y, max")
+    s.add_argument("--interval", default="1d")
+    s.add_argument("--symbols", nargs="*")
+    s.add_argument("--include-runtime-reports", action="store_true")
+    s.add_argument("--output")
+    s.add_argument("--db", action="store_true", help="grava base no Supabase; analytics only")
+    s.set_defaults(func=cmd_predictive_base)
+
+    s = sub.add_parser("validate-payload", help="Valida envelope JSON/JSONL antes de ingestão")
+    s.add_argument("path")
+    s.add_argument("--quiet", action="store_true")
+    s.set_defaults(func=cmd_validate_payload)
+
+    s = sub.add_parser("macro-bcb", help="Ingere séries macro públicas BCB/SGS no Supabase")
+    s.add_argument("--years", type=int, default=10)
+    s.add_argument("--series", nargs="*")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_macro_bcb)
+
+    s = sub.add_parser("predictive-features", help="Calcula features técnicas preditivas a partir do OHLCV")
+    s.add_argument("--symbols", nargs="*")
+    s.add_argument("--limit-assets", type=int)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_predictive_features)
 
     s = sub.add_parser("reports", help="Lista relatórios runtime")
     s.add_argument("--kind", choices=["market-radar", "gold-monitor"], default=None)
