@@ -1,0 +1,69 @@
+{
+  "generated_at_utc": "2026-04-29T11:21:10.435482+00:00",
+  "source": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
+  "method": "sqlite read-only snapshot; no external writes; suppression list applied to verified export",
+  "confidence": "medium-high: source is local commercial intelligence DB; depends on freshness of ingestion/validation jobs",
+  "risk_of_error": "contacts may be stale if source enrichment or bounce suppression is outdated; HubSpot live state is not mutated here",
+  "counts": {
+    "companies": 477,
+    "contacts": 1242,
+    "suppression_list": 474,
+    "campaigns": 0,
+    "campaign_recipients": 0,
+    "interactions": 0
+  },
+  "validity_status": [
+    {
+      "status": "valid",
+      "count": 771
+    },
+    {
+      "status": "review",
+      "count": 253
+    },
+    {
+      "status": "unknown",
+      "count": 218
+    }
+  ],
+  "grades": [
+    {
+      "grade": "A",
+      "count": 538
+    },
+    {
+      "grade": "B",
+      "count": 261
+    },
+    {
+      "grade": "X",
+      "count": 247
+    },
+    {
+      "grade": "C",
+      "count": 196
+    }
+  ],
+  "campaign_recipient_status": [],
+  "quality_flags": {
+    "contacts_without_email": 0,
+    "contacts_without_name": 924,
+    "contacts_without_company": 0,
+    "non_corporate_contacts": 0
+  },
+  "verified_contacts_count": 767,
+  "artifact_version": "mensura-crm-pipeline-v1",
+  "entities": [
+    "companies",
+    "contacts",
+    "suppression_list",
+    "campaigns",
+    "campaign_recipients",
+    "interactions"
+  ],
+  "artifacts": {
+    "verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-20260429T112110Z.jsonl",
+    "crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260429T112110Z.jsonl",
+    "crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260429T112110Z.csv"
+  }
+}

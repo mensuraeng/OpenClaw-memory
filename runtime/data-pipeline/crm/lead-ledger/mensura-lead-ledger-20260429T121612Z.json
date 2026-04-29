@@ -1,0 +1,18 @@
+{
+  "generated_at_utc": "2026-04-29T12:16:12.731279+00:00",
+  "method": "read-only derived ledger from mensura-crm-import-candidates-latest.csv and mensura-hubspot-reconciliation-latest.json; no external writes",
+  "inputs": [
+    "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-latest.csv",
+    "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-latest.json"
+  ],
+  "outputs": {
+    "latest_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-ledger/mensura-lead-ledger-latest.csv",
+    "versioned_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-ledger/mensura-lead-ledger-20260429T121612Z.csv"
+  },
+  "counts": {
+    "ledger_rows": 767,
+    "missing_in_hubspot_sample": 0,
+    "candidate_or_present": 767
+  },
+  "guardrail": "ledger é insumo read-only; qualquer importação/alteração HubSpot ou outreach exige aprovação explícita"
+}

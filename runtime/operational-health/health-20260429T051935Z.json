@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T15:20:48.752817+00:00",
+  "checked_at_utc": "2026-04-29T05:19:35.407248+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,19 +15,19 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-29 15:02 | De: notifications@github.com\n   Assunto: [mensuraeng/OpenClaw-memory] Run failed: pages build and deployment - master (685bb3d)\n   [mensuraeng/OpenClaw-memory] pages build and deployment workflow run\n\n\n\npages build and deployme\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 04:03 | De: members@email.pro-immigration.com\n   Assunto: Notification for Alexandre - [CONFIRMATION REQUIRED]\n   View in browser\n\n​​​​​​​\n\nCVE NOTIFICATION DEPARTMENT\nAcceptance Letter\n NOTIFICATION\n\nAppli\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-29 13:39 | De: service@conectcar.com.br\n   Assunto: Gostaria de não receber mensagens sobre o Dia das Mães?\n   Sua experiência é importante para nós 🧡 ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 01:27 | De: nao-responder@mercadolivre.com.br\n   Assunto: Dê sua opinião sobre Algodão Quadrado Bellacotton 3 Pacotes Com 100un Cada - Uso Higiêne Bebê, Estetica, Limpeza\n   Compartilhe sua opinião e ajude outros compradores.\nSe o e-mail não abrir corretamente, entre aqui.",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📩 [AAMkADYw...] 2026-04-29 14:31 | De: administracao@direitosbc.br\n   Assunto: Re: Descarte de materiais\n   Prezados, bom dia.\n\nConforme respondido em 24/04, via email (anexo), o acesso ao campus para retir\n\n",
+      "detail": "📧 [AAMkADYw...] 2026-04-28 11:08 | De: flavia@mensuraengenharia.com.br\n   Assunto: Teatro Suzano — planilha para importação no Sienge\n   Philippe, bom dia.\n\nSegue em anexo a planilha do orçamento do Teatro Suzano tratada para importação \n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
@@ -46,13 +46,13 @@
       "name": "vps_full_backup",
       "status": "ok",
       "detail": "manifesto local encontrado",
-      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json"
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260428T210105Z.manifest.json"
     },
     {
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-29T15:05:27.952284+00:00"
+      "evidence": "2026-04-28T21:03:27.824219+00:00"
     },
     {
       "name": "working_queue_flavia",

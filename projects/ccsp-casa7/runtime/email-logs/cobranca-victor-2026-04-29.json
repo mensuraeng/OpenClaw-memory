@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "sent": true,
+  "date": "2026-04-29",
+  "subject": "CCSP Casa 7 — Cobranças de quarta-feira — 29/04",
+  "preview": "/root/.openclaw/workspace/projects/ccsp-casa7/runtime/email-previews/cobranca-victor-2026-04-29.txt",
+  "stdout": "✅ E-mail enviado para victor.evangelista@miaengenharia.com.br | CC: alexandre@miaengenharia.com.br, andre@miaengenharia.com.br\n",
+  "stderr": "",
+  "code": 0
+}
