@@ -1,15 +1,33 @@
-const CACHE = "mc-v1";
-self.addEventListener("install", e => { self.skipWaiting(); });
-self.addEventListener("activate", e => { e.waitUntil(clients.claim()); });
-self.addEventListener("fetch", e => {
-  const url = new URL(e.request.url);
-  if (url.pathname.startsWith("/api/")) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-  } else {
-    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-      const clone = res.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
-      return res;
-    })));
+const CACHE_VERSION = "mc-v2-no-stale-ui";
+
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+      .then(() => clients.claim())
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  if (event.request.method !== "GET") return;
+
+  // Never cache app shell, routes, or API responses. Mission Control must show the current build.
+  if (url.pathname.startsWith("/api/") || event.request.mode === "navigate" || event.request.destination === "document") {
+    event.respondWith(fetch(event.request, { cache: "no-store" }));
+    return;
+  }
+
+  // Static assets are content-hashed by Next and safe to cache after the first network attempt.
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
   }
 });
