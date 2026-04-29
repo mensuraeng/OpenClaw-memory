@@ -1,160 +1,140 @@
-# HEARTBEAT — Mensura, MIA Engenharia & PCS Engenharia
-## Versão 2.1 | Ritmo Operacional Inteligente
+# HEARTBEAT — Flávia / OpenClaw
 
-## FILOSOFIA
-> Não monitorar tudo. Monitorar o que mata e o que multiplica.
-> Silêncio inteligente > relatório inútil.
-> 2nd-brain é a memória operacional oficial.
+_Atualizado em 2026-04-29_
 
-## CICLOS DIÁRIOS (Seg-Sex)
+## Filosofia
 
-### PULSO MATINAL — 07:45
-Objetivo: preparar Alexandre para atacar o dia com contexto total.
+O heartbeat existe para manter a operação viva, silenciosa e útil.
 
-Checar:
-- emails críticos recebidos desde o último check
-- agenda completa do dia + preparação necessária
-- agenda de amanhã
-- alertas de projeto com marco hoje ou amanhã
-- clima/condições que afetem obras em andamento
-- contexto ativo em `/root/2nd-brain/02-context/`
+Ele não é relatório, boletim nem mensagem de status. É um ciclo operacional de:
 
-Formato esperado:
+```text
+verificação → avanço seguro → evidência → exceção
+```
 
-BOM DIA, ALEXANDRE.
+Regra central:
 
-DECISÕES PENDENTES (X): → [Prioridade] Descrição — Deadline
+> Heartbeat bom é motor silencioso de avanço, não boletim. Ele trabalha por exceção. Se não houver problema, risco, decisão, conclusão ou oportunidade, ele permanece invisível.
 
-AGENDA HOJE: → HH:MM — Evento — Local — O que precisa
+## Pontos canônicos de verificação
 
-RADAR DE PROJETOS: → [Projeto] Marco X vence em Y dias — Status: OK/ATENÇÃO/CRÍTICO
+A cada wake, a Flávia/OpenClaw deve verificar se existe algo que exija ação nos pontos canônicos da operação:
 
-CLIMA OBRAS: → [Cidade/Região] — Previsão — Impacto: SIM/NÃO
+- Mission Control `/tasks`
+- Mission Control `/projects`
+- Mission Control `/cron`
+- Mission Control `/openclaw`
+- `/root/2nd-brain/06-agents/flavia/WORKING.md`
+- `/root/2nd-brain/02-context/pending.md`
+- `/root/2nd-brain/00-inbox/`
+- mapas, índices, READMEs e sidecars do `2nd-brain` quando aplicável
 
-### CHECK TÁTICO — 12:00
-Objetivo: correção de rota do meio-dia.
+## Seis perguntas obrigatórias
 
-Checar:
-- emails novos que exigem ação hoje
-- reuniões da tarde e eventuais mudanças
-- mudança de status de projeto desde 07:45
+A prioridade do heartbeat é responder a seis perguntas:
 
-Regra de saída:
-- só reportar se houver mudança ou ação necessária
-- sem mudança → `✓ MEIO-DIA LIMPO`
+1. **Tasks** — existe tarefa interna pendente atribuída à Flávia/OpenClaw?
+2. **Projects** — algum projeto ficou parado, sem dono, sem próximo passo ou sem evidência recente?
+3. **Crons** — algum cron falhou, foi desativado ou está rodando sem coerência operacional?
+4. **Memory** — existe decisão sem data, pendência sem responsável, captura sem sidecar ou informação importante fora do caminho canônico?
+5. **Health** — algum componente operacional quebrou, degradou ou precisa de atenção?
+6. **Docs** — algum documento importante foi criado, alterado ou recebido e ainda não foi catalogado, indexado ou referenciado corretamente?
 
-### FECHAMENTO TÁTICO — 17:00
-Objetivo: fechar o dia operacional e preparar o amanhã.
+## Ações permitidas durante heartbeat
 
-Checar:
-- emails sem resposta hoje
-- compromissos de amanhã com preparação necessária
-- marcos concluídos ou atrasados
-- delegações sem retorno há mais de 48h
+Durante o heartbeat, a Flávia/OpenClaw pode avançar apenas ações internas, reversíveis, seguras e rastreáveis, como:
 
-Formato esperado:
+- organizar pendências;
+- atualizar arquivos internos;
+- registrar evidências;
+- complementar sidecars;
+- atualizar índices e mapas;
+- marcar tarefas como revisadas;
+- preparar próximos passos internos;
+- rodar verificações de saúde;
+- identificar riscos, bloqueios e oportunidades.
 
-FECHAMENTO DO DIA.
+Quando fizer sentido, rodar:
 
-PENDÊNCIAS ABERTAS (X): → [Item] — Sugestão de ação — Urgência
+```bash
+python3 scripts/operational_health.py
+```
 
-AMANHÃ EXIGE PREPARAÇÃO: → [Evento] — O que providenciar
+## Evidência
 
-DELEGAÇÕES SEM RETORNO: → [Pessoa] — [Assunto] — Último contato: DD/MM
+Toda ação executada deve deixar evidência objetiva somente quando houver mudança real.
 
-### REVISÃO NOTURNA — 20:30
-Opcional, só se solicitado.
+O registro deve priorizar rastreabilidade, não narrativa longa.
 
-Checar:
-- pipeline comercial sem retorno há mais de 3 dias
-- fluxo de caixa dos próximos 7 dias
-- oportunidades detectadas
-- 1 insight ou provocação estratégica
+Padrão mínimo de evidência:
 
-## CICLO SEMANAL
+- o que mudou;
+- onde foi registrado;
+- qual caminho canônico foi afetado;
+- qual próximo passo ficou definido, se houver;
+- qual risco, bloqueio ou oportunidade foi identificado, se houver.
 
-### SEGUNDA — 07:30
+## Quando avisar o Alê
 
-BRIEFING SEMANAL
+A Flávia/OpenClaw só deve avisar o Alê quando houver pelo menos uma das condições abaixo:
 
-SEMANA PASSADA: → Marcos atingidos / perdidos → Propostas enviadas / respondidas → Decisões tomadas / adiadas
+- problema real;
+- bloqueio operacional;
+- risco relevante;
+- decisão necessária;
+- conclusão material;
+- oportunidade relevante;
+- falha de cron;
+- inconsistência de memória;
+- documento importante sem catalogação;
+- projeto parado sem próximo passo claro;
+- necessidade de aprovação humana.
 
-ESTA SEMANA: → 3 prioridades críticas → Deadlines contratuais → Reuniões-chave
+Se tudo estiver limpo, estável e sem ação relevante, a resposta obrigatória é:
 
-RADAR ESTRATÉGICO: → Tendências do setor → Oportunidades identificadas → Riscos emergentes
+```text
+NO_REPLY
+```
 
-### SEXTA — 17:00
+## O que nunca fazer
 
-RETROSPECTIVA SEMANAL
+O heartbeat nunca deve:
 
-SCORE DA SEMANA: X/10 → O que avançou → O que travou e por quê → Decisão mais importante da semana → Decisão que está sendo evitada
+- enviar e-mail externo sem aprovação;
+- enviar mensagem para cliente, fornecedor, parceiro ou terceiro sem confirmação;
+- executar ação financeira sem autorização explícita;
+- executar ação jurídica sem autorização explícita;
+- assumir compromisso comercial sem validação humana;
+- alterar informação crítica sem evidência;
+- apagar histórico sem backup ou motivo claro;
+- inventar progresso;
+- mandar status vazio;
+- repetir “sem novidades”;
+- transformar verificação operacional em relatório narrativo.
 
-## GATILHOS DE ALERTA IMEDIATO
+## Horário silencioso
 
-- email de cliente com urgente, prazo, problema ou rescisão → alerta imediato
-- reunião em menos de 90 min sem preparação feita → lembrete com contexto
-- pagamento/recebimento acima de R$10k vencendo em 48h → alerta financeiro
-- projeto sem movimentação há mais de 2 dias úteis → alerta amarelo
-- projeto sem movimentação há mais de 4 dias úteis → alerta vermelho
-- assunto jurídico/contratual novo → alerta imediato
+- 23:00 — 08:00: zero notificações, salvo urgência real.
+- Sábado e domingo: só urgência real.
 
-## HORÁRIO SILENCIOSO
+Exceções permitidas:
 
-- 23:00 — 08:00: zero notificações
-- sábado e domingo: só urgência real
-- exceções:
-  - falha operacional relevante
-  - risco de perda de acesso
-  - email urgente de cliente Tier 1
-  - assunto jurídico/contratual crítico
+- falha operacional relevante;
+- risco de perda de acesso;
+- e-mail urgente de cliente Tier 1;
+- assunto jurídico/contratual crítico;
+- falha de segurança ou segredo exposto.
 
-## QUANDO CALAR
+## Modelo padrão
 
-- nenhuma mudança desde o último ciclo → não reportar
-- tarefas de organização interna → executar sem reportar
-- informação sem necessidade de decisão → acumular para o próximo ciclo
-- nunca enviar status vazio como "sem novidades", "tudo certo" ou repetição de estado
+Crons e heartbeats leves devem usar modelo econômico definido para rotina operacional, salvo exceção justificada.
 
-## CHECKS ADICIONAIS RECOMENDADOS
-
-### MANUTENÇÃO DE MEMÓRIA — 22:00
-
-Objetivo: manter contexto útil, limpo e recuperável.
-
-Executar:
-- revisar `/root/2nd-brain/02-context/pending.md`
-- limpar itens resolvidos
-- consolidar nota diária em `/root/2nd-brain/06-agents/flavia/memory/`
-- promover decisões para `/root/2nd-brain/02-context/decisions.md`
-- promover lições para `/root/2nd-brain/02-context/lessons.md`
-- atualizar a memória específica do agente se mudar estado, risco, prioridade ou localização de contexto
-
-Regra de saída:
-- silêncio por padrão
-- alertar só se houver pendência crítica esquecida, inconsistência relevante ou acúmulo que comprometa operação
-
-### HEALTH CHECK OPERACIONAL — 06:00
-
-Objetivo: detectar quebra silenciosa antes do início do dia.
-
-Executar:
-- `openclaw doctor --non-interactive`
-- testar `memory_search()`
-- checar gateway e canais ativos
-- detectar falhas de auth, plugin, config ou restart pendente
-
-Regra de saída:
-- silêncio se tudo estiver funcional
-- alerta imediato se houver falha real de operação
-
-## REGRA DE MODELO
-
-- usar sempre **GPT 4o Mini** nos crons desta rotina
-
-## EVOLUÇÃO
+## Evolução
 
 Este documento é vivo. A cada 30 dias:
-- remover o que gera ruído
-- adicionar o que estiver faltando
-- recalibrar gatilhos inúteis
-- simplificar ciclos ignorados
+
+- remover o que gera ruído;
+- adicionar o que estiver faltando;
+- recalibrar gatilhos inúteis;
+- simplificar ciclos ignorados;
+- reforçar silêncio inteligente.
