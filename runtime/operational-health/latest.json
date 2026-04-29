@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T17:05:53.679470+00:00",
+  "checked_at_utc": "2026-04-29T18:47:32.648484+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -21,7 +21,7 @@
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📧 [AAMkADA5...] 2026-04-29 12:00 | De: flavia@mensuraengenharia.com.br\n   Assunto: CCSP Casa 7 — Cobranças de quarta-feira — 29/04\n   Victor, bom dia.\n\nSegue cobrança objetiva da Casa 7 — CCSP para Quarta-feira (2026-04-29), conforme \n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 18:11 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para FABEL MATERIAIS PARA CONSTRUCAO LTD\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
