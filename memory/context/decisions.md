@@ -269,3 +269,23 @@ Operação de marketing da Mensura deve ocorrer no grupo Telegram `MENSURA Engen
 ### Saídas de e-mail automáticas devem usar a conta da Flávia (2026-04-28)
 _Status: [ATIVA]_
 Quando uma rotina automatizada, cron ou script precisar enviar e-mail operacional, o remetente padrão deve ser `flavia@mensuraengenharia.com.br`, não contas pessoais/institucionais do Alê (`alexandre@...`). O e-mail do Alê pode ficar em cópia quando fizer sentido para visibilidade, mas não deve ser usado como remetente salvo autorização explícita para aquele envio. Rotinas de leitura/monitoramento podem continuar consultando caixas específicas do Alê quando a finalidade for inbox/calendário dele, sem transformar isso em remetente de saída.
+
+## 2026-04-28 — Recall progressivo antes de responder sobre contexto histórico
+_Status: [ATIVA]_
+Antes de responder sobre histórico, pessoas, preferências, decisões, projetos ou pendências, usar busca semântica/memory search e carregar apenas os trechos necessários. Evitar carregar arquivos longos inteiros no prompt, especialmente `USER.md` gigante; memória boa é recuperação seletiva, não despejo bruto.
+
+## 2026-04-28 — KeeSpace é o cofre oficial de segredos
+_Status: [ATIVA]_
+O cofre de segredos oficial é o KeeSpace. Credenciais, tokens e API keys devem migrar gradualmente de arquivos locais `.env`/configs para KeeSpace. Workspace e memória devem guardar apenas referências, nomes de variáveis ou caminhos seguros, nunca segredos reais em texto.
+
+## 2026-04-28 — Meta Ads começa read-only e exige aprovação para ação mutável
+_Status: [ATIVA]_
+A frente Meta Ads deve começar por diagnóstico/read-only. Nenhuma criação, pausa, ativação, edição de orçamento, campanha, público ou criativo pode ocorrer sem aprovação explícita do Alê para aquela ação. Estrutura pode ficar preparada para campanha futura, mas verba e mutações dependem de autorização.
+
+## 2026-04-28 — LinkedIn institucional exige app dedicada para Community Management API
+_Status: [ATIVA]_
+Para publicação institucional via API, usar app LinkedIn dedicada/exclusiva para Community Management API. A app atual verificada permanece para LinkedIn pessoal/Share/OpenID. O produto Community Management API não deve ser misturado em app com outros produtos quando o LinkedIn exigir exclusividade.
+
+## 2026-04-28 — Retornos gerenciais ficam no direct; operação vai para canal/frente própria
+_Status: [ATIVA]_
+No direct do Alê, reportar apenas decisão necessária, bloqueio real, risco relevante, entrega concluída importante ou resumo executivo consolidado. O operacional granular de cada frente deve ficar no respectivo canal/agente, evitando ruído de execução no direct.

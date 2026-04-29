@@ -3,7 +3,7 @@
 > Visão executiva — apenas itens reais com ação pendente.
 > Spam, newsletters e emails de marketing: descartar direto, nunca entram aqui.
 
-_Flush realizado em 2026-04-27 22:00_
+_Flush realizado em 2026-04-28 22:00_
 
 ---
 
@@ -25,6 +25,7 @@ _Flush realizado em 2026-04-27 22:00_
 - [ ] **Preencher `people.md`** — adicionar equipe e parceiros relevantes conforme surgirem
 - [ ] **Mensura campanha fria — nova lista** — Alê combinou enviar nova base em 28/04; não disparar novo lote antes de higienizar e preservar reputação do domínio/remetente
 - [ ] **Teatro Suzano no Sienge — estratégia de total** — se o caminho via `workItemId` der 100% de cobertura, Alê precisa confirmar se aceita eventual divergência entre total Excel e total calculado pela base Sienge
+- [ ] **Meta Ads — credenciais e conta de anúncios** — para diagnóstico futuro, receber token/API key read-only seguro e `META_AD_ACCOUNT_ID` no formato `act_<id>`; Business Managers atuais aparecem sem contas de anúncios vinculadas
 
 ---
 
@@ -41,20 +42,22 @@ _Flush realizado em 2026-04-27 22:00_
 
 ## 🔵 Em andamento interno
 
+- [ ] **Backup full VPS B2** — cap do B2 foi resolvido e dry-run passou; validar execução final, manifesto e restaurabilidade antes de considerar concluído
 - [ ] **Teatro Suzano — orçamento Sienge** — rodar novo dry-run após reset do rate limit; só executar upload se cobertura de códigos for 100% e estratégia de total estiver confirmada
 - [ ] **MENSURA Commercial Intelligence** — manter base versionada no repo/SQLite; toda nova lista passa por deduplicação, DNS/domínio, suppression, bounces e score antes de campanha
 - [ ] **Saneamento 2nd-brain Mia-CCSP-Casa-7** — tarefa própria com backup antes de remover/reestruturar conteúdo
 - [ ] **Classificar base PCS↔Sienge** — separar em `obra executável`, `centro de custo administrativo` e `ambíguo/validar`
-- [ ] **Calibrar triagem inbox PCS** — ajustar regras de categorização antes de desligar dry-run
+- [ ] **Calibrar triagem inbox PCS** — PCS Graph foi destravado; acompanhar qualidade das categorias antes de desligar qualquer dry-run/controle de segurança
 - [ ] **Consolidar financeiro MIA** — aguardando romaneio para cruzar com comprovantes
 - [ ] **Incorporar checklist cliente Casa 7 na página principal** — após estabilizar rota/domínio
 - [ ] **Popular memória documental MENSURA/MIA/PCS** — estruturar `apresentacao.md`, `ficha-cadastral.md`, `dados-institucionais.md`
+- [ ] **Sistema Operacional 10/10** — evoluir WORKING, health, usage ledger e backlog leve com validação contínua, sem ruído no direct
 
 ---
 
 ## ⏳ Aguardando terceiros
 
-- [ ] **LinkedIn Community API** — aprovação do app `OpenClaw - Community API` para publicação em páginas institucionais
+- [ ] **LinkedIn Community API** — aprovação da app dedicada/exclusiva `OpenClaw - Community API` (`77ke3c00urrpdv`) para publicação em páginas institucionais; Alê já confirmou admin/super admin das páginas MENSURA, MIA e PCS
 - [ ] **Romaneio MIA** — material para cruzar comprovantes e consolidar status de pagamento
 - [ ] **Sienge / Softplan — importação de orçamento com valores** — confirmar endpoint/procedimento para importar planilha preservando valores quando itens antigos têm vínculos/apropriações
 

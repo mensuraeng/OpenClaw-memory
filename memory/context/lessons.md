@@ -137,3 +137,19 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 ## 2026-04-27 — Campanha fria precisa proteger reputação antes de volume
 - Mesmo com envio aceito pelo Graph, bounces altos exigem suppression imediata e pausa antes do próximo lote.
 - Não disparar nova base no mesmo dia só para aproveitar momentum; reputação do domínio/remetente vale mais que volume.
+
+## 2026-04-28 — Microsoft Project `.mpp` pode exigir MPXJ, não LibreOffice
+- LibreOffice pode falhar ao abrir cronograma `.mpp` mesmo quando o arquivo é válido.
+- Para extração operacional de cronogramas Microsoft Project, MPXJ foi a rota correta e gerou `tasks.csv`, `resources.csv`, `assignments.csv` e `summary.json` reutilizáveis.
+
+## 2026-04-28 — Categoria-mãe e categoria específica de obra não devem coexistir no Outlook
+- Aplicar `OBRAS` junto de `OBRA — <nome>` polui visualmente e parece duplicidade para o usuário.
+- Quando a obra específica for conhecida, aplicar prioridade + categoria específica da obra; limpar categorias antigas/genéricas durante reclassificação.
+
+## 2026-04-28 — Correção de entidade pelo Alê deve virar regra final do classificador
+- No caso P&G Louveira, houve ida e volta sobre separação em duas obras, mas a decisão final do Alê foi obra única.
+- O classificador deve consolidar aliases/contratos/termos em `OBRA — P&G Louveira` até nova instrução explícita; não inferir subdivisão estrutural só por termos técnicos ou contrato.
+
+## 2026-04-28 — Backup parcial sem manifesto não é restaurável
+- Partes enviadas ao B2 sem manifesto final não contam como backup válido.
+- Em backup full VPS, a validação precisa confirmar manifesto, integridade/restaurabilidade e ausência de acúmulo pesado local; upload parcial deve ser tratado como lixo operacional a limpar com autorização.
