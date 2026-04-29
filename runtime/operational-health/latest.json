@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T15:20:48.752817+00:00",
+  "checked_at_utc": "2026-04-29T16:17:17.235703+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,19 +15,19 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-29 15:02 | De: notifications@github.com\n   Assunto: [mensuraeng/OpenClaw-memory] Run failed: pages build and deployment - master (685bb3d)\n   [mensuraeng/OpenClaw-memory] pages build and deployment workflow run\n\n\n\npages build and deployme\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 16:03 | De: invitations@linkedin.com\n   Assunto: Veja as conexões, a experiência e muito mais de Guilherme e de outras pessoas\n   Veja as conexões, a experiência e muito mais de Guilherme e de outras pessoas\n͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏  \n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-29 13:39 | De: service@conectcar.com.br\n   Assunto: Gostaria de não receber mensagens sobre o Dia das Mães?\n   Sua experiência é importante para nós 🧡 ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📧 [AAMkADA5...] 2026-04-29 12:00 | De: flavia@mensuraengenharia.com.br\n   Assunto: CCSP Casa 7 — Cobranças de quarta-feira — 29/04\n   Victor, bom dia.\n\nSegue cobrança objetiva da Casa 7 — CCSP para Quarta-feira (2026-04-29), conforme \n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📩 [AAMkADYw...] 2026-04-29 14:31 | De: administracao@direitosbc.br\n   Assunto: Re: Descarte de materiais\n   Prezados, bom dia.\n\nConforme respondido em 24/04, via email (anexo), o acesso ao campus para retir\n\n",
+      "detail": "📧 [AAMkADYw...] 2026-04-29 14:31 | De: administracao@direitosbc.br\n   Assunto: Re: Descarte de materiais\n   Prezados, bom dia.\n\nConforme respondido em 24/04, via email (anexo), o acesso ao campus para retir\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
