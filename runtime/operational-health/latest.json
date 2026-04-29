@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T20:01:48.866432+00:00",
+  "checked_at_utc": "2026-04-29T22:08:10.494494+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,13 +15,13 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-29 19:55 | De: invitations@linkedin.com\n   Assunto: Eu quero me conectar com você\n   Sayra, Gerente de Engenharia (Sala Técnica) / Obra URE- Unidade de Recuperação Energética da CDG Con\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 21:43 | De: fidelidade@localiza.com\n   Assunto: Feriado à vista: seu descanso pode começar na estrada\n   Sua News chegou com roteiro, carro ideal e desconto pra viajar melhor\n\n\nPara visualizar online, c\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📧 [AAMkADA5...] 2026-04-29 19:31 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para ANCHIETA MATERIAIS ELETRICOS E HIDR\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 20:59 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para SOLUM COMERCIO DE TINTAS ECOLOGICAS\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
@@ -33,7 +33,7 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADk1...] 2026-04-28 17:26 | De: MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br\n   Assunto: Undeliverable: Quando o cronograma vira instrumento de decisão\n   Delivery has failed to these recipients or groups:\n\nclaudinei.cauduro@br.arteliagroup.com (claudin\n\n",
+      "detail": "📩 [AAMkADk1...] 2026-04-29 20:30 | De: victor.evangelista@miaengenharia.com.br\n   Assunto: RE: CCSP — deliberações consolidadas da reunião\n   Flavia,\n\nSegue minhas considerações em vermelho\n\nAcredito que temos um relatório completo e cons\n\n",
       "evidence": "flavia@mensuraengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-29T19:02:32.820855+00:00"
+      "evidence": "2026-04-29T21:03:00.739887+00:00"
     },
     {
       "name": "working_queue_flavia",
