@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T18:47:32.648484+00:00",
+  "checked_at_utc": "2026-04-29T20:01:48.866432+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,13 +15,13 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-29 16:38 | De: donotreply@match.indeed.com\n   Assunto: GESTOR DE PROJETOS (HR Soul) na empresa Jobbol\n   Olá, Alexandre, Com base no seu currículo, acreditamos que você seja uma ótima opção para a vaga de \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 19:55 | De: invitations@linkedin.com\n   Assunto: Eu quero me conectar com você\n   Sayra, Gerente de Engenharia (Sala Técnica) / Obra URE- Unidade de Recuperação Energética da CDG Con\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-29 18:11 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para FABEL MATERIAIS PARA CONSTRUCAO LTD\n\n",
+      "detail": "📧 [AAMkADA5...] 2026-04-29 19:31 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para ANCHIETA MATERIAIS ELETRICOS E HIDR\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-29T17:02:32.597826+00:00"
+      "evidence": "2026-04-29T19:02:32.820855+00:00"
     },
     {
       "name": "working_queue_flavia",
