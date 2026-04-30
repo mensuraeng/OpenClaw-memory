@@ -1,0 +1,111 @@
+{
+  "checked_at_utc": "2026-04-30T09:11:56.019344+00:00",
+  "overall": "attention",
+  "counts": {
+    "ok": 3,
+    "attention": 1
+  },
+  "guardrails": {
+    "production_restore": false,
+    "destructive_actions": false,
+    "external_calls": false,
+    "tempfile_sandbox": true
+  },
+  "checks": [
+    {
+      "name": "key_normalization_and_idempotency",
+      "status": "ok",
+      "checks": {
+        "path_relative_absolute_trailing_slash": true,
+        "manifest_query_trailing_slash": true,
+        "backup_id_trailing_slash": true,
+        "different_paths_remain_different": true
+      },
+      "evidence": {
+        "path_key_hashes": [
+          "3e8e8e8cd198",
+          "3e8e8e8cd198",
+          "3e8e8e8cd198"
+        ],
+        "manifest_key_hashes": [
+          "cf91398be4cc",
+          "cf91398be4cc",
+          "cf91398be4cc"
+        ],
+        "backup_id_hashes": [
+          "eec4e914dc84",
+          "eec4e914dc84"
+        ]
+      }
+    },
+    {
+      "name": "critical_sqlite_copy_integrity",
+      "path": "projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
+      "status": "ok",
+      "detail": "integrity_check=ok",
+      "size_bytes": 2404352,
+      "table_count": 9,
+      "row_counts": {
+        "campaign_recipients": 0,
+        "campaigns": 0,
+        "companies": 477,
+        "contact_sources": 1817,
+        "contacts": 1242,
+        "interactions": 0,
+        "lead_hygiene_results": 767,
+        "lead_hygiene_runs": 1,
+        "suppression_list": 474
+      },
+      "temp_copy": "tempfile sandbox, removed automatically"
+    },
+    {
+      "name": "second_brain_git_readonly",
+      "path": "/root/2nd-brain",
+      "status": "attention",
+      "detail": "git status/fsck somente leitura executados",
+      "dirty_count": 5,
+      "fsck_returncode": 0,
+      "status_returncode": 0,
+      "fsck_stderr_tail": ""
+    },
+    {
+      "name": "local_backup_manifests",
+      "root": "runtime/backups",
+      "status": "ok",
+      "manifest_count": 3,
+      "manifests": [
+        {
+          "path": "runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json",
+          "status": "ok",
+          "top_level_type": "dict",
+          "entries": 67,
+          "missing_key_entries": 0,
+          "duplicate_canonical_keys": 0,
+          "duplicate_canonical_key_hash_pairs": 0,
+          "manifest_key": "runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json"
+        },
+        {
+          "path": "runtime/backups/vps-full-manifests/vps-full-20260428T210105Z.manifest.json",
+          "status": "ok",
+          "top_level_type": "dict",
+          "entries": 153,
+          "missing_key_entries": 0,
+          "duplicate_canonical_keys": 0,
+          "duplicate_canonical_key_hash_pairs": 0,
+          "manifest_key": "runtime/backups/vps-full-manifests/vps-full-20260428T210105Z.manifest.json"
+        },
+        {
+          "path": "runtime/backups/mensura-commercial-intelligence-db/20260430T080306Z/manifest.json",
+          "status": "ok",
+          "top_level_type": "dict",
+          "entries": 0,
+          "missing_key_entries": 0,
+          "duplicate_canonical_keys": 0,
+          "duplicate_canonical_key_hash_pairs": 0,
+          "manifest_key": "runtime/backups/mensura-commercial-intelligence-db/20260430T080306Z/manifest.json"
+        }
+      ],
+      "problems": []
+    }
+  ]
+}
