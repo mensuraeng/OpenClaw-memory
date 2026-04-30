@@ -110,6 +110,17 @@ runtime/fiscal/notas-recebidas/<empresa>/<YYYY-MM>/
   <data>_<fornecedor>_<numero>.json
 ```
 
+
+## Ordem de ativação por empresa
+
+Definida pelo Alê em 2026-04-29:
+
+1. MIA
+2. MENSURA
+3. PCS
+
+A implantação real deve seguir essa ordem, começando por fonte read-only de XML/PDF/portal antes de certificado/SEFAZ quando possível.
+
 ## Próximos dados necessários
 
 Para cada empresa:

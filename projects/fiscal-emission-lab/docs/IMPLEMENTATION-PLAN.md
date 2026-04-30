@@ -74,3 +74,11 @@ Entregue internamente em 2026-04-29:
 - `projects/fiscal-emission-lab/docs/DISTRIBUICAO-DFE-READONLY-PLAN.md`
 
 Validação: `py_compile` e `unittest` passaram. Parser gerou JSON/XML/ledger local a partir de fixture sintética, com `source.real_data=false`.
+
+## Ordem de ativação
+
+1. MIA
+2. MENSURA
+3. PCS
+
+Essa ordem vale para consulta/baixa read-only, notificação interna e posterior preparação de emissão assistida.
