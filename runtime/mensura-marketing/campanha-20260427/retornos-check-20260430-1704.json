@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-04-30 17:04 BRT",
+  "checked_at_utc": "2026-04-30T20:04:58.749534+00:00",
+  "checked_after": "2026-04-30T17:01:51.126645+00:00",
+  "query_since": "2026-04-30T16:56:51.126645Z",
+  "messages_scanned": 0,
+  "campaign_related": 0,
+  "counts_all_window": {
+    "interesse positivo": 0,
+    "neutro": 0,
+    "sem timing": 0,
+    "descadastro/não interesse": 0,
+    "bounce": 0
+  },
+  "items": []
+}

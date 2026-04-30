@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-04-30T19:00:56.994344+00:00",
+  "lookback_hours": 336,
+  "app": "OpenClaw - Community API",
+  "client_id": "77ke3c00urrpdv",
+  "status": "no_approval_found",
+  "matches": [],
+  "errors": [],
+  "recommended_action": "Continuar monitorando; Community Management API ainda não apareceu como aprovada."
+}
