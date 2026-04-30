@@ -59,6 +59,7 @@ Fontes de padrão:
 - `security-skill-scanner`
 - `permission-creep-scanner`
 - `supply-chain-poison-detector`
+- imagem/análise ClawSweeper sobre normalização de chave antes de rate limit.
 
 Ideia útil:
 
@@ -67,6 +68,7 @@ Ideia útil:
 - comparar descrição declarada da skill contra acessos reais;
 - detectar permission creep;
 - detectar payload codificado, comando destrutivo, leitura de `.env`, `.ssh`, credentials, tokens;
+- detectar risco `key_normalization_and_idempotency`: chaves de rate limit, dedup, suppression, cache, manifest ou webhook geradas a partir de URL/path/email/domínio/input bruto sem canonicalização;
 - classificar `CLEAN / REVIEW / SUSPECT / BLOCK`;
 - gerar relatório local antes de qualquer instalação.
 
@@ -183,11 +185,14 @@ Fontes de padrão:
 
 - `agentic-workflow-automation`
 - `n8n-workflow-automation`
+- imagem/análise ClawSweeper sobre query string/trailing slash fragmentando bucket.
 
 Ideia útil:
 
 - blueprint de workflow com gatilho, passos, dependências, idempotência, retry, logs e fila humana;
-- toda automação precisa de owner, rollback e evidência.
+- toda automação precisa de owner, rollback e evidência;
+- qualquer idempotency key precisa nascer de identidade canônica, não de input bruto;
+- exigir teste mínimo de estabilidade para variantes equivalentes: query string, trailing slash, case, path relativo/absoluto, email/domínio.
 
 Adaptação para nós:
 
@@ -242,9 +247,10 @@ Prioridade: **P1/P2**.
 
 ### P0 — agora
 
-1. `skill_intake_audit.py` usando `trust-verifier` + estática própria.
-2. `secret_hygiene.py` com varredura segura e sem impressão de segredo.
-3. `restore_drill.py` para SQLite + 2nd-brain + manifestos críticos.
+1. `skill_intake_audit.py` usando `trust-verifier` + estática própria + `key_normalization_and_idempotency`.
+2. `secret_hygiene.py` com varredura segura e sem impressão de segredo + fingerprints/chaves canônicas.
+3. `restore_drill.py` para SQLite + 2nd-brain + manifestos críticos + paths/manifest keys canônicos.
+4. Padrão transversal documentado em `docs/operacao/KEY-NORMALIZATION-IDEMPOTENCY-STANDARD.md`.
 
 ### P1 — próximo ciclo
 
