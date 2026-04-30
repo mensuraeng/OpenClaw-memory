@@ -87,31 +87,39 @@ Valor para a infra: médio.
 
 Observação: já temos PRD→QA e Task Board Lite. Útil para endurecer mudanças estruturais.
 
-## Gaps internos identificados
+## Correção após inventário local
 
-1. Falta uma skill interna formal para **auditoria de skills externas** antes de instalação.
-2. Falta um scanner operacional integrado para **segredos em Git/workspace**.
-3. Falta rotina clara de **restore drill**: backup existe, mas teste periódico de restauração deve virar evidência.
-4. Falta um padrão único para **mudança estrutural** com backup, rollback, validação, commit e memória.
-5. Falta integrar higiene de contexto/sessão ao Mission Control sem gerar ruído.
+O Alê apontou corretamente: parte disso já existe instalada localmente.
 
-## Próximas skills internas recomendadas
+Skills/capacidades já presentes:
 
-### Prioridade 1 — `skill-security-audit`
+- `trust-verifier` em `skills/shared/arc-trust-verifier/`: verifica proveniência, histórico, dependências e gera attestations para skills do ClawHub.
+- `healthcheck` em `/usr/lib/node_modules/openclaw/skills/healthcheck/`: auditoria/hardening de host OpenClaw.
+- `Agent Audit Trail` em `skills/core/agent-audit-trail/`: log append-only hash-chained para ações, decisões e escritas externas.
+- `capability-evolver` em `skills/core/capability-evolver/`: evolução controlada de capacidades; exige cautela por ter permissões de shell/network.
+- `verification-before-completion`, `systematic-debugging`, `test-driven-development`, `writing-skills`: superpowers já instaladas para qualidade de desenvolvimento.
 
-Objetivo: auditar qualquer skill externa antes de instalação.
+## Gaps reais identificados
 
-Deve verificar:
+1. Não falta criar tudo do zero; falta **orquestrar as capacidades existentes num protocolo obrigatório**.
+2. `trust-verifier` cobre confiança/proveniência, mas não substitui uma auditoria estática profunda de scripts e efeitos colaterais.
+3. Falta scanner operacional integrado para **segredos em Git/workspace/2nd-brain**, com saída sem revelar segredo.
+4. Falta rotina clara de **restore drill**: backup existe, mas teste periódico de restauração deve virar evidência.
+5. Falta ligar `Agent Audit Trail` aos eventos relevantes da Flávia/Mission Control de forma enxuta.
 
-- scripts executáveis;
-- chamadas de rede;
-- leitura de credenciais;
-- escrita fora do workspace;
-- comandos destrutivos;
-- prompt injection;
-- instruções para alterar AGENTS/SOUL/MEMORY;
-- dependências suspeitas;
-- hooks/cron/autoexec.
+## Próximas ações recomendadas
+
+### Prioridade 1 — Protocolo `skill-intake`
+
+Objetivo: usar o que já existe antes de instalar qualquer skill externa.
+
+Fluxo mínimo:
+
+1. baixar/copiar skill candidata em diretório temporário;
+2. rodar `trust-verifier`;
+3. rodar auditoria estática própria/grep de risco;
+4. revisar scripts/dependências;
+5. só então instalar, adaptar ou rejeitar.
 
 ### Prioridade 2 — `secret-hygiene`
 
@@ -138,12 +146,13 @@ Deve cobrir:
 - restore em diretório temporário;
 - validação por hash/contagem/integrity_check.
 
-## Recomendação final
+## Recomendação final revisada
 
-O salto de nível não é baixar mais skills. É criar três capacidades internas auditáveis:
+O salto de nível não é baixar mais skills nem recriar o que já existe. É **ativar um protocolo de intake + segurança + restore usando as skills existentes como base**.
 
-1. auditoria de skills externas;
-2. higiene de segredos;
-3. restore drill recorrente.
+Ordem correta:
 
-Essas três reduzem risco sistêmico e melhoram a infraestrutura de verdade.
+1. `skill-intake` usando `trust-verifier` + auditoria estática;
+2. `secret-hygiene` integrado ao health;
+3. `restore-drill` recorrente;
+4. só depois avaliar skills externas uma a uma.
