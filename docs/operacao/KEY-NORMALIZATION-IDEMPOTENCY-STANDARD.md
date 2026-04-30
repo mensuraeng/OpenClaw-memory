@@ -125,12 +125,21 @@ Detectar e apontar:
 
 ### Restore Drill
 
+Implantar/verificar o padrão `key_normalization_and_idempotency` antes de considerar o restore drill concluído.
+
 Detectar e apontar:
 
 - manifest keys instáveis;
 - backup id dependente de path textual bruto;
 - hash comparado com path não canônico;
-- restore validado contra local errado por trailing slash/relative path.
+- restore validado contra local errado por trailing slash/relative path;
+- tentativa de restore sobre produção.
+
+Exigir:
+
+- manifest keys, backup identifiers, paths e hashes canonicalizados antes de comparação;
+- testes de estabilidade para path relativo/absoluto e trailing slash quando aplicável;
+- restore sempre em diretório temporário/sandbox, nunca sobre produção.
 
 ### CRM/CDP
 

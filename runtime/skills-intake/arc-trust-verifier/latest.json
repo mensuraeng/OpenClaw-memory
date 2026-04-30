@@ -1,0 +1,66 @@
+{
+  "checked_at_utc": "2026-04-30T10:18:05.945578+00:00",
+  "candidate": "/root/.openclaw/workspace/skills/shared/arc-trust-verifier",
+  "status": "SUSPECT",
+  "risk_score": 45,
+  "files_scanned": 4,
+  "inventory_by_suffix": {
+    ".json": 1,
+    ".md": 2,
+    ".py": 1
+  },
+  "has_skill_md": true,
+  "declared_description_excerpt_hash": "2bdf637a3a490b7a",
+  "findings_by_severity": {
+    "review": 3
+  },
+  "findings": [
+    {
+      "path": "_meta.json",
+      "line": 8,
+      "detector": "permission_creep_hint",
+      "severity": "review",
+      "weight": 15
+    },
+    {
+      "path": "_meta.json",
+      "line": 14,
+      "detector": "permission_creep_hint",
+      "severity": "review",
+      "weight": 15
+    },
+    {
+      "path": "scripts/trust_verifier.py",
+      "line": 103,
+      "detector": "shell_execution",
+      "severity": "review",
+      "weight": 15
+    }
+  ],
+  "findings_truncated": false,
+  "trust_verifier": {
+    "status": "not_run",
+    "reason": "script executa apenas auditoria estática local; trust-verifier deve ser etapa separada quando houver pacote candidato real"
+  },
+  "guardrails": {
+    "candidate_code_executed": false,
+    "external_calls": false,
+    "destructive_actions": false
+  },
+  "key_normalization_and_idempotency": {
+    "status": "pass",
+    "achado": "skill intake normaliza path/query/trailing slash antes de gerar chave de auditoria",
+    "risco": "rate-limit bypass | dedup fragmentation",
+    "correcao": "gerar key a partir do path canônico validado",
+    "teste_minimo": [
+      "/googlechat",
+      "/googlechat/",
+      "/googlechat?foo=bar"
+    ],
+    "key_hashes": [
+      "135721fa71b0189e",
+      "135721fa71b0189e",
+      "135721fa71b0189e"
+    ]
+  }
+}

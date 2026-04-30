@@ -144,7 +144,11 @@ Deve cobrir:
 - workspace runtime relevante;
 - manifestos B2;
 - restore em diretório temporário;
-- validação por hash/contagem/integrity_check.
+- validação por hash/contagem/integrity_check;
+- padrão `key_normalization_and_idempotency` aplicado ao restore drill;
+- canonicalização pré-comparação de manifest keys, backup identifiers, paths e hashes;
+- teste de estabilidade com path relativo/absoluto e trailing slash quando aplicável;
+- bloqueio explícito contra restore sobre produção.
 
 ## Recomendação final revisada
 

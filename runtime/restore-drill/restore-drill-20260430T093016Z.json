@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-30T10:18:16.873186+00:00",
+  "checked_at_utc": "2026-04-30T09:30:16.571360+00:00",
   "overall": "ok",
   "counts": {
     "ok": 4
@@ -71,7 +71,7 @@
       "name": "local_backup_manifests",
       "root": "runtime/backups",
       "status": "ok",
-      "manifest_count": 4,
+      "manifest_count": 3,
       "manifests": [
         {
           "path": "runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json",
@@ -92,16 +92,6 @@
           "duplicate_canonical_keys": 0,
           "duplicate_canonical_key_hash_pairs": 0,
           "manifest_key": "runtime/backups/vps-full-manifests/vps-full-20260428T210105Z.manifest.json"
-        },
-        {
-          "path": "runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json",
-          "status": "ok",
-          "top_level_type": "dict",
-          "entries": 94,
-          "missing_key_entries": 0,
-          "duplicate_canonical_keys": 0,
-          "duplicate_canonical_key_hash_pairs": 0,
-          "manifest_key": "runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json"
         },
         {
           "path": "runtime/backups/mensura-commercial-intelligence-db/20260430T080306Z/manifest.json",

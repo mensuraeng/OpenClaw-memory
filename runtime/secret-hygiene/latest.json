@@ -1,0 +1,2053 @@
+{
+  "checked_at_utc": "2026-04-30T10:18:16.737145+00:00",
+  "status": "block",
+  "files_scanned": 3829,
+  "findings_count": 155,
+  "findings_by_severity": {
+    "review": 153,
+    "critical": 2
+  },
+  "guardrails": {
+    "prints_real_secret_values": false,
+    "external_calls": false,
+    "destructive_actions": false,
+    "canonical_fingerprints": true
+  },
+  "findings": [
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "0971b1a818a0744a",
+      "entropy": 3.38,
+      "root": "/root/.openclaw/workspace",
+      "path": "clawflows/CONTRIBUTING.md",
+      "line": 61,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "7782c2accd434d06",
+      "entropy": 3.62,
+      "root": "/root/.openclaw/workspace",
+      "path": "clawflows/CONTRIBUTING.md",
+      "line": 63,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "0971b1a818a0744a",
+      "entropy": 3.38,
+      "root": "/root/.openclaw/workspace",
+      "path": "clawflows/community-submissions/README.md",
+      "line": 40,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "7782c2accd434d06",
+      "entropy": 3.62,
+      "root": "/root/.openclaw/workspace",
+      "path": "clawflows/community-submissions/README.md",
+      "line": 42,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e841481eb7030007",
+      "entropy": 3.46,
+      "root": "/root/.openclaw/workspace",
+      "path": "clawflows/community-submissions/_template/WORKFLOW.md",
+      "line": 16,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "critical",
+      "fingerprint": "3021d90eb9437b2d",
+      "entropy": 3.2,
+      "root": "/root/.openclaw/workspace",
+      "path": "credentials/ga4-service-account.json",
+      "line": 5,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "critical",
+      "fingerprint": "3021d90eb9437b2d",
+      "entropy": 3.2,
+      "root": "/root/.openclaw/workspace",
+      "path": "credentials/ga_service_account.json",
+      "line": 5,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1215.json",
+      "line": 2798,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1215.json",
+      "line": 3282,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1214.json",
+      "line": 2798,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1214.json",
+      "line": 3282,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1220.json",
+      "line": 2127,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1220.json",
+      "line": 2610,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1224.json",
+      "line": 2150,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1224.json",
+      "line": 2633,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1218.json",
+      "line": 2798,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1218.json",
+      "line": 3282,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1221.json",
+      "line": 2150,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1221.json",
+      "line": 2633,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4a8f41a4eebfa8a5",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1213.json",
+      "line": 2775,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "da20be688644e296",
+      "entropy": 4.36,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/email-executive-triage/reports/triagem-email-20260428-1213.json",
+      "line": 3259,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/pcs-agent/scripts/inbox_triage.py.bak_v2_20260419_210306",
+      "line": 346,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/pcs-agent/scripts/inbox_triage.py.bak_v1_20260419_205947",
+      "line": 319,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/pcs-agent/scripts/inbox_triage.py.bak",
+      "line": 301,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/pcs-agent/scripts/inbox_triage.py",
+      "line": 324,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "d581398c65649ef6",
+      "entropy": 4.16,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/mensura/scripts/linkedin_post.py",
+      "line": 22,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c8239173743d32c7",
+      "entropy": 3.5,
+      "root": "/root/.openclaw/workspace",
+      "path": "agents/mensura/scripts/linkedin_post.py",
+      "line": 75,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "26fd1c1c7db47d7d",
+      "entropy": 4.19,
+      "root": "/root/.openclaw/workspace",
+      "path": "memory/2026-04-29.md",
+      "line": 50,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "461bbc2d86e9fb7d",
+      "entropy": 4.95,
+      "root": "/root/.openclaw/workspace",
+      "path": "memory/.dreams/short-term-recall.json",
+      "line": 765,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "01ceca4351f21870",
+      "entropy": 4.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "memory/sessions/2026-04-01.md",
+      "line": 22,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "461bbc2d86e9fb7d",
+      "entropy": 4.95,
+      "root": "/root/.openclaw/workspace",
+      "path": "memory/sessions/2026-04-01.md",
+      "line": 30,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "0971b1a818a0744a",
+      "entropy": 3.38,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/clawflows/CONTRIBUTING.md",
+      "line": 61,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "7782c2accd434d06",
+      "entropy": 3.62,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/clawflows/CONTRIBUTING.md",
+      "line": 63,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "0971b1a818a0744a",
+      "entropy": 3.38,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/clawflows/community-submissions/README.md",
+      "line": 40,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "7782c2accd434d06",
+      "entropy": 3.62,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/clawflows/community-submissions/README.md",
+      "line": 42,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e841481eb7030007",
+      "entropy": 3.46,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/clawflows/community-submissions/_template/WORKFLOW.md",
+      "line": 16,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/agents/pcs-agent/scripts/inbox_triage.py.bak",
+      "line": 301,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "b17a645a7a4d8f15",
+      "entropy": 3.56,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/agents/pcs-agent/scripts/inbox_triage.py",
+      "line": 317,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "d581398c65649ef6",
+      "entropy": 4.16,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py",
+      "line": 22,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c8239173743d32c7",
+      "entropy": 3.5,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py",
+      "line": 75,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "01ceca4351f21870",
+      "entropy": 4.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/memory/sessions/2026-04-01.md",
+      "line": 22,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "461bbc2d86e9fb7d",
+      "entropy": 4.95,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/memory/sessions/2026-04-01.md",
+      "line": 30,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/check_organization_admins.js",
+      "line": 7,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/check_organization_admins.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4accbb53b6f76b43",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/fetch_profile_me.js",
+      "line": 17,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/test_personal_post_live.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/test_personal_post_live.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/test_personal_post_dryrun.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/openclaw-linkedin/scripts/test_personal_post_dryrun.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6814b10d2516a4a7",
+      "entropy": 3.74,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/projects/pcs-sienge-integration/src/pcs_sienge/auth.py",
+      "line": 26,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/hubSearch.js",
+      "line": 90,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "bdbae75d62ef6d37",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/hubSearch.js",
+      "line": 94,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/hubReview.js",
+      "line": 139,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/a2aProtocol.js",
+      "line": 487,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/a2aProtocol.js",
+      "line": 1089,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/src/gep/issueReporter.js",
+      "line": 231,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "693f5072f49dad8d",
+      "entropy": 4.72,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 11,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 12,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "dab2bbd44c8af45f",
+      "entropy": 1.23,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 19,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "04034f81d86cba49",
+      "entropy": 5.17,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 21,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "8e86632b72615709",
+      "entropy": 5.17,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 25,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "aws_access_key",
+      "severity": "review",
+      "fingerprint": "1a5d44a2dca19669",
+      "entropy": 3.68,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 29,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "af833a23d839063a",
+      "entropy": 4.48,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 33,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "4195bc513076387f",
+      "entropy": 4.39,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 37,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "review",
+      "fingerprint": "8bcac7908eb95041",
+      "entropy": 3.38,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 45,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "review",
+      "fingerprint": "3021d90eb9437b2d",
+      "entropy": 3.2,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 47,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "feb8a274c8b8952c",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 51,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "a058c75756434576",
+      "entropy": 1.23,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 71,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/scripts/publish_public.js",
+      "line": 306,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/skills/core/capability-evolver-src/scripts/publish_public.js",
+      "line": 456,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-flavia-fase5.20260417T143929Z.bak",
+      "line": 163,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-flavia-fase5.20260417T143929Z.bak",
+      "line": 221,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/contas_pagar_telegram.py.pre-flavia.20260416-190950.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-ccsp-rename.20260417T145106Z.bak",
+      "line": 169,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-ccsp-rename.20260417T145106Z.bak",
+      "line": 229,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6fcd77128813a9f4",
+      "entropy": 3.73,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/ccsp_manha_victor.py.pre-flavia-fase5.20260417T141123Z.bak",
+      "line": 315,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py",
+      "line": 174,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.bak.20260416-184716",
+      "line": 176,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.bak.20260416-184716",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/contas_pagar_telegram.py.pre-flavia-fase5.20260417T141727Z.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6fcd77128813a9f4",
+      "entropy": 3.73,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/ccsp_rdo_cobranca.py.pre-flavia-fase5.20260417T140014Z.bak",
+      "line": 69,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-flavia.20260416-190404.bak",
+      "line": 163,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.pre-flavia.20260416-190404.bak",
+      "line": 221,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "38c32e353190216f",
+      "entropy": 4.02,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/nblm_sync.py",
+      "line": 254,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.bak",
+      "line": 176,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/monitor_semanal.py.bak",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-memory/scripts/contas_pagar_telegram.py.pre-flavia.20260416-190954.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/check_organization_admins.js",
+      "line": 7,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/check_organization_admins.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "4accbb53b6f76b43",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/fetch_profile_me.js",
+      "line": 17,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/test_personal_post_live.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/test_personal_post_live.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "c17bbb340e0eb52f",
+      "entropy": 4.27,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/test_personal_post_dryrun.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "2447d5032b5f7f9d",
+      "entropy": 3.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/openclaw-linkedin/scripts/test_personal_post_dryrun.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "407a623585433736",
+      "entropy": 3.94,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/trade/supabase/config.toml",
+      "line": 316,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6814b10d2516a4a7",
+      "entropy": 3.74,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/pcs-sienge-integration/src/pcs_sienge/auth.py",
+      "line": 26,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6814b10d2516a4a7",
+      "entropy": 3.74,
+      "root": "/root/.openclaw/workspace",
+      "path": "projects/pcs-sienge-integration/src/pcs_sienge/auth.py.bak",
+      "line": 26,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/hubSearch.js",
+      "line": 90,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "bdbae75d62ef6d37",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/hubSearch.js",
+      "line": 94,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/hubReview.js",
+      "line": 139,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/a2aProtocol.js",
+      "line": 487,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a517149b6e7db82e",
+      "entropy": 3.72,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/a2aProtocol.js",
+      "line": 1089,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/src/gep/issueReporter.js",
+      "line": 231,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "693f5072f49dad8d",
+      "entropy": 4.72,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 10,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 11,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 12,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "a9a9dc1836c67f5e",
+      "entropy": 4.32,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 13,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "dab2bbd44c8af45f",
+      "entropy": 1.23,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 19,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "04034f81d86cba49",
+      "entropy": 5.17,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 21,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "8e86632b72615709",
+      "entropy": 5.17,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 25,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "aws_access_key",
+      "severity": "review",
+      "fingerprint": "1a5d44a2dca19669",
+      "entropy": 3.68,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 29,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "af833a23d839063a",
+      "entropy": 4.48,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 33,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "openai_api_key",
+      "severity": "review",
+      "fingerprint": "4195bc513076387f",
+      "entropy": 4.39,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 37,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "review",
+      "fingerprint": "8bcac7908eb95041",
+      "entropy": 3.38,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 45,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "private_key_header",
+      "severity": "review",
+      "fingerprint": "3021d90eb9437b2d",
+      "entropy": 3.2,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 47,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "feb8a274c8b8952c",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 51,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "github_token",
+      "severity": "review",
+      "fingerprint": "a058c75756434576",
+      "entropy": 1.23,
+      "fixture_context": true,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/test/sanitize.test.js",
+      "line": 71,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/scripts/publish_public.js",
+      "line": 306,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "eb36299b8154e9c5",
+      "entropy": 3.85,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/core/capability-evolver-src/scripts/publish_public.js",
+      "line": 456,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "14c6dd16fb1a6400",
+      "entropy": 3.86,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-api/scripts/post-story.sh",
+      "line": 15,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "992cfe7fd5802d26",
+      "entropy": 4.09,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-api/scripts/post-threads.sh",
+      "line": 32,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "14c6dd16fb1a6400",
+      "entropy": 3.86,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-api/scripts/post-carousel.sh",
+      "line": 39,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "14c6dd16fb1a6400",
+      "entropy": 3.86,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-api/scripts/post-feed.sh",
+      "line": 24,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "14c6dd16fb1a6400",
+      "entropy": 3.86,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-api/scripts/post-reels.sh",
+      "line": 30,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e8accd2506b301aa",
+      "entropy": 3.83,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-content-studio/README.md",
+      "line": 54,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "64d546273eeefb0b",
+      "entropy": 4.4,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-content-studio/scripts/_common.js",
+      "line": 51,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "9e12c2a9af380547",
+      "entropy": 4.34,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-content-studio/scripts/_common.js",
+      "line": 57,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e04603866895df39",
+      "entropy": 3.93,
+      "root": "/root/.openclaw/workspace",
+      "path": "skills/instagram-content-studio/scripts/_common.js",
+      "line": 148,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-flavia-fase5.20260417T143929Z.bak",
+      "line": 163,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-flavia-fase5.20260417T143929Z.bak",
+      "line": 221,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e6d56892f776c892",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/backup_vps_full_b2_stream.py",
+      "line": 52,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/contas_pagar_telegram.py.pre-flavia.20260416-190950.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-ccsp-rename.20260417T145106Z.bak",
+      "line": 169,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-ccsp-rename.20260417T145106Z.bak",
+      "line": 229,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6fcd77128813a9f4",
+      "entropy": 3.73,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/ccsp_manha_victor.py.pre-flavia-fase5.20260417T141123Z.bak",
+      "line": 315,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e6d56892f776c892",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/backup_2nd_brain_b2.py",
+      "line": 112,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py",
+      "line": 174,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.bak.20260416-184716",
+      "line": 176,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.bak.20260416-184716",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/contas_pagar_telegram.py.pre-flavia-fase5.20260417T141727Z.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e6d56892f776c892",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/sienge_teatro_budget_workitem_upload.py",
+      "line": 50,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "6fcd77128813a9f4",
+      "entropy": 3.73,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/ccsp_rdo_cobranca.py.pre-flavia-fase5.20260417T140014Z.bak",
+      "line": 69,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e6d56892f776c892",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/backup_retention_b2.py",
+      "line": 82,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-flavia.20260416-190404.bak",
+      "line": 163,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.pre-flavia.20260416-190404.bak",
+      "line": 221,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "38c32e353190216f",
+      "entropy": 4.02,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/nblm_sync.py",
+      "line": 254,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "802b56be8f9b0290",
+      "entropy": 3.79,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.bak",
+      "line": 176,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "8052d47ed3afef07",
+      "entropy": 3.33,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/monitor_semanal.py.bak",
+      "line": 234,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "e6d56892f776c892",
+      "entropy": 3.57,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/backup_vps_full_b2.py",
+      "line": 146,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "38c32e353190216f",
+      "entropy": 4.02,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/xp_sync.py",
+      "line": 361,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "52d7a90e2826c832",
+      "entropy": 3.48,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/contas_pagar_telegram.py.pre-flavia.20260416-190954.bak",
+      "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    }
+  ]
+}

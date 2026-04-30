@@ -130,6 +130,10 @@ Adaptação para nós:
 - validar SQLite crítico em diretório temporário com `pragma integrity_check`;
 - validar 2nd-brain por `git fsck`/status limpo quando aplicável;
 - validar manifestos B2 e hashes locais;
+- implantar/verificar o padrão `key_normalization_and_idempotency` no restore drill;
+- canonicalizar antes de comparar: manifest keys, backup identifiers, paths e hashes;
+- testar estabilidade com path relativo/absoluto e trailing slash quando aplicável;
+- bloquear qualquer restore sobre produção; restore drill sempre em diretório temporário/sandbox;
 - gerar `runtime/restore-drill/latest.json`;
 - integrar no Mission Control/health.
 
