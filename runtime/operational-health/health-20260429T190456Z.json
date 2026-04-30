@@ -1,0 +1,83 @@
+{
+  "checked_at_utc": "2026-04-29T19:04:56.427198+00:00",
+  "overall": "attention",
+  "counts": {
+    "attention": 1,
+    "ok": 10,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📧 [AAMkADAw...] 2026-04-29 18:47 | De: noreply@make.com\n   Assunto: New API token created\n   New API token created\n\nHey Alexandre Aguiar,\n\nYou just created a new API token with the followin\n\n",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 18:11 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para FABEL MATERIAIS PARA CONSTRUCAO LTD\n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-29 14:31 | De: administracao@direitosbc.br\n   Assunto: Re: Descarte de materiais\n   Prezados, bom dia.\n\nConforme respondido em 24/04, via email (anexo), o acesso ao campus para retir\n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-28 17:26 | De: MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br\n   Assunto: Undeliverable: Quando o cronograma vira instrumento de decisão\n   Delivery has failed to these recipients or groups:\n\nclaudinei.cauduro@br.arteliagroup.com (claudin\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260429T083001Z.manifest.json"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-29T19:02:32.820855+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# Postiz/Temporal dynamic config
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}

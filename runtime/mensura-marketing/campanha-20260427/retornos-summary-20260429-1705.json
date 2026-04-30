@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-04-29 17:05 BRT",
+  "sent_lote_01": 30,
+  "bounces_total_known": 18,
+  "sent_no_reply_yet": 12,
+  "new_since_last_check": 0,
+  "positive_interest": 0,
+  "neutral": 0,
+  "no_timing": 0,
+  "unsubscribe_not_interested": 0,
+  "new_bounces": 0,
+  "files": {
+    "check": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260429-1705.json",
+    "new_since_last": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260429-1705-new-since-last.json"
+  }
+}

@@ -1,0 +1,165 @@
+services:
+  postiz:
+    image: ghcr.io/gitroomhq/postiz-app:latest
+    container_name: postiz-social
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MAIN_URL: '${POSTIZ_MAIN_URL}'
+      FRONTEND_URL: '${POSTIZ_MAIN_URL}'
+      NEXT_PUBLIC_BACKEND_URL: '${POSTIZ_MAIN_URL}/api'
+      JWT_SECRET: '${POSTIZ_JWT_SECRET}'
+      DATABASE_URL: 'postgresql://postiz-user:${POSTIZ_POSTGRES_PASSWORD}@postiz-social-postgres:5432/postiz-db-local'
+      REDIS_URL: 'redis://:${POSTIZ_REDIS_PASSWORD}@postiz-social-redis:6379'
+      BACKEND_INTERNAL_URL: 'http://localhost:3000'
+      # Required while Postiz is accessed over plain HTTP/Tailscale IP.
+      # Without this, auth cookies are emitted as Secure/SameSite=None and browsers reject them on http://.
+      NOT_SECURED: 'true'
+      TEMPORAL_ADDRESS: 'postiz-social-temporal:7233'
+      IS_GENERAL: 'true'
+      DISABLE_REGISTRATION: 'true'
+      RUN_CRON: 'true'
+      STORAGE_PROVIDER: 'local'
+      UPLOAD_DIRECTORY: '/uploads'
+      NEXT_PUBLIC_UPLOAD_DIRECTORY: '/uploads'
+      LINKEDIN_CLIENT_ID: '${LINKEDIN_CLIENT_ID}'
+      LINKEDIN_CLIENT_SECRET: '${LINKEDIN_CLIENT_SECRET}'
+      FACEBOOK_APP_ID: '${FACEBOOK_APP_ID}'
+      FACEBOOK_APP_SECRET: '${FACEBOOK_APP_SECRET}'
+      INSTAGRAM_APP_ID: '${INSTAGRAM_APP_ID}'
+      INSTAGRAM_APP_SECRET: '${INSTAGRAM_APP_SECRET}'
+      THREADS_APP_ID: '${THREADS_APP_ID}'
+      THREADS_APP_SECRET: '${THREADS_APP_SECRET}'
+      OPENAI_API_KEY: '${OPENAI_API_KEY}'
+      API_LIMIT: 30
+      NX_ADD_PLUGINS: 'false'
+    volumes:
+      - postiz-social-config:/config/
+      - postiz-social-uploads:/uploads/
+    ports:
+      - '${POSTIZ_HOST}:${POSTIZ_PORT}:5000'
+    networks:
+      - postiz-social-network
+      - postiz-social-temporal-network
+    depends_on:
+      postiz-postgres:
+        condition: service_healthy
+      postiz-redis:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+
+  postiz-postgres:
+    image: postgres:17-alpine
+    container_name: postiz-social-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: '${POSTIZ_POSTGRES_PASSWORD}'
+      POSTGRES_USER: postiz-user
+      POSTGRES_DB: postiz-db-local
+    volumes:
+      - postiz-social-postgres:/var/lib/postgresql/data
+    networks:
+      - postiz-social-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postiz-user -d postiz-db-local']
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  postiz-redis:
+    image: redis:7.2
+    container_name: postiz-social-redis
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes', '--requirepass', '${POSTIZ_REDIS_PASSWORD}']
+    volumes:
+      - postiz-social-redis:/data
+    networks:
+      - postiz-social-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', '-a', '${POSTIZ_REDIS_PASSWORD}', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  temporal-elasticsearch:
+    container_name: postiz-social-temporal-elasticsearch
+    image: elasticsearch:7.17.27
+    environment:
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=512mb
+      - cluster.routing.allocation.disk.watermark.high=256mb
+      - cluster.routing.allocation.disk.watermark.flood_stage=128mb
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - xpack.security.enabled=false
+    networks:
+      - postiz-social-temporal-network
+    expose:
+      - 9200
+    volumes:
+      - postiz-social-temporal-elasticsearch:/usr/share/elasticsearch/data
+
+  temporal-postgresql:
+    container_name: postiz-social-temporal-postgresql
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_USER: temporal
+    networks:
+      - postiz-social-temporal-network
+    expose:
+      - 5432
+    volumes:
+      - postiz-social-temporal-postgresql:/var/lib/postgresql/data
+
+  temporal:
+    container_name: postiz-social-temporal
+    image: temporalio/auto-setup:1.28.1
+    depends_on:
+      - temporal-postgresql
+      - temporal-elasticsearch
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=temporal
+      - POSTGRES_PWD=temporal
+      - POSTGRES_SEEDS=postiz-social-temporal-postgresql
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
+      - ENABLE_ES=true
+      - ES_SEEDS=postiz-social-temporal-elasticsearch
+      - ES_VERSION=v7
+      - TEMPORAL_NAMESPACE=default
+    networks:
+      - postiz-social-temporal-network
+    expose:
+      - 7233
+    volumes:
+      - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+
+  temporal-admin-tools:
+    container_name: postiz-social-temporal-admin-tools
+    image: temporalio/admin-tools:1.28.1-tctl-1.18.4-cli-1.4.1
+    environment:
+      - TEMPORAL_ADDRESS=postiz-social-temporal:7233
+      - TEMPORAL_CLI_ADDRESS=postiz-social-temporal:7233
+    networks:
+      - postiz-social-temporal-network
+    stdin_open: true
+    tty: true
+    depends_on:
+      - temporal
+
+volumes:
+  postiz-social-config:
+  postiz-social-uploads:
+  postiz-social-postgres:
+  postiz-social-redis:
+  postiz-social-temporal-elasticsearch:
+  postiz-social-temporal-postgresql:
+
+networks:
+  postiz-social-network:
+  postiz-social-temporal-network:
+    driver: bridge
