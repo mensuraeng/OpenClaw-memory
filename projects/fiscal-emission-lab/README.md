@@ -59,3 +59,35 @@ Solicitação de emissão
 ## Consulta e baixa de notas contra empresas
 
 A frente fiscal passa a incluir consulta/baixa read-only de notas emitidas contra MENSURA, MIA e PCS, com notificação no grupo operacional correspondente quando houver documento novo. Ver `docs/CONSULTA-BAIXA-NOTIFICACOES.md`.
+
+## Capacidade implantada — Fiscal Ops read-only v0
+
+Entregue em 2026-04-29:
+
+- estrutura local `runtime/fiscal/` para notas recebidas, ledger e outbox de notificações sugeridas;
+- schema normalizado `templates/nota-recebida.schema.json`;
+- fixture sintética explícita `fixtures/nfe-recebida-sintetica.xml`;
+- CLI read-only `scripts/fiscal_nfe_received_parser.py`;
+- testes locais em `tests/test_fiscal_nfe_received_parser.py`;
+- plano técnico de DFe.NET/DistribuicaoDFe em `docs/DISTRIBUICAO-DFE-READONLY-PLAN.md`.
+
+Validação executada:
+
+```bash
+python3 -m py_compile projects/fiscal-emission-lab/scripts/fiscal_nfe_received_parser.py
+python3 -m unittest discover -s projects/fiscal-emission-lab/tests -v
+python3 projects/fiscal-emission-lab/scripts/fiscal_nfe_received_parser.py \
+  --xml projects/fiscal-emission-lab/fixtures/nfe-recebida-sintetica.xml \
+  --runtime-dir runtime/fiscal \
+  --company-slug mensura-fixture \
+  --origin fixture-sintetica \
+  --copy-xml
+```
+
+Resultado de evidência local gerado com dado sintético:
+
+- `runtime/fiscal/notas-recebidas/mensura-fixture/2026-04/2026-04-29_fornecedor-sintetico-ltda_1234.json`
+- `runtime/fiscal/notas-recebidas/mensura-fixture/2026-04/2026-04-29_fornecedor-sintetico-ltda_1234.xml`
+- `runtime/fiscal/ledger/notas-recebidas.jsonl`
+
+Nenhum certificado, SEFAZ, Telegram, email ou sistema externo foi acessado.

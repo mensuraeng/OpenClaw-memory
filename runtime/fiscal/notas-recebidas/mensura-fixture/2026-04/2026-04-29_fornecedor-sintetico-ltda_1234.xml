@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+  <NFe>
+    <infNFe Id="NFe35260412345678000199550010000012341000012345" versao="4.00">
+      <ide>
+        <cUF>35</cUF>
+        <cNF>00001234</cNF>
+        <natOp>Venda de material de escritório</natOp>
+        <mod>55</mod>
+        <serie>1</serie>
+        <nNF>1234</nNF>
+        <dhEmi>2026-04-29T10:30:00-03:00</dhEmi>
+      </ide>
+      <emit>
+        <CNPJ>12345678000199</CNPJ>
+        <xNome>Fornecedor Sintetico Ltda</xNome>
+        <enderEmit>
+          <xMun>Sao Paulo</xMun>
+          <UF>SP</UF>
+        </enderEmit>
+        <IE>123456789110</IE>
+      </emit>
+      <dest>
+        <CNPJ>11222333000144</CNPJ>
+        <xNome>Empresa Tomadora Sintetica Ltda</xNome>
+        <enderDest>
+          <xMun>Sao Paulo</xMun>
+          <UF>SP</UF>
+        </enderDest>
+        <IE>ISENTO</IE>
+      </dest>
+      <det nItem="1">
+        <prod>
+          <cProd>MAT-001</cProd>
+          <xProd>Papel A4 sintetico para teste</xProd>
+          <NCM>48025610</NCM>
+          <CFOP>5102</CFOP>
+          <qCom>10.0000</qCom>
+          <vUnCom>25.00</vUnCom>
+          <vProd>250.00</vProd>
+        </prod>
+      </det>
+      <total>
+        <ICMSTot>
+          <vNF>250.00</vNF>
+        </ICMSTot>
+      </total>
+    </infNFe>
+  </NFe>
+  <protNFe versao="4.00">
+    <infProt>
+      <tpAmb>2</tpAmb>
+      <verAplic>SP_NFE_PL_009_V4</verAplic>
+      <chNFe>35260412345678000199550010000012341000012345</chNFe>
+      <dhRecbto>2026-04-29T10:31:00-03:00</dhRecbto>
+      <nProt>135260000000001</nProt>
+      <digVal>fixture</digVal>
+      <cStat>100</cStat>
+      <xMotivo>Autorizado o uso da NF-e - fixture sintética</xMotivo>
+    </infProt>
+  </protNFe>
+</nfeProc>

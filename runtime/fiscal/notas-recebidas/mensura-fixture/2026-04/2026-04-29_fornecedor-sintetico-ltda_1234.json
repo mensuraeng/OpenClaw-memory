@@ -1,0 +1,65 @@
+{
+  "schema_version": "fiscal-nota-recebida-v0",
+  "document_type": "NFe",
+  "source": {
+    "mode": "fixture",
+    "origin": "fixture-sintetica",
+    "real_data": false,
+    "notes": "Parser local read-only; não acessa SEFAZ nem usa certificado."
+  },
+  "access_key": "35260412345678000199550010000012341000012345",
+  "number": "1234",
+  "series": "1",
+  "model": "55",
+  "nature": "Venda de material de escritório",
+  "issue_date": "2026-04-29T10:30:00-03:00",
+  "competence": "2026-04",
+  "issuer": {
+    "name": "Fornecedor Sintetico Ltda",
+    "cnpj": "12345678000199",
+    "municipality": "Sao Paulo",
+    "uf": "SP",
+    "state_registration": "123456789110"
+  },
+  "recipient": {
+    "name": "Empresa Tomadora Sintetica Ltda",
+    "cnpj": "11222333000144",
+    "municipality": "Sao Paulo",
+    "uf": "SP",
+    "state_registration": "ISENTO"
+  },
+  "items": [
+    {
+      "line": 1,
+      "description": "Papel A4 sintetico para teste",
+      "cfop": "5102",
+      "ncm": "48025610",
+      "quantity": 10.0,
+      "unit_amount": 25.0,
+      "total_amount": 250.0
+    }
+  ],
+  "total_amount": 250.0,
+  "currency": "BRL",
+  "status": {
+    "code": "100",
+    "description": "Autorizado o uso da NF-e - fixture sintética"
+  },
+  "classification": {
+    "company_slug": "mensura-fixture",
+    "cost_center": null,
+    "project": null,
+    "review_status": "pending_human_review"
+  },
+  "artifacts": {
+    "xml_path": "runtime/fiscal/notas-recebidas/mensura-fixture/2026-04/2026-04-29_fornecedor-sintetico-ltda_1234.xml",
+    "pdf_path": null,
+    "json_path": "runtime/fiscal/notas-recebidas/mensura-fixture/2026-04/2026-04-29_fornecedor-sintetico-ltda_1234.json"
+  },
+  "risk_guardrails": {
+    "read_only": true,
+    "no_external_send": true,
+    "no_fiscal_status_change": true,
+    "no_payment_approval": true
+  }
+}

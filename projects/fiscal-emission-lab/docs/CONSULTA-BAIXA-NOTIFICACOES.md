@@ -53,7 +53,7 @@ Usos prováveis:
 Canais canônicos conhecidos:
 
 - MENSURA Engenharia — Telegram `telegram:-1003366344184`, tópico `1`.
-- PCS Engenharia — Telegram `telegram:-1003146152550`, tópico `1`.
+- PCS Engenharia — Telegram `telegram:-1003146152550`, tópico `143` (`Financeiro`). Confirmado por Alexandre em 2026-04-29: este tópico deve receber o monitoramento de notas fiscais da PCS Engenharia.
 
 Pendente de confirmação canônica:
 
@@ -120,3 +120,15 @@ Para cada empresa:
 - credencial ou certificado necessário para consulta;
 - confirmação do grupo Telegram de destino, especialmente MIA;
 - regra de quem classifica centro de custo/obra.
+
+## Capacidade local implantada
+
+Fiscal Ops read-only v0 entregue com:
+
+- parser local de XML NF-e;
+- schema JSON normalizado de nota recebida;
+- runtime local de notas recebidas;
+- ledger JSONL local;
+- plano para outbox de notificação, sem envio automático.
+
+A fixture usada é sintética e explicitamente marcada como `source.real_data=false`. Não houve consulta real a SEFAZ, uso de certificado ou envio Telegram.
