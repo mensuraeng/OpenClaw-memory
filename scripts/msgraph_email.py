@@ -14,6 +14,13 @@ ACCOUNT_CONFIG_MAP = {
     "pcs": os.path.expanduser("~/.openclaw/workspace/config/ms-graph-pcs.json"),
 }
 
+BLOCKED_SENDERS = {
+    "alexandre@mensuraengenharia.com.br",
+    "alexandre@miaengenharia.com.br",
+    "alexandre@pcsengenharia.com.br",
+}
+ALLOWED_DEFAULT_SENDER = "flavia@mensuraengenharia.com.br"
+
 def load_config(config_path=None, account=None):
     if config_path:
         path = os.path.expanduser(config_path)
@@ -97,7 +104,18 @@ def parse_recipients(value):
         recipients.extend([addr.strip() for addr in item.split(",") if addr.strip()])
     return [{"emailAddress": {"address": addr}} for addr in recipients]
 
+def assert_sender_allowed(user):
+    normalized = (user or "").strip().lower()
+    if normalized in BLOCKED_SENDERS:
+        print(
+            "Erro: remetente bloqueado por regra fixa. "
+            f"Use apenas {ALLOWED_DEFAULT_SENDER} para envios autorizados."
+        )
+        sys.exit(2)
+
+
 def send_email(token, user, to, subject, body, cc=None):
+    assert_sender_allowed(user)
     payload = {
         "message": {
             "subject": subject,
