@@ -1,21 +1,22 @@
 {
-  "checked_at_utc": "2026-04-30T17:05:58.176469+00:00",
-  "overall": "active",
+  "checked_at_utc": "2026-04-30T18:50:21.005029+00:00",
+  "overall": "attention",
   "counts": {
-    "ok": 11,
+    "attention": 1,
+    "ok": 10,
     "pending": 1
   },
   "checks": [
     {
       "name": "openclaw_status",
-      "status": "ok",
-      "detail": "status executado",
-      "evidence": "ith no channels.whatsapp.accounts.default.groups allowlist; any group can add + ping (mention-gated). Set channels.whatsap…\n  WARN No auth rate limiting configured\n    gateway.bind is not loopback but no gateway.auth.rateLimit is configured. Without rate limiting, brute-force auth attacks are not mitigated.\n    Fix: Set gateway.auth.rateLimit (e.g. { maxAttempts: 10, windowMs: 60000, lockoutMs: 300000 }).\n  WARN Some configured models are below recommended tiers\n    Smaller/older models are generally more susceptible to prompt injection and tool misuse. - openai/gpt-image-2 (Below GPT-5 family) @ agents.defaults.imageModel…\n    Fix: Use the latest, top-tier model for any bot with tools or untrusted inboxes. Avoid Haiku tiers; prefer GPT-5+ and Claude 4.5+.\n  WARN Potential multi-user setup detected (personal-assistant model warning)\n    Heuristic signals indicate this gateway may be reachable by multiple users: - channels.telegram.groupPolicy=\"allowlist\" with configured group targets -"
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-30 15:11 | De: contato@novidades.riachuelo.com.br\n   Assunto: SAVE THE DATE: Nova collab chegando!\n   Vem aí uma coleção exclusiva\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 18:43 | De: thiago.carvalho@sum.com.br\n   Assunto: RE: RES: 120. Contrato 26.271.1.120 - Consultoria em planejamento - P&G Louveira\n   Prezados boa tarde.\n\nSó uma observação, na nova NF verificar o código de serviço, essa foi emitida\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
@@ -27,7 +28,7 @@
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📧 [AAMkADYw...] 2026-04-30 15:14 | De: dyonisiojpf@spobras.sp.gov.br\n   Assunto: ENC: Pendencias de AVCB\n   Solicito informar se foram atendidas as pendências.\n\nAtt.\n________________________________\nDe: V\n\n",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 18:02 | De: philippe.santos@pcsengenharia.com.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Andréia, boa tarde. Tudo bem, e você ?\n\nSobre a contratação, peço para alterar para o plano specia\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
