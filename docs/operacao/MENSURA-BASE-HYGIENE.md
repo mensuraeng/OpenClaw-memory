@@ -15,10 +15,18 @@ Transformar a base comercial local em uma fila segura para campanha fria, preser
 - Não altera CRM externo.
 - Todo resultado é arquivo interno para revisão.
 
-## Script
+## Scripts
+
+Gerar artefatos CSV/JSON:
 
 ```bash
 python3 scripts/mensura_base_hygiene.py --write --json
+```
+
+Persistir a camada derivada no SQLite local:
+
+```bash
+python3 scripts/mensura_persist_hygiene_db.py --write --json
 ```
 
 Entrada principal:
@@ -71,6 +79,32 @@ Prioriza:
 - Rejeitar/hold: 168.
 - Baixa prioridade: 511.
 - Validação: 30 contatos no próximo lote, 30 domínios únicos, zero overlap com lote 01, zero motivos de rejeição nos 30 sugeridos.
+
+## Persistência no banco local
+
+Banco:
+
+- `projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite`
+
+Backup antes da escrita:
+
+- `runtime/backups/mensura-commercial-intelligence-db/20260430T080306Z/commercial-intelligence.sqlite`
+- `runtime/backups/mensura-commercial-intelligence-db/20260430T080306Z/manifest.json`
+
+Tabelas/views criadas:
+
+- `lead_hygiene_runs`
+- `lead_hygiene_results`
+- `lead_hygiene_current`
+- `lead_hygiene_next_lot_current`
+
+Validação no banco:
+
+- `lead_hygiene_runs`: 1
+- `lead_hygiene_results` na rodada atual: 767
+- `lead_hygiene_next_lot_current`: 30
+- domínios únicos no próximo lote: 30
+- `pragma integrity_check`: ok
 
 ## Recomendação operacional
 

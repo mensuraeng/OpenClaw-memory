@@ -1,0 +1,27 @@
+{
+  "mode": "read_only_source_to_local_db",
+  "external_writes": false,
+  "run_id": "20260430T075704.138931Z",
+  "db": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
+  "summary": {
+    "input_total": 767,
+    "tier_counts": {
+      "C_baixa_prioridade": 511,
+      "B_enriquecer": 12,
+      "rejeitar": 168,
+      "A_pronto_revisao": 76
+    },
+    "tier_a_unique_domains": 47,
+    "recommended_next_lot_size": 30
+  },
+  "rows_to_persist": 767,
+  "next_lot_emails": 30,
+  "persisted": true,
+  "db_counts": {
+    "lead_hygiene_runs": 1,
+    "lead_hygiene_results_for_run": 767,
+    "lead_hygiene_next_lot_current": 30,
+    "unique_next_lot_domains": 30
+  },
+  "integrity_check": "ok"
+}
