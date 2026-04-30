@@ -1,0 +1,40 @@
+# Template de pré-emissão fiscal — preencher antes de qualquer nota
+empresa_emissora: "" # MIA | MENSURA | PCS
+tipo_nota: "" # NFS-e | NF-e | NFC-e | CT-e | MDF-e
+ambiente: "producao" # homologacao | producao
+competencia: "" # YYYY-MM
+emissao_desejada_em: "" # YYYY-MM-DD
+
+aprovacao:
+  aprovado_por_ale: false
+  aprovado_por_contabil_fiscal: false
+  observacoes: ""
+
+tomador:
+  razao_social: ""
+  cnpj_cpf: ""
+  inscricao_municipal: ""
+  inscricao_estadual: ""
+  email_envio: ""
+  endereco: ""
+
+operacao:
+  descricao_servico_ou_produto: ""
+  contrato_ou_proposta: ""
+  obra_ou_centro_custo: ""
+  valor_bruto: 0
+  vencimento: "" # YYYY-MM-DD
+  retencoes: []
+  observacoes_fiscais: ""
+
+anexos_origem:
+  proposta: ""
+  medicao: ""
+  contrato: ""
+  aprovacao_cliente: ""
+
+saida_esperada:
+  salvar_pdf: true
+  salvar_xml: true
+  criar_contas_a_receber: true
+  enviar_cliente: false # side effect externo; exige aprovação explícita

@@ -24,3 +24,15 @@ _Atualizado em 2026-04-20_
 - [ ] destino atual de XML
 - [ ] destino atual de PDF
 - [ ] como nasce o contas a receber hoje
+
+## Pendência crítica adicionada em 2026-04-29
+
+Antes de qualquer automação de emissão, confirmar para cada empresa:
+
+- a nota recorrente é NFS-e municipal, NF-e estadual ou ambas?
+- o Sistema do Milhão é o emissor oficial atual para qual empresa?
+- existe API/exportação de XML/PDF no Sistema do Milhão?
+- certificado digital é A1 ou A3 e onde está guardado?
+- quem aprova a emissão hoje?
+
+Sem essas respostas, a implantação fica limitada a pré-emissão assistida e registro pós-emissão.
