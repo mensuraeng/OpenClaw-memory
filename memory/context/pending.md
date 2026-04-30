@@ -3,7 +3,7 @@
 > Visão executiva — apenas itens reais com ação pendente.
 > Spam, newsletters e emails de marketing: descartar direto, nunca entram aqui.
 
-_Flush realizado em 2026-04-28 22:00_
+_Flush realizado em 2026-04-29 22:00_
 
 ---
 
@@ -14,6 +14,7 @@ _Flush realizado em 2026-04-28 22:00_
 - [ ] **Limpar segredos expostos** — revisar memória, configs e docs para remover texto sensível sem quebrar integrações
 - [ ] **Revalidar fallback de modelos** — cadeia alternativa de modelos precisa de teste fora do healthcheck curto
 - [ ] **Auditar crons após correção do croncheap** — confirmar se os 14 erros identificados em 27/04 foram sanados e separar remanescente real de `last -> no route`
+- [ ] **Frente fiscal — confirmar escopo de emissão por empresa** — definir se MIA/MENSURA/PCS emitem NFS-e, NF-e ou ambas; mapear Sistema do Milhão/municipal, certificado A1/A3, aprovador humano e destino PDF/XML antes de qualquer emissão real
 
 ---
 
@@ -26,6 +27,7 @@ _Flush realizado em 2026-04-28 22:00_
 - [ ] **Mensura campanha fria — nova lista** — Alê combinou enviar nova base em 28/04; não disparar novo lote antes de higienizar e preservar reputação do domínio/remetente
 - [ ] **Teatro Suzano no Sienge — estratégia de total** — se o caminho via `workItemId` der 100% de cobertura, Alê precisa confirmar se aceita eventual divergência entre total Excel e total calculado pela base Sienge
 - [ ] **Meta Ads — credenciais e conta de anúncios** — para diagnóstico futuro, receber token/API key read-only seguro e `META_AD_ACCOUNT_ID` no formato `act_<id>`; Business Managers atuais aparecem sem contas de anúncios vinculadas
+- [ ] **PCS — fontes documentais institucionais** — obter apresentação, ficha cadastral, dados institucionais e fontes oficiais antes de preencher memória documental da PCS
 
 ---
 
@@ -50,8 +52,9 @@ _Flush realizado em 2026-04-28 22:00_
 - [ ] **Calibrar triagem inbox PCS** — PCS Graph foi destravado; acompanhar qualidade das categorias antes de desligar qualquer dry-run/controle de segurança
 - [ ] **Consolidar financeiro MIA** — aguardando romaneio para cruzar com comprovantes
 - [ ] **Incorporar checklist cliente Casa 7 na página principal** — após estabilizar rota/domínio
-- [ ] **Popular memória documental MENSURA/MIA/PCS** — estruturar `apresentacao.md`, `ficha-cadastral.md`, `dados-institucionais.md`
 - [ ] **Sistema Operacional 10/10** — evoluir WORKING, health, usage ledger e backlog leve com validação contínua, sem ruído no direct
+- [ ] **Mission Control `/cron` — acompanhar edição em produção** — edição de crons foi implementada e buildada; observar primeiro uso real para validar UX e efeitos no scheduler
+- [ ] **LLM Context Pack — integrar ao uso operacional seletivo** — helper implantado; usar para subagentes/Mission Control quando reduzir contexto sem substituir fonte de verdade
 
 ---
 

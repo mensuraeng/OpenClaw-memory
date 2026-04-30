@@ -153,3 +153,11 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 ## 2026-04-28 — Backup parcial sem manifesto não é restaurável
 - Partes enviadas ao B2 sem manifesto final não contam como backup válido.
 - Em backup full VPS, a validação precisa confirmar manifesto, integridade/restaurabilidade e ausência de acúmulo pesado local; upload parcial deve ser tratado como lixo operacional a limpar com autorização.
+
+## 2026-04-29 — Contexto compacto só ajuda se preservar fonte e rastreabilidade
+- Compactar dados para LLM reduz custo e ruído, mas vira risco se o resumo substituir a base original ou esconder perda de registros/campos.
+- Toda saída compactada deve declarar origem, modo, contagem original/selecionada e limites aplicados.
+
+## 2026-04-29 — Frente fiscal precisa separar tipo de documento antes da ferramenta
+- Avaliar biblioteca fiscal sem confirmar se a operação recorrente é NFS-e, NF-e ou ambas pode levar a trilha técnica errada.
+- Antes de automatizar emissão, mapear por empresa: tipo de documento, sistema municipal/SEFAZ, certificado, aprovador, retenções e destino de PDF/XML.

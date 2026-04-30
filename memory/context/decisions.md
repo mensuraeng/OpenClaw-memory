@@ -289,3 +289,15 @@ Para publicação institucional via API, usar app LinkedIn dedicada/exclusiva pa
 ## 2026-04-28 — Retornos gerenciais ficam no direct; operação vai para canal/frente própria
 _Status: [ATIVA]_
 No direct do Alê, reportar apenas decisão necessária, bloqueio real, risco relevante, entrega concluída importante ou resumo executivo consolidado. O operacional granular de cada frente deve ficar no respectivo canal/agente, evitando ruído de execução no direct.
+
+## 2026-04-29 — Make.com é integração controlada e execução de cenário exige confirmação
+_Status: [ATIVA]_
+A integração Make.com pode ser usada para leitura e inventário com token read-only/execução controlada, mas rodar cenário (`run`) é side effect externo. O helper deve exigir confirmação explícita (`--yes`) e a operação segue dependente de aprovação humana quando puder disparar automação fora do ambiente controlado.
+
+## 2026-04-29 — Context pack é camada temporária de redução de contexto, não fonte de verdade
+_Status: [ATIVA]_
+O LLM Context Pack pode compactar JSON/CSV/Markdown para subagentes, auditorias e Mission Control, usando formatos curtos conforme o caso. Ele não substitui a fonte de verdade, não altera dados, não deve transportar segredo para contexto e deve ser usado seletivamente quando houver ganho real de qualidade/custo.
+
+## 2026-04-29 — Emissão fiscal é trilha com aprovação humana obrigatória
+_Status: [ATIVA]_
+Qualquer emissão, transmissão, cancelamento, inutilização, envio externo de PDF/XML ou ação fiscal mutável exige confirmação explícita do Alê e checklist aprovado. DFe.NET é trilha técnica para NF-e/NFC-e/CT-e/MDF-e; NFS-e municipal/Sistema do Milhão segue como hipótese principal inicial para empresas prestadoras de serviço até confirmação por empresa.
