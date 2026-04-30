@@ -184,3 +184,21 @@ Adaptação aprovada com guardrail:
 O que fizemos com `/openclaw` aumenta o padrão porque aproxima memória, validação e busca de uma camada executiva. Mas o salto 10/10 exige agora conectar o sistema em torno de projetos e documentos.
 
 Próximo melhor passo: criar `/projects` e `/docs` antes de mexer em estética ou office visual.
+
+## Registro de implantação — Executive Graph v1
+
+_Atualizado em 2026-04-29_
+
+Incremento implantado em modo read-only/protegido:
+
+- `/projects`: cockpit executivo de projetos conectado a tarefas, documentos, evidências, decisões e agente sugerido.
+- `/docs`: biblioteca executiva de documentos por categoria, empresa/domínio, status, sensibilidade e fonte.
+- `/api/executive-graph`: API interna read-only para agregar dados de `2nd-brain`, `workspace`, `runtime` e task board.
+- Guardrail mantido: Mission Control não vira fonte de verdade acima de GitHub/2nd-brain e não executa writes externos.
+
+Validação local:
+
+- `npm run build`: OK.
+- Rotas sem autenticação em localhost: `/projects` e `/docs` retornam `307` para login.
+- API sem autenticação retorna `401`.
+- API autenticada local retorna `200`, com projetos/documentos/evidências indexados.
