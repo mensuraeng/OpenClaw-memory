@@ -1,0 +1,159 @@
+{
+  "generated_at_utc": "2026-04-30T01:46:43.557846+00:00",
+  "mode": "read_only",
+  "external_writes": false,
+  "source_files": {
+    "lead_ledger_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-ledger/mensura-lead-ledger-latest.csv",
+    "crm_candidates_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-latest.csv",
+    "hubspot_reconciliation_json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-latest.json",
+    "crm_pipeline_json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-pipeline-latest.json",
+    "campaign_dir": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427"
+  },
+  "method": "local CSV/JSON set comparison + campaign return consolidation; no CRM/email/Telegram/Make writes",
+  "confidence": "medium-high for local artifacts; HubSpot diff depends on freshness of reconciliation snapshot",
+  "risk_of_error": "HubSpot reconciliation latest may be stale; campaign classification is rule-based and requires review before external action",
+  "summary": {
+    "ledger_rows": 767,
+    "crm_candidate_rows": 767,
+    "campaign_sent": 30,
+    "campaign_classified_recipients": 30,
+    "campaign_counts": {
+      "sem resposta": 12,
+      "bounce": 18
+    },
+    "campaign_noise_filtered": 3,
+    "crm_diff_rows": 767,
+    "crm_diff_status_counts": {
+      "candidate_or_present": 767
+    },
+    "hubspot_gap_counts": {
+      "valid_local_emails_missing_in_hubspot": 25,
+      "hubspot_emails_missing_in_local": 0,
+      "local_domains_missing_in_hubspot": 111,
+      "hubspot_domains_missing_in_local": 0
+    },
+    "pipeline_counts": {
+      "companies": 477,
+      "contacts": 1242,
+      "suppression_list": 474,
+      "campaigns": 0,
+      "campaign_recipients": 0,
+      "interactions": 0
+    },
+    "alert_count": 4
+  },
+  "alerts": [
+    {
+      "severity": "attention",
+      "topic": "crm_diff",
+      "message": "25 emails locais válidos não aparecem no HubSpot no snapshot atual.",
+      "recommendation": "revisar amostra e decidir import controlado; este relatório não executa write."
+    },
+    {
+      "severity": "attention",
+      "topic": "crm_domain_diff",
+      "message": "111 domínios locais não aparecem como empresas no HubSpot.",
+      "recommendation": "priorizar domínios ICP alto antes de qualquer importação de empresa."
+    },
+    {
+      "severity": "high",
+      "topic": "campaign_bounce_rate",
+      "message": "Taxa de bounce do lote: 18/30 (60.0%).",
+      "recommendation": "pausar escala de novos lotes até higienizar base; preservar apenas follow-up manual de contatos válidos."
+    },
+    {
+      "severity": "info",
+      "topic": "campaign_noise_filtered",
+      "message": "3 item(ns) de inbox foram ignorados por não terem vínculo com lote/campanha.",
+      "recommendation": "manter filtro por assunto/destinatário para reduzir falso positivo."
+    }
+  ],
+  "artifacts": {
+    "json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-20260430T014643Z.json",
+    "latest_json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-latest.json",
+    "diff_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-diff-20260430T014643Z.csv",
+    "latest_diff_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-diff-latest.csv",
+    "campaign_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-20260430T014643Z.csv",
+    "latest_campaign_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-latest.csv",
+    "alert_markdown": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-alert-20260430T014643Z.md",
+    "latest_alert_markdown": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-alert-latest.md"
+  },
+  "samples": {
+    "hubspot_missing_email_samples": [
+      "alessandra.guidotti@brnpar.com.br",
+      "andre.dellias@lineeng.com.br",
+      "bianca.ventura@cnl.com.br",
+      "bmax@gpeconstrutora.com.br",
+      "caroline.souza@itsinformov.com.br",
+      "comercial@gpeconstrutora.com.br",
+      "daniel.urbieta@epsoneng.com.br",
+      "fernando@itsinformov.com.br",
+      "flavio.grespan@lineeng.com.br",
+      "helena.diodatti@jll.com",
+      "jessicavb@insper.edu.br",
+      "jleticia@tractian.com",
+      "katya.chechia@centernorte.com.br",
+      "kleber.assis@itsinformov.com.br",
+      "leonardosato.ps@jhsf.com.br",
+      "marcelo@itsinformov.com.br",
+      "mauricio.andrioli@centernorte.com.br",
+      "murilo@itsinformov.com.br",
+      "osnei@brnpar.com.br",
+      "rodrigo.dumont@awnet.com.br",
+      "thierescoradi@jhsf.com.br",
+      "tifany@artesanourbanismo.com.br",
+      "vitor.oliveira@itsinformov.com.br",
+      "vitorfhs@insper.edu.br",
+      "wembleyas@insper.edu.br"
+    ],
+    "alerts": [
+      {
+        "severity": "attention",
+        "topic": "crm_diff",
+        "message": "25 emails locais válidos não aparecem no HubSpot no snapshot atual.",
+        "recommendation": "revisar amostra e decidir import controlado; este relatório não executa write."
+      },
+      {
+        "severity": "attention",
+        "topic": "crm_domain_diff",
+        "message": "111 domínios locais não aparecem como empresas no HubSpot.",
+        "recommendation": "priorizar domínios ICP alto antes de qualquer importação de empresa."
+      },
+      {
+        "severity": "high",
+        "topic": "campaign_bounce_rate",
+        "message": "Taxa de bounce do lote: 18/30 (60.0%).",
+        "recommendation": "pausar escala de novos lotes até higienizar base; preservar apenas follow-up manual de contatos válidos."
+      },
+      {
+        "severity": "info",
+        "topic": "campaign_noise_filtered",
+        "message": "3 item(ns) de inbox foram ignorados por não terem vínculo com lote/campanha.",
+        "recommendation": "manter filtro por assunto/destinatário para reduzir falso positivo."
+      }
+    ],
+    "ignored_campaign_noise": [
+      {
+        "source_file": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260429-0900.json",
+        "reason": "sem vínculo com campanha/lote; provável ruído de inbox",
+        "from": "suporteflowtech@gmail.com",
+        "subject": "Precisa de suporte em informática e sistemas de segurança eletrônica? Entre em contato agora mesmo!",
+        "classification_original": "interesse positivo"
+      },
+      {
+        "source_file": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260429-1400.json",
+        "reason": "sem vínculo com campanha/lote; provável ruído de inbox",
+        "from": "suporteflowtech@gmail.com",
+        "subject": "Precisa de suporte em informática e sistemas de segurança eletrônica? Entre em contato agora mesmo!",
+        "classification_original": "interesse positivo"
+      },
+      {
+        "source_file": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260429-1705.json",
+        "reason": "sem vínculo com campanha/lote; provável ruído de inbox",
+        "from": "suporteflowtech@gmail.com",
+        "subject": "Precisa de suporte em informática e sistemas de segurança eletrônica? Entre em contato agora mesmo!",
+        "classification_original": "interesse positivo"
+      }
+    ]
+  }
+}

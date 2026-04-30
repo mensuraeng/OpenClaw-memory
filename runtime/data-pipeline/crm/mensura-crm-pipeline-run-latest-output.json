@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-28T22:29:58.847948+00:00",
+  "generated_at_utc": "2026-04-30T01:46:30.652436+00:00",
   "source": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
   "method": "sqlite read-only snapshot; no external writes; suppression list applied to verified export",
   "confidence": "medium-high: source is local commercial intelligence DB; depends on freshness of ingestion/validation jobs",
@@ -53,13 +53,13 @@
   },
   "verified_contacts_count": 767,
   "artifacts": {
-    "manifest": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-pipeline-manifest-20260428T222958Z.json",
+    "manifest": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-pipeline-manifest-20260430T014630Z.json",
     "latest_manifest": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-pipeline-latest.json",
-    "verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-20260428T222958Z.jsonl",
+    "verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-20260430T014630Z.jsonl",
     "latest_verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-latest.jsonl",
-    "crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260428T222958Z.jsonl",
+    "crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T014630Z.jsonl",
     "latest_crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-latest.jsonl",
-    "crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260428T222958Z.csv",
+    "crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T014630Z.csv",
     "latest_crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-latest.csv"
   }
 }

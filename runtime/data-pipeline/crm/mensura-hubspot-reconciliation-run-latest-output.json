@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-28T22:31:16.770575+00:00",
+  "generated_at_utc": "2026-04-30T01:46:43.493704+00:00",
   "mode": "read_only",
   "source": {
     "local_sqlite": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
@@ -57,6 +57,6 @@
     ],
     "hubspot_missing_in_local": []
   },
-  "artifact": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-20260428T223116Z.json",
+  "artifact": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-20260430T014643Z.json",
   "latest_artifact": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-latest.json"
 }

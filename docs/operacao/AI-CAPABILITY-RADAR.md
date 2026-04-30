@@ -110,7 +110,7 @@ Transforma prospecção de disparo pontual em operação comercial com memória,
 
 ### Status
 
-Dados existem. Próximo salto: rotina recorrente e alertas por divergência relevante.
+Implantado v1 read-only em `scripts/mensura_crm_lead_intelligence.py`, com diff local ↔ CRM via snapshot HubSpot, classificação de respostas da campanha e alerta interno em `runtime/data-pipeline/crm/lead-intelligence/`. Próximo salto: transformar em rotina recorrente e conectar ao Mission Control sem writes externos.
 
 ## Prioridade 4 — Mensura Schedule/Risk Intelligence
 
