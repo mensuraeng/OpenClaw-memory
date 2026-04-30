@@ -21,6 +21,7 @@ Strategy:
 import argparse
 import json
 import logging
+import re
 import subprocess
 import sys
 import time
@@ -28,7 +29,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
-from slugify import slugify
+try:
+    from slugify import slugify
+except ModuleNotFoundError:
+    def slugify(value: str, max_length: int = 50, separator: str = '-') -> str:
+        value = re.sub(r'[^0-9A-Za-zÀ-ÿ]+', separator, value or '').strip(separator).lower()
+        value = re.sub(rf'{re.escape(separator)}+', separator, value)
+        return value[:max_length].strip(separator)
 
 # --- Paths ---
 WORKSPACE_DIR = Path("/root/.openclaw/workspace")
@@ -41,12 +48,28 @@ REPORT_FILE = WORKSPACE_DIR / "logs/notion-sync-report.md"
 # --- Notion API ---
 NOTION_API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"
+NOTION_CONFIG = WORKSPACE_DIR / "config/notion-sync.json"
 
-TOKENS = {
-    "mensura": "NOTION_TOKEN_REDACTED",
-    "mia":     "NOTION_TOKEN_REDACTED",
-    "pcs":     "NOTION_TOKEN_REDACTED",
-}
+
+def load_tokens() -> dict[str, str]:
+    """Load Notion tokens from env/local secret file/KeeSpace references.
+
+    No plaintext token should live in this script or in workspace config.
+    """
+    try:
+        from secret_config import load_json_config, resolve_secret_ref
+        cfg = load_json_config(NOTION_CONFIG, resolve=False)
+        tokens: dict[str, str] = {}
+        for workspace, ref in cfg.get("tokens", {}).items():
+            token = resolve_secret_ref(ref, name=f"notion.{workspace}", required=False)
+            tokens[workspace] = token or ""
+        return tokens
+    except Exception as exc:
+        print(f"WARNING Notion token config unavailable: {exc}", file=sys.stderr)
+        return {"mensura": "", "mia": "", "pcs": ""}
+
+
+TOKENS = load_tokens()
 
 # --- Limits ---
 MAX_PAGES_PER_RUN = 200   # per workspace — prevents runaway full syncs
@@ -568,6 +591,10 @@ def main() -> int:
 
     for ws in workspaces:
         token = TOKENS[ws]
+        if not token:
+            log.error(f"[{ws}] Notion token unresolved — skipping")
+            results[ws] = {"added": 0, "updated": 0, "deleted": 0, "errors": 1}
+            continue
         try:
             stats = sync_workspace(
                 workspace=ws,

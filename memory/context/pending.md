@@ -26,7 +26,7 @@ _Flush realizado em 2026-04-29 22:00_
 - [ ] **Preencher `people.md`** — adicionar equipe e parceiros relevantes conforme surgirem
 - [ ] **Mensura campanha fria — nova lista** — Alê combinou enviar nova base em 28/04; não disparar novo lote antes de higienizar e preservar reputação do domínio/remetente
 - [ ] **Teatro Suzano no Sienge — estratégia de total** — se o caminho via `workItemId` der 100% de cobertura, Alê precisa confirmar se aceita eventual divergência entre total Excel e total calculado pela base Sienge
-- [ ] **Meta Ads — credenciais e conta de anúncios** — para diagnóstico futuro, receber token/API key read-only seguro e `META_AD_ACCOUNT_ID` no formato `act_<id>`; Business Managers atuais aparecem sem contas de anúncios vinculadas
+- [ ] **Meta Ads — conexão MCP/AI Connector** — Alê pediu conexão ampla com trava por orçamento e definiu teto atual **R$ 0/dia**. Portanto, por enquanto só conexão, leitura, diagnóstico e preparação; ficam bloqueados ativação/publicação/gasto. Falta: `META_AD_ACCOUNT_ID=act_<id>`, autenticação Meta/OAuth/token e conta de anúncio vinculada ao Business correto. Plano registrado em `runtime/mensura-marketing/meta-ads/connection-plan-2026-04-30.md`.
 - [ ] **PCS — fontes documentais institucionais** — obter apresentação, ficha cadastral, dados institucionais e fontes oficiais antes de preencher memória documental da PCS
 
 ---

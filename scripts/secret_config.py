@@ -20,6 +20,7 @@ WORKSPACE = Path(__file__).resolve().parents[1]
 DEFAULT_ENV_FILES = [
     Path('/root/.secrets/openclaw-commercial.env'),
     Path('/root/.secrets/openclaw.env'),
+    Path('/root/.secrets/notion.env'),
 ]
 
 _ENV_LOADED = False

@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-30T20:54:01.623255+00:00",
+  "checked_at_utc": "2026-04-30T22:53:32.403752+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,24 +10,24 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "ith no channels.whatsapp.accounts.default.groups allowlist; any group can add + ping (mention-gated). Set channels.whatsap…\n  WARN No auth rate limiting configured\n    gateway.bind is not loopback but no gateway.auth.rateLimit is configured. Without rate limiting, brute-force auth attacks are not mitigated.\n    Fix: Set gateway.auth.rateLimit (e.g. { maxAttempts: 10, windowMs: 60000, lockoutMs: 300000 }).\n  WARN Some configured models are below recommended tiers\n    Smaller/older models are generally more susceptible to prompt injection and tool misuse. - openai/gpt-image-2 (Below GPT-5 family) @ agents.defaults.imageModel…\n    Fix: Use the latest, top-tier model for any bot with tools or untrusted inboxes. Avoid Haiku tiers; prefer GPT-5+ and Claude 4.5+.\n  WARN Potential multi-user setup detected (personal-assistant model warning)\n    Heuristic signals indicate this gateway may be reachable by multiple users: - channels.telegram.groupPolicy=\"allowlist\" with configured group targets -"
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 312 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 141 issues · audit 10 errors · 46 warn · 1354 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📧 [AAMkADAw...] 2026-04-30 19:47 | De: invoice+statements@mail.anthropic.com\n   Assunto: Your receipt from Anthropic, PBC #2889-4313-4734\n   Your receipt from Anthropic, PBC #2889-4313-4734  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏ \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 22:32 | De: noreply@xpi.com.br\n   Assunto: Operações durante o feriado: fique atento!\n   Veja como se organizar\n\nOlá, cliente XP!\n\n\nNo dia 01 de maio celebra-se o Dia de Tiradentes no \n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📧 [AAMkADA5...] 2026-04-30 20:09 | De: gustavo.brancato@toolsengenharia.com.br\n   Assunto: RES: MIA_CCSP-C7 - MAPA 180_ MINI GUIAS\n   Aprovado\nFornecedor Ecoverde.\n\nObg,\n\nGUSTAVO D'ALMEIDA BRANCATO\n\n+55 (11) 95496-0032\n+55 (11\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-30 22:04 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para ALEXANDRE RIBEIRO DE BARROS AGUIAR,\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📧 [AAMkADYw...] 2026-04-30 18:02 | De: philippe.santos@pcsengenharia.com.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Andréia, boa tarde. Tudo bem, e você ?\n\nSobre a contratação, peço para alterar para o plano specia\n\n",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 21:28 | De: andreia.souza@gescon.eng.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Boa tarde, Philippe , tudo bem?\n\nO contrato foi elaborado e enviado para assinatura pela plataform\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-30T19:00:56.994344+00:00"
+      "evidence": "2026-04-30T21:03:27.819847+00:00"
     },
     {
       "name": "working_queue_flavia",
