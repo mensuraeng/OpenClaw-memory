@@ -1,0 +1,58 @@
+{
+  "generated_at_utc": "2026-04-30T07:57:04.138931+00:00",
+  "mode": "read_only",
+  "external_writes": false,
+  "source_files": {
+    "crm_candidates": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-latest.csv",
+    "campaign_classification": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-latest.csv",
+    "hubspot_reconciliation": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-hubspot-reconciliation-latest.json",
+    "sqlite_suppression": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite"
+  },
+  "method": "rule-based conservative hygiene + suppression + campaign feedback + DNS MX/A check; no external writes",
+  "input_total": 767,
+  "suppression_emails": 474,
+  "suppression_domains": 0,
+  "campaign_feedback_contacts": 30,
+  "dns_domains_checked": 234,
+  "tier_counts": {
+    "C_baixa_prioridade": 511,
+    "B_enriquecer": 12,
+    "rejeitar": 168,
+    "A_pronto_revisao": 76
+  },
+  "dns_counts": {
+    "mx_ok": 762,
+    "a_ok_no_mx": 5
+  },
+  "top_rejection_or_hold_reasons": {
+    "sem_cargo": 675,
+    "sem_nome_contato": 477,
+    "segmento_fora_icp_ou_ambíguo": 146,
+    "dominio_institucional_nao_empresa": 13,
+    "lote01_sem_resposta": 8,
+    "email_generico_role_based": 3,
+    "lote01_bounce": 1,
+    "sem_empresa": 1,
+    "email_pessoal_ou_provedor_generico": 1
+  },
+  "recommended_next_lot_size": 30,
+  "tier_a_unique_domains": 47,
+  "recommendation": "Não escalar volume ainda. Usar no máximo 30 contatos Tier A com revisão humana, 1 por domínio, após confirmar copy e cadência. Prioridade paralela: enriquecer Tier B antes de novo lote.",
+  "guardrails": [
+    "sem HubSpot import",
+    "sem email",
+    "sem Telegram",
+    "sem Make run",
+    "sem alteração CRM"
+  ],
+  "artifacts": {
+    "base-higienizada": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/base-higienizada-20260430T075704Z.csv",
+    "tier-a-pronto-revisao": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/tier-a-pronto-revisao-20260430T075704Z.csv",
+    "tier-a-1por-dominio": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/tier-a-1por-dominio-20260430T075704Z.csv",
+    "proximo-lote-sugerido-30": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/proximo-lote-sugerido-30-20260430T075704Z.csv",
+    "tier-b-enriquecer": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/tier-b-enriquecer-20260430T075704Z.csv",
+    "rejeitados-suppression-hold": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/rejeitados-suppression-hold-20260430T075704Z.csv",
+    "summary": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/summary-20260430T075704Z.json",
+    "alert": "/root/.openclaw/workspace/runtime/mensura-marketing/higienizacao-current/alerta-higienizacao-20260430T075704Z.md"
+  }
+}

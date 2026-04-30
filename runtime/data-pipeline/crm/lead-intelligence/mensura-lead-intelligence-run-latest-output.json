@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-30T01:46:43.557846+00:00",
+  "generated_at_utc": "2026-04-30T07:56:02.877084+00:00",
   "mode": "read_only",
   "external_writes": false,
   "source_files": {
@@ -69,13 +69,13 @@
     }
   ],
   "artifacts": {
-    "json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-20260430T014643Z.json",
+    "json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-20260430T075602Z.json",
     "latest_json": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-latest.json",
-    "diff_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-diff-20260430T014643Z.csv",
+    "diff_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-diff-20260430T075602Z.csv",
     "latest_diff_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-diff-latest.csv",
-    "campaign_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-20260430T014643Z.csv",
+    "campaign_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-20260430T075602Z.csv",
     "latest_campaign_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-campaign-classification-latest.csv",
-    "alert_markdown": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-alert-20260430T014643Z.md",
+    "alert_markdown": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-alert-20260430T075602Z.md",
     "latest_alert_markdown": "/root/.openclaw/workspace/runtime/data-pipeline/crm/lead-intelligence/mensura-lead-intelligence-alert-latest.md"
   },
   "samples": {
