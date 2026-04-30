@@ -1,0 +1,60 @@
+{
+  "generated_at_utc": "2026-04-30T11:21:52.240490+00:00",
+  "mode": "read_only",
+  "source": {
+    "local_sqlite": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
+    "hubspot_portal_id": "51386487",
+    "hubspot_objects": [
+      "contacts",
+      "companies",
+      "deals"
+    ]
+  },
+  "method": "HubSpot CRM v3 search API with explicit pagination; local SQLite set comparison; no writes",
+  "confidence": "high for counts returned by HubSpot API and local SQLite at generation time",
+  "risk_of_error": "email/domain matching does not prove company identity; HubSpot duplicate/merge rules may differ from local SQLite",
+  "counts": {
+    "local_contacts_with_email": 1242,
+    "local_valid_emails_not_suppressed": 795,
+    "local_company_domains": 477,
+    "hubspot_contacts_with_email": 967,
+    "hubspot_companies_with_domain": 366,
+    "hubspot_deals": 2
+  },
+  "gaps": {
+    "valid_local_emails_missing_in_hubspot": 25,
+    "hubspot_emails_missing_in_local": 0,
+    "local_domains_missing_in_hubspot": 111,
+    "hubspot_domains_missing_in_local": 0
+  },
+  "samples": {
+    "valid_local_missing_in_hubspot": [
+      "alessandra.guidotti@brnpar.com.br",
+      "andre.dellias@lineeng.com.br",
+      "bianca.ventura@cnl.com.br",
+      "bmax@gpeconstrutora.com.br",
+      "caroline.souza@itsinformov.com.br",
+      "comercial@gpeconstrutora.com.br",
+      "daniel.urbieta@epsoneng.com.br",
+      "fernando@itsinformov.com.br",
+      "flavio.grespan@lineeng.com.br",
+      "helena.diodatti@jll.com",
+      "jessicavb@insper.edu.br",
+      "jleticia@tractian.com",
+      "katya.chechia@centernorte.com.br",
+      "kleber.assis@itsinformov.com.br",
+      "leonardosato.ps@jhsf.com.br",
+      "marcelo@itsinformov.com.br",
+      "mauricio.andrioli@centernorte.com.br",
+      "murilo@itsinformov.com.br",
+      "osnei@brnpar.com.br",
+      "rodrigo.dumont@awnet.com.br",
+      "thierescoradi@jhsf.com.br",
+      "tifany@artesanourbanismo.com.br",
+      "vitor.oliveira@itsinformov.com.br",
+      "vitorfhs@insper.edu.br",
+      "wembleyas@insper.edu.br"
+    ],
+    "hubspot_missing_in_local": []
+  }
+}

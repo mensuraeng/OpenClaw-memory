@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-30T15:52:10.671360+00:00",
+  "checked_at_utc": "2026-04-30T10:46:12.899445+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,19 +15,19 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-30 15:11 | De: contato@novidades.riachuelo.com.br\n   Assunto: SAVE THE DATE: Nova collab chegando!\n   Vem aí uma coleção exclusiva\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 06:27 | De: contato@creasp.org.br\n   Assunto: Fique por dentro: eventos e cursos com apoio do Crea-SP\n   Descadastre-se caso não queira receber mais e-mails\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-30 15:25 | De: comunicacao@btgpactual.com\n   Assunto: Funcionamento no feriado do Dia do Trabalho\n   Confira o que muda no dia 01/05\nVer Online\n\nComunicado\n\nOlá, Alexandre.\n\nNo dia 01/05 não hav\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-04-29 20:59 | De: no_reply@xpi.com.br\n   Assunto: Pix realizado\n   Seu Pix foi realizado\nOlá, Alexandre,\n\nO seu Pix enviado para SOLUM COMERCIO DE TINTAS ECOLOGICAS\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📧 [AAMkADYw...] 2026-04-30 15:14 | De: dyonisiojpf@spobras.sp.gov.br\n   Assunto: ENC: Pendencias de AVCB\n   Solicito informar se foram atendidas as pendências.\n\nAtt.\n________________________________\nDe: V\n\n",
+      "detail": "📩 [AAMkADYw...] 2026-04-30 09:03 | De: confirpdigital@confirp.com\n   Assunto: Documentos - 30/04/2026\n   Confirp Contabilidade | Documentos 30/04/2026\n\nEste e um e-mail automatico. Por favor, nao respond\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-30T15:07:35.704490+00:00"
+      "evidence": "2026-04-29T23:00:44.600591+00:00"
     },
     {
       "name": "working_queue_flavia",

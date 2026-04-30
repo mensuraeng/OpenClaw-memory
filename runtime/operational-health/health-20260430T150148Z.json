@@ -1,33 +1,34 @@
 {
-  "checked_at_utc": "2026-04-30T15:52:10.671360+00:00",
-  "overall": "active",
+  "checked_at_utc": "2026-04-30T15:01:48.222549+00:00",
+  "overall": "attention",
   "counts": {
-    "ok": 11,
+    "attention": 1,
+    "ok": 10,
     "pending": 1
   },
   "checks": [
     {
       "name": "openclaw_status",
-      "status": "ok",
-      "detail": "status executado",
-      "evidence": "ith no channels.whatsapp.accounts.default.groups allowlist; any group can add + ping (mention-gated). Set channels.whatsap…\n  WARN No auth rate limiting configured\n    gateway.bind is not loopback but no gateway.auth.rateLimit is configured. Without rate limiting, brute-force auth attacks are not mitigated.\n    Fix: Set gateway.auth.rateLimit (e.g. { maxAttempts: 10, windowMs: 60000, lockoutMs: 300000 }).\n  WARN Some configured models are below recommended tiers\n    Smaller/older models are generally more susceptible to prompt injection and tool misuse. - openai/gpt-image-2 (Below GPT-5 family) @ agents.defaults.imageModel…\n    Fix: Use the latest, top-tier model for any bot with tools or untrusted inboxes. Avoid Haiku tiers; prefer GPT-5+ and Claude 4.5+.\n  WARN Potential multi-user setup detected (personal-assistant model warning)\n    Heuristic signals indicate this gateway may be reachable by multiple users: - channels.telegram.groupPolicy=\"allowlist\" with configured group targets -"
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-30 15:11 | De: contato@novidades.riachuelo.com.br\n   Assunto: SAVE THE DATE: Nova collab chegando!\n   Vem aí uma coleção exclusiva\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 15:00 | De: contato@g4educacao.com\n   Assunto: Você ganhou um ingresso 🎟️\n   Você ganhou um acesso gratuito para o Aniversário do G4, o maior evento online para empresários do B\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-04-30 15:25 | De: comunicacao@btgpactual.com\n   Assunto: Funcionamento no feriado do Dia do Trabalho\n   Confira o que muda no dia 01/05\nVer Online\n\nComunicado\n\nOlá, Alexandre.\n\nNo dia 01/05 não hav\n\n",
+      "detail": "📧 [AAMkADA5...] 2026-04-30 12:00 | De: flavia@mensuraengenharia.com.br\n   Assunto: CCSP Casa 7 — Cobranças de quinta-feira — 30/04\n   Victor, bom dia.\n\nSegue cobrança objetiva da Casa 7 — CCSP para Quinta-feira (2026-04-30), conforme \n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
       "name": "graph_email_pcs",
       "status": "ok",
-      "detail": "📧 [AAMkADYw...] 2026-04-30 15:14 | De: dyonisiojpf@spobras.sp.gov.br\n   Assunto: ENC: Pendencias de AVCB\n   Solicito informar se foram atendidas as pendências.\n\nAtt.\n________________________________\nDe: V\n\n",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 09:03 | De: confirpdigital@confirp.com\n   Assunto: Documentos - 30/04/2026\n   Confirp Contabilidade | Documentos 30/04/2026\n\nEste e um e-mail automatico. Por favor, nao respond\n\n",
       "evidence": "alexandre@pcsengenharia.com.br"
     },
     {
@@ -52,7 +53,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-30T15:07:35.704490+00:00"
+      "evidence": "2026-04-30T13:05:34.053111+00:00"
     },
     {
       "name": "working_queue_flavia",
