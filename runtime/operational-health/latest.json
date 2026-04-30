@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-04-29T22:08:10.494494+00:00",
+  "checked_at_utc": "2026-04-30T00:02:29.118241+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,7 +15,7 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-29 21:43 | De: fidelidade@localiza.com\n   Assunto: Feriado à vista: seu descanso pode começar na estrada\n   Sua News chegou com roteiro, carro ideal e desconto pra viajar melhor\n\n\nPara visualizar online, c\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-04-29 23:32 | De: noreply@voeazul-news.com.br\n   Assunto: Abriu, economizou no PIX 💸\n   Até 15% OFF no Anoiteceu Azul, só vale pra quem pagar no PIX 👀         Ver na web   |   Descadastre-\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-04-29T21:03:00.739887+00:00"
+      "evidence": "2026-04-29T23:00:44.600591+00:00"
     },
     {
       "name": "working_queue_flavia",
