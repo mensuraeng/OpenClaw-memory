@@ -10,6 +10,14 @@ _Atualizado em 2026-04-29_
 - [ ] Confirmar tipo de nota por empresa: NFS-e, NF-e ou ambas.
 - [ ] Confirmar sistema atual e credenciais operacionais sem expor segredo.
 
+## Fase 0.5 — Consulta e baixa read-only
+
+- [ ] Confirmar fonte de consulta por empresa.
+- [ ] Confirmar grupo Telegram de destino por empresa.
+- [ ] Baixar XML/PDF de nota recebida sem alterar status fiscal.
+- [ ] Gerar JSON normalizado da nota.
+- [ ] Notificar grupo correto sem aprovação/aceite automático.
+
 ## Fase 1 — Cadastro fiscal base
 
 Para cada empresa:

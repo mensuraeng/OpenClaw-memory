@@ -55,3 +55,7 @@ Solicitação de emissão
 - `docs/fiscal-emissao/checklist-coleta-mia-mensura.md`
 - `docs/fiscal-emissao/playbook-operacional-sistema-do-milhao.md`
 - Repositório avaliado: `https://github.com/ZeusAutomacao/DFe.NET`
+
+## Consulta e baixa de notas contra empresas
+
+A frente fiscal passa a incluir consulta/baixa read-only de notas emitidas contra MENSURA, MIA e PCS, com notificação no grupo operacional correspondente quando houver documento novo. Ver `docs/CONSULTA-BAIXA-NOTIFICACOES.md`.
