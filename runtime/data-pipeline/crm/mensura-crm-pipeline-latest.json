@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-30T07:55:37.432551+00:00",
+  "generated_at_utc": "2026-04-30T11:21:40.240915+00:00",
   "source": "/root/.openclaw/workspace/projects/mensura-commercial-intelligence/data/commercial-intelligence.sqlite",
   "method": "sqlite read-only snapshot; no external writes; suppression list applied to verified export",
   "confidence": "medium-high: source is local commercial intelligence DB; depends on freshness of ingestion/validation jobs",
@@ -62,8 +62,8 @@
     "interactions"
   ],
   "artifacts": {
-    "verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-20260430T075537Z.jsonl",
-    "crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T075537Z.jsonl",
-    "crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T075537Z.csv"
+    "verified_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/verified/mensura-verified-contacts-20260430T112140Z.jsonl",
+    "crm_jsonl": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T112140Z.jsonl",
+    "crm_csv": "/root/.openclaw/workspace/runtime/data-pipeline/crm/mensura-crm-import-candidates-20260430T112140Z.csv"
   }
 }

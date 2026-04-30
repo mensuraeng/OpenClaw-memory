@@ -1,42 +1,8 @@
 {
-  "generated_at": "2026-04-29T08:02:59.925403",
+  "generated_at": "2026-04-30T08:01:00-03:00",
   "mode": "pre_market",
-  "destination": {
-    "channel": "telegram",
-    "target_name": "Investimento",
-    "topic_name": "Notícias",
-    "target_id": "telegram:-1003794434256",
-    "thread_id": 1
-  },
-  "queries": {
-    "macro_global": [
-      "Fed juros inflação mercados hoje",
-      "US yields dollar gold market news",
-      "global markets financial news today"
-    ],
-    "brasil": [
-      "mercado financeiro Brasil hoje Selic IPCA dólar Ibovespa",
-      "notícias B3 Ibovespa dólar juros hoje"
-    ],
-    "eua_global": [
-      "S&P 500 Nasdaq earnings yields today",
-      "US stock market futures yields dollar today"
-    ],
-    "ouro_commodities": [
-      "gold price news real yields dollar geopolitical risk",
-      "ouro dólar juros reais notícias hoje",
-      "commodities gold silver oil iron ore news"
-    ],
-    "wealth_monitor": [
-      "fundos investimento renda fixa CDI Tesouro CRI CRA notícias",
-      "crédito privado fundos renda fixa Brasil notícias"
-    ]
-  },
-  "guardrails": {
-    "send_empty_report": false,
-    "real_trading_enabled": false,
-    "orders_enabled": false,
-    "human_confirmation_required": true
-  },
-  "instruction": "Use OpenClaw web_search/firecrawl as needed; summarize only market-relevant facts for Trade; no orders; send to Investimento/Notícias only if target/thread configured."
+  "destination": {"channel":"telegram","target_id":"telegram:-1003794434256","thread_id":1},
+  "guardrails": {"send_empty_report": false, "real_trading_enabled": false, "orders_enabled": false, "human_confirmation_required": true},
+  "execution_note": "shell exec blocked in cron approval policy; web_search/web_fetch collection used by OpenClaw agent",
+  "material": true
 }
