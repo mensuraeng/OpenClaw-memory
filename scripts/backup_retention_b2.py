@@ -3,7 +3,7 @@
 
 Politica operacional:
   - B2: manter 2 conjuntos mais recentes em flavia/vps-full e flavia/2nd-brain.
-  - VPS: manter 1 backup full local valido e 1 conjunto local do 2nd-brain.
+  - VPS: manter 2 backups full locais validos e 2 conjuntos locais do 2nd-brain.
   - Nunca limpar backup full local se nao existir ao menos 1 conjunto full valido no B2.
 
 Por padrao roda em dry-run. Use --run para apagar candidatos.
@@ -30,7 +30,7 @@ SECOND_BRAIN_LOCAL = WORKSPACE / 'runtime/backups/2nd-brain'
 VPS_PREFIX = 'flavia/vps-full/'
 SECOND_BRAIN_PREFIX = 'flavia/2nd-brain/'
 REMOTE_KEEP = 2
-LOCAL_KEEP = 1
+LOCAL_KEEP = 2
 MIN_FULL_BACKUP_BYTES = 1024 * 1024 * 1024
 
 
