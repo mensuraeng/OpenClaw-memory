@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-01T02:59:38.581745+00:00",
+  "checked_at_utc": "2026-05-01T04:59:22.344250+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,12 +10,12 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 293 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 143 issues · audit 10 errors · 46 warn · 1319 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 283 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 146 issues · audit 10 errors · 47 warn · 1304 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-04-30 23:06 | De: matilha_at_news_petlove_com_br_5dphxdxn4f_fa9a6769@privaterelay.appleid.com\n   Assunto: 📢Vai perder R$120 de cashback?\n   Use CLUBE120 na sua 1ª compra com o Clube\n ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-01 04:04 | De: members@email.pro-immigration.com\n   Assunto: Notification for Alexandre - [CONFIRMATION REQUIRED]\n   View in browser\n\n​​​​​​​\n\nCVE NOTIFICATION DEPARTMENT\nAcceptance Letter\n NOTIFICATION\n\nAppli\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
