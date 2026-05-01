@@ -1,0 +1,2652 @@
+{
+  "jobs": [
+    {
+      "id": "387bd1b0-124f-4e9c-81c0-f711d438e611",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "mission-control-task-reconcile",
+      "description": "Runner periódico do reconcile de task tracking do Mission Control",
+      "enabled": true,
+      "deleteAfterRun": false,
+      "createdAtMs": 1776513537269,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000,
+        "anchorMs": 1777293070884
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "No workspace /root/.openclaw/workspace/projects/mission-control, execute com timeout curto:\n\ncd /root/.openclaw/workspace/projects/mission-control && timeout 90 npm run tasks:reconcile\n\nResponda exatamente NO_REPLY se o comando retornar ok. Só alerte se o comando falhar, travar, ou apontar criticalEscalations > 0.",
+        "timeoutSeconds": 300,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read"
+        ],
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.5"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777619823667,
+        "lastRunAtMs": 1777618923667,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 38614,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777618962281
+    },
+    {
+      "id": "761d11b2-56b7-450d-945f-23118cc67a6b",
+      "agentId": "main",
+      "name": "security:audit-daily",
+      "description": "Security audit diario as 05:00 (relatorio + alerta se critical)",
+      "enabled": true,
+      "createdAtMs": 1776692694317,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 5 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute: openclaw security audit --deep --json > ~/.openclaw/logs/audit-daily-$(date +%Y-%m-%d).json. Leia o JSON; se summary.critical > 0 ou summary.warn > 2, envie alerta no Telegram topic da Flavia com os findings. Caso contrario, registre em ~/.openclaw/logs/audit-daily.status \"OK: N warn M critical\".",
+        "timeoutSeconds": 600,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "-1003818163425:topic:1"
+      },
+      "state": {
+        "nextRunAtMs": 1777622400000,
+        "lastRunAtMs": 1777536000145,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 94791,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619354877
+    },
+    {
+      "id": "b25df6ae-e452-41ab-bcae-39d49d4a2029",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:group:-1003818163425:topic:1",
+      "name": "Watchdog - Monitor de Crons",
+      "enabled": true,
+      "createdAtMs": 1776113804608,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 6 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o health check operacional via CLI agent-native:\n\n/root/.openclaw/workspace/projects/openclaw-ops/bin/openclaw-ops health --json\n/root/.openclaw/workspace/projects/openclaw-ops/bin/openclaw-ops backup status --json\n\nSó alerte Alexandre se houver falha real, risco operacional concreto, auth quebrada, ou backup ausente/risco de disco. Se não houver ação segura necessária, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 300,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777626000000,
+        "lastRunAtMs": 1777539600029,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 187608,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619354929
+    },
+    {
+      "id": "796c3e7a-535c-469b-a759-067d81898829",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "msgraph-health-daily-cli",
+      "description": "Health check diário Microsoft Graph via CLI msgraph.",
+      "enabled": true,
+      "createdAtMs": 1777241798498,
+      "schedule": {
+        "kind": "cron",
+        "expr": "10 6 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o health check Microsoft Graph via CLI agent-native:\n\n/root/.openclaw/workspace/projects/msgraph-cli/bin/msgraph health --json\n\nAlerte Alexandre somente se houver falha real de email/calendário, credencial expirada, ou acesso quebrado. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777626600000,
+        "lastRunAtMs": 1777540200028,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 62247,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619355007
+    },
+    {
+      "id": "2f0d6e28-5502-48e0-9c93-9e256ceb4127",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "openclaw-ops-backup-status-cli",
+      "description": "Checagem diária read-only de backups via openclaw-ops.",
+      "enabled": true,
+      "createdAtMs": 1777241803270,
+      "schedule": {
+        "kind": "cron",
+        "expr": "25 6 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute checagem read-only de backups via CLI agent-native:\n\n/root/.openclaw/workspace/projects/openclaw-ops/bin/openclaw-ops backup status --json\n\nAlerte Alexandre somente se houver backup ausente, excesso de risco em disco, arquivo temporário preso, ou falha concreta. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 120,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777627500000,
+        "lastRunAtMs": 1777541100031,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 25452,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619355095
+    },
+    {
+      "id": "7590deb5-7907-4c09-9c4d-3742e4d806a1",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "flavia:healthcheck-operacional-06h",
+      "description": "Health check silencioso às 06h BRT para detectar falhas operacionais.",
+      "enabled": true,
+      "createdAtMs": 1776111366311,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 6 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:agent:main:main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a rotina de HEALTH CHECK OPERACIONAL descrita no HEARTBEAT.md. Rode openclaw doctor --non-interactive, teste memory_search(), cheque gateway e canais ativos e detecte falhas de auth, plugin, config ou restart pendente. Regra de saída: silêncio se tudo estiver funcional. Só responda ao usuário se houver falha real de operação.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 900,
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "lastRunAtMs": 1777544466682,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 226896,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1777627800000
+      },
+      "updatedAtMs": 1777619355223
+    },
+    {
+      "id": "29ed36a0-a223-4a73-8b97-8f94cfdf4718",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "flavia:task-health-diario",
+      "description": "Auditoria diária de tasks: roda maintenance, detecta novos erros recorrentes e alerta se necessário.",
+      "enabled": true,
+      "createdAtMs": 1777124883251,
+      "schedule": {
+        "kind": "cron",
+        "expr": "45 6 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 420,
+        "message": "Execute a auditoria de saúde de tasks do OpenClaw e resolva o que for possível.\n\nPassos:\n1. `openclaw tasks maintenance --apply` — roda a manutenção automática\n2. `openclaw tasks audit` — captura o resultado\n3. Conta erros por tipo e label (lost, timed_out, etc.)\n4. Se houver erros do tipo 'lost' com mesmo label aparecendo repetidamente (mais de 3 da mesma fonte), isso indica cron com problema estrutural — registre no relatório.\n5. Salve um resumo em `/root/.openclaw/workspace/logs/task-health-report.md` com: data, total erros, total warnings, erros por label, ação tomada.\n6. Só envie mensagem ao Alexandre via Telegram (1067279351) se:\n   - houver mais de 20 erros novos do tipo lost (indica cron com problema recorrente)\n   - ou houver erro de tipo diferente de lost/inconsistent_timestamps\n   - Mensagem deve ser curta: o que está errado, qual cron, sugestão de correção.\n7. Em qualquer outro caso: silêncio total.\n\nFerramenta disponível: exec para rodar comandos shell.",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read"
+        ],
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777628700000,
+        "lastRunAtMs": 1777544714729,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 141406,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619363374
+    },
+    {
+      "id": "41662e9f-6931-49de-a2e4-893e344c7066",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "email-executive-triage-7h-14h",
+      "description": "Triagem executiva de e-mails do Alê nas caixas Mensura, MIA e PCS, com categorização no Office e relatório gerencial.",
+      "enabled": true,
+      "createdAtMs": 1777388698785,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7,14 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a triagem executiva de e-mails do Alê.\n\nComando:\ncd /root/.openclaw/workspace && python3 scripts/email_executive_triage.py --lookback-hours 18 --limit-per-box 80 --apply-categories --update-state --json\n\nDepois leia o arquivo `runtime/email-executive-triage/reports/latest.md`.\n\nRegras de entrega:\n- Se houver CRÍTICOS, IMPORTANTES, bloqueio de acesso a alguma caixa, ou falha de categorização Office, entregue um resumo gerencial claro no direct.\n- Se não houver nada material e nenhuma falha, responda exatamente NO_REPLY.\n- Nunca envie, encaminhe, mova, arquive, apague ou marque e-mails como lidos.\n- A categorização permitida é apenas adicionar categorias do Office/Outlook nas mensagens analisadas.\n- Não detalhar RUÍDO; apenas contagem agregada.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "1067279351",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1777629600000,
+        "lastRunAtMs": 1777568523393,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 40039,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619363401
+    },
+    {
+      "id": "83d6f2c1-370c-444f-b83e-06ed37a592b2",
+      "agentId": "mensura",
+      "name": "mensura-medicoes-diario",
+      "enabled": true,
+      "createdAtMs": 1776208731942,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Faça memory_search por medição e prazo. Liste projetos com medição nos próximos 5 dias e medições atrasadas. Para cada: projeto, contratante, valor, dias até prazo ou atraso. Atrasada >5 dias: URGENTE. Se nenhuma: Nenhuma medição nos próximos 5 dias.",
+        "model": "openai-codex/gpt-5.5",
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "exec"
+        ],
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "null",
+        "to": "null"
+      },
+      "state": {
+        "nextRunAtMs": 1777629600000,
+        "lastRunAtMs": 1777544856135,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 43423,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619363436
+    },
+    {
+      "id": "b09e0efe-093b-47ed-ac12-cefc87aedde6",
+      "agentId": "mensura",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "mensura-schedule-daily-quality-cli",
+      "description": "Resumo diário read-only do Mensura Schedule Control via CLI.",
+      "enabled": true,
+      "createdAtMs": 1777241793172,
+      "schedule": {
+        "kind": "cron",
+        "expr": "20 7 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute diagnósticos e métricas do Mensura Schedule Control via CLI:\n\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule populate-weekly-metrics --execute --json\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule data-readiness --json\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule analytics-universe --analytics-only --json\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule forecast-initial --execute --json\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule executive-risk-report --limit 10 --json\n/root/.openclaw/workspace/projects/mensura-schedule-control/bin/mensura-schedule audit-orphans --json\n\nAlerte Alexandre somente se houver projeto CRÍTICO novo, mudança material no top 10 executivo, projeto novo pronto para predição, forecast com risco alto novo, dado de baixa qualidade em projeto válido, ou problema de ingestão/auditoria que exija decisão. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 420,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777630800000,
+        "lastRunAtMs": 1777544963437,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 109669,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619363469
+    },
+    {
+      "id": "e8f517f2-405c-4b3e-96ce-4bb35000e5c2",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:pulso-matinal",
+      "enabled": true,
+      "createdAtMs": 1776106143006,
+      "schedule": {
+        "kind": "cron",
+        "expr": "45 7 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute estritamente o ciclo 'PULSO MATINAL — 07:45' para Mensura, MIA e PCS. Isto é uma rotina programada. Verifique emails críticos, agenda de hoje, agenda de amanhã, alertas de projeto e clima de obras. Entregue ao usuário no formato definido no HEARTBEAT.md, com silêncio inteligente.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "web_fetch"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777632300000,
+        "lastRunAtMs": 1777545900041,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 221470,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619363531
+    },
+    {
+      "id": "363f3e34-1014-4970-85d9-696772e5ec06",
+      "agentId": "pcs",
+      "sessionKey": "agent:pcs:telegram:group:-1003146152550:topic:143",
+      "name": "PCS Financeiro — monitoramento de notas fiscais",
+      "description": "Monitor read-only de notas fiscais da PCS Engenharia, com alertas no grupo PCS Engenharia/tópico Financeiro.",
+      "enabled": true,
+      "createdAtMs": 1777511836640,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8,13,17 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Monitoramento programado de notas fiscais da PCS Engenharia para o grupo PCS Engenharia / tópico Financeiro.\n\nContexto confirmado pelo Alexandre em 2026-04-29: o destino canônico de alertas de notas fiscais da PCS é Telegram `-1003146152550:topic:143`.\n\nTarefa:\n1. Ler `/root/.openclaw/workspace/projects/fiscal-emission-lab/docs/CONSULTA-BAIXA-NOTIFICACOES.md`.\n2. Fazer somente consulta read-only por notas fiscais novas emitidas contra a PCS Engenharia/PCS Obras e Locações Ltda. usando fontes disponíveis no ambiente (e-mail/arquivos/integrações já existentes). Não emitir, cancelar, aceitar, aprovar, pagar, mover, apagar ou marcar documentos como lidos.\n3. Se encontrar nota fiscal nova com identificação clara, salvar metadados/arquivos em `runtime/fiscal/notas-recebidas/pcs/<YYYY-MM>/` quando a fonte permitir e anunciar neste tópico com formato do documento de consulta/baixa.\n4. Se houver bloqueio de credencial, certificado, fonte fiscal não configurada, ou ausência de rotina concreta para consulta automática, alertar uma única vez de forma objetiva com o dado faltante e próximo passo.\n5. Se não houver documento novo nem bloqueio material, responder exatamente `NO_REPLY`.\n\nGuardrails: nunca expor credenciais, certificado, token, dados bancários sensíveis ou link privado; não declarar nota aprovada, correta, aceita ou liberada para pagamento.",
+        "timeoutSeconds": 420,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "write"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "model": "openai-codex/gpt-5.5"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "-1003146152550:topic:143",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1777633200000,
+        "lastRunAtMs": 1777579511488,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 158482,
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619373490
+    },
+    {
+      "id": "c4abfe18-3f1b-4812-b4c8-0350a851558d",
+      "agentId": "trade",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "trade-news-radar-pre-market",
+      "description": "Trade News Radar pré-mercado executado pelo agente Trade, com envio direto ao tópico Notícias quando houver conteúdo material.",
+      "enabled": true,
+      "createdAtMs": 1777220339752,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o Trade News Radar PRÉ-MERCADO no projeto /root/.openclaw/workspace/projects/trade.\n\nTarefas:\n1. Rodar scripts/news_radar.py pre_market e scripts/market_radar.py; use scripts/gold_monitor.py se precisar de ouro/commodities.\n2. Pesquisar notícias financeiras relevantes: macro global, Brasil, EUA, juros, inflação, dólar, ouro/commodities, fundos/renda fixa e riscos de carteira.\n3. Se houver conteúdo material, enviar resumo no Telegram para target telegram:-1003794434256, threadId 1 (grupo Investimento, tópico Notícias).\n4. Salvar relatório em runtime/reports/.\n5. Se não houver relatório material, responder exatamente NO_REPLY.\n\nGuardrails: sem recomendação automática de compra/venda. Não acione a sessão principal.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "web_search",
+          "web_fetch",
+          "message"
+        ],
+        "timeoutSeconds": 420,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777633200000,
+        "lastRunAtMs": 1777546888184,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 124350,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619373531
+    },
+    {
+      "id": "cc617ba7-66b6-4800-a228-7c4c3829fa5f",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "linkedin-community-api-approval-monitor",
+      "description": "Checa e-mails para aprovação/rejeição do LinkedIn Community Management API institucional.",
+      "enabled": true,
+      "createdAtMs": 1777405657832,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8-20/2 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Monitorar aprovação do LinkedIn Community Management API. Rode `python3 scripts/check_linkedin_community_api_email.py 336` no workspace. Se status for `approval_found`, avise o Alê no direct com próximos passos: gerar OAuth institucional para app OpenClaw - Community API (`77ke3c00urrpdv`) com escopos `w_organization_social r_organization_social`, autorizar no navegador, validar páginas Mensura/MIA/PCS e fazer dry-run antes de publicação real. Se status for `rejection_found`, avise o Alê com o motivo e recomendação. Se status for `no_approval_found` e sem erros, responda NO_REPLY. Nunca enviar, mover, apagar, arquivar ou marcar e-mails como lidos."
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777633200000,
+        "lastRunAtMs": 1777590000018,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 8,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777590000026
+    },
+    {
+      "id": "d619c056-67e6-485b-9dc2-ac85c368a11c",
+      "agentId": "trade",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "trade-gold-monitor-2x-daily",
+      "description": "Monitoramento de ouro executado pelo agente Trade apenas 2x ao dia: pré-mercado e fechamento/final da tarde. Gatilho material vai ao grupo Investimento/tópico Notícias, não para DM do Alê.",
+      "enabled": true,
+      "createdAtMs": 1777219578273,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8,18 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o Trade Gold Monitor (ouro) no projeto /root/.openclaw/workspace/projects/trade.\n\nFrequência autorizada pelo Alê: apenas 2x ao dia em dias úteis — início do dia antes da abertura do mercado e final da tarde/fechamento do mercado. Não criar alertas intermediários fora dessas duas janelas.\n\nTarefas:\n1. Rodar scripts/gold_monitor.py com gravação no Supabase usando /root/.openclaw/workspace/memory/context/trade_supabase.env.\n2. Validar que runtime/reports/gold-monitor-latest.md e runtime/cache/gold-monitor-latest.json foram atualizados.\n3. Se houver gatilho material — ouro acima do limiar, divergência com DXY/juros, movimento forte em prata, USD/BRL ou risco macro relevante — envie o alerta no Telegram para target telegram:-1003794434256, threadId 1 (grupo Investimento, tópico Notícias).\n4. Não envie alerta em DM para Alexandre. Não acione a sessão principal/Flávia.\n5. Se não houver gatilho material, responda exatamente NO_REPLY.\n\nGuardrails: sem ordem, sem recomendação automática, apenas monitoramento e contexto.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "message"
+        ],
+        "timeoutSeconds": 180,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777633200000,
+        "lastRunAtMs": 1777582800112,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 65859,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619373611
+    },
+    {
+      "id": "9ff741a4-5d1a-45b3-a64e-fe979ce0aa29",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "operational-health-8h-14h-18h",
+      "description": "Health unificado read-only do ecossistema Flávia/OpenClaw; só alerta em falha, bloqueio ou atenção real.",
+      "enabled": true,
+      "createdAtMs": 1777412878910,
+      "schedule": {
+        "kind": "cron",
+        "expr": "5 8,14,18 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Rodar health unificado read-only: `python3 scripts/operational_health.py`. Inspecione `runtime/operational-health/latest.json`. Se overall for `ok` ou apenas `active/pending` sem risco novo, responda NO_REPLY. Se houver `fail`, `blocked`, `attention` novo ou piora relevante, avise o Alê com causa, evidência e próximo passo. Não alterar sistemas externos."
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777633500000,
+        "lastRunAtMs": 1777583100077,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 63845,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777583163922
+    },
+    {
+      "id": "2e6f23a4-3456-412e-825b-d6d07aaa6dbf",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "flavia-working-queue-review-hourly",
+      "description": "Revisar a fila operacional viva da Flávia em `/root/2nd-brain/06-agents/flavia/WORKING.md`. Avance tarefas internas segu...",
+      "enabled": true,
+      "createdAtMs": 1777412873633,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 8-20 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Revisar a fila operacional viva da Flávia em `/root/2nd-brain/06-agents/flavia/WORKING.md`. Avance tarefas internas seguras, rode `python3 scripts/operational_health.py` quando fizer sentido, atualize evidências no WORKING/memória se houver mudança. Avise o Alê apenas se houver decisão necessária, risco, bloqueio real, falha relevante ou conclusão importante. Se não houver mudança material, responda exatamente NO_REPLY. Não executar side effects externos sem aprovação explícita."
+      },
+      "state": {
+        "nextRunAtMs": 1777634100000,
+        "lastRunAtMs": 1777590900017,
+        "lastRunStatus": "skipped",
+        "lastStatus": "skipped",
+        "lastDurationMs": 6,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 2,
+        "lastError": "disabled"
+      },
+      "updatedAtMs": 1777619141898
+    },
+    {
+      "id": "2f216155-f842-4d8c-bd45-1bd1c7010b73",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "mensura-crm-cdp-reconcile-daily",
+      "enabled": true,
+      "createdAtMs": 1777415501408,
+      "schedule": {
+        "kind": "cron",
+        "expr": "20 8 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Rodar reconciliação CRM/CDP Mensura read-only: executar `python3 scripts/mensura_crm_pipeline.py --write --json` e `python3 scripts/mensura_hubspot_reconcile.py --write --json` no workspace. Atualizar `/root/2nd-brain/06-agents/flavia/WORKING.md` apenas se houver mudança material. Não enviar nada externo. Anunciar ao Alê somente se houver falha real, divergência material, ou decisão necessária.",
+        "timeoutSeconds": 600,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777634400000,
+        "lastRunAtMs": 1777548006753,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 129187,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777548135940
+    },
+    {
+      "id": "ee9a7a94-7c5c-44e8-83a9-9a53eec92ce6",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "commercial-daily-report-cli",
+      "description": "Relatório comercial automático Mensura via CLI commercial.",
+      "enabled": true,
+      "createdAtMs": 1777241935886,
+      "schedule": {
+        "kind": "cron",
+        "expr": "35 8 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a rotina comercial automática via CLI agent-native:\n\n/root/.openclaw/workspace/projects/commercial-cli/bin/commercial pipeline report --execute --timeout 240 --json\n\nEssa rotina está autorizada pelo Alê para envio automático. Só alerte Alexandre se houver falha real de credencial, API ou Telegram; se executar normalmente, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 300,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777635300000,
+        "lastRunAtMs": 1777548900043,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 46342,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619373680
+    },
+    {
+      "id": "4089b5c2-9c96-4b8b-9553-2d9f3d751c8a",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "MENSURA MKT - checar retornos campanha lote 01",
+      "enabled": true,
+      "createdAtMs": 1777310785638,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9,14,17 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:agent:main:telegram:direct:1067279351",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Checar inbox de `flavia@mensuraengenharia.com.br` para retornos da campanha fria MENSURA lote 01 enviada em 2026-04-27. Classificar respostas em: interesse positivo, neutro, sem timing, descadastro/não interesse, bounce. Não enviar resposta externa sem confirmação do Alê; preparar rascunhos quando houver retorno relevante. Consultar logs em `runtime/mensura-marketing/campanha-20260427/`.",
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "announce",
+        "bestEffort": true,
+        "to": "1067279351",
+        "channel": "telegram"
+      },
+      "state": {
+        "nextRunAtMs": 1777636800000,
+        "lastRunAtMs": 1777579342877,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 168611,
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777579511488
+    },
+    {
+      "id": "43d62126-59c4-4a96-ae9d-d9d186590527",
+      "agentId": "mia",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "ccsp-casa7-cobranca-victor-9h",
+      "description": "Execute a cobrança diária do Victor para CCSP Casa 7, baseada no relatório semanal vigente:\n\n/root/.openclaw/workspace/p...",
+      "enabled": true,
+      "createdAtMs": 1777290789453,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a cobrança diária do Victor para CCSP Casa 7, baseada no relatório semanal vigente:\n\n/root/.openclaw/workspace/projects/ccsp-casa7/scripts/enviar_cobranca_victor.py --execute --json\n\nRegras:\n- Essa rotina pertence ao agente MIA.\n- Enviar email somente se existir item configurado para a data do dia.\n- Não enviar Telegram ao grupo.\n- Não acionar a sessão principal se executar normalmente.\n- Se não houver item do dia, responder exatamente NO_REPLY.\n- Após cada novo relatório semanal de fechamento, a configuração semanal deve ser regenerada para os próximos dias.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "timeoutSeconds": 300,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777636800000,
+        "lastRunAtMs": 1777550400110,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 44516,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 4,
+        "lastError": "⚠️ Agent couldn't generate a response. Note: some tool actions may have already been executed — please verify before retrying."
+      },
+      "updatedAtMs": 1777619121439
+    },
+    {
+      "id": "ea1eb916-7878-44ab-90f8-c18d1733dc8a",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "commercial-marketing-daily-cli",
+      "description": "Prompt operacional diário de Marketing Mensura via CLI commercial.",
+      "enabled": true,
+      "createdAtMs": 1777242355355,
+      "schedule": {
+        "kind": "cron",
+        "expr": "10 9 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a rotina operacional diária de Marketing Mensura via CLI agent-native:\n\n/root/.openclaw/workspace/projects/commercial-cli/bin/commercial marketing daily --execute --timeout 240 --json\n\nEssa rotina está autorizada pelo Alê para envio automático. Só alerte Alexandre se houver falha real de credencial, API ou Telegram; se executar normalmente, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 300,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777637400000,
+        "lastRunAtMs": 1777551023719,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 70114,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619373781
+    },
+    {
+      "id": "a7c03f82-30c1-45dd-b500-85ff26d6e49c",
+      "agentId": "pcs",
+      "name": "pcs-restauro-licencas",
+      "enabled": true,
+      "createdAtMs": 1776208820306,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 1-7 * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Status de licenças de restauro (memory_search restauro licença). Quais vencem em <60 dias? Pendências documentais? Checklist de renovação.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "exec"
+        ],
+        "timeoutSeconds": 300,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "null",
+        "to": "null"
+      },
+      "state": {
+        "nextRunAtMs": 1777640400000,
+        "lastRunAtMs": 1777294800025,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 55942,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619383921
+    },
+    {
+      "id": "631b1f6c-bc28-4cb4-ae49-781ed4f999ee",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:check-tatico",
+      "enabled": true,
+      "createdAtMs": 1776106143030,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute estritamente o ciclo 'CHECK TÁTICO — 12:00'. Isto é uma rotina programada. Só reporte se houver mudança ou ação necessária; se não houver, responda exatamente com ✓ MEIO-DIA LIMPO.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "message",
+          "sessions_spawn",
+          "sessions_send",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777647600000,
+        "lastRunAtMs": 1777561200261,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 210195,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619384009
+    },
+    {
+      "id": "752722f6-c929-4fde-87ea-ea46cf380d5e",
+      "agentId": "trade",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "trade-news-radar-lunch",
+      "description": "Trade News Radar almoço executado pelo agente Trade.",
+      "enabled": true,
+      "createdAtMs": 1777220349726,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o Trade News Radar ALMOÇO no projeto /root/.openclaw/workspace/projects/trade.\n\nTarefas:\n1. Rodar scripts/news_radar.py lunch e scripts/market_radar.py; use scripts/gold_monitor.py se necessário.\n2. Pesquisar mudanças relevantes desde a abertura: macro, Brasil, EUA, juros, dólar, ouro/commodities, fundos/renda fixa e notícias que alterem risco/tese do Trade.\n3. Enviar resumo no Telegram para target telegram:-1003794434256, threadId 1 somente se houver conteúdo material.\n4. Salvar relatório em runtime/reports/.\n5. Se não houver mudança material, responder exatamente NO_REPLY.\n\nGuardrails: sem ordem/recomendação automática. Não acione a sessão principal.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "web_search",
+          "web_fetch",
+          "message"
+        ],
+        "timeoutSeconds": 420,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777647600000,
+        "lastRunAtMs": 1777561410456,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 186964,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619384209
+    },
+    {
+      "id": "6b83779e-e330-4b40-938f-2138d3beb4b7",
+      "agentId": "pcs",
+      "name": "pcs-status-semanal",
+      "enabled": true,
+      "createdAtMs": 1776208802128,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * 5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Relatório semanal PCS: licitações em andamento, propostas entregues, resultados ganhas/perdidas, valor em disputa, taxa de aproveitamento. Compare com semana anterior. Salve no daily notes.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "write",
+          "exec"
+        ],
+        "timeoutSeconds": 420,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "null",
+        "to": "null"
+      },
+      "state": {
+        "nextRunAtMs": 1777662000000,
+        "lastRunAtMs": 1777057200035,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 54681,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619384409
+    },
+    {
+      "id": "a79284f8-6267-476f-89b2-634f79d75503",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:retrospectiva-semanal",
+      "enabled": true,
+      "createdAtMs": 1776106143076,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 17 * * 5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute estritamente o ciclo 'SEXTA — 17:00'. Isto é uma rotina programada. Faça a retrospectiva semanal no formato definido, com score, avanços, travas e decisões relevantes.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "message",
+          "sessions_spawn",
+          "sessions_send",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777665600000,
+        "lastRunAtMs": 1777060915035,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 76956,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619384516
+    },
+    {
+      "id": "f7cabed5-edee-422b-9218-d5cb39665cf1",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:fechamento-tatico",
+      "enabled": true,
+      "createdAtMs": 1776106143055,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 17 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute estritamente o ciclo 'FECHAMENTO TÁTICO — 17:00'. Isto é uma rotina programada. Entregue ao usuário no formato definido, com foco em pendências abertas, preparação de amanhã e delegações sem retorno.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "message",
+          "sessions_spawn",
+          "sessions_send",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777665600000,
+        "lastRunAtMs": 1777579200090,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 142787,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619392083
+    },
+    {
+      "id": "4ba53fca-466e-4e7e-a6b0-4bbda5e2ae2d",
+      "agentId": "trade",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "trade-news-radar-close",
+      "description": "Trade News Radar fechamento executado pelo agente Trade.",
+      "enabled": true,
+      "createdAtMs": 1777220349781,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o Trade News Radar FECHAMENTO no projeto /root/.openclaw/workspace/projects/trade.\n\nTarefas:\n1. Rodar scripts/news_radar.py close, scripts/market_radar.py e scripts/gold_monitor.py.\n2. Consolidar notícias financeiras relevantes do dia: macro, Brasil, EUA, juros, inflação, dólar, ouro/commodities, fundos/renda fixa e implicações para carteira/risco.\n3. Enviar resumo no Telegram para target telegram:-1003794434256, threadId 1 somente se houver conteúdo material.\n4. Salvar relatório em runtime/reports/.\n5. Se não houver mudança material, responder exatamente NO_REPLY.\n\nGuardrails: sem ordem/recomendação automática. Não acione a sessão principal.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "web_search",
+          "web_fetch",
+          "message"
+        ],
+        "timeoutSeconds": 480,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777669200000,
+        "lastRunAtMs": 1777582865971,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 111143,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619392203
+    },
+    {
+      "id": "e9abbf4c-85a7-4ff4-a03f-43275cf6e15f",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:revisao-noturna",
+      "description": "Revisão noturna opcional às 20:30 BRT — pipeline, fluxo de caixa, insights.",
+      "enabled": true,
+      "createdAtMs": 1776980860176,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 20 * * 1-5",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute o ciclo 'REVISÃO NOTURNA — 20:30' para Mensura, MIA e PCS. Cheque: pipeline comercial sem retorno há mais de 3 dias, fluxo de caixa dos próximos 7 dias, oportunidades detectadas, 1 insight estratégico. Regra de saída: SILÊNCIO se não houver nada relevante. Só reporte se houver insight real.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "web_search",
+          "web_fetch",
+          "message",
+          "sessions_spawn",
+          "sessions_send",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777678200000,
+        "lastRunAtMs": 1777591800046,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 99,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'google/gemini-2.5-flash' rejected by agents.defaults.models allowlist: google/gemini-2.5-flash",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619112100
+    },
+    {
+      "id": "1b25455d-5992-40a9-8954-f00866b62631",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "flavia:manutencao-memoria-22h",
+      "description": "Manutenção silenciosa da memória operacional às 22h BRT.",
+      "enabled": true,
+      "createdAtMs": 1776111359056,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 22 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a rotina de MANUTENÇÃO DE MEMÓRIA descrita no HEARTBEAT.md:\n\n1. Revise workspace/memory/context/pending.md — limpe itens resolvidos.\n2. Promova decisões para workspace/memory/context/decisions.md.\n3. Promova lições para workspace/memory/context/lessons.md.\n4. Consolide a nota diária e atualize workspace/memory/MEMORY.md se mudar estado, risco, prioridade ou localização.\n5. Após consolidar, SINCRONIZE o estado curado com o 2nd-brain:\n   - Copie (sobrescrevendo) workspace/memory/context/pending.md → /root/2nd-brain/06-agents/flavia/pending.md\n   - Copie workspace/memory/context/decisions.md → /root/2nd-brain/06-agents/flavia/decisions.md (se existir)\n   - Copie workspace/memory/context/lessons.md → /root/2nd-brain/06-agents/flavia/lessons.md (se existir)\n   - Faça git -C /root/2nd-brain add -- 06-agents/flavia/pending.md 06-agents/flavia/decisions.md 06-agents/flavia/lessons.md e git commit -m 'chore: sync memoria operacional 22h' se houver mudanças.\n\nRegra de saída: silêncio por padrão. Só avise se houver pendência crítica ou conflito de sync.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 300,
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "write",
+          "edit",
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777683600000,
+        "lastRunAtMs": 1777597200135,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 598,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'google/gemini-2.5-flash-lite' rejected by agents.defaults.models allowlist: google/gemini-2.5-flash-lite",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619112201
+    },
+    {
+      "id": "380b2f67-6fa2-4a2f-bf77-1824c777b1da",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "notebooklm-nightly-sync",
+      "description": "Nightly NotebookLM sync and selective memory aggregation",
+      "enabled": true,
+      "createdAtMs": 1776705908172,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 22 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o sync do NotebookLM via CLI agent-native:\n\n/root/.openclaw/workspace/projects/knowledge-cli/bin/knowledge notebooklm sync-authorized --execute --timeout 900\n\nSe houver relatório de sync gerado, leia apenas o resumo. Fique em silêncio se não houver achado novo ou erro relevante. Só alerte o Alexandre se houver login/credencial necessária, falha real ou novo resultado material.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 900,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777685400000,
+        "lastRunAtMs": 1777599156264,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 81,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'google/gemini-2.5-flash-lite' rejected by agents.defaults.models allowlist: google/gemini-2.5-flash-lite",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619112335
+    },
+    {
+      "id": "213531cc-62ec-42ac-a53f-5c0eda9b2e48",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "telegram-memory-digest-nightly",
+      "description": "Gera digest interno e silencioso de sessões Telegram para /root/2nd-brain/07-telegram/digests/. Sem envio externo.",
+      "enabled": true,
+      "createdAtMs": 1777599282816,
+      "schedule": {
+        "kind": "cron",
+        "expr": "35 23 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Rotina interna silenciosa: no workspace /root/.openclaw/workspace, execute `python3 scripts/telegram_memory_digest.py --execute --commit`. Não envie Telegram/e-mail/WhatsApp/LinkedIn. Apenas registre o resultado internamente se houver erro real. Se o comando terminar com exit 0, responda exatamente NO_REPLY. Se falhar, responda com erro curto e evidência objetiva.",
+        "timeoutSeconds": 600,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec"
+        ],
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "failureAlert": {
+        "after": 1,
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "1067279351",
+        "cooldownMs": 86400000
+      },
+      "state": {
+        "nextRunAtMs": 1777689300000,
+        "lastRunAtMs": 1777619262738,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 68050,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619330788
+    },
+    {
+      "id": "06e70017-3efd-4029-90aa-60dcf376d6be",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "vps-limpeza-diaria",
+      "description": "Limpeza diária automática de caches e arquivos temporários seguros",
+      "enabled": true,
+      "createdAtMs": 1776993777017,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 0 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute os seguintes comandos de limpeza e reporte um resumo do espaço liberado:\n\n1. rm -rf /root/.cache/pip\n2. rm -rf /root/.cache/whisper\n3. rm -rf /root/.cache/ms-playwright\n4. rm -rf /root/.cache/huggingface\n5. rm -rf /root/.cache/node-gyp\n6. docker system prune --force\n7. find /root/.openclaw/workspace* -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; find /root/.openclaw/workspace* -name '*.pyc' -delete 2>/dev/null\n8. journalctl --vacuum-time=7d\n9. find /var/log -name '*.gz' -mtime +30 -delete 2>/dev/null\n10. rm -f /root/openclaw-backups/*.tmp 2>/dev/null\n11. ls -1t /root/openclaw-backups/*.tar.gz 2>/dev/null | tail -n +4 | xargs rm -f\n\nDepois rode: df -h / | tail -1\n\nEnvie mensagem resumindo: espaço liberado total e espaço livre atual em disco. Seja breve.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "message"
+        ],
+        "lightContext": true,
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777692600000,
+        "lastRunAtMs": 1777606201002,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 231,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'google/gemini-2.5-flash-lite' rejected by agents.defaults.models allowlist: google/gemini-2.5-flash-lite",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619112448
+    },
+    {
+      "id": "110ca43a-5305-49a9-a594-a4bcc30f2202",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "update-clawflows-direct",
+      "description": "Executa diretamente o workflow update-clawflows às 1h, sem depender do clawflows-scheduler.",
+      "enabled": true,
+      "createdAtMs": 1776192712536,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 1 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Read and execute /root/.openclaw/workspace/clawflows/workflows/enabled/update-clawflows/WORKFLOW.md. Follow it exactly. If there are no relevant announcements after the update, stay silent. If git pull fails or there is a real issue updating, report the issue clearly.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "lightContext": true,
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1777694400000,
+        "lastRunAtMs": 1777608000079,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 209,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'google/gemini-2.5-flash-lite' rejected by agents.defaults.models allowlist: google/gemini-2.5-flash-lite",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619112606
+    },
+    {
+      "id": "f64911cf-d3f0-4a36-bcf5-c490fd9312d2",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "backup-workspace-git-diario",
+      "enabled": true,
+      "createdAtMs": 1776114627084,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 2 * * 1-6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Lembrete interno de rotina: executar backup local do workspace via scripts/backup_workspace.sh, sem notificar o usuário a menos que haja falha real ou risco de perda de backup."
+      },
+      "state": {
+        "nextRunAtMs": 1777698900000,
+        "lastRunAtMs": 1777612500013,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 13,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777612500026
+    },
+    {
+      "id": "d1d55a8e-989e-48e3-a5d1-a4aa68675f33",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "notion-sync-nightly",
+      "description": "Notion → 2nd-brain delta sync (Mensura, MIA, PCS)",
+      "enabled": true,
+      "createdAtMs": 1777123342744,
+      "schedule": {
+        "kind": "cron",
+        "expr": "17 3 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "openai-codex/gpt-5.5",
+        "message": "Execute o sync do Notion via CLI agent-native:\n\n/root/.openclaw/workspace/projects/knowledge-cli/bin/knowledge notion sync-authorized --execute --timeout 900\n\nDepois confira, se existir, /root/.openclaw/workspace/logs/notion-sync-report.md. Fique em silêncio se executar sem erro relevante. Só alerte o Alexandre se houver falha real, conflito, credencial ausente ou risco de dados.",
+        "timeoutSeconds": 900,
+        "toolsAllow": [
+          "exec",
+          "read"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777702620000,
+        "lastRunAtMs": 1777616220017,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 151,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "cron payload.model 'openai-codex/gpt-4o-mini' rejected by agents.defaults.models allowlist: openai-codex/gpt-4o-mini",
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619121170
+    },
+    {
+      "id": "0c0d43a8-65ce-4c46-ae41-5bc4b2a287d3",
+      "agentId": "mensura",
+      "sessionKey": "agent:mensura:telegram:group:-1003366344184:topic:4",
+      "name": "mensura-pg-notion-section-sync-daily",
+      "description": "Mantém a seção P&G Louveira do workspace MENSURA atualizada a partir do mirror Notion Mensura, após o sync Notion noturno.",
+      "enabled": true,
+      "createdAtMs": 1777586222056,
+      "schedule": {
+        "kind": "cron",
+        "expr": "45 3 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Rotina diária P&G Louveira / Notion → workspace MENSURA.\n\nExecute:\n1. `/root/.openclaw/workspace/projects/knowledge-cli/bin/knowledge notion sync-authorized --execute --timeout 900 --json`\n2. Sempre execute depois: `/root/.openclaw/workspace-mensura/scripts/sync_pg_notion_section.py`\n3. Verifique `/root/.openclaw/workspace-mensura/memory/projects/pg-louveira-notion-reunioes.md`.\n\nRegras:\n- Se o Notion sync falhar por HTTP 401/credencial, avise Alexandre no Telegram direct com mensagem curta: \"Sync Notion P&G bloqueado por credencial/autorização; seção local mantida com último mirror disponível.\".\n- Se o sync e a consolidação rodarem sem erro e não houver mudança material, responda exatamente NO_REPLY.\n- Não enviar nada para cliente. P&G Louveira exige revisão dupla do Alê para qualquer comunicação externa.",
+        "timeoutSeconds": 960,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "message"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "model": "openai-codex/gpt-5.5"
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777704300000,
+        "lastRunAtMs": 1777617900016,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 116786,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "consecutiveSkipped": 0
+      },
+      "updatedAtMs": 1777619392290
+    },
+    {
+      "id": "427a6e75-f13e-413c-9fc1-c40d27f69a95",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "flavia:revisao-estrategica-semanal",
+      "description": "Revisão estratégica semanal leve, silenciosa por padrão.",
+      "enabled": true,
+      "createdAtMs": 1776111491900,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 6",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute uma REVISÃO ESTRATÉGICA SEMANAL leve. Observe padrões da semana, pendências que estão se arrastando, decisões evitadas, gargalos recorrentes, oportunidades detectadas e riscos emergentes nas frentes MENSURA, MIA e PCS. Regra de saída: silêncio por padrão. Só responda ao usuário se houver provocação realmente útil, risco estratégico relevante, decisão adiada importante ou oportunidade concreta que mereça interrupção.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 420,
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "write",
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777755600000,
+        "lastRunAtMs": 1777150800050,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 3372,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1,
+        "lastError": "Error: Requested agent harness \"claude-cli\" is not registered and PI fallback is disabled."
+      },
+      "updatedAtMs": 1777619121638
+    },
+    {
+      "id": "a11a3d5a-56c7-4981-b889-f57531ba99b2",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "review-task-board-lite-agent-maps-2026-05-03",
+      "description": "Revisar após 7 dias se o Task Board Lite deve ser refletido nos mapas dos agentes especializados.",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1777201958903,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-05-03T12:00:00.000Z"
+      },
+      "sessionTarget": "session:agent:main:telegram:direct:1067279351",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lembrete: revisar o período de teste do Task Board Lite. Verificar se o fluxo de pendências → tarefas rastreáveis → working memory gerou valor real. Se sim, ajustar os mapas especializados de finance, mensura, mia e pcs; se não, registrar lição e simplificar. Antes de agir, consultar /root/2nd-brain/06-agents/flavia/mapa-frentes-criticas.md, /root/.openclaw/workspace/projects/mission-control/docs/TASK-BOARD-LITE.md e /root/2nd-brain/02-context/pending.md.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 900,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777809600000
+      },
+      "updatedAtMs": 1777619130979
+    },
+    {
+      "id": "40336623-c5e7-4b74-9b7e-a501d2a213f4",
+      "agentId": "trade",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "trade-news-radar-sunday-weekend",
+      "description": "Trade News Radar domingo executado pelo agente Trade.",
+      "enabled": true,
+      "createdAtMs": 1777220349830,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 0",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o Trade News Radar DOMINGO no projeto /root/.openclaw/workspace/projects/trade.\n\nTarefas:\n1. Rodar scripts/news_radar.py weekend; use market_radar/gold_monitor se fizer sentido.\n2. Fazer resumo das notícias financeiras relevantes do fim de semana para preparar a semana do Programa Trade: macro global, Brasil, EUA, juros, dólar, ouro/commodities, fundos/renda fixa, riscos geopolíticos e eventos da semana.\n3. Enviar resumo no Telegram para target telegram:-1003794434256, threadId 1 somente se houver conteúdo material.\n4. Salvar relatório em runtime/reports/.\n5. Se não houver conteúdo material, responder exatamente NO_REPLY.\n\nGuardrails: sem ordem/recomendação automática. Não acione a sessão principal.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "web_search",
+          "web_fetch",
+          "message"
+        ],
+        "timeoutSeconds": 600,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777842000000,
+        "lastRunAtMs": 1777237200097,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 108203,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619392456
+    },
+    {
+      "id": "44a596e4-9212-4781-8c7a-8bd5bb0c2954",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:main",
+      "name": "heartbeat:briefing-semanal",
+      "enabled": true,
+      "createdAtMs": 1776106142991,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 7 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Leia /root/.openclaw/workspace/HEARTBEAT.md e execute estritamente o ciclo 'SEGUNDA — 07:30'. Faça o briefing semanal Mensura + MIA + PCS. Se não houver conteúdo material, responda com um resumo mínimo útil, sem ruído. Entregue para o usuário no formato definido no HEARTBEAT.md. Isto é uma rotina programada. Use silêncio inteligente e não repita contexto inútil.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "read",
+          "exec",
+          "web_search",
+          "web_fetch",
+          "message",
+          "weather",
+          "sessions_spawn",
+          "sessions_send",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777890600000,
+        "lastRunAtMs": 1777285800019,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 32987,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619392546
+    },
+    {
+      "id": "0533fc4a-0d49-42e7-8dec-d5b749cdb073",
+      "agentId": "mia",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "mia-ccsp-relatorio-semanal-cli",
+      "description": "Execute a rotina semanal CCSP baseada no relatório novo via CLI agent-native:\n\n/root/.openclaw/workspace/projects/mia-ob...",
+      "enabled": true,
+      "createdAtMs": 1777241584828,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute a rotina semanal CCSP baseada no relatório novo via CLI agent-native:\n\n/root/.openclaw/workspace/projects/mia-obra-cli/bin/mia-obra ccsp weekly-send-authorized --execute --timeout 600\n\nDepois, obrigatoriamente regenere as cobranças diárias do Victor a partir do relatório semanal mais recente:\n\n/root/.openclaw/workspace/projects/ccsp-casa7/scripts/regenerar_cobrancas_victor.py --json\n\nIsso deve atualizar /root/.openclaw/workspace/projects/ccsp-casa7/config/cobrancas-victor-current.json para a próxima semana.\n\nRegras:\n- Não envie email externo direto nesta rotina semanal.\n- A rotina semanal prepara o próximo ciclo de cobranças diárias.\n- Só alerte Alexandre se houver erro real, bloqueio operacional, ausência de relatório novo ou pendência material.\n- Caso execute normalmente, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 700,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777892400000,
+        "lastRunAtMs": 1777289798461,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 38863,
+        "lastError": "Error: Requested agent harness \"claude-cli\" is not registered and PI fallback is disabled.",
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1
+      },
+      "updatedAtMs": 1777619121852
+    },
+    {
+      "id": "310bef26-4339-4288-b0f8-bdfb5541bf0c",
+      "agentId": "mia",
+      "name": "mia-status-semanal",
+      "enabled": true,
+      "createdAtMs": 1776210194894,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Gere relatorio semanal consolidado: obras ativas, status de cada projeto MIA, pendencias e proximos marcos.",
+        "model": "openai-codex/gpt-5.5",
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "write",
+          "exec"
+        ],
+        "timeoutSeconds": 420
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "null",
+        "to": "null"
+      },
+      "state": {
+        "nextRunAtMs": 1777892400000,
+        "lastRunAtMs": 1777288786599,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 62454,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619404611
+    },
+    {
+      "id": "cba39f60-36b1-4cc0-8cb1-4beaa35e8815",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "reports-weekly-preview-cli",
+      "description": "Inventário/preview semanal de relatórios via CLI reports.",
+      "enabled": true,
+      "createdAtMs": 1777241940674,
+      "schedule": {
+        "kind": "cron",
+        "expr": "45 8 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute inventário/preview de relatórios via CLI agent-native:\n\n/root/.openclaw/workspace/projects/reports-cli/bin/reports status --json\n/root/.openclaw/workspace/projects/reports-cli/bin/reports list --limit 50 --json\n/root/.openclaw/workspace/projects/reports-cli/bin/reports build-preview semanal --json\n\nNão envie relatório externo. Alerte Alexandre somente se houver relatório crítico pendente, fonte quebrada ou inconsistência material. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777895100000,
+        "lastRunAtMs": 1777290300019,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 31938,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619410673
+    },
+    {
+      "id": "027ebbae-2905-42db-b042-6d335a6362a2",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "sienge-weekly-status-cli",
+      "description": "Execute status read-only da CLI Sienge:\n\n/root/.openclaw/workspace/projects/sienge-cli/bin/sienge status --json\n/root/.o...",
+      "enabled": true,
+      "createdAtMs": 1777241945577,
+      "schedule": {
+        "kind": "cron",
+        "expr": "50 8 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute status read-only da CLI Sienge:\n\n/root/.openclaw/workspace/projects/sienge-cli/bin/sienge status --json\n/root/.openclaw/workspace/projects/sienge-cli/bin/sienge guardrails --json\n\nNão faça upload. Alerte Alexandre somente se a integração estiver quebrada ou houver risco operacional. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 120,
+        "toolsAllow": [
+          "exec"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777895400000,
+        "lastRunAtMs": 1777290600022,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 20925,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619413689
+    },
+    {
+      "id": "4414334b-7a42-49b2-9ebb-ee4be768dbd8",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "lembrete-piloto-seo-aeo-mensura",
+      "description": "Lembrete: retomar o piloto SEO/AEO Mensura preparado em 27/04. Ler /root/2nd-brain/04-projects/marketing/seo-aeo-operati...",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1777286158150,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-05-04T12:00:00.000Z"
+      },
+      "sessionTarget": "session:agent:main:telegram:direct:1067279351",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lembrete: retomar o piloto SEO/AEO Mensura preparado em 27/04. Ler /root/2nd-brain/04-projects/marketing/seo-aeo-operating-model.md, keyword-database.md, published-pages-tracker.md e seo-aeo-pilot-mensura.md. Próximo passo: validar keywords reais, confirmar Search Console/GA4, criar 10 briefs e selecionar 2 páginas iniciais. Não publicar nada sem aprovação do Alê.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777896000000
+      },
+      "updatedAtMs": 1777286158150
+    },
+    {
+      "id": "5f6f5fb5-451d-4c10-84f4-f6b57e5f15eb",
+      "agentId": "croncheap",
+      "name": "selfupdate:check-only",
+      "description": "Verifica semanalmente se ha versao nova de openclaw, SEM atualizar",
+      "enabled": true,
+      "createdAtMs": 1776692907608,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute: npm view openclaw@latest version. Compare com o resultado de: openclaw --version. Se forem diferentes, envie uma mensagem no Telegram topic da Flavia dizendo \"nova versao disponivel X.Y.Z (instalada N.N.N) — rodar upgrade manual\". NAO rode npm install.",
+        "timeoutSeconds": 60,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "message"
+        ],
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "-1003818163425:topic:1"
+      },
+      "state": {
+        "nextRunAtMs": 1777896000000,
+        "lastRunAtMs": 1777291250413,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 32530,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619414436
+    },
+    {
+      "id": "96e75d22-defe-4170-8764-2a9ee26730d8",
+      "agentId": "croncheap",
+      "name": "finance-fluxo-semanal",
+      "enabled": true,
+      "createdAtMs": 1776208855561,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:finance-fluxo",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o relatório financeiro semanal via CLI agent-native:\n\n/root/.openclaw/workspace/finance/bin/finance status --json\n/root/.openclaw/workspace/finance/bin/finance report --days 90 --limit 80 --json\n/root/.openclaw/workspace/finance/bin/finance validate-contas --json\n\nSalve apenas se houver achado material. Alerte Alexandre somente se houver vencimento crítico, inconsistência séria ou risco de caixa/controle. Caso contrário, responda exatamente NO_REPLY.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "exec"
+        ],
+        "timeoutSeconds": 180,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777896000000,
+        "lastRunAtMs": 1777291200020,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 50393,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619414482
+    },
+    {
+      "id": "beebaa48-e965-410b-b077-7cb8c0b9f4fc",
+      "agentId": "pcs",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "pcs-licitacoes-email-semanal-cli",
+      "description": "Relatório semanal de licitações PCS via CLI pcs-licita.",
+      "enabled": true,
+      "createdAtMs": 1777241594771,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute o relatório semanal automático de licitações PCS via CLI agent-native:\n\n/root/.openclaw/workspace/projects/pcs-licita-cli/bin/pcs-licita weekly send-authorized --execute --timeout 600\n\nNão envie mensagem adicional se executar normalmente. Só alerte Alexandre se houver erro real, credencial/email bloqueado ou relatório com urgência crítica não tratada pelo próprio payload.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1777896000000,
+        "lastRunAtMs": 1777291322815,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 153918,
+        "lastError": "⚠️ Agent couldn't generate a response. Note: some tool actions may have already been executed — please verify before retrying.",
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 1
+      },
+      "updatedAtMs": 1777619130923
+    },
+    {
+      "id": "bccbbe65-8b13-4f19-a784-60c35936aa48",
+      "agentId": "croncheap",
+      "sessionKey": "agent:main:telegram:group:-1003818163425:topic:1",
+      "name": "skills:provenance-audit",
+      "description": "Auditoria semanal de proveniência, segredos e possibilidade de sync seguro das skills locais.",
+      "enabled": true,
+      "createdAtMs": 1776111887327,
+      "schedule": {
+        "kind": "cron",
+        "expr": "5 4 * * 2",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:agent:main:telegram:group:-1003818163425:topic:1",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Rotina silenciosa semanal de auditoria das skills locais em /root/.openclaw/workspace/skills. 1) Enumere as skills locais. 2) Verifique se cada skill tem proveniência explícita e confiável em SKILL.md, README, package metadata ou links canônicos. 3) Sinalize skills sem origem verificável, com arquivos sensíveis (.env, client_secret, token, credential), ou com indícios de risco operacional. 4) Se houver skill com origem remota clara e caminho seguro de sync futuro, informe isso de forma curta. 5) Não faça auto-merge, git pull, install script nem alteração de arquivos. 6) Se não houver achado material, responda exatamente `NO_REPLY`. 7) Só interrompa o usuário se houver risco real, falta de proveniência relevante, ou oportunidade concreta de converter uma skill para update seguro.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 1200,
+        "lightContext": true,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "web_search",
+          "web_fetch",
+          "update_plan"
+        ],
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "to": "-1003818163425:topic:1",
+        "channel": "telegram"
+      },
+      "state": {
+        "nextRunAtMs": 1777964700000,
+        "lastRunAtMs": 1777359900039,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 150020,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      },
+      "updatedAtMs": 1777619421098
+    },
+    {
+      "id": "0baaebea-6687-4dac-b778-9b7b27d1a7a0",
+      "agentId": "mia",
+      "name": "mia-status-semanal",
+      "enabled": true,
+      "createdAtMs": 1776208891509,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 2",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Status semanal de cada projeto MIA. % conclusão, próximo marco, pendências, issues de qualidade. Compare com semana anterior. Use: ✅ ⚠️ 🔴. Salve.",
+        "model": "openai-codex/gpt-5.5",
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ],
+        "toolsAllow": [
+          "read",
+          "write",
+          "exec"
+        ],
+        "timeoutSeconds": 420,
+        "lightContext": true
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "null",
+        "to": "null"
+      },
+      "state": {
+        "nextRunAtMs": 1777978800000,
+        "lastRunAtMs": 1777374150813,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 128183,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619421167
+    },
+    {
+      "id": "785c3274-69d6-459c-a13c-2d86370d446d",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "flavia-baba-fechamento-dia-5",
+      "enabled": true,
+      "createdAtMs": 1776721127923,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 5 * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:agent:main:telegram:direct:1067279351",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lembrete operacional: hoje é dia 5, verificar e informar ao Alê o valor a pagar para a Flávia babá no fechamento. Regra atual: salário fixo de R$ 3.000,00 por mês, adiantamento padrão de R$ 1.200,00 no dia 20, fechamento-base de R$ 1.800,00 no dia 5, cesta básica obrigatória de R$ 209,00 e condução calculada por presença real usando R$ 5,82 por trecho de ônibus em São Paulo, totalizando R$ 11,64 por dia trabalhado. O vale-transporte deve ser absorvido integralmente pelo empregador, sem desconto em folha. Além do valor, entregar uma mensagem pronta de prestação de contas, em português simples, agradável e respeitoso, para o Alê encaminhar à Flávia, ressaltando de forma positiva que o vale-transporte está sendo mantido sem desconto como um cuidado adicional em reconhecimento ao bom trabalho dela."
+      },
+      "delivery": {
+        "mode": "announce",
+        "to": "1067279351",
+        "channel": "telegram"
+      },
+      "state": {
+        "nextRunAtMs": 1777982400000
+      },
+      "updatedAtMs": 1776722015503
+    },
+    {
+      "id": "04cbed48-2e57-4b7b-bb24-2f3bd6e0a79a",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "linkedin-pessoal-terca-12h15",
+      "description": "Publicação LinkedIn pessoal do Alê — Terça 12:15 BRT (Plano de Marketing)",
+      "enabled": true,
+      "createdAtMs": 1776981487112,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 12 * * 2",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Você é o agente de marketing operando o LinkedIn pessoal do Alexandre Aguiar (Alê).\n\n## Tarefa automática: publicar o próximo post previsto no plano editorial — TERÇA\n\n### 1. Leia o contexto\n- Plano editorial: `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/plano-implantacao-linkedin-pessoal.md`\n- Estado operacional: `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/estado-operacional.md`\n- Identidade e tom: `/root/2nd-brain/01-identity/user.md` e `/root/2nd-brain/01-identity/company.md`\n\n### 2. Determine o próximo post\nCom base no último ciclo executado registrado no estado-operacional, identifique:\n- Qual semana do plano;\n- Qual pilar editorial;\n- Hoje é TERÇA → pilar/tema da terça desta semana.\n\n### 3. Componha o post\nRegras obrigatórias:\n- Tom técnico, elegante, sóbrio, não apelativo;\n- Eixo: governança de obras como proteção patrimonial e operacional;\n- Sem emoji, sem linguagem motivacional, sem hashtags excessivas;\n- 150–250 palavras;\n- Texto puro, parágrafos curtos;\n- Se MIA: residencial ultra-premium/proteção do proprietário;\n- Se MENSURA: PMO B2B/portfólios industriais/corporativos.\n\n### 4. Publique automaticamente via CLI\nSalve o texto final em `/tmp/linkedin-post-terca.txt` e execute:\n\n/root/.openclaw/workspace/projects/commercial-cli/bin/commercial linkedin publish-auto --execute --file /tmp/linkedin-post-terca.txt --json\n\nSe status 201/sucesso: extraia o URN do campo `x-restli-id` retornado.\nSe token OAuth estiver revogado ou ausente: registre o bloqueio no estado-operacional.md e avise Alexandre.\n\n### 5. Atualize estado operacional\nEdite `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/estado-operacional.md`:\n- Adicione histórico com data, dia, pilar, tema e URN;\n- Atualize último ciclo executado;\n- Atualize próximo passo correto para a próxima quinta;\n- Atualize `_Atualizado em_`.\n\nNão peça aprovação antes de publicar. O Alê autorizou publicação automática. Só avise se houver falha real ou bloqueio de credencial.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "edit"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1777994100000,
+        "lastRunAtMs": 1777389300059,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 65785,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619131083
+    },
+    {
+      "id": "253419e0-f6a8-473e-be82-308625df0d3f",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "linkedin-pessoal-quinta-09h05",
+      "description": "Publicação LinkedIn pessoal do Alê — Quinta 09:05 BRT (Plano de Marketing)",
+      "enabled": true,
+      "createdAtMs": 1776981476770,
+      "schedule": {
+        "kind": "cron",
+        "expr": "5 9 * * 4",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Você é o agente de marketing operando o LinkedIn pessoal do Alexandre Aguiar (Alê).\n\n## Tarefa automática: publicar o próximo post previsto no plano editorial — QUINTA\n\n### 1. Leia o contexto\n- Plano editorial: `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/plano-implantacao-linkedin-pessoal.md`\n- Estado operacional: `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/estado-operacional.md`\n- Identidade e tom: `/root/2nd-brain/01-identity/user.md` e `/root/2nd-brain/01-identity/company.md`\n\n### 2. Determine o próximo post\nCom base no último ciclo executado registrado no estado-operacional, identifique:\n- Qual semana do plano;\n- Qual pilar editorial;\n- Hoje é QUINTA → pilar/tema da quinta desta semana.\n\n### 3. Componha o post\nRegras obrigatórias:\n- Tom técnico, elegante, sóbrio, não apelativo;\n- Eixo: governança de obras como proteção patrimonial e operacional;\n- Sem emoji, sem linguagem motivacional, sem hashtags excessivas;\n- 150–250 palavras;\n- Texto puro, parágrafos curtos;\n- Se MIA: residencial ultra-premium/proteção do proprietário;\n- Se MENSURA: PMO B2B/portfólios industriais/corporativos.\n\n### 4. Publique automaticamente via CLI\nSalve o texto final em `/tmp/linkedin-post-quinta.txt` e execute:\n\n/root/.openclaw/workspace/projects/commercial-cli/bin/commercial linkedin publish-auto --execute --file /tmp/linkedin-post-quinta.txt --json\n\nSe status 201/sucesso: extraia o URN do campo `x-restli-id` retornado.\nSe token OAuth estiver revogado ou ausente: registre o bloqueio no estado-operacional.md e avise Alexandre.\n\n### 5. Atualize estado operacional\nEdite `/root/2nd-brain/06-agents/flavia/memory/projects/linkedin-pessoal/estado-operacional.md`:\n- Adicione histórico com data, dia, pilar, tema e URN;\n- Atualize último ciclo executado;\n- Atualize próximo passo correto para a próxima terça;\n- Atualize `_Atualizado em_`.\n\nNão peça aprovação antes de publicar. O Alê autorizou publicação automática. Só avise se houver falha real ou bloqueio de credencial.",
+        "model": "openai-codex/gpt-5.5",
+        "timeoutSeconds": 600,
+        "toolsAllow": [
+          "exec",
+          "read",
+          "write",
+          "edit"
+        ],
+        "lightContext": true,
+        "fallbacks": [
+          "openai-codex/gpt-5.4-mini"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "telegram",
+        "to": "1067279351"
+      },
+      "state": {
+        "nextRunAtMs": 1778155500000,
+        "lastRunAtMs": 1777550700039,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 55687,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1777619131159
+    },
+    {
+      "id": "9493b2c5-aafc-4e29-9bcc-3fd3f416c67f",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1067279351",
+      "name": "flavia-baba-adiantamento-dia-20",
+      "enabled": true,
+      "createdAtMs": 1776721123040,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 20 * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "session:agent:main:telegram:direct:1067279351",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Lembrete operacional: hoje é dia 20, verificar e informar ao Alê o valor a pagar para a Flávia babá. Regra atual: salário-base fixo de R$ 3.000,00 por mês e adiantamento padrão de 40%, equivalente a R$ 1.200,00. Além do valor, entregar uma mensagem pronta de prestação de contas, em português simples e respeitoso, para o Alê encaminhar à Flávia. A mensagem deve estar alinhada à rotina trabalhista doméstica brasileira e mencionar que o valor corresponde ao adiantamento salarial do mês."
+      },
+      "delivery": {
+        "mode": "announce",
+        "to": "1067279351",
+        "channel": "telegram"
+      },
+      "state": {
+        "nextRunAtMs": 1779278400000
+      },
+      "updatedAtMs": 1776721622942
+    }
+  ],
+  "total": 56,
+  "offset": 0,
+  "limit": 56,
+  "hasMore": false,
+  "nextOffset": null,
+  "deliveryPreviews": {
+    "387bd1b0-124f-4e9c-81c0-f711d438e611": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "761d11b2-56b7-450d-945f-23118cc67a6b": {
+      "label": "none -> telegram:-1003818163425",
+      "detail": "explicit"
+    },
+    "b25df6ae-e452-41ab-bcae-39d49d4a2029": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "796c3e7a-535c-469b-a759-067d81898829": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "2f0d6e28-5502-48e0-9c93-9e256ceb4127": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "7590deb5-7907-4c09-9c4d-3742e4d806a1": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "29ed36a0-a223-4a73-8b97-8f94cfdf4718": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "41662e9f-6931-49de-a2e4-893e344c7066": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "83d6f2c1-370c-444f-b83e-06ed37a592b2": {
+      "label": "none -> null:null",
+      "detail": "Unsupported channel: null"
+    },
+    "b09e0efe-093b-47ed-ac12-cefc87aedde6": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "e8f517f2-405c-4b3e-96ce-4bb35000e5c2": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "363f3e34-1014-4970-85d9-696772e5ec06": {
+      "label": "announce -> telegram:-1003146152550",
+      "detail": "explicit"
+    },
+    "c4abfe18-3f1b-4812-b4c8-0350a851558d": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "cc617ba7-66b6-4800-a228-7c4c3829fa5f": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "d619c056-67e6-485b-9dc2-ac85c368a11c": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "9ff741a4-5d1a-45b3-a64e-fe979ce0aa29": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "2e6f23a4-3456-412e-825b-d6d07aaa6dbf": {
+      "label": "not requested",
+      "detail": "not requested"
+    },
+    "2f216155-f842-4d8c-bd45-1bd1c7010b73": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "ee9a7a94-7c5c-44e8-83a9-9a53eec92ce6": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "4089b5c2-9c96-4b8b-9553-2d9f3d751c8a": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "43d62126-59c4-4a96-ae9d-d9d186590527": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "ea1eb916-7878-44ab-90f8-c18d1733dc8a": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "a7c03f82-30c1-45dd-b500-85ff26d6e49c": {
+      "label": "none -> null:null",
+      "detail": "Unsupported channel: null"
+    },
+    "631b1f6c-bc28-4cb4-ae49-781ed4f999ee": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "752722f6-c929-4fde-87ea-ea46cf380d5e": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "6b83779e-e330-4b40-938f-2138d3beb4b7": {
+      "label": "none -> null:null",
+      "detail": "Unsupported channel: null"
+    },
+    "a79284f8-6267-476f-89b2-634f79d75503": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "f7cabed5-edee-422b-9218-d5cb39665cf1": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "4ba53fca-466e-4e7e-a6b0-4bbda5e2ae2d": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "e9abbf4c-85a7-4ff4-a03f-43275cf6e15f": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "1b25455d-5992-40a9-8954-f00866b62631": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "380b2f67-6fa2-4a2f-bf77-1824c777b1da": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "213531cc-62ec-42ac-a53f-5c0eda9b2e48": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "06e70017-3efd-4029-90aa-60dcf376d6be": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "110ca43a-5305-49a9-a594-a4bcc30f2202": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "f64911cf-d3f0-4a36-bcf5-c490fd9312d2": {
+      "label": "not requested",
+      "detail": "not requested"
+    },
+    "d1d55a8e-989e-48e3-a5d1-a4aa68675f33": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "0c0d43a8-65ce-4c46-ae41-5bc4b2a287d3": {
+      "label": "none -> telegram:telegram:-1003366344184",
+      "detail": "resolved from last, session agent:mensura:telegram:group:-1003366344184:topic:4"
+    },
+    "427a6e75-f13e-413c-9fc1-c40d27f69a95": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "a11a3d5a-56c7-4981-b889-f57531ba99b2": {
+      "label": "none -> telegram:telegram:1067279351",
+      "detail": "resolved from last, session agent:main:telegram:direct:1067279351"
+    },
+    "40336623-c5e7-4b74-9b7e-a501d2a213f4": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "44a596e4-9212-4781-8c7a-8bd5bb0c2954": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "0533fc4a-0d49-42e7-8dec-d5b749cdb073": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "310bef26-4339-4288-b0f8-bdfb5541bf0c": {
+      "label": "none -> null:null",
+      "detail": "Unsupported channel: null"
+    },
+    "cba39f60-36b1-4cc0-8cb1-4beaa35e8815": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "027ebbae-2905-42db-b042-6d335a6362a2": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "4414334b-7a42-49b2-9ebb-ee4be768dbd8": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "5f6f5fb5-451d-4c10-84f4-f6b57e5f15eb": {
+      "label": "announce -> telegram:-1003818163425",
+      "detail": "explicit"
+    },
+    "96e75d22-defe-4170-8764-2a9ee26730d8": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "beebaa48-e965-410b-b077-7cb8c0b9f4fc": {
+      "label": "none -> last",
+      "detail": "last -> no route, will fail-closed: Channel is required when multiple channels are configured: telegram, whatsapp Set delivery.channel explicitly or use a main session with a previous channel."
+    },
+    "bccbbe65-8b13-4f19-a784-60c35936aa48": {
+      "label": "announce -> telegram:-1003818163425",
+      "detail": "explicit"
+    },
+    "0baaebea-6687-4dac-b778-9b7b27d1a7a0": {
+      "label": "none -> null:null",
+      "detail": "Unsupported channel: null"
+    },
+    "785c3274-69d6-459c-a13c-2d86370d446d": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "04cbed48-2e57-4b7b-bb24-2f3bd6e0a79a": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "253419e0-f6a8-473e-be82-308625df0d3f": {
+      "label": "none -> telegram:1067279351",
+      "detail": "explicit"
+    },
+    "9493b2c5-aafc-4e29-9bcc-3fd3f416c67f": {
+      "label": "announce -> telegram:1067279351",
+      "detail": "explicit"
+    }
+  }
+}

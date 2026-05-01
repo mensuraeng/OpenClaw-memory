@@ -1,7 +1,7 @@
 # OpenClaw Health
 
-- Status: `ok`
-- Timestamp UTC: `2026-04-30T09:50:08.693414+00:00`
+- Status: `critical`
+- Timestamp UTC: `2026-05-01T09:50:07.684807+00:00`
 
 ## Checks
 
@@ -9,6 +9,6 @@
 - `mission_http`: `ok` - HTTP 200
 - `systemd`: `ok` - 0 failed units
 - `docker`: `ok` - 0 unhealthy containers
-- `disk`: `ok` - root disk 78.3% used
+- `disk`: `critical` - root disk 99.4% used
 - `logs`: `ok` - 0 log files >50MB
 - `backups`: `ok` - backup retention policy satisfied

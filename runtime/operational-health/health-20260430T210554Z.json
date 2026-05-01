@@ -1,0 +1,82 @@
+{
+  "checked_at_utc": "2026-04-30T21:05:54.462234+00:00",
+  "overall": "active",
+  "counts": {
+    "ok": 11,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "ok",
+      "detail": "status executado",
+      "evidence": "ith no channels.whatsapp.accounts.default.groups allowlist; any group can add + ping (mention-gated). Set channels.whatsap…\n  WARN No auth rate limiting configured\n    gateway.bind is not loopback but no gateway.auth.rateLimit is configured. Without rate limiting, brute-force auth attacks are not mitigated.\n    Fix: Set gateway.auth.rateLimit (e.g. { maxAttempts: 10, windowMs: 60000, lockoutMs: 300000 }).\n  WARN Some configured models are below recommended tiers\n    Smaller/older models are generally more susceptible to prompt injection and tool misuse. - openai/gpt-image-2 (Below GPT-5 family) @ agents.defaults.imageModel…\n    Fix: Use the latest, top-tier model for any bot with tools or untrusted inboxes. Avoid Haiku tiers; prefer GPT-5+ and Claude 4.5+.\n  WARN Potential multi-user setup detected (personal-assistant model warning)\n    Heuristic signals indicate this gateway may be reachable by multiple users: - channels.telegram.groupPolicy=\"allowlist\" with configured group targets -"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📧 [AAMkADAw...] 2026-04-30 19:47 | De: invoice+statements@mail.anthropic.com\n   Assunto: Your receipt from Anthropic, PBC #2889-4313-4734\n   Your receipt from Anthropic, PBC #2889-4313-4734  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏ \n\n",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📧 [AAMkADA5...] 2026-04-30 20:09 | De: gustavo.brancato@toolsengenharia.com.br\n   Assunto: RES: MIA_CCSP-C7 - MAPA 180_ MINI GUIAS\n   Aprovado\nFornecedor Ecoverde.\n\nObg,\n\nGUSTAVO D'ALMEIDA BRANCATO\n\n+55 (11) 95496-0032\n+55 (11\n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 18:02 | De: philippe.santos@pcsengenharia.com.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Andréia, boa tarde. Tudo bem, e você ?\n\nSobre a contratação, peço para alterar para o plano specia\n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-29 20:30 | De: victor.evangelista@miaengenharia.com.br\n   Assunto: RE: CCSP — deliberações consolidadas da reunião\n   Flavia,\n\nSegue minhas considerações em vermelho\n\nAcredito que temos um relatório completo e cons\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-30T21:03:27.819847+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}

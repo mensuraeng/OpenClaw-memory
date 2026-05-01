@@ -1,0 +1,82 @@
+{
+  "checked_at_utc": "2026-05-01T01:45:48.029653+00:00",
+  "overall": "active",
+  "counts": {
+    "ok": 11,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "ok",
+      "detail": "status executado",
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 297 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 142 issues · audit 10 errors · 46 warn · 1328 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 23:06 | De: matilha_at_news_petlove_com_br_5dphxdxn4f_fa9a6769@privaterelay.appleid.com\n   Assunto: 📢Vai perder R$120 de cashback?\n   Use CLUBE120 na sua 1ª compra com o Clube\n ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ \n\n",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📩 [AAMkADA5...] 2026-05-01 00:49 | De: alertas+d@emails.decolar.com\n   Assunto: ⚽📺 Partiu ver os jogos nos estúdios da CazéTV?\n   Compre seu pacote pro RJ e garanta seu assento nos estúdios da CazéTV para assistir aos jogos!✈️ Vag\n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 21:28 | De: andreia.souza@gescon.eng.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Boa tarde, Philippe , tudo bem?\n\nO contrato foi elaborado e enviado para assinatura pela plataform\n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-29 20:30 | De: victor.evangelista@miaengenharia.com.br\n   Assunto: RE: CCSP — deliberações consolidadas da reunião\n   Flavia,\n\nSegue minhas considerações em vermelho\n\nAcredito que temos um relatório completo e cons\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-30T21:03:27.819847+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}

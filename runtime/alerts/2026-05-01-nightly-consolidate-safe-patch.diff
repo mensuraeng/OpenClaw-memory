@@ -1,0 +1,50 @@
+*** Begin Patch
+*** Update File: /root/.openclaw/workspace/projects/openclaw-memory/scripts/nightly_consolidate.py
+@@
+-"""
+-nightly_consolidate.py  Consolida memoria nightly + sync 2nd-brain.
+-
+-Rotina oficial: root cron as 01:00 BRT.
+-Esta rotina nunca deve fazer git add -A no workspace principal.
+-"""
++"""
++nightly_consolidate.py  Consolida memoria nightly sem sobrescrever 2nd-brain.
++
++Rotina oficial: root cron as 01:00 BRT.
++Esta rotina nunca deve fazer git add -A no workspace principal.
++
++Regra critica: /root/2nd-brain e fonte oficial. workspace/memory/context e legado/local.
++Portanto, esta rotina nao pode copiar pending.md, decisions.md ou lessons.md do workspace
++para /root/2nd-brain/02-context.
++"""
+@@
+-# 1. Verificar contexto ativo
++# 1. Verificar contexto legado apenas para diagnostico, sem promover automaticamente
+ for fname in ["pending.md", "decisions.md", "lessons.md", "mapa-frentes-criticas.md", "urgent_notifications.md"]:
+     fpath = f"{CTX}/{fname}"
+     if os.path.exists(fpath):
+         size = os.path.getsize(fpath)
+-        print(f"   {fname}: {size} bytes")
++        print(f"   legado {fname}: {size} bytes (sem sync automatico)")
+     else:
+-        print(f"   {fname}: AUSENTE  criando vazio")
+-        open(fpath, "w").write(f"# {fname}\n\nCriado em {TS}\n")
++        print(f"   legado {fname}: AUSENTE")
+ 
+-# 2. Copiar contexto atualizado para 2nd-brain
+-os.makedirs(f"{BRAIN}/02-context", exist_ok=True)
+-for fname in ["pending.md", "decisions.md", "lessons.md"]:
+-    src = f"{CTX}/{fname}"
+-    dst = f"{BRAIN}/02-context/{fname}"
+-    if os.path.exists(src):
+-        with open(src) as f:
+-            content = f.read()
+-        with open(dst, "w") as f:
+-            f.write(content)
+-        print(f"  sync: {fname}  2nd-brain/02-context/")
++# 2. Nunca sobrescrever 2nd-brain/02-context a partir do workspace legado.
++print("  contexto canonico preservado: 2nd-brain/02-context nao foi sobrescrito")
+@@
+-tracked_paths = ["02-context/pending.md", "02-context/decisions.md", "02-context/lessons.md", f"05-journal/2026/{TODAY}.md"]
++tracked_paths = [f"05-journal/2026/{TODAY}.md"]
+*** End Patch

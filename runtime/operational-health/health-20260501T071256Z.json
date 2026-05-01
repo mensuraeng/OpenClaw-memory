@@ -1,0 +1,84 @@
+{
+  "checked_at_utc": "2026-05-01T07:12:56.134728+00:00",
+  "overall": "fail",
+  "counts": {
+    "attention": 1,
+    "fail": 1,
+    "ok": 9,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "fail",
+      "detail": "timeout",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📩 [AAMkADA5...] 2026-05-01 02:35 | De: noreply@xpi.com.br\n   Assunto: Operações durante o feriado: fique atento!\n   Veja como se organizar\n\nOlá, cliente XP!\n\n\nNo dia 01 de maio celebra-se o Dia de Tiradentes no \n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 21:28 | De: andreia.souza@gescon.eng.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Boa tarde, Philippe , tudo bem?\n\nO contrato foi elaborado e enviado para assinatura pela plataform\n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-29 20:30 | De: victor.evangelista@miaengenharia.com.br\n   Assunto: RE: CCSP — deliberações consolidadas da reunião\n   Flavia,\n\nSegue minhas considerações em vermelho\n\nAcredito que temos um relatório completo e cons\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-30T21:03:27.819847+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}

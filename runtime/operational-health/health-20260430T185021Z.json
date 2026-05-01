@@ -1,0 +1,83 @@
+{
+  "checked_at_utc": "2026-04-30T18:50:21.005029+00:00",
+  "overall": "attention",
+  "counts": {
+    "attention": 1,
+    "ok": 10,
+    "pending": 1
+  },
+  "checks": [
+    {
+      "name": "openclaw_status",
+      "status": "attention",
+      "detail": "timeout",
+      "evidence": null
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADAw...] 2026-04-30 18:43 | De: thiago.carvalho@sum.com.br\n   Assunto: RE: RES: 120. Contrato 26.271.1.120 - Consultoria em planejamento - P&G Louveira\n   Prezados boa tarde.\n\nSó uma observação, na nova NF verificar o código de serviço, essa foi emitida\n\n",
+      "evidence": "alexandre@mensuraengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mia",
+      "status": "ok",
+      "detail": "📧 [AAMkADA5...] 2026-04-30 16:36 | De: alexandre@miaengenharia.com.br\n   Assunto: CCSP — deliberações consolidadas para circulação | versão revisada\n   Alexandre,\n\nVocê tem razão. Revisei o retorno do Victor e segue a versão corrigida, com as considera\n\n",
+      "evidence": "alexandre@miaengenharia.com.br"
+    },
+    {
+      "name": "graph_email_pcs",
+      "status": "ok",
+      "detail": "📧 [AAMkADYw...] 2026-04-30 18:02 | De: philippe.santos@pcsengenharia.com.br\n   Assunto: RES: PCS OBRAS | Sienge - APIs\n   Andréia, boa tarde. Tudo bem, e você ?\n\nSobre a contratação, peço para alterar para o plano specia\n\n",
+      "evidence": "alexandre@pcsengenharia.com.br"
+    },
+    {
+      "name": "graph_email_mensura",
+      "status": "ok",
+      "detail": "📩 [AAMkADk1...] 2026-04-29 20:30 | De: victor.evangelista@miaengenharia.com.br\n   Assunto: RE: CCSP — deliberações consolidadas da reunião\n   Flavia,\n\nSegue minhas considerações em vermelho\n\nAcredito que temos um relatório completo e cons\n\n",
+      "evidence": "flavia@mensuraengenharia.com.br"
+    },
+    {
+      "name": "backblaze_b2",
+      "status": "ok",
+      "detail": "bucket alvo flavia-backups",
+      "evidence": "1152524521bf"
+    },
+    {
+      "name": "vps_full_backup",
+      "status": "ok",
+      "detail": "manifesto local encontrado",
+      "evidence": "/root/.openclaw/workspace/runtime/backups/vps-full-manifests/vps-full-20260430T083001Z.manifest.json"
+    },
+    {
+      "name": "linkedin_institutional_community_api",
+      "status": "pending",
+      "detail": "no_approval_found",
+      "evidence": "2026-04-30T17:03:18.456438+00:00"
+    },
+    {
+      "name": "working_queue_flavia",
+      "status": "ok",
+      "detail": "/root/2nd-brain/06-agents/flavia/WORKING.md",
+      "evidence": null
+    },
+    {
+      "name": "authority_matrix",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/MATRIZ-DE-AUTORIDADE-INTEGRACOES.md",
+      "evidence": null
+    },
+    {
+      "name": "data_trust_rules",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/REGRAS-DE-DADOS-E-CONFIANCA.md",
+      "evidence": null
+    },
+    {
+      "name": "operating_loops",
+      "status": "ok",
+      "detail": "/root/.openclaw/workspace/docs/operacao/OPERATING-LOOPS.md",
+      "evidence": null
+    }
+  ]
+}
