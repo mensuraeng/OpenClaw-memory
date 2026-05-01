@@ -114,7 +114,7 @@ def backup_runtime_check():
 
 
 def cron_health_hint():
-    rc, out, err = run(['bash', '-lc', 'openclaw status 2>/dev/null | head -80'], timeout=30)
+    rc, out, err = run(['bash', '-lc', 'openclaw status 2>/dev/null | head -80'], timeout=90)
     if rc == 0:
         return status('openclaw_status', 'ok', 'status executado', evidence=out[:1000])
     return status('openclaw_status', 'attention', err or out[:500])
