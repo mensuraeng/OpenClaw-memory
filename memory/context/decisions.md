@@ -4,6 +4,11 @@
 
 _Atualizado em 2026-04-13_
 
+<!-- compactado em 2026-04-30 21:50:01 BRT: 303 -> 300 linhas -->
+
+
+_Atualizado em 2026-04-13_
+
 ## Operação
 
 ### Princípio de padrão 10/10 para tudo que importa (2026-04-18)
