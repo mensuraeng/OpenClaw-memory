@@ -1,6 +1,6 @@
 """
 GA4 Data API client para MENSURA e MIA.
-Credenciais: /root/.openclaw/workspace/credentials/ga4-service-account.json
+Credenciais: referência por env `GA4_SERVICE_ACCOUNT_FILE`; fallback local root-owned em `/root/.secrets/ga4-service-account.json`.
 """
 import os
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -13,7 +13,7 @@ from google.analytics.data_v1beta.types import (
 from google.oauth2 import service_account
 
 SERVICE_ACCOUNT_FILE = os.path.expanduser(
-    "/root/.openclaw/workspace/credentials/ga4-service-account.json"
+    os.environ.get("GA4_SERVICE_ACCOUNT_FILE", "/root/.secrets/ga4-service-account.json")
 )
 
 PROPERTIES = {

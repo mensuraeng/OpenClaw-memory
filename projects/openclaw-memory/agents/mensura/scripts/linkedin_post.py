@@ -4,29 +4,27 @@ linkedin_post.py — Post a personal update to LinkedIn via OpenClaw - Mensura a
 Usage: python3 linkedin_post.py "Texto do post"
        python3 linkedin_post.py --dry-run "Texto do post"
 """
-import os
 import sys
 import json
 import urllib.request
 import urllib.error
+from pathlib import Path
 
 CONFIG_PATH = "/root/.openclaw/workspace/config/linkedin-mensura.json"
-ENV_TOKEN = "LINKEDIN_MENSURA_ACCESS_TOKEN"
+WORKSPACE = Path("/root/.openclaw/workspace")
+sys.path.insert(0, str(WORKSPACE / "scripts"))
+from secret_config import load_json_config, resolve_secret_ref  # noqa: E402
 
 def load_config():
-    with open(CONFIG_PATH) as f:
-        return json.load(f)
+    return load_json_config(CONFIG_PATH, resolve=False)
 
 
 def get_token(config):
-    token = os.environ.get(ENV_TOKEN)
-    if token:
-        return token
-    token = config.get("access_token")
-    if token:
-        return token
+    token_ref = config.get("accessToken")
+    if token_ref:
+        return resolve_secret_ref(token_ref, name="linkedin-mensura.accessToken")
     raise RuntimeError(
-        f"Token do LinkedIn ausente. Defina {ENV_TOKEN} ou preencha access_token no arquivo de config."
+        "Token do LinkedIn ausente. Configure accessToken com referência env/KeeSpace no arquivo de config."
     )
 
 def get_profile(token):

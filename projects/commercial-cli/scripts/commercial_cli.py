@@ -18,7 +18,7 @@ CONFIGS={
  'hubspot': WORKSPACE/'config/hubspot-mensura.json',
  'phantombuster': WORKSPACE/'config/phantombuster-mensura.json',
  'linkedin_pages_example': LINKEDIN/'config/pages.example.json',
- 'ga4_service_account': WORKSPACE/'credentials/ga4-service-account.json',
+ 'ga4_service_account': Path('/root/.secrets/ga4-service-account.json'),
 }
 BLOCKED_TOP={'delete','remove','upload'}
 DEFAULT_PERSON_ID='JYAsCudAAE'

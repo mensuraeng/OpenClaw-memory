@@ -1,6 +1,11 @@
 # Gestão mensal - Flávia babá
 
-_Atualizado em 2026-04-20_
+_Atualizado em 2026-05-01_
+
+## Caminho canônico atual
+- Controle principal: `/root/2nd-brain/04-projects/pessoal/gestao-flavia-baba/controle-mensal-flavia-baba.xlsx`
+- README operacional: `/root/2nd-brain/04-projects/pessoal/gestao-flavia-baba/README.md`
+- Este arquivo permanece como ponte/memória legada do workspace.
 
 ## Papel
 Funcionária doméstica / babá da Mia.

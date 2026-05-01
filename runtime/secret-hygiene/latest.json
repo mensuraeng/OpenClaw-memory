@@ -1,11 +1,10 @@
 {
-  "checked_at_utc": "2026-04-30T10:18:16.737145+00:00",
-  "status": "block",
-  "files_scanned": 3829,
-  "findings_count": 155,
+  "checked_at_utc": "2026-05-01T12:35:58.845744+00:00",
+  "status": "review",
+  "files_scanned": 4131,
+  "findings_count": 154,
   "findings_by_severity": {
-    "review": 153,
-    "critical": 2
+    "review": 154
   },
   "guardrails": {
     "prints_real_secret_values": false,
@@ -74,32 +73,6 @@
       "root": "/root/.openclaw/workspace",
       "path": "clawflows/community-submissions/_template/WORKFLOW.md",
       "line": 16,
-      "key_normalization_and_idempotency": {
-        "status": "pass",
-        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
-      }
-    },
-    {
-      "detector": "private_key_header",
-      "severity": "critical",
-      "fingerprint": "3021d90eb9437b2d",
-      "entropy": 3.2,
-      "root": "/root/.openclaw/workspace",
-      "path": "credentials/ga4-service-account.json",
-      "line": 5,
-      "key_normalization_and_idempotency": {
-        "status": "pass",
-        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
-      }
-    },
-    {
-      "detector": "private_key_header",
-      "severity": "critical",
-      "fingerprint": "3021d90eb9437b2d",
-      "entropy": 3.2,
-      "root": "/root/.openclaw/workspace",
-      "path": "credentials/ga_service_account.json",
-      "line": 5,
       "key_normalization_and_idempotency": {
         "status": "pass",
         "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
@@ -290,6 +263,19 @@
     {
       "detector": "generic_secret_assignment",
       "severity": "review",
+      "fingerprint": "aa0c1cc346563336",
+      "entropy": 4.28,
+      "root": "/root/.openclaw/workspace",
+      "path": "runtime/postiz/admin-temp-password-latest.txt",
+      "line": 2,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
       "fingerprint": "b17a645a7a4d8f15",
       "entropy": 3.56,
       "root": "/root/.openclaw/workspace",
@@ -385,7 +371,7 @@
       "entropy": 4.95,
       "root": "/root/.openclaw/workspace",
       "path": "memory/.dreams/short-term-recall.json",
-      "line": 765,
+      "line": 767,
       "key_normalization_and_idempotency": {
         "status": "pass",
         "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
@@ -511,24 +497,11 @@
     {
       "detector": "generic_secret_assignment",
       "severity": "review",
-      "fingerprint": "d581398c65649ef6",
-      "entropy": 4.16,
-      "root": "/root/.openclaw/workspace",
-      "path": "projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py",
-      "line": 22,
-      "key_normalization_and_idempotency": {
-        "status": "pass",
-        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
-      }
-    },
-    {
-      "detector": "generic_secret_assignment",
-      "severity": "review",
       "fingerprint": "c8239173743d32c7",
       "entropy": 3.5,
       "root": "/root/.openclaw/workspace",
       "path": "projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py",
-      "line": 75,
+      "line": 73,
       "key_normalization_and_idempotency": {
         "status": "pass",
         "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
@@ -1901,6 +1874,19 @@
       "root": "/root/.openclaw/workspace",
       "path": "scripts/contas_pagar_telegram.py.pre-flavia-fase5.20260417T141727Z.bak",
       "line": 114,
+      "key_normalization_and_idempotency": {
+        "status": "pass",
+        "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"
+      }
+    },
+    {
+      "detector": "generic_secret_assignment",
+      "severity": "review",
+      "fingerprint": "5b06994b1a09cf87",
+      "entropy": 3.24,
+      "root": "/root/.openclaw/workspace",
+      "path": "scripts/notion_sync.py",
+      "line": 64,
       "key_normalization_and_idempotency": {
         "status": "pass",
         "note": "fingerprint gerado de valor capturado canonicalizado por trim; segredo não impresso"

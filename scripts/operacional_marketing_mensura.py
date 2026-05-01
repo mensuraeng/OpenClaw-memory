@@ -26,7 +26,8 @@ _hs_cfg, _pb_cfg, _oc_cfg = _load_config()
 HUBSPOT_TOKEN  = _hs_cfg["accessToken"]
 PHANTOM_KEY    = _pb_cfg["apiKey"]
 TELEGRAM_TOKEN = _oc_cfg["channels"]["telegram"]["botToken"]
-TELEGRAM_CHAT  = _oc_cfg["channels"]["telegram"]["allowFrom"][0]
+TELEGRAM_CHAT  = "-1003366344184"  # Grupo MENSURA Engenharia
+TELEGRAM_TOPIC = 43                 # Tópico MKT
 
 def hs_search(obj, filters=None, limit=1, props=None):
     url = f"https://api.hubapi.com/crm/v3/objects/{obj}/search"
@@ -123,7 +124,7 @@ Entregue:
 
 Não entregue relatório narrativo vazio. Entregue dados, desvios, decisões e próximas ações."""
 
-    telegram_send(TELEGRAM_CHAT, prompt)
+    telegram_send(TELEGRAM_CHAT, prompt, thread_id=TELEGRAM_TOPIC)
     print(f"✅ Prompt Marketing enviado — {datetime.now(brt).strftime('%H:%M')} BRT")
 
 if __name__ == "__main__":

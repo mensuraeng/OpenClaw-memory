@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import type { AnalyticsInsight } from "@/lib/executive-alerts";
 
-const KEY_FILE = "/root/.openclaw/workspace/credentials/ga4-service-account.json";
+const KEY_FILE = process.env.GA4_SERVICE_ACCOUNT_FILE ?? "/root/.secrets/ga4-service-account.json";
 
 const PROPERTIES: { empresa: string; id: string }[] = [
   { empresa: "MENSURA", id: "366003407" },

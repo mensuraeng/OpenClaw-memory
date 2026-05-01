@@ -1,9 +1,9 @@
 # Secret Hygiene — relatório seguro
 
-- Status: `block`
-- Arquivos varridos: 3829
-- Achados: 155
-- Por severidade: `{'review': 153, 'critical': 2}`
+- Status: `review`
+- Arquivos varridos: 4131
+- Achados: 154
+- Por severidade: `{'review': 154}`
 
 ## Guardrails
 - Valores reais de segredo não são impressos.
@@ -16,8 +16,6 @@
 - `review` `generic_secret_assignment` em `clawflows/community-submissions/README.md:40` fingerprint `0971b1a818a0744a`
 - `review` `generic_secret_assignment` em `clawflows/community-submissions/README.md:42` fingerprint `7782c2accd434d06`
 - `review` `generic_secret_assignment` em `clawflows/community-submissions/_template/WORKFLOW.md:16` fingerprint `e841481eb7030007`
-- `critical` `private_key_header` em `credentials/ga4-service-account.json:5` fingerprint `3021d90eb9437b2d`
-- `critical` `private_key_header` em `credentials/ga_service_account.json:5` fingerprint `3021d90eb9437b2d`
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1215.json:2798` fingerprint `4a8f41a4eebfa8a5`
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1215.json:3282` fingerprint `da20be688644e296`
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1214.json:2798` fingerprint `4a8f41a4eebfa8a5`
@@ -32,6 +30,7 @@
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1221.json:2633` fingerprint `da20be688644e296`
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1213.json:2775` fingerprint `4a8f41a4eebfa8a5`
 - `review` `generic_secret_assignment` em `runtime/email-executive-triage/reports/triagem-email-20260428-1213.json:3259` fingerprint `da20be688644e296`
+- `review` `generic_secret_assignment` em `runtime/postiz/admin-temp-password-latest.txt:2` fingerprint `aa0c1cc346563336`
 - `review` `generic_secret_assignment` em `agents/pcs-agent/scripts/inbox_triage.py.bak_v2_20260419_210306:346` fingerprint `b17a645a7a4d8f15`
 - `review` `generic_secret_assignment` em `agents/pcs-agent/scripts/inbox_triage.py.bak_v1_20260419_205947:319` fingerprint `b17a645a7a4d8f15`
 - `review` `generic_secret_assignment` em `agents/pcs-agent/scripts/inbox_triage.py.bak:301` fingerprint `b17a645a7a4d8f15`
@@ -39,7 +38,7 @@
 - `review` `generic_secret_assignment` em `agents/mensura/scripts/linkedin_post.py:22` fingerprint `d581398c65649ef6`
 - `review` `generic_secret_assignment` em `agents/mensura/scripts/linkedin_post.py:75` fingerprint `c8239173743d32c7`
 - `review` `generic_secret_assignment` em `memory/2026-04-29.md:50` fingerprint `26fd1c1c7db47d7d`
-- `review` `generic_secret_assignment` em `memory/.dreams/short-term-recall.json:765` fingerprint `461bbc2d86e9fb7d`
+- `review` `generic_secret_assignment` em `memory/.dreams/short-term-recall.json:767` fingerprint `461bbc2d86e9fb7d`
 - `review` `generic_secret_assignment` em `memory/sessions/2026-04-01.md:22` fingerprint `01ceca4351f21870`
 - `review` `generic_secret_assignment` em `memory/sessions/2026-04-01.md:30` fingerprint `461bbc2d86e9fb7d`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/clawflows/CONTRIBUTING.md:61` fingerprint `0971b1a818a0744a`
@@ -49,8 +48,7 @@
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/clawflows/community-submissions/_template/WORKFLOW.md:16` fingerprint `e841481eb7030007`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/agents/pcs-agent/scripts/inbox_triage.py.bak:301` fingerprint `b17a645a7a4d8f15`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/agents/pcs-agent/scripts/inbox_triage.py:317` fingerprint `b17a645a7a4d8f15`
-- `review` `generic_secret_assignment` em `projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py:22` fingerprint `d581398c65649ef6`
-- `review` `generic_secret_assignment` em `projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py:75` fingerprint `c8239173743d32c7`
+- `review` `generic_secret_assignment` em `projects/openclaw-memory/agents/mensura/scripts/linkedin_post.py:73` fingerprint `c8239173743d32c7`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/memory/sessions/2026-04-01.md:22` fingerprint `01ceca4351f21870`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/memory/sessions/2026-04-01.md:30` fingerprint `461bbc2d86e9fb7d`
 - `review` `generic_secret_assignment` em `projects/openclaw-memory/projects/openclaw-linkedin/scripts/check_organization_admins.js:7` fingerprint `c17bbb340e0eb52f`
@@ -155,6 +153,7 @@
 - `review` `generic_secret_assignment` em `scripts/monitor_semanal.py.bak.20260416-184716:176` fingerprint `802b56be8f9b0290`
 - `review` `generic_secret_assignment` em `scripts/monitor_semanal.py.bak.20260416-184716:234` fingerprint `8052d47ed3afef07`
 - `review` `generic_secret_assignment` em `scripts/contas_pagar_telegram.py.pre-flavia-fase5.20260417T141727Z.bak:114` fingerprint `52d7a90e2826c832`
+- `review` `generic_secret_assignment` em `scripts/notion_sync.py:64` fingerprint `5b06994b1a09cf87`
 - `review` `generic_secret_assignment` em `scripts/sienge_teatro_budget_workitem_upload.py:50` fingerprint `e6d56892f776c892`
 - `review` `generic_secret_assignment` em `scripts/ccsp_rdo_cobranca.py.pre-flavia-fase5.20260417T140014Z.bak:69` fingerprint `6fcd77128813a9f4`
 - `review` `generic_secret_assignment` em `scripts/backup_retention_b2.py:82` fingerprint `e6d56892f776c892`

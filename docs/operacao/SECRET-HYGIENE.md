@@ -41,15 +41,14 @@ Saídas:
 
 ## Status atual
 
-Última validação do workspace: `block`.
+Última validação do workspace antes da correção: `block` por chave privada GA4 em `credentials/`.
 
-Achado crítico real, sem valores expostos:
+Correção aplicada em 2026-05-01:
 
-- `credentials/ga4-service-account.json`
-- `credentials/ga_service_account.json`
-
-Ambos contêm header de chave privada e estão com permissão local `600`. Não aparecem como rastreados pelo Git no check realizado, mas devem continuar fora de commit e idealmente migrar para KeeSpace/cofre ou manter como fallback local explicitamente aceito.
+- removidos do workspace `credentials/ga4-service-account.json` e `credentials/ga_service_account.json`;
+- service account consolidada como fallback local root-owned `0600` em `/root/.secrets/ga4-service-account.json`;
+- consumidores atualizados para ler `GA4_SERVICE_ACCOUNT_FILE` ou fallback `/root/.secrets/ga4-service-account.json`.
 
 ## Próximo passo recomendado
 
-Decidir se esses dois arquivos de service account permanecem como fallback local aceito ou se serão migrados para KeeSpace. Até essa decisão, Secret Hygiene deve permanecer em `block`, não `pass`.
+Migrar também o arquivo de service account GA4 para entrada KeeSpace/KeePassXC quando o cofre estiver desbloqueado. Até lá, o segredo saiu do workspace e permanece como fallback local controlado.

@@ -16,6 +16,7 @@ KeeSpace/KeePassXC é o cofre oficial. Workspace, 2nd-brain e memória não deve
   - `config/hubspot-mensura.json`
   - `config/phantombuster-mensura.json`
 - Fallback temporário local, fora do workspace: `/root/.secrets/openclaw-commercial.env` com permissão `0600`
+- Fallback LinkedIn local, fora do workspace: `/root/.secrets/openclaw-linkedin.env` com permissão `0600`
 - Fallback PCS/Sienge local, fora do workspace: `/root/.secrets/sienge-pcs.env` com permissão `0600` até gravação no KeeSpace/KeePassXC
 
 ## Caminho final
@@ -27,24 +28,31 @@ Mover os segredos do fallback temporário para KeeSpace nas entradas:
 | HubSpot MENSURA access token | `HUBSPOT_MENSURA_ACCESS_TOKEN` | `OpenClaw/MENSURA/HubSpot/access-token` |
 | Make webhook comercial | `HUBSPOT_MENSURA_MAKE_WEBHOOK` | `OpenClaw/MENSURA/Make/webhook-mensura-commercial` |
 | Phantombuster API key | `PHANTOMBUSTER_MENSURA_API_KEY` | `OpenClaw/MENSURA/Phantombuster/api-key` |
+| LinkedIn MENSURA token pessoal | `LINKEDIN_MENSURA_ACCESS_TOKEN` | `OpenClaw/MENSURA/LinkedIn/personal-access-token` |
 | PCS Sienge basic auth | `SIENGE_PCS_USERNAME` / `SIENGE_PCS_PASSWORD` | `OpenClaw/PCS/Sienge/api-basic` |
 
 ## Como o resolver funciona
 
-`secret_config.py` resolve nesta ordem:
+`secret_config.py` resolve referências com prioridade para KeeSpace quando a entrada existir no config:
 
-1. variável de ambiente direta;
-2. arquivo local root-owned (`/root/.secrets/openclaw-commercial.env` durante migração);
-3. KeePassXC/KeeSpace se houver acesso via env:
+1. KeePassXC/KeeSpace, se houver acesso via env:
    - `KEEPASSXC_DATABASE` ou `KEESPACE_DATABASE`
    - `KEEPASSXC_PASSWORD_FILE` ou `KEESPACE_PASSWORD_FILE`, se necessário
    - `KEEPASSXC_KEY_FILE` ou `KEESPACE_KEY_FILE`, se necessário
+2. variável de ambiente direta;
+3. arquivo local root-owned (`/root/.secrets/openclaw-commercial.env` e equivalentes durante migração), somente se `OPENCLAW_SECRET_MODE` permitir fallback.
+
+Modos suportados:
+- `OPENCLAW_SECRET_MODE=keespace`: exige KeeSpace/env do processo; não carrega fallback local.
+- `OPENCLAW_SECRET_MODE=env`: usa somente env já exportado no processo; não carrega fallback local.
+- `OPENCLAW_SECRET_MODE=fallback` ou vazio: permite fallback local `0600` para compatibilidade temporária.
 
 ## Validação
 
 ```bash
 python3 scripts/secret_config.py config/hubspot-mensura.json --check
 python3 scripts/secret_config.py config/phantombuster-mensura.json --check
+python3 scripts/secret_config.py config/linkedin-mensura.json --check
 ```
 
 Saída esperada: `ok: true` e `plaintext_secret_paths: []`.
@@ -66,4 +74,13 @@ Saída esperada: `ok: true` e `plaintext_secret_paths: []`.
 
 ## Pendência para 100% KeeSpace puro
 
-Remover o fallback `/root/.secrets/openclaw-commercial.env` depois que o vault estiver acessível por KeePassXC/KeeSpace no runtime. Até lá, o risco saiu do workspace/versionamento, mas ainda existe segredo local temporário.
+Remover os fallbacks `/root/.secrets/openclaw-commercial.env`, `/root/.secrets/openclaw-linkedin.env`, `/root/.secrets/make.env`, `/root/.secrets/notion.env` e `/root/.secrets/sienge-pcs.env` depois que o vault estiver acessível por KeePassXC/KeeSpace no runtime. Até lá, o risco saiu do workspace/versionamento, mas ainda existe segredo local temporário.
+
+Para modo KeeSpace puro, exportar no runtime:
+
+```bash
+export OPENCLAW_SECRET_MODE=keespace
+export KEESPACE_DATABASE=/root/.secrets/flavia-vault.kdbx
+# export KEESPACE_PASSWORD_FILE=/path/root-owned/0600/password-file   # se usado
+# export KEESPACE_KEY_FILE=/path/root-owned/0600/key-file             # se usado
+```

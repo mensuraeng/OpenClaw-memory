@@ -2,11 +2,10 @@
 """Secret/config resolver for OpenClaw local automations.
 
 Policy:
-- Repository/workspace configs should store references, not secret values.
-- Runtime may resolve from process env or a root-owned env file during migration.
-- KeeSpace/KeePassXC is supported when the vault is unlocked/provided through env.
-
-This module never prints secret values.
+- Repository/workspace configs store references, never secret values.
+- KeeSpace/KeePassXC is the preferred runtime source.
+- Root-owned env files are migration fallback only, never canonical.
+- This module never prints secret values.
 """
 from __future__ import annotations
 
@@ -19,6 +18,7 @@ from typing import Any
 WORKSPACE = Path(__file__).resolve().parents[1]
 DEFAULT_ENV_FILES = [
     Path('/root/.secrets/openclaw-commercial.env'),
+    Path('/root/.secrets/openclaw-linkedin.env'),
     Path('/root/.secrets/openclaw.env'),
     Path('/root/.secrets/notion.env'),
 ]
@@ -26,13 +26,29 @@ DEFAULT_ENV_FILES = [
 _ENV_LOADED = False
 
 
+def secret_mode() -> str:
+    """Resolution mode.
+
+    - keespace: KeeSpace/KeePassXC only; no env-file fallback.
+    - env: process env only; no env-file fallback.
+    - fallback: process env + root-owned env files; KeeSpace still preferred for refs.
+    """
+    return os.environ.get('OPENCLAW_SECRET_MODE', 'fallback').strip().lower() or 'fallback'
+
+
 def load_env_files(paths: list[Path] | None = None) -> None:
     global _ENV_LOADED
     if _ENV_LOADED:
         return
+    if secret_mode() in {'keespace', 'env', 'strict'}:
+        _ENV_LOADED = True
+        return
     for path in paths or DEFAULT_ENV_FILES:
         if not path.exists():
             continue
+        if path.stat().st_mode & 0o077:
+            # Fail closed on world/group-readable secret files.
+            raise RuntimeError(f'Arquivo de segredo com permissão insegura: {path}')
         for raw in path.read_text(encoding='utf-8').splitlines():
             line = raw.strip()
             if not line or line.startswith('#') or '=' not in line:
@@ -45,7 +61,7 @@ def load_env_files(paths: list[Path] | None = None) -> None:
 
 
 def _resolve_keepassxc(ref: dict[str, Any]) -> str | None:
-    """Resolve a KeePassXC/KeeSpace entry when env grants access.
+    """Resolve a KeePassXC/KeeSpace entry when runtime grants access.
 
     Expected env:
     - KEEPASSXC_DATABASE=/path/to/vault.kdbx or KEESPACE_DATABASE=...
@@ -80,20 +96,27 @@ def _resolve_keepassxc(ref: dict[str, Any]) -> str | None:
 
 
 def resolve_secret_ref(value: Any, *, name: str = 'secret', required: bool = True) -> Any:
+    # Prefer KeeSpace when the config gives an entry path. This avoids env fallback
+    # shadowing the real vault once KeeSpace is unlocked in the runtime.
+    if isinstance(value, dict):
+        resolved = _resolve_keepassxc(value)
+        if resolved:
+            return resolved
+
     load_env_files()
+
     if isinstance(value, dict):
         if 'env' in value:
             env_name = str(value['env'])
             resolved = os.environ.get(env_name)
             if resolved:
                 return resolved
-        if 'file' in value:
+        if 'file' in value and secret_mode() not in {'keespace', 'strict'}:
             p = Path(str(value['file'])).expanduser()
             if p.exists():
+                if p.stat().st_mode & 0o077:
+                    raise RuntimeError(f'Arquivo de segredo com permissão insegura: {p}')
                 return p.read_text(encoding='utf-8').strip()
-        resolved = _resolve_keepassxc(value)
-        if resolved:
-            return resolved
         if required:
             refs = ', '.join(f'{k}={v}' for k, v in value.items() if k in {'env', 'file', 'keespace', 'keepassxc'})
             raise RuntimeError(f'Segredo não resolvido: {name} ({refs})')
@@ -132,14 +155,15 @@ def assert_no_plaintext_secret_refs(path: str | Path) -> list[str]:
     """Return suspicious plaintext secret paths in a JSON config."""
     data = load_json_config(path, resolve=False)
     suspicious: list[str] = []
-    secret_keys = {'token', 'accesstoken', 'apikey', 'api_key', 'webhook', 'secret', 'password'}
+    secret_keys = {'token', 'accesstoken', 'access_token', 'apikey', 'api_key', 'webhook', 'secret', 'password'}
+    safe_keys = {'token_type', 'access_token_source'}
 
     def walk(x: Any, prefix: str = '') -> None:
         if isinstance(x, dict):
             for k, v in x.items():
                 p = f'{prefix}.{k}' if prefix else k
                 lk = k.lower()
-                if any(s in lk for s in secret_keys) and isinstance(v, str) and v and not v.startswith('env:'):
+                if lk not in safe_keys and any(s in lk for s in secret_keys) and isinstance(v, str) and v and not v.startswith('env:'):
                     suspicious.append(p)
                 walk(v, p)
         elif isinstance(x, list):
@@ -161,4 +185,4 @@ if __name__ == '__main__':
         print(json.dumps({'config': args.config, 'plaintext_secret_paths': bad, 'ok': not bad}, ensure_ascii=False, indent=2))
     else:
         cfg = load_json_config(args.config)
-        print(json.dumps({'config': args.config, 'resolved': True, 'top_level_keys': sorted(cfg)}, ensure_ascii=False, indent=2))
+        print(json.dumps({'config': args.config, 'resolved': True, 'mode': secret_mode(), 'top_level_keys': sorted(cfg)}, ensure_ascii=False, indent=2))
