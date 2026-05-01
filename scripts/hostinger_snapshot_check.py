@@ -22,6 +22,7 @@ ENV_PATHS = [Path('/root/.openclaw/.env'), Path('/root/.openclaw/workspace/.env'
 STATE_DIR = Path('/root/.openclaw/workspace/runtime/hostinger')
 STATE_FILE = STATE_DIR / 'snapshot-status-latest.json'
 API_BASE = 'https://developers.hostinger.com/api/vps/v1'
+USER_AGENT = 'OpenClaw-Flavia/1.0 (+https://docs.openclaw.ai)'
 
 
 def load_dotenv() -> None:
@@ -113,7 +114,7 @@ def main() -> int:
         return 2
 
     url = f'{API_BASE}/virtual-machines/{vm_id}/snapshot'
-    req = Request(url, headers={'Authorization': f'Bearer {token}', 'Accept': 'application/json'})
+    req = Request(url, headers={'Authorization': f'Bearer {token}', 'Accept': 'application/json', 'User-Agent': USER_AGENT})
     try:
         with urlopen(req, timeout=30) as response:
             body = response.read().decode('utf-8', errors='replace')
