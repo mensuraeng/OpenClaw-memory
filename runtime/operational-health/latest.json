@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-01T16:29:47.974543+00:00",
+  "checked_at_utc": "2026-05-01T18:16:26.274463+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,12 +10,12 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 212 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 153 issues · audit 10 errors · 49 warn · 1242 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
+      "evidence": ""
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-05-01 14:09 | De: contato@novidades.riachuelo.com.br\n   Assunto: Escolha o look perfeito para sua mãe\n   Nova coleção com suede, tricô, alfaiataria e mais\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-01 18:15 | De: comunicacao.naoresponda@semparar.com.br\n   Assunto: Alexandre, o valor do seu carro mudou!\n   Veja os detalhes pelo SuperApp\n\nVisualize na Web\nCancele o recebimento\n\nOlá, Alexandre.\nO valo\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
