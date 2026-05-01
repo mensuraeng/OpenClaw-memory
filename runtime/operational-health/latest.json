@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-01T14:15:57.420142+00:00",
+  "checked_at_utc": "2026-05-01T16:29:47.974543+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,7 +10,7 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 229 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 151 issues · audit 10 errors · 49 warn · 1255 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 212 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 153 issues · audit 10 errors · 49 warn · 1242 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
     },
     {
       "name": "graph_email_mensura",
@@ -21,7 +21,7 @@
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📧 [AAMkADA5...] 2026-05-01 12:00 | De: flavia@mensuraengenharia.com.br\n   Assunto: CCSP Casa 7 — Cobranças de sexta-feira — 01/05\n   Victor, bom dia.\n\nSegue cobrança objetiva da Casa 7 — CCSP para Sexta-feira (2026-05-01), conforme R\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-05-01 16:08 | De: truthteam@email.truthsocial.com\n   Assunto: ICYMI: Trump SLAMS Jeffries for 'illegitimate' Supreme Court remark\n   Dear Friend, We thought you might take interest in this recent Truth from President Donald J. Trump.\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
