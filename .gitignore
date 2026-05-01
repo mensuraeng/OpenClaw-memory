@@ -75,3 +75,4 @@ backups/
 projects/postiz-social/.env
 projects/postiz-social/.env.backup*
 runtime/postiz/
+runtime/telegram-memory-digest/
