@@ -33,7 +33,7 @@ ENV_FILE = WORKSPACE / 'memory/context/backblaze_b2_backup.env'
 OUT_DIR = WORKSPACE / 'runtime/backups/vps-full'
 PREFIX = 'flavia/vps-full'
 PART_BYTES = 1024 * 1024 * 1024  # 1 GiB chunks; safe for simple B2 uploads
-KEEP_LOCAL_SETS = 1  # regra do Alê: não acumular backup full na VPS; manter só o último conjunto local
+KEEP_LOCAL_SETS = 2  # regra do Alê: manter 2 conjuntos locais válidos como margem se o bot quebrar >1 dia
 SOURCES = ['/root', '/etc', '/home', '/var', '/opt', '/usr/local', '/srv']
 EXCLUDES = [
     '/proc', '/sys', '/dev', '/run', '/tmp', '/mnt', '/media', '/lost+found',
@@ -218,7 +218,7 @@ def main() -> int:
             'excludes': EXCLUDES,
             'du': du_summary(),
             'local_retention_sets': KEEP_LOCAL_SETS,
-            'note': 'Backup full será criptografado, dividido em partes de 1GiB, enviado ao B2 e a VPS manterá só o último conjunto local.'
+            'note': 'Backup full será criptografado, dividido em partes de 1GiB, enviado ao B2 e a VPS manterá 2 conjuntos locais válidos.'
         }, ensure_ascii=False, indent=2))
         return 0
     ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
