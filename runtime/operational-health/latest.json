@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-01T00:59:07.166332+00:00",
+  "checked_at_utc": "2026-05-01T02:59:38.581745+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,7 +10,7 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 302 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 140 issues · audit 10 errors · 46 warn · 1336 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 293 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 10 active · 0 queued · 10 running · 143 issues · audit 10 errors · 46 warn · 1319 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
     },
     {
       "name": "graph_email_mensura",
@@ -21,7 +21,7 @@
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-05-01 00:49 | De: alertas+d@emails.decolar.com\n   Assunto: ⚽📺 Partiu ver os jogos nos estúdios da CazéTV?\n   Compre seu pacote pro RJ e garanta seu assento nos estúdios da CazéTV para assistir aos jogos!✈️ Vag\n\n",
+      "detail": "📩 [AAMkADA5...] 2026-05-01 02:35 | De: noreply@xpi.com.br\n   Assunto: Operações durante o feriado: fique atento!\n   Veja como se organizar\n\nOlá, cliente XP!\n\n\nNo dia 01 de maio celebra-se o Dia de Tiradentes no \n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
