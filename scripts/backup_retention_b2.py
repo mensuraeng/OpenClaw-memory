@@ -2,7 +2,7 @@
 """Retencao segura dos backups locais e Backblaze B2.
 
 Politica operacional:
-  - B2: manter 2 conjuntos mais recentes em flavia/vps-full e flavia/2nd-brain.
+  - B2: manter 3 conjuntos mais recentes em flavia/vps-full e flavia/2nd-brain (inclui 1 versão externa de rollback).
   - VPS: manter 2 backups full locais validos e 2 conjuntos locais do 2nd-brain.
   - Nunca limpar backup full local se nao existir ao menos 1 conjunto full valido no B2.
 
@@ -29,7 +29,7 @@ SECOND_BRAIN_LOCAL = WORKSPACE / 'runtime/backups/2nd-brain'
 
 VPS_PREFIX = 'flavia/vps-full/'
 SECOND_BRAIN_PREFIX = 'flavia/2nd-brain/'
-REMOTE_KEEP = 2
+REMOTE_KEEP = 3
 LOCAL_KEEP = 2
 MIN_FULL_BACKUP_BYTES = 1024 * 1024 * 1024
 
