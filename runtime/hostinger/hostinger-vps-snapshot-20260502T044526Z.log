@@ -1,1 +1,102 @@
 [2026-05-02T01:45:26-03:00] Iniciando rotina segura de snapshot Hostinger
+[master 53ccd5e] chore: workspace backup before hostinger snapshot 2026-05-02 01:45:26 -0300
+ 80 files changed, 11171 insertions(+), 1 deletion(-)
+ create mode 100644 projects/ccsp-casa7/runtime/email-logs/cobranca-victor-2026-05-01.json
+ create mode 100644 projects/ccsp-casa7/runtime/email-previews/cobranca-victor-2026-05-01.txt
+ create mode 100644 projects/creative-ops-studio/README.md
+ create mode 100644 projects/creative-ops-studio/config/brands.json
+ create mode 100644 projects/creative-ops-studio/config/model_router.json
+ create mode 100644 "projects/creative-ops-studio/runtime/20260501T234658Z-mensura-obra-n\303\243o-atrasa-por-falta-de-esfor\303\247o-atrasa-por-falta-de-sistema.json"
+ create mode 100644 "projects/creative-ops-studio/runtime/20260501T234745Z-mia-pr\303\251-constru\303\247\303\243o-de-alto-padr\303\243o-como-tranquilidade-patrimonial.json"
+ create mode 100644 "projects/creative-ops-studio/runtime/20260501T234745Z-pcs-governan\303\247a-t\303\251cnica-reduz-risco-em-obra-p\303\272blica.json"
+ create mode 100644 projects/creative-ops-studio/runtime/assets/20260501-mensura-linkedin-sistema-obra.png
+ create mode 100644 projects/creative-ops-studio/runtime/assets/20260501-mia-quiet-luxury-pre-construcao-video.mp4
+ create mode 100644 projects/creative-ops-studio/runtime/assets/20260501-mia-quiet-luxury-pre-construcao.png
+ create mode 100644 projects/creative-ops-studio/runtime/assets/20260501-pcs-governanca-obra-publica.png
+ create mode 100644 projects/creative-ops-studio/runtime/assets/20260501-pilots-index.json
+ create mode 100755 projects/creative-ops-studio/scripts/brief_to_asset_plan.py
+ create mode 100644 runtime/data-pipeline/crm/mensura-crm-import-candidates-20260501T112040Z.csv
+ create mode 100644 runtime/data-pipeline/crm/mensura-crm-import-candidates-20260501T112040Z.jsonl
+ create mode 100644 runtime/data-pipeline/crm/mensura-crm-pipeline-manifest-20260501T112040Z.json
+ create mode 100644 runtime/data-pipeline/crm/mensura-hubspot-reconciliation-20260501T112053Z.json
+ create mode 100644 runtime/data-pipeline/verified/mensura-verified-contacts-20260501T112040Z.jsonl
+ create mode 100644 runtime/email-drafts/2026-05-01-pg-louveira-sum-nf-codigo-servico-draft.md
+ create mode 100644 runtime/hostinger/hostinger-vps-snapshot-20260502T044526Z.log
+ create mode 120000 runtime/hostinger/hostinger-vps-snapshot-latest.log
+ create mode 100644 runtime/hostinger/snapshot-create-20260501T153541Z.json
+ create mode 100644 runtime/hostinger/snapshot-create-latest.json
+ create mode 100644 runtime/hostinger/snapshot-status-latest.json
+ create mode 100644 runtime/linkedin-institutional/community-api-email-check-20260501T210417Z.json
+ create mode 100644 runtime/linkedin-institutional/community-api-email-check-20260501T230053Z.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-0904-new-since-last.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-0904.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-1400-new-since-last.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-1400.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-1711-new-since-last.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-1711.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-summary-20260501-0904.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-summary-20260501-1400.json
+ create mode 100644 runtime/mensura-marketing/campanha-20260427/retornos-summary-20260501-1711.json
+ create mode 100644 runtime/operational-health/health-20260501T110555Z.json
+ create mode 100644 runtime/operational-health/health-20260501T110650Z.json
+ create mode 100644 runtime/operational-health/health-20260501T110736Z.json
+ create mode 100644 runtime/operational-health/health-20260501T111539Z.json
+ create mode 100644 runtime/operational-health/health-20260501T111626Z.json
+ create mode 100644 runtime/operational-health/health-20260501T111727Z.json
+ create mode 100644 runtime/operational-health/health-20260501T111820Z.json
+ create mode 100644 runtime/operational-health/health-20260501T115102Z.json
+ create mode 100644 runtime/operational-health/health-20260501T120314Z.json
+ create mode 100644 runtime/operational-health/health-20260501T121807Z.json
+ create mode 100644 runtime/operational-health/health-20260501T130312Z.json
+ create mode 100644 runtime/operational-health/health-20260501T131609Z.json
+ create mode 100644 runtime/operational-health/health-20260501T141557Z.json
+ create mode 100644 runtime/operational-health/health-20260501T150225Z.json
+ create mode 100644 runtime/operational-health/health-20260501T150619Z.json
+ create mode 100644 runtime/operational-health/health-20260501T151605Z.json
+ create mode 100644 runtime/operational-health/health-20260501T151655Z.json
+ create mode 100644 runtime/operational-health/health-20260501T155145Z.json
+ create mode 100644 runtime/operational-health/health-20260501T162947Z.json
+ create mode 100644 runtime/operational-health/health-20260501T175214Z.json
+ create mode 100644 runtime/operational-health/health-20260501T181626Z.json
+ create mode 100644 runtime/operational-health/health-20260501T191657Z.json
+ create mode 100644 runtime/operational-health/health-20260501T192138Z.json
+ create mode 100644 runtime/operational-health/health-20260501T192220Z.json
+ create mode 100644 runtime/operational-health/health-20260501T192304Z.json
+ create mode 100644 runtime/operational-health/health-20260501T192506Z.json
+ create mode 100644 runtime/operational-health/health-20260501T192617Z.json
+ create mode 100644 runtime/operational-health/health-20260501T195231Z.json
+ create mode 100644 runtime/operational-health/health-20260501T201037Z.json
+ create mode 100644 runtime/operational-health/health-20260501T201621Z.json
+ create mode 100644 runtime/operational-health/health-20260501T210611Z.json
+ create mode 100644 runtime/operational-health/health-20260501T220736Z.json
+ create mode 100644 runtime/operational-health/health-20260501T233243Z.json
+ create mode 100644 runtime/operational-health/health-20260501T235506Z.json
+ create mode 100644 runtime/operational-health/health-20260502T005647Z.json
+ create mode 100644 runtime/operational-health/health-20260502T015814Z.json
+ create mode 100644 runtime/operational-health/health-20260502T025228Z.json
+ create mode 100644 runtime/operational-health/health-20260502T035444Z.json
+ create mode 100644 runtime/secret-hygiene/secret-hygiene-20260501T123415Z.json
+ create mode 100644 runtime/secret-hygiene/secret-hygiene-20260501T123415Z.md
+ create mode 100644 runtime/secret-hygiene/secret-hygiene-20260501T123558Z.json
+ create mode 100644 runtime/secret-hygiene/secret-hygiene-20260501T123558Z.md
+ create mode 100644 runtime/transcripts/file_275---112122f9-e67c-4597-aa1d-8ee7c624c5a1.txt
+To github.com:mensuraeng/OpenClaw-memory.git
+   2bff47b..53ccd5e  HEAD -> master
+{
+  "status": "uploaded",
+  "bucket": "flavia-backups",
+  "remote": "flavia/2nd-brain/2nd-brain-20260502T044530Z.tar.gz.enc",
+  "local_encrypted": "/root/.openclaw/workspace/runtime/backups/2nd-brain/2nd-brain-20260502T044530Z.tar.gz.enc",
+  "size": 129403936,
+  "fileId": "4_ze171f59285f2d41592d10b1f_f1135974ab776b2b7_d20260502_m044613_c005_v0501044_t0043_u01777697173374",
+  "sha1": "338444aa6361761147afc81a19800ca5d1a79061"
+}
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/backup_vps_full_b2.py", line 240, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/.openclaw/workspace/scripts/backup_vps_full_b2.py", line 225, in main
+    files = create_encrypted_parts(ts)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/scripts/backup_vps_full_b2.py", line 108, in create_encrypted_parts
+    raise RuntimeError(f'pipeline failed tar={rc1} openssl={rc2} split={rc3}\nTAR:{e1[-2000:]}\nOPENSSL:{e2[-1000:]}\nSPLIT:{e3.decode("utf-8", "repla
