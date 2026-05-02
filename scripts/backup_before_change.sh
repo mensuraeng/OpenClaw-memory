@@ -21,10 +21,10 @@ print(path.read_text())
 PY
 rm -f "$TMP_JSON"
 
-# Política local: manter só as 2 versões locais válidas mais recentes e remover lixo temporário.
+# Política local: manter só a 1 versão local válida mais recente e remover lixo temporário.
 # Intencionalmente não mexe em B2 aqui; isso fica para scripts/backup_retention_b2.py.
 find "$OUT_DIR" -maxdepth 1 -type f \( -name '*.tmp' -o -name '*.partial' \) -delete 2>/dev/null || true
-mapfile -t OLD_LOCAL_BACKUPS < <(find "$OUT_DIR" -maxdepth 1 -type f -name '*-openclaw-backup.tar.gz' -size +1G -printf '%T@ %p\n' 2>/dev/null | sort -rn | awk 'NR>2 {print $2}')
+mapfile -t OLD_LOCAL_BACKUPS < <(find "$OUT_DIR" -maxdepth 1 -type f -name '*-openclaw-backup.tar.gz' -size +1G -printf '%T@ %p\n' 2>/dev/null | sort -rn | awk 'NR>1 {print $2}')
 if ((${#OLD_LOCAL_BACKUPS[@]})); then
   rm -f "${OLD_LOCAL_BACKUPS[@]}"
 fi

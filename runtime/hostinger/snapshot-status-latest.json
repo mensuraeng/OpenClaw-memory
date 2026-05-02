@@ -1,19 +1,19 @@
 {
-  "checked_at": "2026-05-01T19:41:52.971073+00:00",
+  "checked_at": "2026-05-02T10:39:56.412194+00:00",
   "provider": "hostinger",
   "vm_id_configured": true,
   "token_configured": true,
   "status": "ok",
   "severity": "ok",
-  "message": "Snapshot Hostinger verificado: -0.0h",
+  "message": "Snapshot Hostinger verificado: 2.6h",
   "http_status": 200,
   "snapshot": {
-    "id": 0,
-    "restore_time": 0,
-    "created_at": "2026-05-01T19:41:53Z",
-    "expires_at": "2026-05-01T19:41:53Z"
+    "id": 257941,
+    "restore_time": 1800,
+    "created_at": "2026-05-02T08:03:13Z",
+    "expires_at": "2026-05-22T08:03:13Z"
   },
-  "snapshot_timestamp": "2026-05-01T19:41:53+00:00",
+  "snapshot_timestamp": "2026-05-02T08:03:13+00:00",
   "snapshot_timestamp_field": "created_at",
-  "snapshot_age_hours": -0.0
+  "snapshot_age_hours": 2.61
 }

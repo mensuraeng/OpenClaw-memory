@@ -19,7 +19,6 @@ import base64
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import time
 import urllib.error
@@ -31,9 +30,10 @@ from pathlib import Path
 WORKSPACE = Path('/root/.openclaw/workspace')
 ENV_FILE = WORKSPACE / 'memory/context/backblaze_b2_backup.env'
 OUT_DIR = WORKSPACE / 'runtime/backups/vps-full'
+MANIFEST_DIR = WORKSPACE / 'runtime/backups/vps-full-manifests'
 PREFIX = 'flavia/vps-full'
 PART_BYTES = 1024 * 1024 * 1024  # 1 GiB chunks; safe for simple B2 uploads
-KEEP_LOCAL_SETS = 2  # regra do Alê: manter 2 conjuntos locais válidos como margem se o bot quebrar >1 dia
+KEEP_LOCAL_SETS = 0  # backup full fica na nuvem; local mantém só manifesto pequeno
 SOURCES = ['/root', '/etc', '/home', '/var', '/opt', '/usr/local', '/srv']
 EXCLUDES = [
     '/proc', '/sys', '/dev', '/run', '/tmp', '/mnt', '/media', '/lost+found',
@@ -175,6 +175,99 @@ def upload_one(auth: dict, bucket_id: str, file_path: Path, remote_name: str) ->
             return json.loads(text) if text else {}
 
 
+def part_name(index: int) -> str:
+    return f'part-{index:04d}'
+
+
+def create_upload_encrypted_parts(ts: str, auth: dict, bucket_id: str) -> tuple[Path, list[dict]]:
+    """Cria o backup criptografado e envia parte por parte ao B2.
+
+    A versão anterior gerava todas as partes localmente antes do upload. Em VPS
+    pequena isso lota o disco. Aqui só uma parte de até PART_BYTES existe em
+    disco por vez; depois do upload, ela é removida.
+    """
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+    tar_cmd = ['tar', '--warning=no-file-changed', '--ignore-failed-read', '-czf', '-']
+    for ex in EXCLUDES:
+        tar_cmd += ['--exclude', ex]
+    tar_cmd += existing_sources()
+
+    env = os.environ.copy()
+    env['BACKUP_PASSPHRASE'] = load_env()['BACKUP_PASSPHRASE']
+    openssl_cmd = ['openssl', 'enc', '-aes-256-cbc', '-pbkdf2', '-salt', '-pass', 'env:BACKUP_PASSPHRASE']
+
+    p1 = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p2 = subprocess.Popen(openssl_cmd, stdin=p1.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+    assert p1.stdout is not None
+    p1.stdout.close()
+    assert p2.stdout is not None
+
+    uploaded: list[dict] = []
+    index = 0
+    try:
+        while True:
+            suffix = part_name(index)
+            local_part = OUT_DIR / f'vps-full-{ts}.tar.gz.enc.{suffix}'
+            h = hashlib.sha1()
+            size = 0
+            with local_part.open('wb') as f:
+                while size < PART_BYTES:
+                    chunk = p2.stdout.read(min(8 * 1024 * 1024, PART_BYTES - size))
+                    if not chunk:
+                        break
+                    f.write(chunk)
+                    h.update(chunk)
+                    size += len(chunk)
+            if size == 0:
+                local_part.unlink(missing_ok=True)
+                break
+            remote = f'{PREFIX}/{ts}/{local_part.name}'
+            res = upload_one(auth, bucket_id, local_part, remote)
+            uploaded.append({
+                'name': local_part.name,
+                'remote': remote,
+                'size': size,
+                'sha1': h.hexdigest(),
+                'fileId': res.get('fileId'),
+                'contentSha1': res.get('contentSha1'),
+            })
+            print(json.dumps({'uploaded': remote, 'size': size}, ensure_ascii=False), flush=True)
+            local_part.unlink(missing_ok=True)
+            index += 1
+    finally:
+        p2.stdout.close()
+
+    e1 = p1.stderr.read().decode('utf-8', 'replace') if p1.stderr else ''
+    e2 = p2.stderr.read().decode('utf-8', 'replace') if p2.stderr else ''
+    rc2 = p2.wait()
+    rc1 = p1.wait()
+    # tar may return 1 if files changed during read; acceptable for live backup, but not 2+.
+    if rc1 not in (0, 1) or rc2 != 0:
+        raise RuntimeError(f'pipeline failed tar={rc1} openssl={rc2}\nTAR:{e1[-2000:]}\nOPENSSL:{e2[-1000:]}')
+    if not uploaded:
+        raise RuntimeError('Nenhuma parte enviada')
+
+    manifest = {
+        'created_at_utc': datetime.now(timezone.utc).isoformat(),
+        'kind': 'flavia-vps-full-backup',
+        'storage': 'backblaze-b2-cloud-first',
+        'host': os.uname().nodename,
+        'sources': existing_sources(),
+        'excludes': EXCLUDES,
+        'part_bytes': PART_BYTES,
+        'parts': uploaded,
+        'restore_hint': 'Baixar manifest + partes em ordem, concatenar: cat part-* > backup.tar.gz.enc; descriptografar com openssl enc -d -aes-256-cbc -pbkdf2 -in backup.tar.gz.enc -out backup.tar.gz; extrair com tar -xzf backup.tar.gz -C /restore/path',
+    }
+    manifest_path = MANIFEST_DIR / f'vps-full-{ts}.manifest.json'
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
+    manifest_remote = f'{PREFIX}/{ts}/{manifest_path.name}'
+    manifest_res = upload_one(auth, bucket_id, manifest_path, manifest_remote)
+    uploaded.insert(0, {'name': manifest_path.name, 'remote': manifest_remote, 'size': manifest_path.stat().st_size, 'fileId': manifest_res.get('fileId'), 'contentSha1': manifest_res.get('contentSha1')})
+    print(json.dumps({'uploaded': manifest_remote, 'size': manifest_path.stat().st_size}, ensure_ascii=False), flush=True)
+    return manifest_path, uploaded
+
+
 def cleanup_local_sets(keep: int = KEEP_LOCAL_SETS) -> list[str]:
     """Remove conjuntos locais antigos depois de upload bem-sucedido."""
     if not OUT_DIR.exists():
@@ -218,21 +311,15 @@ def main() -> int:
             'excludes': EXCLUDES,
             'du': du_summary(),
             'local_retention_sets': KEEP_LOCAL_SETS,
-            'note': 'Backup full será criptografado, dividido em partes de 1GiB, enviado ao B2 e a VPS manterá 2 conjuntos locais válidos.'
+            'note': 'Backup full será criptografado, dividido em partes de 1GiB, enviado ao B2 em modo cloud-first e a VPS manterá localmente apenas manifestos pequenos.'
         }, ensure_ascii=False, indent=2))
         return 0
     ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-    files = create_encrypted_parts(ts)
     auth = authorize(env)
     bucket = find_bucket(auth, env['B2_BUCKET_NAME'])
-    uploaded = []
-    for p in files:
-        remote = f'{PREFIX}/{ts}/{p.name}'
-        res = upload_one(auth, bucket['bucketId'], p, remote)
-        uploaded.append({'remote': remote, 'size': p.stat().st_size, 'fileId': res.get('fileId'), 'sha1': res.get('contentSha1')})
-        print(json.dumps({'uploaded': remote, 'size': p.stat().st_size}, ensure_ascii=False), flush=True)
+    manifest_path, uploaded = create_upload_encrypted_parts(ts, auth, bucket['bucketId'])
     removed_local = cleanup_local_sets(KEEP_LOCAL_SETS)
-    print(json.dumps({'status': 'uploaded', 'bucket': env['B2_BUCKET_NAME'], 'set': f'{PREFIX}/{ts}/', 'local_retention_sets': KEEP_LOCAL_SETS, 'removed_local_old_files': len(removed_local), 'files': uploaded}, ensure_ascii=False, indent=2))
+    print(json.dumps({'status': 'uploaded', 'bucket': env['B2_BUCKET_NAME'], 'set': f'{PREFIX}/{ts}/', 'local_manifest': str(manifest_path), 'local_retention_sets': KEEP_LOCAL_SETS, 'removed_local_old_files': len(removed_local), 'files': uploaded}, ensure_ascii=False, indent=2))
     return 0
 
 

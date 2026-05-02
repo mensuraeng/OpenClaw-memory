@@ -157,6 +157,13 @@ def main() -> int:
     ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     tar_path = make_tarball(ts)
     enc_path = encrypt_file(tar_path, env['BACKUP_PASSPHRASE'])
+    # Segurança operacional: o artefato descriptografado só existe como staging
+    # mínimo para criptografia. Depois do .enc gerado, não manter .tar.gz aberto
+    # em disco.
+    try:
+        tar_path.unlink()
+    except FileNotFoundError:
+        pass
     auth = authorize(env)
     bucket = find_bucket(auth, env['B2_BUCKET_NAME'])
     remote = f'{PREFIX}/{enc_path.name}'

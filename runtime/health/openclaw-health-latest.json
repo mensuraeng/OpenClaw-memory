@@ -1,6 +1,6 @@
 {
-  "status": "critical",
-  "timestamp_utc": "2026-05-01T09:50:07.684807+00:00",
+  "status": "ok",
+  "timestamp_utc": "2026-05-02T09:50:07.152629+00:00",
   "checks": {
     "pm2": {
       "status": "ok",
@@ -11,7 +11,7 @@
     "mission_http": {
       "status": "ok",
       "detail": "HTTP 200",
-      "body_sample": "{\"status\":\"healthy\",\"checks\":[{\"name\":\"Mission Control\",\"status\":\"up\",\"details\":\"online · restarts: 22\"},{\"name\":\"OpenClaw Gateway\",\"status\":\"up\",\"details\":\"active\"},{\"name\":\"classvault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"content-vault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"brain\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"Sienge API\",\"status\":\"up\",\"latency\":426,\"url\":\"https://api.sienge.com.br\",\"details\":\"HTTP 401\"},{\"name\":\"Anthropic AP"
+      "body_sample": "{\"status\":\"healthy\",\"checks\":[{\"name\":\"Mission Control\",\"status\":\"up\",\"details\":\"online · restarts: 22\"},{\"name\":\"OpenClaw Gateway\",\"status\":\"up\",\"details\":\"active\"},{\"name\":\"classvault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"content-vault\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"brain\",\"status\":\"unknown\",\"details\":\"not found in pm2\"},{\"name\":\"Sienge API\",\"status\":\"up\",\"latency\":431,\"url\":\"https://api.sienge.com.br\",\"details\":\"HTTP 401\"},{\"name\":\"Anthropic AP"
     },
     "systemd": {
       "status": "ok",
@@ -24,10 +24,10 @@
       "bad": []
     },
     "disk": {
-      "status": "critical",
-      "detail": "root disk 99.4% used",
-      "used_pct": 99.4,
-      "free_gb": 0.6
+      "status": "ok",
+      "detail": "root disk 72.8% used",
+      "used_pct": 72.8,
+      "free_gb": 26.1
     },
     "logs": {
       "status": "ok",
@@ -37,7 +37,7 @@
     "backups": {
       "status": "ok",
       "detail": "backup retention policy satisfied",
-      "remote_vps_sets": 3,
+      "remote_vps_sets": 4,
       "remote_2nd_brain_sets": 3
     }
   }

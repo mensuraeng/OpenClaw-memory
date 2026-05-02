@@ -3,7 +3,8 @@
 
 Politica operacional:
   - B2: manter 3 conjuntos mais recentes em flavia/vps-full e flavia/2nd-brain (inclui 1 versão externa de rollback).
-  - VPS: manter 2 backups full locais validos e 2 conjuntos locais do 2nd-brain.
+  - VPS: backup full fica no B2; local mantém só manifestos pequenos.
+  - 2nd-brain: manter 2 conjuntos locais criptografados como margem operacional leve.
   - Nunca limpar backup full local se nao existir ao menos 1 conjunto full valido no B2.
 
 Por padrao roda em dry-run. Use --run para apagar candidatos.
@@ -30,7 +31,8 @@ SECOND_BRAIN_LOCAL = WORKSPACE / 'runtime/backups/2nd-brain'
 VPS_PREFIX = 'flavia/vps-full/'
 SECOND_BRAIN_PREFIX = 'flavia/2nd-brain/'
 REMOTE_KEEP = 3
-LOCAL_KEEP = 2
+LOCAL_FULL_KEEP = 0
+LOCAL_SECOND_BRAIN_KEEP = 2
 MIN_FULL_BACKUP_BYTES = 1024 * 1024 * 1024
 
 
@@ -185,15 +187,15 @@ def retention_plan(auth: dict[str, Any], bucket_id: str) -> dict[str, Any]:
         'remote_2nd_brain_sets': [summarize_set(s) for s in brain],
         'remote_2nd_brain_delete': [summarize_set(s) for s in brain[REMOTE_KEEP:]],
         'local_full_sets': [{'path': str(p), 'size_bytes': p.stat().st_size, 'mtime_utc': datetime.fromtimestamp(p.stat().st_mtime, timezone.utc).isoformat()} for p in local_full],
-        'local_full_delete': [] if not vps_complete else [{'path': str(p), 'size_bytes': p.stat().st_size} for p in local_full[LOCAL_KEEP:]],
-        'local_full_cleanup_blocked': len(vps_complete) == 0 and len(local_full) > LOCAL_KEEP,
+        'local_full_delete': [] if not vps_complete else [{'path': str(p), 'size_bytes': p.stat().st_size} for p in local_full[LOCAL_FULL_KEEP:]],
+        'local_full_cleanup_blocked': len(vps_complete) == 0 and len(local_full) > LOCAL_FULL_KEEP,
         'local_2nd_brain_sets': [[str(p) for p in group] for group in local_brain],
-        'local_2nd_brain_delete': [[str(p) for p in group] for group in local_brain[LOCAL_KEEP:]],
+        'local_2nd_brain_delete': [[str(p) for p in group] for group in local_brain[LOCAL_SECOND_BRAIN_KEEP:]],
         '_objects': {
             'remote_vps_delete': vps_complete[REMOTE_KEEP:],
             'remote_2nd_brain_delete': brain[REMOTE_KEEP:],
-            'local_full_delete': [] if not vps_complete else local_full[LOCAL_KEEP:],
-            'local_2nd_brain_delete': local_brain[LOCAL_KEEP:],
+            'local_full_delete': [] if not vps_complete else local_full[LOCAL_FULL_KEEP:],
+            'local_2nd_brain_delete': local_brain[LOCAL_SECOND_BRAIN_KEEP:],
         },
     }
 
@@ -237,7 +239,8 @@ def main() -> int:
         'bucket': bucket.get('bucketName'),
         'policy': {
             'remote_keep_sets': REMOTE_KEEP,
-            'local_keep_sets': LOCAL_KEEP,
+            'local_full_keep_sets': LOCAL_FULL_KEEP,
+            'local_2nd_brain_keep_sets': LOCAL_SECOND_BRAIN_KEEP,
             'local_full_cleanup_requires_remote_vps_complete': True,
         },
         'plan': strip_objects(plan),
