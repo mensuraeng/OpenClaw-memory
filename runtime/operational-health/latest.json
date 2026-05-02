@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-02T14:16:43.132164+00:00",
+  "checked_at_utc": "2026-05-02T16:16:22.610745+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,7 +15,7 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-05-02 13:41 | De: contato@novidades.riachuelo.com.br\n   Assunto: Silvia Braz + Riachuelo\n   Clique e descubra!\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-02 15:12 | De: datafolha@pesquisas-datafolha.com.br\n   Assunto: Estudo sobre a Satisfação de Clientes SulAmérica\n   Prezado(a) beneficiário(a),\n\nO Instituto de Pesquisas Datafolha está realizando um estudo para con\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-05-02T13:03:29.391184+00:00"
+      "evidence": "2026-05-02T15:07:15.838342+00:00"
     },
     {
       "name": "working_queue_flavia",
