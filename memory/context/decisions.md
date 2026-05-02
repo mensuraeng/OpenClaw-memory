@@ -4,7 +4,7 @@
 
 _Atualizado em 2026-04-13_
 
-<!-- compactado em 2026-04-30 21:50:01 BRT: 303 -> 300 linhas -->
+<!-- compactado em 2026-05-01 21:50:01 BRT: 308 -> 300 linhas -->
 
 
 _Atualizado em 2026-04-13_

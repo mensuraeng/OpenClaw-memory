@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-01T22:07:36.064823+00:00",
+  "checked_at_utc": "2026-05-02T00:56:47.370108+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,7 +15,7 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-05-01 22:02 | De: news@latampassmail.com\n   Assunto: ALEXANDRE, suas milhas foram creditadas!\n   Aproveite suas milhas e viaje mais gastando menos\nVisualizar a versão web\n\nN° LATAM Pass: 3101***\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-01 22:38 | De: invitations@linkedin.com\n   Assunto: Fabrício aceitou seu convite; conheça a rede dessa pessoa\n   Veja as conexões, experiência e muito mais de Fabrício Camargo\n͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏  ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-05-01T21:04:17.827298+00:00"
+      "evidence": "2026-05-01T23:00:53.887979+00:00"
     },
     {
       "name": "working_queue_flavia",
