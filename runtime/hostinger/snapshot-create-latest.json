@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-05-01T15:35:41.384953+00:00",
+  "provider": "hostinger",
+  "operation": "create_snapshot",
+  "vm_id_configured": false,
+  "token_configured": false,
+  "status": "dry_run",
+  "message": "Dry-run: use --yes to create snapshot. Creating a snapshot overwrites the existing Hostinger snapshot.",
+  "safety": "create only; never restore/delete"
+}

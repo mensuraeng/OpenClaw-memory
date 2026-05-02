@@ -1,0 +1,28 @@
+{
+  "created_at_local": "2026-05-01 20:53 America/Sao_Paulo",
+  "status": "draft_internal_only",
+  "approval_gate": "publicação externa bloqueada até aprovação explícita do Alê",
+  "assets": [
+    {
+      "brand": "MENSURA",
+      "channel": "LinkedIn",
+      "file": "20260501-mensura-linkedin-sistema-obra.png",
+      "brief": "obra não atrasa por falta de esforço, atrasa por falta de sistema",
+      "risk": "medium"
+    },
+    {
+      "brand": "MIA",
+      "channel": "Instagram/LinkedIn",
+      "file": "20260501-mia-quiet-luxury-pre-construcao.png",
+      "brief": "pré-construção de alto padrão como tranquilidade patrimonial",
+      "risk": "medium"
+    },
+    {
+      "brand": "PCS",
+      "channel": "LinkedIn institucional",
+      "file": "20260501-pcs-governanca-obra-publica.png",
+      "brief": "governança técnica reduz risco em obra pública/restauro",
+      "risk": "medium"
+    }
+  ]
+}

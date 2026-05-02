@@ -1,0 +1,65 @@
+{
+  "created_at_utc": "2026-05-01T23:47:45.199192+00:00",
+  "status": "draft_requires_human_approval",
+  "source": "creative-ops-studio",
+  "brand": "MIA",
+  "channel": "Instagram",
+  "format": "post 4:5",
+  "asset_type": "image",
+  "brief": "pré-construção de alto padrão como tranquilidade patrimonial",
+  "route": {
+    "use_case": "premium_architecture_visual",
+    "asset_type": "image",
+    "best_for": "conceito visual MIA premium/quiet luxury",
+    "preferred_model_families": [
+      "Flux",
+      "Midjourney",
+      "Nano Banana",
+      "GPT image"
+    ],
+    "reference_models_from_repo": [
+      "flux-dev",
+      "nano-banana",
+      "midjourney",
+      "gpt-4o"
+    ],
+    "risk": "medium",
+    "requires_human_approval": true,
+    "prompt_requirements": [
+      "sem ostentação",
+      "sem render genérico",
+      "sem excesso de decoração"
+    ]
+  },
+  "brand_guardrails": {
+    "tone": "quiet luxury, sofisticado, objetivo, sem ostentação e sem excesso de explicação",
+    "avoid": [
+      "obra popular",
+      "barulho visual",
+      "luxo ostensivo",
+      "linguagem promocional agressiva"
+    ],
+    "default_channels": [
+      "Instagram",
+      "LinkedIn",
+      "apresentação institucional"
+    ]
+  },
+  "generation_prompt": "Crie um asset visual para MIA com finalidade de Instagram. Formato: post 4:5. Brief: pré-construção de alto padrão como tranquilidade patrimonial. Posicionamento da marca: engenharia de performance premium para alto padrão: precisão, silêncio e perfeição operacional. Direção visual: materiais nobres, arquitetura limpa, detalhes construtivos, luz natural, silêncio visual, alto padrão discreto. Tom: quiet luxury, sofisticado, objetivo, sem ostentação e sem excesso de explicação. Composição limpa, premium, profissional, sem texto pequeno, sem logotipos falsos, sem promessas técnicas ou comerciais não verificáveis. Objetivo operacional: conceito visual MIA premium/quiet luxury.",
+  "approval_gate": {
+    "required": true,
+    "reason": "Asset gerado é rascunho; publicação externa exige validação do Alê/Flávia.",
+    "blocked_actions_without_approval": [
+      "publicar",
+      "enviar a cliente",
+      "usar em anúncio",
+      "usar em proposta final"
+    ]
+  },
+  "next_steps": [
+    "Validar se o brief está correto.",
+    "Gerar 2-4 variações no modelo escolhido.",
+    "Selecionar uma variação e ajustar copy/caption.",
+    "Submeter para aprovação humana antes de qualquer saída externa."
+  ]
+}

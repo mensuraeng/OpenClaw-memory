@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-05-01 09:04 BRT",
+  "checked_at_utc": "2026-05-01T12:04:26.409160+00:00",
+  "messages_scanned": 0,
+  "new_since_last_check": 0,
+  "positive_interest": 0,
+  "neutral": 0,
+  "no_timing": 0,
+  "unsubscribe_not_interested": 0,
+  "new_bounces": 0,
+  "paths": {
+    "check": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-0904.json",
+    "new_since_last": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-check-20260501-0904-new-since-last.json",
+    "summary": "/root/.openclaw/workspace/runtime/mensura-marketing/campanha-20260427/retornos-summary-20260501-0904.json"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-05-01 14:00 BRT",
+  "checked_at_utc": "2026-05-01T17:02:27.610928+00:00",
+  "since_previous_check": "2026-05-01T12:04:26.409160+00:00",
+  "new_since_last_check": 0,
+  "counts_new": {
+    "interesse positivo": 0,
+    "neutro": 0,
+    "sem timing": 0,
+    "descadastro/não interesse": 0,
+    "bounce": 0
+  },
+  "items": []
+}

@@ -1,0 +1,216 @@
+{
+  "checked_at": "2026-05-01 17:11 BRT",
+  "checked_at_utc": "2026-05-01T20:11:54.487373+00:00",
+  "since_previous_check": "2026-05-01T17:02:27.610928+00:00",
+  "messages_scanned": 30,
+  "campaign_related_total_in_inbox": 20,
+  "counts_total_in_inbox": {
+    "interesse positivo": 2,
+    "neutro": 0,
+    "sem timing": 0,
+    "descadastro/não interesse": 0,
+    "bounce": 18
+  },
+  "items": [
+    {
+      "receivedDateTime": "2026-04-29T20:30:55Z",
+      "from": "victor.evangelista@miaengenharia.com.br",
+      "subject": "RE: CCSP — deliberações consolidadas da reunião",
+      "classification": "interesse positivo",
+      "matched_recipient": null,
+      "preview": "Flavia,\r\n\r\nSegue minhas considerações em vermelho\r\n\r\nAcredito que temos um relatório completo e consolidado.\r\n\r\n\r\nAtt,\r\nVictor Evangelista\r\n________________________________\r\nDe: Flávia Costa | MENSURA Engenharia <flavia@mensuraengenharia.com.br>\r\nEnviadas",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAR8aGRAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAR8aGRAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-28T17:26:43Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "claudinei.cauduro@br.arteliagroup.com",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\nclaudinei.cauduro@br.arteliagroup.com (claudinei.cauduro@br.arteliagroup.com)\r\nYour message wasn't delivered. Despite repeated attempts to deliver your message, the recipient's email system refused to ",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAARlb_EAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAARlb%2BEAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:25Z",
+      "from": "postmaster@buenoneto.onmicrosoft.com",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "alexandre.paranhos@buenonetto.com.br",
+      "preview": "Your message to alexandre.paranhos@buenonetto.com.br couldn't be delivered.\r\nalexandre.paranhos wasn't found at buenonetto.com.br.\r\nflavia  Office 365      alexandre.paranhos\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ5AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ5AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:11Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "marcus.monteiro@five5.com.br",
+      "preview": "Your message to marcus.monteiro@five5.com.br couldn't be delivered.\r\nmarcus.monteiro wasn't found at five5.com.br.\r\nflavia  Office 365      marcus.monteiro\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might ",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ4AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ4AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:07Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "daniel.batista@etoile.com.br",
+      "preview": "Your message to daniel.batista@etoile.com.br couldn't be delivered.\r\ndaniel.batista wasn't found at etoile.com.br.\r\nflavia  Office 365      daniel.batista\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might b",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ3AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ3AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:01Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "alexandre.ely@elyprojetos.com.br",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\nalexandre.ely@elyprojetos.com.br (alexandre.ely@elyprojetos.com.br)\r\nYour message couldn't be delivered. The Domain Name System (DNS) reported that the recipient's domain does not exist.\r\n\r\nContact the",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ2AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ2AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:00Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "andre.auge@construtorasaojose.com.br",
+      "preview": "Your message to andre.auge@construtorasaojose.com.br couldn't be delivered.\r\nandre.auge wasn't found at construtorasaojose.com.br.\r\nflavia  Office 365      andre.auge\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe add",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ1AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ1AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:26:00Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "alexandre.calazans@cury.net",
+      "preview": "Your message to alexandre.calazans@cury.net couldn't be delivered.\r\nalexandre.calazans wasn't found at cury.net.\r\nflavia  Office 365      alexandre.calazans\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ0AAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQ0AAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:55Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "andre.guerreiro@conebr.com",
+      "preview": "Your message to andre.guerreiro@conebr.com couldn't be delivered.\r\nandre.guerreiro wasn't found at conebr.com.\r\nflavia  Office 365      andre.guerreiro\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address may be mis",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQzAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQzAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:54Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "davi.bueno@camargocorrea.com",
+      "preview": "Your message to davi.bueno@camargocorrea.com couldn't be delivered.\r\ndavi.bueno wasn't found at camargocorrea.com.\r\nflavia  Office 365      davi.bueno\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might be mi",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQyAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQyAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:50Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "andregomes.sp@cosil.com.br",
+      "preview": "Your message to andregomes.sp@cosil.com.br couldn't be delivered.\r\nandregomes.sp wasn't found at cosil.com.br.\r\nflavia  Office 365      andregomes.sp\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address may be missp",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQxAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQxAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:48Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "fernanda.almeida@cappini.com.br",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\nfernanda.almeida@cappini.com.br (fernanda.almeida@cappini.com.br)\r\nYour message couldn't be delivered. The Domain Name System (DNS) reported that the recipient's domain does not exist.\r\n\r\nContact the r",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQwAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQwAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:45Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "danilo.sesiki@br.brookfield.com",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\ndanilo.sesiki@br.brookfield.com (danilo.sesiki@br.brookfield.com)\r\nYour message couldn't be delivered. The Domain Name System (DNS) reported that the recipient's domain does not exist.\r\n\r\nContact the r",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQvAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQvAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:41Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "marcelo.dornelas@btgpactual.com",
+      "preview": "Your message to marcelo.dornelas@btgpactual.com couldn't be delivered.\r\nflavia is not authorized to relay messages through the server that reported this error.\r\nflavia  Office 365      marcelo.dornelas\r\nSender          Action Required\r\nSender not authoriz",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQuAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQuAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:36Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "carla.reis@arquiplan.com.br",
+      "preview": "Your message to carla.reis@arquiplan.com.br couldn't be delivered.\r\ncarla.reis wasn't found at arquiplan.com.br.\r\nflavia  Office 365      carla.reis\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might be miss",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQtAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQtAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:35Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "fernanda.marforio@5r.com.br",
+      "preview": "Your message to fernanda.marforio@5r.com.br couldn't be delivered.\r\nfernanda.marforio wasn't found at 5r.com.br.\r\nflavia  Office 365      fernanda.marforio\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address may be",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQsAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQsAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:35Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "evelyn.terra@ablprime.com.br",
+      "preview": "Your message to evelyn.terra@ablprime.com.br couldn't be delivered.\r\nevelyn.terra wasn't found at ablprime.com.br.\r\nflavia  Office 365      evelyn.terra\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address might be ",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQrAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQrAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:33Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "luciano.fornazari@acsincorporadora.com.br",
+      "preview": "Delivery has failed to these recipients or groups:\r\n\r\nluciano.fornazari@acsincorporadora.com.br (luciano.fornazari@acsincorporadora.com.br)\r\nYour message couldn't be delivered. The Domain Name System (DNS) reported that the recipient's domain does not exi",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQqAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQqAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-27T17:25:32Z",
+      "from": "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@mensuraengenharia.com.br",
+      "subject": "Undeliverable: Quando o cronograma vira instrumento de decisão",
+      "classification": "bounce",
+      "matched_recipient": "r.leonetti@sti.com.br",
+      "preview": "Your message to r.leonetti@sti.com.br couldn't be delivered.\r\nr.leonetti wasn't found at sti.com.br.\r\nflavia  Office 365      r.leonetti\r\nAction Required                 Recipient\r\nUnknown To address\r\n\r\nHow to Fix It\r\nThe address may be misspelled or may ",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQpAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAAQixQpAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    },
+    {
+      "receivedDateTime": "2026-04-20T15:55:40Z",
+      "from": "suporteflowtech@gmail.com",
+      "subject": "Precisa de suporte em informática e sistemas de segurança eletrônica? Entre em contato agora mesmo!",
+      "classification": "interesse positivo",
+      "matched_recipient": null,
+      "preview": "🚀 Sua empresa não pode parar\r\n\r\nBoa tarde, me chamo Miguel Dias e gostaria de apresentar algumas de nossas soluções completas em suporte em TI, redes Wi-Fi, segurança eletrônica e muito mais!!! Com atendimento rápido na Capital e em toda Grande São Paulo",
+      "id": "AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAALsVWxAAA=",
+      "webLink": "https://outlook.office365.com/owa/?ItemID=AAMkADk1NGNjMTcwLWVlOGItNDQ0Zi1iODM5LTkyMmFiZDlhZjA3OABGAAAAAABP7TB0fmGISYmzBKrYLcK6BwCQvzqX8pd7QIgnoq6zrVm4AAAAAAEMAACQvzqX8pd7QIgnoq6zrVm4AAALsVWxAAA%3D&exvsurl=1&viewmodel=ReadMessageItem"
+    }
+  ]
+}

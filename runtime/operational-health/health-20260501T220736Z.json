@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-02T03:54:44.630505+00:00",
+  "checked_at_utc": "2026-05-01T22:07:36.064823+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -15,7 +15,7 @@
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-05-02 01:56 | De: invoicing@aws.com\n   Assunto: NFS-e da Amazon Web Services já disponível\n   Prezado cliente:\nGostaríamos de informar que sua nota fiscal (NFS-e) já está disponível em sua cont\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-01 22:02 | De: news@latampassmail.com\n   Assunto: ALEXANDRE, suas milhas foram creditadas!\n   Aproveite suas milhas e viaje mais gastando menos\nVisualizar a versão web\n\nN° LATAM Pass: 3101***\n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-05-01T23:00:53.887979+00:00"
+      "evidence": "2026-05-01T21:04:17.827298+00:00"
     },
     {
       "name": "working_queue_flavia",

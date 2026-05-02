@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-05-02T03:54:44.630505+00:00",
+  "checked_at_utc": "2026-05-01T15:02:25.041119+00:00",
   "overall": "active",
   "counts": {
     "ok": 11,
@@ -10,18 +10,18 @@
       "name": "openclaw_status",
       "status": "ok",
       "detail": "status executado",
-      "evidence": "ith no channels.whatsapp.accounts.default.groups allowlist; any group can add + ping (mention-gated). Set channels.whatsap…\n  WARN No auth rate limiting configured\n    gateway.bind is not loopback but no gateway.auth.rateLimit is configured. Without rate limiting, brute-force auth attacks are not mitigated.\n    Fix: Set gateway.auth.rateLimit (e.g. { maxAttempts: 10, windowMs: 60000, lockoutMs: 300000 }).\n  WARN Some configured models are below recommended tiers\n    Smaller/older models are generally more susceptible to prompt injection and tool misuse. - openai/gpt-image-2 (Below GPT-5 family) @ agents.defaults.imageModel…\n    Fix: Use the latest, top-tier model for any bot with tools or untrusted inboxes. Avoid Haiku tiers; prefer GPT-5+ and Claude 4.5+.\n  WARN Potential multi-user setup detected (personal-assistant model warning)\n    Heuristic signals indicate this gateway may be reachable by multiple users: - channels.telegram.groupPolicy=\"allowlist\" with configured group targets -"
+      "evidence": "                                                             │\n│ Agents               │ 15 · 4 bootstrap files present · sessions 226 · default main active just now                  │\n│ Memory               │ enabled (plugin memory-core) · not checked                                                    │\n│ Plugin compatibility │ none                                                                                          │\n│ Probes               │ skipped (use --deep)                                                                          │\n│ Events               │ none                                                                                          │\n│ Tasks                │ 11 active · 0 queued · 11 running · 151 issues · audit 10 errors · 49 warn · 1249 tracked     │\n│ Heartbeat            │ 60m (main), disabled (autopilot), disabled (bi), disabled (croncheap), 60m (finance),         │\n│                      │ disabled (juridico), 60m (marketing), 60m (mensura), 60m (mia), 6"
     },
     {
       "name": "graph_email_mensura",
       "status": "ok",
-      "detail": "📩 [AAMkADAw...] 2026-05-02 01:56 | De: invoicing@aws.com\n   Assunto: NFS-e da Amazon Web Services já disponível\n   Prezado cliente:\nGostaríamos de informar que sua nota fiscal (NFS-e) já está disponível em sua cont\n\n",
+      "detail": "📩 [AAMkADAw...] 2026-05-01 14:09 | De: contato@novidades.riachuelo.com.br\n   Assunto: Escolha o look perfeito para sua mãe\n   Nova coleção com suede, tricô, alfaiataria e mais\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  \n\n",
       "evidence": "alexandre@mensuraengenharia.com.br"
     },
     {
       "name": "graph_email_mia",
       "status": "ok",
-      "detail": "📩 [AAMkADA5...] 2026-05-01 16:08 | De: truthteam@email.truthsocial.com\n   Assunto: ICYMI: Trump SLAMS Jeffries for 'illegitimate' Supreme Court remark\n   Dear Friend, We thought you might take interest in this recent Truth from President Donald J. Trump.\n\n",
+      "detail": "📧 [AAMkADA5...] 2026-05-01 12:00 | De: flavia@mensuraengenharia.com.br\n   Assunto: CCSP Casa 7 — Cobranças de sexta-feira — 01/05\n   Victor, bom dia.\n\nSegue cobrança objetiva da Casa 7 — CCSP para Sexta-feira (2026-05-01), conforme R\n\n",
       "evidence": "alexandre@miaengenharia.com.br"
     },
     {
@@ -52,7 +52,7 @@
       "name": "linkedin_institutional_community_api",
       "status": "pending",
       "detail": "no_approval_found",
-      "evidence": "2026-05-01T23:00:53.887979+00:00"
+      "evidence": "2026-04-30T21:03:27.819847+00:00"
     },
     {
       "name": "working_queue_flavia",

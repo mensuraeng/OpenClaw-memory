@@ -1,0 +1,65 @@
+{
+  "created_at_utc": "2026-05-01T23:46:58.069079+00:00",
+  "status": "draft_requires_human_approval",
+  "source": "creative-ops-studio",
+  "brand": "MENSURA",
+  "channel": "LinkedIn",
+  "format": "post 1:1",
+  "asset_type": "image",
+  "brief": "obra não atrasa por falta de esforço, atrasa por falta de sistema",
+  "route": {
+    "use_case": "linkedin_technical_visual",
+    "asset_type": "image",
+    "best_for": "visual técnico para post de autoridade MENSURA",
+    "preferred_model_families": [
+      "Flux",
+      "GPT image",
+      "Ideogram",
+      "Seedream"
+    ],
+    "reference_models_from_repo": [
+      "flux-dev",
+      "gpt-4o",
+      "ideogram-v3",
+      "seedream"
+    ],
+    "risk": "medium",
+    "requires_human_approval": true,
+    "prompt_requirements": [
+      "sem logotipos falsos",
+      "sem texto pequeno ilegível",
+      "sem claim técnico não verificável"
+    ]
+  },
+  "brand_guardrails": {
+    "tone": "técnico, executivo, claro, sem hype, com números antes de adjetivos",
+    "avoid": [
+      "fiscalização genérica",
+      "promessa absoluta de prazo/custo",
+      "linguagem marqueteira vazia",
+      "assumir responsabilidade técnica sem validação"
+    ],
+    "default_channels": [
+      "LinkedIn",
+      "landing page",
+      "proposta comercial"
+    ]
+  },
+  "generation_prompt": "Crie um asset visual para MENSURA com finalidade de LinkedIn. Formato: post 1:1. Brief: obra não atrasa por falta de esforço, atrasa por falta de sistema. Posicionamento da marca: torre de controle técnica e executiva de obras: prazo, risco, custo, indicadores e governança. Direção visual: obra real, cronograma, indicadores, dashboards, canteiro, precisão técnica, sobriedade, contraste alto. Tom: técnico, executivo, claro, sem hype, com números antes de adjetivos. Composição limpa, premium, profissional, sem texto pequeno, sem logotipos falsos, sem promessas técnicas ou comerciais não verificáveis. Objetivo operacional: visual técnico para post de autoridade MENSURA.",
+  "approval_gate": {
+    "required": true,
+    "reason": "Asset gerado é rascunho; publicação externa exige validação do Alê/Flávia.",
+    "blocked_actions_without_approval": [
+      "publicar",
+      "enviar a cliente",
+      "usar em anúncio",
+      "usar em proposta final"
+    ]
+  },
+  "next_steps": [
+    "Validar se o brief está correto.",
+    "Gerar 2-4 variações no modelo escolhido.",
+    "Selecionar uma variação e ajustar copy/caption.",
+    "Submeter para aprovação humana antes de qualquer saída externa."
+  ]
+}

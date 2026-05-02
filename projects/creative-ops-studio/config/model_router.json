@@ -1,0 +1,61 @@
+{
+  "version": "0.1.0",
+  "source_reference": "https://github.com/Anil-matcha/Open-Generative-AI",
+  "policy": {
+    "external_publish_requires_human_approval": true,
+    "generated_assets_are_drafts": true,
+    "no_direct_client_or_publication_side_effects": true
+  },
+  "routes": [
+    {
+      "use_case": "linkedin_technical_visual",
+      "asset_type": "image",
+      "best_for": "visual técnico para post de autoridade MENSURA",
+      "preferred_model_families": ["Flux", "GPT image", "Ideogram", "Seedream"],
+      "reference_models_from_repo": ["flux-dev", "gpt-4o", "ideogram-v3", "seedream"],
+      "risk": "medium",
+      "requires_human_approval": true,
+      "prompt_requirements": ["sem logotipos falsos", "sem texto pequeno ilegível", "sem claim técnico não verificável"]
+    },
+    {
+      "use_case": "premium_architecture_visual",
+      "asset_type": "image",
+      "best_for": "conceito visual MIA premium/quiet luxury",
+      "preferred_model_families": ["Flux", "Midjourney", "Nano Banana", "GPT image"],
+      "reference_models_from_repo": ["flux-dev", "nano-banana", "midjourney", "gpt-4o"],
+      "risk": "medium",
+      "requires_human_approval": true,
+      "prompt_requirements": ["sem ostentação", "sem render genérico", "sem excesso de decoração"]
+    },
+    {
+      "use_case": "institutional_public_works_visual",
+      "asset_type": "image",
+      "best_for": "visual técnico-institucional PCS",
+      "preferred_model_families": ["Flux", "Ideogram", "Seedream"],
+      "reference_models_from_repo": ["flux-dev", "ideogram-v3", "seedream"],
+      "risk": "medium",
+      "requires_human_approval": true,
+      "prompt_requirements": ["sem simular documento oficial", "sem brasões/logos públicos", "sem afirmações contratuais"]
+    },
+    {
+      "use_case": "short_video_concept",
+      "asset_type": "video",
+      "best_for": "vídeo curto conceitual para campanha ou landing page",
+      "preferred_model_families": ["Kling", "Veo", "Wan", "Runway", "Seedance"],
+      "reference_models_from_repo": ["kling", "veo", "wan", "runway", "seedance"],
+      "risk": "high",
+      "requires_human_approval": true,
+      "prompt_requirements": ["sem pessoas reais sem autorização", "sem promessa comercial", "sem simular cliente real"]
+    },
+    {
+      "use_case": "lip_sync_spokesperson",
+      "asset_type": "video",
+      "best_for": "porta-voz sintético interno ou rascunho de vídeo",
+      "preferred_model_families": ["LTX Lipsync", "Infinite Talk", "Sync", "LatentSync"],
+      "reference_models_from_repo": ["ltx-2.3-lipsync", "infinitetalk", "sync-lipsync", "latent-sync"],
+      "risk": "high",
+      "requires_human_approval": true,
+      "prompt_requirements": ["não usar rosto/voz de pessoa real sem autorização", "não publicar direto", "não representar cliente/órgão público"]
+    }
+  ]
+}

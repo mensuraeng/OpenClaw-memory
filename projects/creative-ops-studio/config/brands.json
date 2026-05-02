@@ -1,0 +1,38 @@
+{
+  "MENSURA": {
+    "positioning": "torre de controle técnica e executiva de obras: prazo, risco, custo, indicadores e governança",
+    "tone": "técnico, executivo, claro, sem hype, com números antes de adjetivos",
+    "visual_direction": "obra real, cronograma, indicadores, dashboards, canteiro, precisão técnica, sobriedade, contraste alto",
+    "avoid": [
+      "fiscalização genérica",
+      "promessa absoluta de prazo/custo",
+      "linguagem marqueteira vazia",
+      "assumir responsabilidade técnica sem validação"
+    ],
+    "default_channels": ["LinkedIn", "landing page", "proposta comercial"]
+  },
+  "MIA": {
+    "positioning": "engenharia de performance premium para alto padrão: precisão, silêncio e perfeição operacional",
+    "tone": "quiet luxury, sofisticado, objetivo, sem ostentação e sem excesso de explicação",
+    "visual_direction": "materiais nobres, arquitetura limpa, detalhes construtivos, luz natural, silêncio visual, alto padrão discreto",
+    "avoid": [
+      "obra popular",
+      "barulho visual",
+      "luxo ostensivo",
+      "linguagem promocional agressiva"
+    ],
+    "default_channels": ["Instagram", "LinkedIn", "apresentação institucional"]
+  },
+  "PCS": {
+    "positioning": "engenharia técnico-institucional para obras públicas, patrimônio, licitações e execução operacional robusta",
+    "tone": "institucional, técnico, sóbrio, verificável e conservador",
+    "visual_direction": "patrimônio, restauro, obra pública, documentação técnica, frentes de serviço, segurança e governança",
+    "avoid": [
+      "admissão de culpa",
+      "aprovação contratual implícita",
+      "tom comercial exagerado",
+      "promessa sem base documental"
+    ],
+    "default_channels": ["relatório", "proposta técnica", "LinkedIn institucional"]
+  }
+}
