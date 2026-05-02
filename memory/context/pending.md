@@ -3,7 +3,7 @@
 > Visão executiva — apenas itens reais com ação pendente.
 > Spam, newsletters e emails de marketing: descartar direto, nunca entram aqui.
 
-_Flush realizado em 2026-04-29 22:00_
+_Flush realizado em 2026-05-01 22:00_
 
 ---
 
@@ -28,6 +28,7 @@ _Flush realizado em 2026-04-29 22:00_
 - [ ] **Teatro Suzano no Sienge — estratégia de total** — se o caminho via `workItemId` der 100% de cobertura, Alê precisa confirmar se aceita eventual divergência entre total Excel e total calculado pela base Sienge
 - [ ] **Meta Ads — conexão MCP/AI Connector** — Alê pediu conexão ampla com trava por orçamento e definiu teto atual **R$ 0/dia**. Portanto, por enquanto só conexão, leitura, diagnóstico e preparação; ficam bloqueados ativação/publicação/gasto. Falta: `META_AD_ACCOUNT_ID=act_<id>`, autenticação Meta/OAuth/token e conta de anúncio vinculada ao Business correto. Plano registrado em `runtime/mensura-marketing/meta-ads/connection-plan-2026-04-30.md`.
 - [ ] **PCS — fontes documentais institucionais** — obter apresentação, ficha cadastral, dados institucionais e fontes oficiais antes de preencher memória documental da PCS
+- [ ] **Hostinger snapshot real / rotina diária** — token e consulta read-only validados; criação de snapshot sobrescreve o anterior e exige confirmação explícita antes de executar/ativar cron diário
 
 ---
 
@@ -44,7 +45,6 @@ _Flush realizado em 2026-04-29 22:00_
 
 ## 🔵 Em andamento interno
 
-- [ ] **Backup full VPS B2** — cap do B2 foi resolvido e dry-run passou; validar execução final, manifesto e restaurabilidade antes de considerar concluído
 - [ ] **Teatro Suzano — orçamento Sienge** — rodar novo dry-run após reset do rate limit; só executar upload se cobertura de códigos for 100% e estratégia de total estiver confirmada
 - [ ] **MENSURA Commercial Intelligence** — manter base versionada no repo/SQLite; toda nova lista passa por deduplicação, DNS/domínio, suppression, bounces e score antes de campanha
 - [ ] **Saneamento 2nd-brain Mia-CCSP-Casa-7** — tarefa própria com backup antes de remover/reestruturar conteúdo

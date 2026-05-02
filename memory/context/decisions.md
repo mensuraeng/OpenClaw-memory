@@ -306,3 +306,15 @@ O LLM Context Pack pode compactar JSON/CSV/Markdown para subagentes, auditorias 
 ## 2026-04-29 — Emissão fiscal é trilha com aprovação humana obrigatória
 _Status: [ATIVA]_
 Qualquer emissão, transmissão, cancelamento, inutilização, envio externo de PDF/XML ou ação fiscal mutável exige confirmação explícita do Alê e checklist aprovado. DFe.NET é trilha técnica para NF-e/NFC-e/CT-e/MDF-e; NFS-e municipal/Sistema do Milhão segue como hipótese principal inicial para empresas prestadoras de serviço até confirmação por empresa.
+
+## 2026-05-01 — Backup local mantém 2 versões; B2 mantém 3 conjuntos remotos válidos
+_Status: [ATIVA]_
+Para preservar disco da VPS, `/root/openclaw-backups` deve manter apenas 2 backups locais válidos. O Backblaze B2 é a retenção histórica principal e deve manter 3 conjuntos remotos válidos para `flavia/vps-full/` e `flavia/2nd-brain/`, incluindo uma versão de rollback.
+
+## 2026-05-01 — Snapshot Hostinger exige backup versionado antes e confirmação explícita
+_Status: [ATIVA]_
+Snapshot da VPS Hostinger é rollback rápido, não histórico. Antes de snapshot real, executar backup/versionamento do workspace/GitHub com falha explícita; não seguir para snapshot se o push falhar. Criar snapshot sobrescreve o anterior e exige confirmação explícita do Alê antes de execução ou ativação de cron mutável.
+
+## 2026-05-01 — Node 24 para MCP Hostinger fica isolado, sem trocar Node global do OpenClaw
+_Status: [ATIVA]_
+Compatibilidade do MCP Hostinger com Node 24 deve ser atendida por instalação/wrapper isolado. Não trocar o Node global do OpenClaw sem necessidade e validação específica, para evitar quebrar runtime/plugins existentes.

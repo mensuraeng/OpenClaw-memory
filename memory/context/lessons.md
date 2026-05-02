@@ -161,3 +161,15 @@ Soluções tipo Claude-Mem são úteis como referência para captura automática
 ## 2026-04-29 — Frente fiscal precisa separar tipo de documento antes da ferramenta
 - Avaliar biblioteca fiscal sem confirmar se a operação recorrente é NFS-e, NF-e ou ambas pode levar a trilha técnica errada.
 - Antes de automatizar emissão, mapear por empresa: tipo de documento, sistema municipal/SEFAZ, certificado, aprovador, retenções e destino de PDF/XML.
+
+## 2026-05-01 — Retenção automática pode remover rollback local se não houver proteção explícita
+- Ao criar backup de resgate antes de rollback, a retenção local de 2 versões removeu o backup local-alvo das 09:22 BRT.
+- Antes de mudanças estruturais, conferir se o backup-alvo está protegido por label/pin ou se existe equivalente externo restaurável; retenção por quantidade não entende intenção humana de rollback.
+
+## 2026-05-01 — Scripts de backup/snapshot não podem mascarar falha de push
+- Para rotina que precede snapshot Hostinger, `git push ... || true` é risco: pode seguir para snapshot mesmo sem versionar o estado.
+- Wrapper diário precisa falhar explicitamente se commit/push do workspace ou 2nd-brain falhar, porque snapshot Hostinger sobrescreve a versão anterior.
+
+## 2026-05-01 — APIs protegidas por Cloudflare podem exigir User-Agent explícito
+- Consulta read-only da Hostinger falhou com Cloudflare 1010 usando `urllib` sem User-Agent adequado.
+- Helpers de API externa devem enviar User-Agent operacional claro e registrar status HTTP/erro sem expor token.
